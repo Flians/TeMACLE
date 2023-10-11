@@ -1,0 +1,8 @@
+set lpsolve "/opt/gurobi950/linux64/bin/gurobi_cl"
+load technology "../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+load netlist "../stdCelllib/cellsAstranFriendly.sp"
+cellgen select LATCH
+cellgen autoflow
+export layout LATCH ./originalAstranStdCells//LATCH.gds
+exit
+

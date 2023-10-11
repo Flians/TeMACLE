@@ -1,0 +1,24 @@
+
+read_liberty -lib ../stdCelllib/gscl45nm.lib
+read -sv ./boomModule/vFiles/*.v
+hierarchy -top RegisterFileSynthesizable
+flatten
+synth -top RegisterFileSynthesizable
+flatten
+
+# the high-level stuff
+proc; fsm; opt; memory; opt
+
+# mapping flip-flops to mycells.lib
+dfflibmap -liberty ../stdCelllib/gscl45nm.lib
+
+# mapping logic to mycells.lib
+abc  -liberty ../stdCelllib/gscl45nm.lib
+opt
+opt
+clean
+opt
+clean
+
+write_blif /home/zslwyuan-laptop/Softwares/yosys/blifPatternExtraction_Jingsong/benchmark/blif//BoomRegisterFile.blif
+

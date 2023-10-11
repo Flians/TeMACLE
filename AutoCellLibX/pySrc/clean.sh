@@ -1,0 +1,2 @@
+rm figs/*
+rm netlistsAndLayouts/*

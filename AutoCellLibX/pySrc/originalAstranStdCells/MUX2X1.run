@@ -1,0 +1,8 @@
+set lpsolve "/opt/gurobi950/linux64/bin/gurobi_cl"
+load technology "../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+load netlist "../stdCelllib/cellsAstranFriendly.sp"
+cellgen select MUX2X1
+cellgen autoflow
+export layout MUX2X1 ./originalAstranStdCells//MUX2X1.gds
+exit
+
