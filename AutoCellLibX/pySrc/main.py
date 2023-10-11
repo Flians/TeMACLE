@@ -20,6 +20,7 @@ def mkdir(pathStr):
 def main():
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
     current_path = os.path.dirname(os.path.abspath(__file__))
+    os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
     # ASTRANBuildPath = ""  # empty when Astran is unavailable.
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     ASTRANBuildPath = f"{current_path}/../tools/astran/Astran/build"
@@ -64,7 +65,7 @@ def main():
                     continue
                 if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
                     continue
-                runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath="/opt/gurobi950/linux64/bin/gurobi_cl",
+                runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
                                     technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
                                     spiceNetlistPath=f'{current_path}/../stdCelllib/cellsAstranFriendly.sp',
                                     complexName=oriStdCellType, commandDir=f'{current_path}/originalAstranStdCells/')
@@ -125,7 +126,7 @@ def main():
                         if (not os.path.exists(f'{outputPath}/COMPLEX{patternTraceId}.gds')):
                             if (len(tmpClusterSeq.patternClusters[0].cellIdsContained) < 11):
                                 try:
-                                    runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath="/opt/gurobi950/linux64/bin/gurobi_cl",
+                                    runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
                                                         technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
                                                         spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
                                     loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
