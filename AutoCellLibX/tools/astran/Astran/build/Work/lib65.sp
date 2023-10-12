@@ -29,6 +29,7 @@ M48 3 A GND GND  NMOS  L=65n W=480n
 M49 GND 9 S GND  NMOS  L=65n W=480n 
 .ends
 
+******* changed
 .subckt AND2X1 Y B VCC GND A
 M0 a_2_6# A VCC VCC PMOS W=500n L=50n
 M1 VCC B a_2_6# VCC PMOS W=500n L=50n
@@ -38,7 +39,7 @@ M4 GND B a_9_6# GND NMOS W=500n L=50n
 M5 Y a_2_6# GND GND NMOS W=250n L=50n
 .ends AND2X1
 
-
+******* changed
 .subckt AND2X1INV Q B VCC GND A
 M0 a_2_6# A VCC VCC PMOS L=50n W=400n
 M1 VCC B a_2_6# VCC PMOS L=50n W=400n

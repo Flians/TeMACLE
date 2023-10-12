@@ -154,8 +154,8 @@ void AutoCell::autoFlow(string lpSolverFile) {
         break;
       if (currentNetList.getMaxCongestioning() <= 8 && nrTracks == 3)
         break;
-      if (nrTracks == 50)
-        break; // changed
+      if (nrTracks == 4)
+        break;
       nrTracks++;
     }
     placeTrans(true, 150, 3, 4, 4, 1, 4, 2);

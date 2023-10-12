@@ -9,14 +9,14 @@ Circuit::Circuit() {
   vGrid = 0.20f;
   hGridOffset = false;
   vGridOffset = false;
-  supplyVSize = 0.23f; // changed
+  supplyVSize = 0.23f; // changed from 0.72f;
   nWellBorder = 0.235f;
   pnSelBorder = 0.09f;
-  nWellPos = 1.5f; // changed
+  nWellPos = 1.5f; // changed from 1.14f;
   cellTemplate = "Tapless";
   vddNet = "VCC";
   gndNet = "GND";
-  cellsHeight = 16; // changed
+  cellsHeight = 16; // changed from 13;
   c2lMargin = c2rMargin = c2tMargin = c2bMargin = 0;
   topCell = "";
 }

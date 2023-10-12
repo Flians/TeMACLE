@@ -50,9 +50,9 @@ There is a video tutorial that can be usefull in: https://www.youtube.com/watch?
 1. run: ./Astran --shell
 
 2. Follow the example:
-set lpsolve "/opt/gurobi950/linux64/bin/gurobi_cl"
-load technology "/home/zslwyuan-laptop/Downloads/test/astran/Astran/build/Work/tech_0065.rul"
-load netlist "/home/zslwyuan-laptop/Downloads/test/astran/Astran/build/Work/lib65.sp"
+set lpsolve "/home/flynn/workplace/CEMapping/AutoCellLibX/tools/gurobi/bin/gurobi_cl"
+load technology "/home/flynn/workplace/CEMapping/AutoCellLibX/tools/astran/Astran/build/Work/tech_0065.rul"
+load netlist "/home/flynn/workplace/CEMapping/AutoCellLibX/tools/astran/Astran/build/Work/lib65.sp"
 cellgen select AND2X1INV AND2X1
 cellgen fold 2 4
 cellgen place 150 3 3 4 1 4 2
