@@ -1,0 +1,63 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "./build.sh",
+            "args": [
+                "-t",
+                "Release",
+                // "-u"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "build-debug",
+            "type": "shell",
+            "command": "./build.sh",
+            "args": [
+                // "-t", "Release",
+                // "-u"
+            ],
+            "group": "build",
+        },
+        {
+            "label": "build-test",
+            "type": "shell",
+            "command": "./build.sh",
+            "args": [
+                // "-t", "Release",
+                "-u"
+            ],
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "build_mockturtle",
+            "command": "cd build && cmake -DMOCKTURTLE_EXPERIMENTS=ON -DCMAKE_BUILD_TYPE=Debug .. && make aqfp_flow",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/third-party/mockturtle"
+            },
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "build_nvcc",
+            "command": "make",
+            "args": [
+                "DEBUG=1"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/GraphMiner/src/fsm"
+            },
+            "group": "build"
+        }
+    ]
+}

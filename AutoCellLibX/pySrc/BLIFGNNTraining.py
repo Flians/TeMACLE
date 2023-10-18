@@ -1,4 +1,3 @@
-from turtle import shape
 import easydict
 import tensorflow as tf
 from GNNModel import GraphCNN
@@ -38,14 +37,13 @@ def enbeddedNodes_GNN(BLIFGraph, graphs, num_classes, startTime):
     })
 
     endTime = time.time()
-    print("GNN load_data done. time esclaped: ", endTime-startTime)
+    print("GNN load_data done. time esclaped: ", endTime - startTime)
 
     print("num_classes=", num_classes)
     model = GraphCNN(GNNargs.num_layers, GNNargs.num_mlp_layers, GNNargs.hidden_dim, num_classes,
                      GNNargs.final_dropout, GNNargs.learn_eps, GNNargs.graph_pooling_type, GNNargs.neighbor_pooling_type)
 
-    loss_object = tf.keras.losses.SparseCategoricalCrossentropy(
-        from_logits=True)
+    loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 
     optimizer = tf.keras.optimizers.Adam(lr=GNNargs.lr)
 
@@ -71,7 +69,7 @@ def enbeddedNodes_GNN(BLIFGraph, graphs, num_classes, startTime):
     train(GNNargs, model, graphs, optimizer, GNNargs.epochs)
 
     endTime = time.time()
-    print("GNN train done. time esclaped: ", endTime-startTime)
+    print("GNN train done. time esclaped: ", endTime - startTime)
 
     nodeLabel_ori = nx.get_node_attributes(graphs[0].g, 'nodeLabel')
     nodeLabel = dict()
@@ -80,11 +78,10 @@ def enbeddedNodes_GNN(BLIFGraph, graphs, num_classes, startTime):
             nodeLabel[nodeId] = 1
     nx.set_node_attributes(G=graphs[0].g, values=nodeLabel, name="nodeLabel")
     output = model(graphs).numpy()
-    nx.set_node_attributes(
-        G=graphs[0].g, values=nodeLabel_ori, name="nodeLabel")
+    nx.set_node_attributes(G=graphs[0].g, values=nodeLabel_ori, name="nodeLabel")
 
     endTime = time.time()
-    print("enbeddedNodes_GNN done. time esclaped: ", endTime-startTime)
+    print("enbeddedNodes_GNN done. time esclaped: ", endTime - startTime)
 
     return output
 
@@ -95,6 +92,6 @@ def encodedEntireGraphWIthLabelOrder(cells, encodes, startTime):
         cells[cellId].setFeature(encode)
 
     endTime = time.time()
-    print("encodedEntireGraphWIthLabelOrder done. time esclaped: ", endTime-startTime)
+    print("encodedEntireGraphWIthLabelOrder done. time esclaped: ", endTime - startTime)
 
     return node2LabelOrder

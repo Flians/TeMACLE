@@ -1,5 +1,4 @@
 import glob
-from pathlib import Path
 import os
 
 
@@ -7,8 +6,7 @@ def findStat(lines, key):
     for line in lines:
         if (line.find(key) >= 0):
             return float(line.split(" ")[0])
-    assert(False)
-    return 1
+    assert (False)
 
 
 def mkdir(pathStr):
@@ -41,15 +39,14 @@ for resultFileName in resultFileNames:
 # | 3208.1854600000415 | 58.87999999999997 | 2.0576131687243224 | 23 | 5 | 115 | COMPLEX18 | [NAND2X1,NAND2X1,OR2X1]+c2o0_OAI21X1+c0o0_XNOR2X1 |
 # | 3208.1854600000415 | 38.912000000000035 | 1.3598139202004238 | 38 | 2 | 76 | COMPLEX1 | [OAI21X1,NAND2X1] |
 
-    targetPath = outputPath+benchmarkName
+    targetPath = outputPath + benchmarkName
     mkdir(targetPath)
-    os.system('cp '+resultFileName+" "+targetPath +
-              "/"+benchmarkName+"_summary.csv")
+    os.system('cp ' + resultFileName + " " + targetPath + "/" + benchmarkName + "_summary.csv")
     for line in lines[1:]:
         if (len(line) < 10):
             continue
         complexName = line.split("|")[7].replace(' ', '')
-        os.system('cp '+benchmarkOutputPath+"/"+complexName+".* "+targetPath)
+        os.system('cp ' + benchmarkOutputPath + "/" + complexName + ".* " + targetPath)
 
 
 # print(benchmark2stat)

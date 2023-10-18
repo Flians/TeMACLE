@@ -1,5 +1,4 @@
 import glob
-from pathlib import Path
 import os
 
 
@@ -7,8 +6,7 @@ def findStat(lines, key):
     for line in lines:
         if (line.find(key) >= 0):
             return float(line.split(" ")[0])
-    assert(False)
-    return 1
+    assert (False)
 
 
 def mkdir(pathStr):
@@ -36,24 +34,22 @@ for resultFileName in resultFileNames:
     resultFile.close()
 
     AstranReduceArea = findStat(lines, "compared to Astran GDS area")
-    AstranReduceAreaPercentage = findStat(
-        lines, "% <- compared to Astran GDS area")
+    AstranReduceAreaPercentage = findStat(lines, "% <- compared to Astran GDS area")
     GSCLReduceArea = findStat(lines, "compared to GSCL GDS area")
-    GSCLReduceAreaPercentage = findStat(
-        lines, "% <- compared to GSCL GDS area")
+    GSCLReduceAreaPercentage = findStat(lines, "% <- compared to GSCL GDS area")
 
     benchmark2stat[benchmarkName] = [
-        AstranReduceArea/AstranReduceAreaPercentage *
-        100, GSCLReduceArea/GSCLReduceAreaPercentage*100,
+        AstranReduceArea / AstranReduceAreaPercentage *
+        100, GSCLReduceArea / GSCLReduceAreaPercentage * 100,
         AstranReduceArea, GSCLReduceArea,
         AstranReduceAreaPercentage, GSCLReduceAreaPercentage]
 
-    targetPath = outputPath+benchmarkName
+    targetPath = outputPath + benchmarkName
     mkdir(targetPath)
-    os.system('cp '+resultFileName+" "+targetPath)
+    os.system('cp ' + resultFileName + " " + targetPath)
     for line in lines[5:]:
         complexName = line.split("\'")[1]
-        os.system('cp '+benchmarkOutputPath+"/"+complexName+".* "+targetPath)
+        os.system('cp ' + benchmarkOutputPath + "/" + complexName + ".* " + targetPath)
 
 
 print(benchmark2stat)

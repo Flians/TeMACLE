@@ -1,4 +1,3 @@
-from numpy import record
 from BLIFPreProc import *
 # from BLIFGNNTraining import *
 from BLIFPatternGrowth import *
@@ -36,14 +35,9 @@ def main():
     topThr = 5
     ratioThr = 0.05
     cntThr = 30
-    # benchmarks = ["tc_008_arthmetic_sin"]
-    # ratioThr = -1
-    # cntThr = -1
 
     for benchmarkName in benchmarks:
         startTime = time.time()
-        ratioThr = 0.05
-        cntThr = 30
         if (benchmarkName == "tc_008_arthmetic_sin"):
             ratioThr = 0.025
 
@@ -52,7 +46,9 @@ def main():
         # load liberty/spice/design BLIF
         subckts = loadSpiceSubcircuits(f"{current_path}/../stdCelllib/cellsAstranFriendly.sp")
         BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
-            libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib", blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif", startTime=startTime)
+            libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
+            blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
+            startTime=startTime)
         oriArea = getArea(cells, stdType2GSCLArea)
         print("originalArea=", oriArea)
 
@@ -84,7 +80,6 @@ def main():
         lastSaveGSCLArea = 0
         lastComplexSelection = 0
         targetPatternTrace = ""
-        failImproveCnt = 0
         benchmarkFailure = False
 
         for i in range(0, topThr):
@@ -101,8 +96,7 @@ def main():
                     break
                 tmpClusterSeq = clusterSeqs[j]
                 patternTraceId = tmpClusterSeq.patternClusters[0].clusterTypeId
-                patternSubgraph = BLIFGraph.subgraph(
-                    tmpClusterSeq.patternClusters[0].cellIdsContained)
+                patternSubgraph = BLIFGraph.subgraph(tmpClusterSeq.patternClusters[0].cellIdsContained)
 
                 if (not patternTraceId in dumpedPaterns.keys()):
                     if (len(tmpClusterSeq.patternClusters[0].cellIdsContained) >= 11):
@@ -126,7 +120,8 @@ def main():
                         if (not os.path.exists(f'{outputPath}/COMPLEX{patternTraceId}.gds')):
                             if (len(tmpClusterSeq.patternClusters[0].cellIdsContained) < 11):
                                 try:
-                                    runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
+                                    runAstranForNetlist(AstranPath=ASTRANBuildPath,
+                                                        gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
                                                         technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
                                                         spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
                                     loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
@@ -199,10 +194,11 @@ def main():
                 continue
 
             BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
-                libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib", blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif", startTime=startTime, bypassInitialCluster=True)
+                libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
+                blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
+                startTime=startTime, bypassInitialCluster=True)
 
-            clusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(
-                BLIFGraph, cells, netlist, targetPatternTrace)
+            clusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netlist, targetPatternTrace)
             endTime = time.time()
             print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", endTime - startTime)
 
@@ -302,8 +298,8 @@ def main():
         recordPatternDetails = sorted(recordPatternDetails, key=lambda x: -x[0])
         print("| designOverallArea | saveArea | saveRatio | patternCnt | patternSize | patternCoverage | patternName | patternCode |", file=fileResult)
         for saveArea, saveRatio, patternCnt, patternSize, patternCoverage, patternName, patternCode in recordPatternDetails:
-            print('|', oriArea, '|', saveArea, '|', saveRatio, '|', patternCnt, '|', patternSize, '|',
-                  patternCoverage, '|', patternName, '|', patternCode, '|', file=fileResult)
+            print('|', oriArea, '|', saveArea, '|', saveRatio, '|', patternCnt, '|', patternSize,
+                  '|', patternCoverage, '|', patternName, '|', patternCode, '|', file=fileResult)
         fileResult.close()
 
 

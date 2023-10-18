@@ -77,7 +77,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=`wx-config --libs --gl-libs` -lGL -lGLU -lglut -lGLEW
+LDLIBSOPTIONS=`wx-config --libs all` -lGL -lGLU -lglut -lGLEW
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}

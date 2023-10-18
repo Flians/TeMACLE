@@ -25,8 +25,7 @@ def loadAstranGDS():
 
     typeName2GDSSize = dict()
     GDSPath = f'{dirname(abspath(__file__))}/originalAstranStdCells/'
-    gdsFiles = [f for f in listdir(GDSPath) if isfile(
-        join(GDSPath, f)) and f.find(".gds") >= 0]
+    gdsFiles = [f for f in listdir(GDSPath) if isfile(join(GDSPath, f)) and f.find(".gds") >= 0]
     for gdsFile in gdsFiles:
         logFileName = GDSPath + gdsFile.replace(".gds", ".Astranlog")
         logFile = open(logFileName, 'r')
@@ -35,7 +34,6 @@ def loadAstranGDS():
 
         for line in lines:
             if (line.find("-> Cell Size (W x H): ") >= 0):
-                typeName2GDSSize[gdsFile.replace(".gds", "")] = float(
-                    line.replace("-> Cell Size (W x H): ", "").split("x")[0]) * 0.8 * 3.2
+                typeName2GDSSize[gdsFile.replace(".gds", "")] = float(line.replace("-> Cell Size (W x H): ", "").split("x")[0]) * 0.8 * 3.2
 
     return typeName2GDSSize

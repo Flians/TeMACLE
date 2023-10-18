@@ -44,18 +44,15 @@ def loadLibertyFile(fileName):
 
     # Loop through all cells.
     for cell_group in library.get_groups('cell'):
-        name = str(cell_group.args[0]).replace(
-            "\"", "").replace(" ", "").replace("\'", "")
+        name = str(cell_group.args[0]).replace("\"", "").replace(" ", "").replace("\'", "")
         # print(name)
         newStdCellType = StdCellType(name)
 
         # Loop through all pins of the cell.
         for pin_group in cell_group.get_groups('pin'):
-            pin_name = str(pin_group.args[0]).replace(
-                "\"", "").replace("\'", "")
+            pin_name = str(pin_group.args[0]).replace("\"", "").replace("\'", "")
             # print(pin_name, "->", str(pin_group['direction']).replace("\"","").replace("\'",""))
-            newStdCellType.addPin(pin_name, str(
-                pin_group['direction']).replace("\"", "").replace(" ", "").replace("\'", ""))
+            newStdCellType.addPin(pin_name, str(pin_group['direction']).replace("\"", "").replace(" ", "").replace("\'", ""))
 
         stdCellLib[name] = newStdCellType
 
@@ -64,11 +61,11 @@ def loadLibertyFile(fileName):
 
 def loadBoolGateFromBLIF(blif, stdCellLib):
     for boolFunc in blif.booleanfunctions:
-        truthTableStr = "bool-"+str(boolFunc.truthtable)
+        truthTableStr = "bool-" + str(boolFunc.truthtable)
         if (not truthTableStr in stdCellLib.keys()):
             newStdCellType = StdCellType(truthTableStr)
-            for i in range(0, len(boolFunc.v_params)-1):
-                newStdCellType.addPin("IN"+str(i), 'input')
+            for i in range(0, len(boolFunc.v_params) - 1):
+                newStdCellType.addPin("IN" + str(i), 'input')
             newStdCellType.addPin("OUT0", 'output')
             stdCellLib[truthTableStr] = newStdCellType
 
@@ -107,23 +104,23 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName):
             cells.append(curCell)
         else:
             print(refType, " is not in liberty file.")
-            assert(False)
+            assert (False)
 
     for logicGate in blif.booleanfunctions:
-        refType = "bool-"+str(logicGate.truthtable)
+        refType = "bool-" + str(logicGate.truthtable)
         if (refType in stdCellLib.keys()):
             name = str(logicGate)
             curCell = DesignCell(idCnt, name, stdCellLib[refType])
             idCnt += 1
             if (len(logicGate.v_params) > 1):
                 for pinId, pin in enumerate(logicGate.v_params[:-1]):
-                    curCell.addCellPin("IN"+str(pinId), pin)
+                    curCell.addCellPin("IN" + str(pinId), pin)
             curCell.addCellPin("OUT", logicGate.v_params[-1])
             cellName2Obj[name] = curCell
             cells.append(curCell)
         else:
             print(refType, " is not in liberty file.")
-            assert(False)
+            assert (False)
 
     idCnt = 0
     stdCellType2Cells = dict()
@@ -172,8 +169,7 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName):
             nodeType[designCell.id] = designCell.stdCellType.typeName
         else:
             nodeType[designCell.id] = "minorType"
-        BLIFGraph.add_node(
-            designCell.id, type=nodeType[designCell.id], nodeLabel=-1, name=designCell.name)
+        BLIFGraph.add_node(designCell.id, type=nodeType[designCell.id], nodeLabel=-1, name=designCell.name)
 
         for inputNet in designCell.inputNets:
             if (not inputNet.predCell is None):
@@ -214,7 +210,7 @@ def extractAndEncodeSubgraph_Tree(cells, rootNode, depthLimit=2, clusterId=None)
                         shouldBypass = True
                         break
                 if ((not shouldBypass)):
-                    depths.append(curDepth+1)
+                    depths.append(curDepth + 1)
                     Que.append(inputNet.predCell.id)
                     if (not inputNet.predCell.id in tree):
                         tree.append(inputNet.predCell.id)
@@ -247,8 +243,7 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, netlist):
         tree, code = extractAndEncodeSubgraph_Tree(cells, cell.id, treeDepth)
         if (len(tree) < 2):
             continue
-        codeStr = str(code).replace(
-            "\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
+        codeStr = str(code).replace("\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
         if (codeStr.find("bool-") >= 0):
             continue
         if (not codeStr in pattern2RootCells.keys()):
@@ -272,14 +267,11 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, netlist):
         newSeq = DesignPatternClusterSeq(tmpType[0])
         for cellId in pattern2RootCells[tmpType[0]]:
             BLIFGraph.nodes()[cellId]['nodeLabel'] = labelId
-            tree, code = extractAndEncodeSubgraph_Tree(   # color the nodes in a pattern
-                cells, cellId, treeDepth, labeledCnt)
+            tree, code = extractAndEncodeSubgraph_Tree(cells, cellId, treeDepth, labeledCnt)  # color the nodes in a pattern
             if (tree is None):
                 continue
-            code = str(code).replace(
-                "\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
-            newCluster = DesignPatternCluster(
-                labeledCnt, code, cells, tree, labelId)
+            code = str(code).replace("\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
+            newCluster = DesignPatternCluster(labeledCnt, code, cells, tree, labelId)
             for cellId in tree:
                 cells[cellId].setCluster(newCluster)
 
@@ -294,10 +286,8 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, netlist):
 
     resSeqs = sortPatternClusterSeqs(initialClusterSeqs)
 
-    print("labeled ", labeledCnt, " nodes (", labeledCnt /
-          BLIFGraph.number_of_nodes()*100, "%)")
-    print("clustered ", clusterCellsCnt, " nodes (", clusterCellsCnt /
-          BLIFGraph.number_of_nodes()*100, "%)")
+    print("labeled ", labeledCnt, " nodes (", labeledCnt / BLIFGraph.number_of_nodes() * 100, "%)")
+    print("clustered ", clusterCellsCnt, " nodes (", clusterCellsCnt / BLIFGraph.number_of_nodes() * 100, "%)")
 
     return resSeqs, labeledCnt
 
@@ -318,8 +308,7 @@ def heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netli
         tree, code = extractAndEncodeSubgraph_Tree(cells, cell.id, treeDepth)
         if (len(tree) < 2):
             continue
-        codeStr = str(code).replace(
-            "\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
+        codeStr = str(code).replace("\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
         if (codeStr.find("bool-") >= 0):
             continue
         if (targetPatternTrace.find(codeStr) != 0):
@@ -349,10 +338,8 @@ def heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netli
                 cells, cellId, treeDepth, labeledCnt)
             if (tree is None):
                 continue
-            code = str(code).replace(
-                "\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
-            newCluster = DesignPatternCluster(
-                labeledCnt, code, cells, tree, labelId)
+            code = str(code).replace("\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
+            newCluster = DesignPatternCluster(labeledCnt, code, cells, tree, labelId)
             for cellId in tree:
                 cells[cellId].setCluster(newCluster)
 
@@ -368,10 +355,8 @@ def heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netli
 
     resSeqs = sortPatternClusterSeqs(initialClusterSeqs)
 
-    print("labeled ", labeledCnt, " nodes (", labeledCnt /
-          BLIFGraph.number_of_nodes()*100, "%)")
-    print("clustered ", clusterCellsCnt, " nodes (", clusterCellsCnt /
-          BLIFGraph.number_of_nodes()*100, "%)")
+    print("labeled ", labeledCnt, " nodes (", labeledCnt / BLIFGraph.number_of_nodes() * 100, "%)")
+    print("clustered ", clusterCellsCnt, " nodes (", clusterCellsCnt / BLIFGraph.number_of_nodes() * 100, "%)")
 
     return resSeqs, labeledCnt
 
@@ -435,28 +420,24 @@ def convertBLIFGraphIntoDataset(BLIFGraph, stdCellTypesForFeature, maxNumType=36
 
     print("# data: %d" % len(node_features))
 
-    return g_list, maxLabel+1
+    return g_list, maxLabel + 1
 
 
 def loadDataAndPreprocess(libFileName="sky130_fd_sc_hd__tt_025C_1v80.lib", blifFileName="rocket.blif", startTime=0, bypassInitialCluster=False):
-    BLIFGraph, cells, netlist, stdCellTypesForFeature = genGraphFromLibertyAndBLIF(
-        libFileName, blifFileName)
+    BLIFGraph, cells, netlist, stdCellTypesForFeature = genGraphFromLibertyAndBLIF(libFileName, blifFileName)
     endTime = time.time()
-    print("genGraphFromLibertyAndBLIF done. time esclaped: ", endTime-startTime)
+    print("genGraphFromLibertyAndBLIF done. time esclaped: ", endTime - startTime)
 
     initialClusterSeqs = None
     clusterNum = None
     if (not bypassInitialCluster):
-        initialClusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters(
-            BLIFGraph, cells, netlist)
+        initialClusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, netlist)
         endTime = time.time()
-        print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ",
-              endTime-startTime)
+        print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", endTime - startTime)
 
-    dataset, maxLabelIndex = convertBLIFGraphIntoDataset(
-        BLIFGraph, stdCellTypesForFeature, 36)
+    dataset, maxLabelIndex = convertBLIFGraphIntoDataset(BLIFGraph, stdCellTypesForFeature, 36)
     endTime = time.time()
-    print("loadDataAndPreprocess done. time esclaped: ", endTime-startTime)
+    print("loadDataAndPreprocess done. time esclaped: ", endTime - startTime)
 
     return BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, initialClusterSeqs, clusterNum
 

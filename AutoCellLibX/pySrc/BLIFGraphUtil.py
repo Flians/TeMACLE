@@ -87,8 +87,7 @@ class DesignNet(object):
 
 class DesignPatternCluster(object):
     def __init__(self, clusterId, patternStr, cells, cellIdsContained, clusterTypeId):
-        self.patternExtensionTrace = patternStr.replace(
-            "\'", "").replace("\\", "").replace("\"", "")
+        self.patternExtensionTrace = patternStr.replace("\'", "").replace("\\", "").replace("\"", "")
         self.clusterId = clusterId
         self.cellIdsContained = cellIdsContained
         self.cellsContained = []
@@ -104,8 +103,7 @@ class DesignPatternCluster(object):
 
 class DesignPatternClusterSeq(object):
     def __init__(self, patternStr):
-        self.patternExtensionTrace = patternStr.replace(
-            "\'", "").replace("\\", "").replace("\"", "")
+        self.patternExtensionTrace = patternStr.replace("\'", "").replace("\\", "").replace("\"", "")
         self.patternClusters = []
 
     def addCluster(self, patternCluster):
@@ -135,13 +133,10 @@ def sortPatternClusterSeqs(seqs):
     newClusterSeqsSize = []
 
     for curSeq in seqs:
-        newClusterSeqsCnts.append(
-            len(curSeq.patternClusters) * len(curSeq.patternClusters[0].cellIdsContained))
-        newClusterSeqsSize.append(
-            len(curSeq.patternClusters[0].cellIdsContained))
+        newClusterSeqsCnts.append(len(curSeq.patternClusters) * len(curSeq.patternClusters[0].cellIdsContained))
+        newClusterSeqsSize.append(len(curSeq.patternClusters[0].cellIdsContained))
 
-    newClusterSeqsCnts_Order = np.lexsort(
-        (np.array(newClusterSeqsSize), -np.array(newClusterSeqsCnts)))
+    newClusterSeqsCnts_Order = np.lexsort((np.array(newClusterSeqsSize), -np.array(newClusterSeqsCnts)))
 
     resSeqs = []
 
@@ -174,19 +169,16 @@ def drawColorfulFigureForGraphWithAttributes(tmp_graph, colorArrtibute='type', s
     for key in pos.keys():
         label_pos[key] = (pos[key][0], pos[key][1])
 
-    labels = dict((n, (str(d[colorArrtibute])+"\n("+str(d["name"])+")").replace("\\", "").replace("$", ""))
+    labels = dict((n, (str(d[colorArrtibute]) + "\n(" + str(d["name"]) + ")").replace("\\", "").replace("$", ""))
                   for n, d in tmp_graph.nodes(data=True))
 
     if (withLabel):
-        nx.draw_networkx_labels(tmp_graph, label_pos,
-                                labels=labels, font_size=12)
+        nx.draw_networkx_labels(tmp_graph, label_pos, labels=labels, font_size=12)
 
-    nc = nx.draw_networkx_nodes(tmp_graph, pos, nodelist=nodes1, node_color=colors1,
-                                node_size=150, cmap=plt.cm.plasma)
+    nc = nx.draw_networkx_nodes(tmp_graph, pos, nodelist=nodes1, node_color=colors1, node_size=150, cmap=plt.cm.plasma)
 
     plt.gca().set_axis_off()
-    plt.subplots_adjust(top=1, bottom=0, right=1, left=0,
-                        hspace=0, wspace=0)
+    plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
     plt.margins(0, 0)
     plt.gca().xaxis.set_major_locator(plt.NullLocator())
     plt.gca().yaxis.set_major_locator(plt.NullLocator())

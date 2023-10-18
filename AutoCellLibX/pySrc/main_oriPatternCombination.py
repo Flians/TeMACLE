@@ -18,6 +18,8 @@ def mkdir(pathStr):
 
 def main():
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+    current_path = os.path.dirname(os.path.abspath(__file__))
+    os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
     # ASTRANBuildPath = ""  # empty when Astran is unavailable.
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     ASTRANBuildPath = "../tools/astran/Astran/build"
@@ -42,31 +44,31 @@ def main():
     ratioThr = 0.025
     cntThr = 30
 
-    specialCount = -1
-
     for benchmarkName in benchmarks:
         print("=================================================================================\n",
               benchmarkName, "\n=================================================================================\n")
         # load liberty/spice/design BLIF
-        subckts = loadSpiceSubcircuits("../stdCelllib/cellsAstranFriendly.sp")
+        subckts = loadSpiceSubcircuits(f"{current_path}/../stdCelllib/cellsAstranFriendly.sp")
         BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
-            libFileName="../stdCelllib/gscl45nm.lib", blifFileName="../benchmark/blif/" + benchmarkName + ".blif", startTime=startTime)
+            libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
+            blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
+            startTime=startTime)
         oriArea = getArea(cells, stdType2GSCLArea)
         print("originalArea=", oriArea)
 
-        outputPath = "./outputs/" + benchmarkName + "/"
+        outputPath = f"{current_path}/outputs/{benchmarkName}/"
         mkdir(outputPath)
 
         if (ASTRANBuildPath != ""):
             for oriStdCellType in stdCellTypesForFeature:
                 if (oriStdCellType.find("bool") >= 0):
                     continue
-                if (os.path.exists('./originalAstranStdCells/' + oriStdCellType + '.gds')):
+                if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
                     continue
-                runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath="/opt/gurobi950/linux64/bin/gurobi_cl",
-                                    technologyPath="../tools/astran/Astran/build/Work/tech_freePDK45.rul",
-                                    spiceNetlistPath='../stdCelllib/cellsAstranFriendly.sp',
-                                    complexName=oriStdCellType, commandDir='./originalAstranStdCells/')
+                runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
+                                    technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
+                                    spiceNetlistPath=f'{current_path}/../stdCelllib/cellsAstranFriendly.sp',
+                                    complexName=oriStdCellType, commandDir=f'{current_path}/originalAstranStdCells/')
         stdType2AstranArea = loadAstranGDS()
         astranArea = getArea(cells, stdType2AstranArea)
         print("astranArea=", astranArea)
@@ -95,51 +97,43 @@ def main():
                     break
                 tmpClusterSeq = clusterSeqs[j]
                 patternTraceId = tmpClusterSeq.patternClusters[0].clusterTypeId
-                patternSubgraph = BLIFGraph.subgraph(
-                    tmpClusterSeq.patternClusters[0].cellIdsContained)
+                patternSubgraph = BLIFGraph.subgraph(tmpClusterSeq.patternClusters[0].cellIdsContained)
 
                 if (not patternTraceId in dumpedPaterns):
                     if (len(tmpClusterSeq.patternClusters[0].cellIdsContained) >= 11):
                         continue
-                    print("dealing with pattern#", patternTraceId, " with ", len(
-                        tmpClusterSeq.patternClusters), " clusters (size=", len(tmpClusterSeq.patternClusters[0].cellIdsContained), ")")
+                    print("dealing with pattern#", patternTraceId, " with ", len(tmpClusterSeq.patternClusters), " clusters (size=", len(tmpClusterSeq.patternClusters[0].cellIdsContained), ")")
+
                     if (len(tmpClusterSeq.patternClusters[0].cellIdsContained) * len(tmpClusterSeq.patternClusters) < ratioThr * len(cells) and len(tmpClusterSeq.patternClusters) < cntThr):
                         print("===Warning: the pattern is too small and bypassed.")
                         break
                     dumpedPaterns.add(patternTraceId)
 
-                    drawColorfulFigureForGraphWithAttributes(
-                        patternSubgraph, save_to_file=outputPath + "/COMPLEX" + str(patternTraceId) + ".png", withLabel=True, figsize=(20, 20))
+                    drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/COMPLEX{patternTraceId}.png', withLabel=True, figsize=(20, 20))
 
                     # export the SPICE netlist of the complex of cells
-                    exportSpiceNetlist(tmpClusterSeq, subckts, str(patternTraceId),
-                                       outputPath)
+                    exportSpiceNetlist(tmpClusterSeq, subckts, str(patternTraceId), outputPath)
 
                     # if ASTRAN is available, run it to get the layout and area evaluation
                     if (ASTRANBuildPath != ""):
-                        if (not os.path.exists(outputPath + '/COMPLEX' +
-                                               str(patternTraceId) + '.gds')):
+                        if (not os.path.exists(f'{outputPath}/COMPLEX{patternTraceId}.gds')):
                             if (len(tmpClusterSeq.patternClusters[0].cellIdsContained) < 11):
-                                runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath="/opt/gurobi950/linux64/bin/gurobi_cl",
-                                                    technologyPath="../tools/astran/Astran/build/Work/tech_freePDK45.rul",
-                                                    spiceNetlistPath=outputPath + '/COMPLEX' +
-                                                    str(patternTraceId) + '.sp',
-                                                    complexName='COMPLEX' + str(patternTraceId), commandDir=outputPath)
+                                runAstranForNetlist(AstranPath=ASTRANBuildPath,
+                                                    gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
+                                                    technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
+                                                    spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
 
                 exampleCells = []
                 for cellId in tmpClusterSeq.patternClusters[0].cellIdsContained:
                     exampleCells.append(cells[cellId])
 
-                complexSelection.append(("COMPLEX" + str(patternTraceId), len(
-                    tmpClusterSeq.patternClusters), len(tmpClusterSeq.patternClusters[0].cellIdsContained), tmpClusterSeq.patternExtensionTrace))
+                complexSelection.append((f'COMPLEX{patternTraceId}', len(tmpClusterSeq.patternClusters), len(tmpClusterSeq.patternClusters[0].cellIdsContained), tmpClusterSeq.patternExtensionTrace))
+
                 oriUnitAstranArea = getArea(exampleCells, stdType2AstranArea)
                 oriUnitGSCLArea = getArea(exampleCells, stdType2GSCLArea)
-                newUnitAstranArea = loadAstranArea(
-                    outputPath, "COMPLEX" + str(patternTraceId))
-                saveArea += (oriUnitAstranArea - newUnitAstranArea) * \
-                    len(tmpClusterSeq.patternClusters)
-                saveGSCLArea += (oriUnitGSCLArea - newUnitAstranArea) * \
-                    len(tmpClusterSeq.patternClusters)
+                newUnitAstranArea = loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
+                saveArea += (oriUnitAstranArea - newUnitAstranArea) * len(tmpClusterSeq.patternClusters)
+                saveGSCLArea += (oriUnitGSCLArea - newUnitAstranArea) * len(tmpClusterSeq.patternClusters)
 
             print("saveArea=", saveArea, " / ", saveArea / astranArea * 100, "%")
             if (saveArea > lastSaveArea):
@@ -147,16 +141,11 @@ def main():
                 lastSaveGSCLArea = saveGSCLArea
                 lastComplexSelection = complexSelection
                 fileResult = open(outputPath + "/bestRecord-" + benchmarkName, 'w')
-                print(lastSaveArea, " <- compared to Astran GDS area",
-                      file=fileResult)
-                print(lastSaveArea / astranArea * 100,
-                      "% <- compared to Astran GDS area", file=fileResult)
-                print(lastSaveGSCLArea,
-                      " <- compared to GSCL GDS area", file=fileResult)
-                print(lastSaveGSCLArea / oriArea * 100,
-                      "% <- compared to GSCL GDS area", file=fileResult)
-                print(
-                    "The generated complex cells are (name, clusterNum, cellNumInOneCluster, patternCode):", file=fileResult)
+                print(lastSaveArea, " <- compared to Astran GDS area", file=fileResult)
+                print(lastSaveArea / astranArea * 100, "% <- compared to Astran GDS area", file=fileResult)
+                print(lastSaveGSCLArea, " <- compared to GSCL GDS area", file=fileResult)
+                print(lastSaveGSCLArea / oriArea * 100, "% <- compared to GSCL GDS area", file=fileResult)
+                print("The generated complex cells are (name, clusterNum, cellNumInOneCluster, patternCode):", file=fileResult)
                 for complexName in lastComplexSelection:
                     print(complexName, file=fileResult)
                 fileResult.close()
@@ -168,12 +157,10 @@ def main():
                     and len(clusterSeq.patternClusters) < cntThr):
                 break
 
-            newSeqOfClusters, patternNum = growASeqOfClusters(
-                BLIFGraph, clusterSeq, clusterNum, patternNum, paintPattern=True)
+            newSeqOfClusters, patternNum = growASeqOfClusters(BLIFGraph, clusterSeq, clusterNum, patternNum, paintPattern=True)
 
             # export the SPICE netlist of the complex of cells
-            exportSpiceNetlist(newSeqOfClusters[0], subckts, len(
-                clusterSeqs), outputPath)
+            exportSpiceNetlist(newSeqOfClusters[0], subckts, len(clusterSeqs), outputPath)
 
             clusterSeqs = clusterSeqs[1:]
             clusterSeqs += newSeqOfClusters

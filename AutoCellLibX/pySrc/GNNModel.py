@@ -21,8 +21,7 @@ class MLP(tf.keras.layers.Layer):
         else:
             # Multi-layer model
             self.linear_or_not = False
-            self.multi = Multi_model(
-                layers=num_layers, hidden_dim=hidden_dim, output_dim=output_dim)
+            self.multi = Multi_model(layers=num_layers, hidden_dim=hidden_dim, output_dim=output_dim)
 
     def call(self, input_features):
         if self.linear_or_not:
@@ -49,13 +48,13 @@ class Multi_model(tf.keras.layers.Layer):
         self.dense_list = []
         self.batch_list = []
 
-        for i in range(layers-1):
+        for i in range(layers - 1):
             self.dense_list.append(tf.keras.layers.Dense(units=hidden_dim))
             self.batch_list.append(tf.keras.layers.BatchNormalization())
         self.dense_list.append(tf.keras.layers.Dense(units=output_dim))
 
     def call(self, input_features):
-        for i in range(self.layers-1):
+        for i in range(self.layers - 1):
             densed = self.dense_list[i](input_features)
             batched = self.batch_list[i](densed)
             input_features = tf.nn.relu(batched)
@@ -84,7 +83,7 @@ class GraphCNN(tf.keras.Model):
         self.graph_pooling_type = graph_pooling_type
         self.neighbor_pooling_type = neighbor_pooling_type
         self.learn_eps = learn_eps
-        self.eps = tf.Variable(tf.zeros(self.num_layers-1))
+        self.eps = tf.Variable(tf.zeros(self.num_layers - 1))
 
         # List of MLPs
         # List of batchnorms applied to the output of MLP (input of the final prediction linear layer)
@@ -93,7 +92,7 @@ class GraphCNN(tf.keras.Model):
         self.linears = []
         self.drops = []
 
-        for layer in range(self.num_layers-1):
+        for layer in range(self.num_layers - 1):
             self.mlps.append(MLP(num_mlp_layers, hidden_dim, hidden_dim))
             self.batches.append(tf.keras.layers.BatchNormalization())
             self.linears.append(tf.keras.layers.Dense(output_dim))
@@ -132,8 +131,7 @@ class GraphCNN(tf.keras.Model):
             Adj_block_elem = tf.concat([Adj_block_elem, elem], 0)
 
         Adj_block_idx = tf.cast(tf.transpose(Adj_block_idx), tf.int64)
-        Adj_block = tf.SparseTensor(indices=Adj_block_idx, values=Adj_block_elem, dense_shape=[
-                                    start_idx[-1], start_idx[-1]])
+        Adj_block = tf.SparseTensor(indices=Adj_block_idx, values=Adj_block_elem, dense_shape=[start_idx[-1], start_idx[-1]])
         return Adj_block
 
     def __preprocess_graphpool(self, batch_graph):
@@ -159,11 +157,10 @@ class GraphCNN(tf.keras.Model):
                     tmpElemCnt += 1
                 overallNodeOffset += 1
 
-            elem.extend([1]*tmpElemCnt)
+            elem.extend([1] * tmpElemCnt)
 
         elem = tf.constant(elem)
-        graph_pool = tf.SparseTensor(indices=idx, values=elem, dense_shape=[
-                                     curCheckNodeOrderId, overallNodeOffset])
+        graph_pool = tf.SparseTensor(indices=idx, values=elem, dense_shape=[curCheckNodeOrderId, overallNodeOffset])
         # graph_pool is a diagonal matrix of ones, where the ones are rows corresponding to the length of each graph.
         graph_pool = tf.cast(graph_pool, tf.float32)
         return graph_pool
@@ -177,12 +174,11 @@ class GraphCNN(tf.keras.Model):
 
         if self.neighbor_pooling_type == "average":  # The default is sum
             # If average pooling
-            degree = tf.sparse.sparse_dense_matmul(
-                Adj_block, tf.ones([Adj_block.shape[0], 1]))
-            pooled = pooled/degree
+            degree = tf.sparse.sparse_dense_matmul(Adj_block, tf.ones([Adj_block.shape[0], 1]))
+            pooled = pooled / degree
 
         # Reweights the center node representation when aggregating it with its neighbors
-        pooled = pooled + (1 + self.eps[layer])*h2
+        pooled = pooled + (1 + self.eps[layer]) * h2
         pooled_rep = self.mlps[layer](pooled)
 
         h = self.batches[layer](pooled_rep)
@@ -190,16 +186,15 @@ class GraphCNN(tf.keras.Model):
         h = tf.cast(h, tf.float32)
         return h
 
-    def next_layer(self, h, layer,  Adj_block=None):
+    def next_layer(self, h, layer, Adj_block=None):
         # pooling neighboring nodes and center nodes altogether
 
         # If sum or average pooling
         pooled = tf.sparse.sparse_dense_matmul(Adj_block, h)
         if self.neighbor_pooling_type == "average":
             # If average pooling
-            degree = tf.sparse.sparse_dense_matmul(
-                Adj_block, tf.ones([Adj_block.shape[0], 1]))
-            pooled = pooled/degree
+            degree = tf.sparse.sparse_dense_matmul(Adj_block, tf.ones([Adj_block.shape[0], 1]))
+            pooled = pooled / degree
 
         # representation of neighboring and center nodes
         pooled_rep = self.mlps[layer](pooled)
@@ -220,7 +215,7 @@ class GraphCNN(tf.keras.Model):
         hidden_rep = [X_concat]
         h = X_concat
 
-        for layer in range(self.num_layers-1):
+        for layer in range(self.num_layers - 1):
             if not self.neighbor_pooling_type == "max" and self.learn_eps:
                 h = self.next_layer_eps(h, layer, Adj_block=Adj_block)
             elif not self.neighbor_pooling_type == "max" and not self.learn_eps:
@@ -242,8 +237,7 @@ class GraphCNN(tf.keras.Model):
             dropped_outcome = self.drops[layer](linear_outcome)
             score_over_layer += dropped_outcome
 
-        resForLabelNodes = tf.sparse.sparse_dense_matmul(
-            graph_pool, score_over_layer)
+        resForLabelNodes = tf.sparse.sparse_dense_matmul(graph_pool, score_over_layer)
 
         # #perform pooling over all nodes in each graph in every layer
         # for layer, h in enumerate(hidden_rep):

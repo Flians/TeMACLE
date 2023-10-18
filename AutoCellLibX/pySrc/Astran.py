@@ -1,5 +1,3 @@
-import gdspy
-
 from os import listdir
 from os.path import isfile, join
 import os
@@ -20,7 +18,6 @@ def loadAstranArea(GDSPath, typeName):
                 return float(line.replace("-> Cell Size (W x H): ", "").split("x")[0]) * 0.8 * 3.2
 
     assert (False)
-    return 123
 
 
 def runAstranForNetlist(AstranPath, gurobiPath, technologyPath, spiceNetlistPath, complexName, commandDir):
