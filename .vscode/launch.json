@@ -5,11 +5,36 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "SATMargin",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/SATMargin-and-Baselines/SATMargin",
+            "args": ["WATT_random_graphs/55221"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/SATMargin-and-Baselines",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build_SATMargin"
+        },
+        {
             "name": "fsm_gpu_base",
             "type": "cuda-gdb",
             "request": "launch",
             "program": "${workspaceFolder}/GraphMiner/bin/fsm_gpu_base",
-            "args": "inputs/mico/graph 2 300",
+            "args": "inputs/mico/graph 2 2000",
             "cwd": "${workspaceFolder}/GraphMiner",
             "preLaunchTask": "build_nvcc",
             "initCommands": ["-enable-pretty-printing"]
@@ -20,6 +45,7 @@
             "request": "attach",
             "processId": "${command:cuda.pickProcess}"
         },
+
         {
             "name": "wxsightgl",
             "type": "cppdbg",

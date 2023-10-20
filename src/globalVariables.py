@@ -1,0 +1,2 @@
+
+bypassTypes = ["DFF", "bool"]

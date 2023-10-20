@@ -58,6 +58,16 @@
                 "cwd": "${workspaceFolder}/GraphMiner/src/fsm"
             },
             "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "build_SATMargin",
+            "command": "g++ -std=c++11 SATMargin.cpp -lcryptominisat5 -o SATMargin -g -O0",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}/SATMargin-and-Baselines"
+            },
+            "group": "build"
         }
     ]
 }

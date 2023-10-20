@@ -33,3 +33,9 @@ sudo apt install libtbb-dev
 sudo apt install libopenblas-base
 sudo apt install libopenblas-dev
 ```
+
+For SATMargin
+```bash
+sudo apt install cryptominisat
+sudo apt install libcryptominisat5-dev
+```
