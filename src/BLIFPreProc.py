@@ -1,13 +1,18 @@
-import os
 import blifparser.blifparser as blifparser
-from globalVariables import *
-from BLIFGraphUtil import *
 import networkx as nx
 import numpy as np
 import tensorflow as tf
-import networkx as nx
 import time
+import os
+import circuitgraph as cg
+from functools import reduce
+from itertools import product
 from liberty.parser import parse_liberty
+
+from BLIFGraphUtil import *
+
+
+bypassTypes = ("DFF", "bool")
 
 
 class S2VGraph(object):
@@ -34,6 +39,50 @@ def softmax(x):
     """Compute softmax values for each sets of scores in x."""
     e_x = np.exp(x - np.max(x))
     return e_x / e_x.sum()
+
+
+def kcuts(BLIFGraph: nx.DiGraph(), n, k, computed=None):
+    """
+    Generate k-cuts.
+
+    Parameters
+    ----------
+    n : str
+            Node to compute cuts for.
+    k : int
+            Maximum cut width.
+
+    Returns
+    -------
+    iter of str
+            k-cuts.
+
+    """
+    if computed is None:
+        computed = {}
+
+    if n in computed:
+        return computed[n]
+
+    # helper function
+    def merge_cut_sets(a_cuts, b_cuts):
+        merged_cuts = []
+        for a_cut, b_cut in product(a_cuts, b_cuts):
+            merged_cut = a_cut | b_cut
+            if len(merged_cut) <= k:
+                merged_cuts.append(merged_cut)
+        return merged_cuts
+
+    pres = set(BLIFGraph.predecessors(n))
+    if pres:
+        fanin_cut_sets = [kcuts(BLIFGraph, f, k, computed) for f in pres]
+        cuts = reduce(merge_cut_sets, fanin_cut_sets) + [{n}]
+    else:
+        cuts = [{n}]
+
+    # add cuts
+    computed[n] = cuts
+    return cuts
 
 
 def loadLibertyFile(fileName):
@@ -70,7 +119,7 @@ def loadBoolGateFromBLIF(blif, stdCellLib):
             stdCellLib[truthTableStr] = newStdCellType
 
 
-def genGraphFromLibertyAndBLIF(libFileName, blifFileName):
+def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4):
 
     stdCellLib = loadLibertyFile(libFileName)
 
@@ -183,12 +232,18 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName):
     BLIFGraph.add_edges_from(netlist)
     print("created networkx graph with ", len(cells), " nodes")
 
+    # calculte all k-cuts
+    allKCuts = {}
     for cell in cells:
         for tmpType in bypassTypes:
             if (cell.stdCellType.typeName.find(tmpType) >= 0):
                 cell.stopType = True
+        if cell.outputNets:
+            assert (len(cell.outputNets) == 1)
+            if cell.outputNets[0].name in blif.outputs.outputs:
+                kcuts(BLIFGraph=BLIFGraph, n=cell.id, k=K, computed=allKCuts)
 
-    return BLIFGraph, cells, netlist, stdCellTypesForFeature
+    return BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts
 
 
 def extractAndEncodeSubgraph_Tree(cells, rootNode, depthLimit=2, clusterId=None):
@@ -423,23 +478,20 @@ def convertBLIFGraphIntoDataset(BLIFGraph, stdCellTypesForFeature, maxNumType=36
     return g_list, maxLabel + 1
 
 
-def loadDataAndPreprocess(libFileName="sky130_fd_sc_hd__tt_025C_1v80.lib", blifFileName="rocket.blif", startTime=0, bypassInitialCluster=False):
-    BLIFGraph, cells, netlist, stdCellTypesForFeature = genGraphFromLibertyAndBLIF(libFileName, blifFileName)
-    endTime = time.time()
-    print("genGraphFromLibertyAndBLIF done. time esclaped: ", endTime - startTime)
+def loadDataAndPreprocess(libFileName="sky130_fd_sc_hd__tt_025C_1v80.lib", blifFileName="rocket.blif", K=4, startTime=0, bypassInitialCluster=False):
+    BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts = genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=K)
+    print("genGraphFromLibertyAndBLIF done. time esclaped: ", time.time() - startTime)
 
     initialClusterSeqs = None
     clusterNum = None
     if (not bypassInitialCluster):
         initialClusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, netlist)
-        endTime = time.time()
-        print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", endTime - startTime)
+        print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", time.time() - startTime)
 
     dataset, maxLabelIndex = convertBLIFGraphIntoDataset(BLIFGraph, stdCellTypesForFeature, 36)
-    endTime = time.time()
-    print("loadDataAndPreprocess done. time esclaped: ", endTime - startTime)
 
-    return BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, initialClusterSeqs, clusterNum
+    print("loadDataAndPreprocess done. time esclaped: ", time.time() - startTime)
+    return BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, initialClusterSeqs, clusterNum, allKCuts
 
 
 def getArea(cells, type2Area):

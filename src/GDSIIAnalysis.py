@@ -15,7 +15,7 @@ def loadOrignalGSCL45nmGDS():
     gsclName2GDSSize = dict()
     for name in stdCellNames:
         gdsii = gdspy.GdsLibrary(
-            infile=f'{dirname(abspath(__file__))}/originalGSCL45StdCells/{name}.gds')
+            infile=f'{dirname(abspath(__file__))}/../AutoCellLibX/originalGSCL45StdCells/{name}.gds')
         gsclName2GDSSize[name] = gdsii.cells[name].area(True)[(6, 0)]
 
     return gsclName2GDSSize

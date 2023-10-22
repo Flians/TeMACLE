@@ -28,11 +28,13 @@ def main():
                   "square", "BoomBranchPredictor",
                   "GemminiLoopMatmul", "GemminiLoopConv", "DCache", "BoomRegisterFile", "GemminiMesh", ]
     benchmarks = ["adder", "ctrl", "i2c", "multiplier", "router"]
+    # benchmarks = ["full_adder_1"]
 
     stdType2GSCLArea = loadOrignalGSCL45nmGDS()
     topThr = 5
     ratioThr = 0.05
     cntThr = 30
+    cutsize = 4
 
     for benchmarkName in benchmarks:
         startTime = time.time()
@@ -43,9 +45,10 @@ def main():
               benchmarkName, "\n=================================================================================\n")
         # load liberty/spice/design BLIF
         subckts = loadSpiceSubcircuits(f"{current_path}/../stdCelllib/cellsAstranFriendly.sp")
-        BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
+        BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum, allKCuts = loadDataAndPreprocess(
             libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
             blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
+            K=cutsize,
             startTime=startTime)
         oriArea = getArea(cells, stdType2GSCLArea)
         print("originalArea=", oriArea)
@@ -191,9 +194,10 @@ def main():
             if (targetPatternTrace in countedSet):
                 continue
 
-            BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
+            BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum, allKCuts = loadDataAndPreprocess(
                 libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
                 blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
+                K=cutsize,
                 startTime=startTime, bypassInitialCluster=True)
 
             clusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netlist, targetPatternTrace)
