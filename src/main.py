@@ -6,12 +6,7 @@ from spice import *
 from Astran import *
 from BLIFPreProc import *
 from GDSIIAnalysis import *
-
-def mkdir(pathStr):
-    if os.path.exists(pathStr):
-        pass
-    else:
-        os.mkdir(pathStr)
+from BLIFFSM import *
 
 
 def main():
@@ -27,8 +22,8 @@ def main():
                   "int2float", "max", "priority", "sin",
                   "square", "BoomBranchPredictor",
                   "GemminiLoopMatmul", "GemminiLoopConv", "DCache", "BoomRegisterFile", "GemminiMesh", ]
-    benchmarks = ["adder", "ctrl", "i2c", "multiplier", "router"]
-    # benchmarks = ["full_adder_1"]
+    # benchmarks = ["adder", "ctrl", "i2c", "multiplier", "router"]
+    benchmarks = ["multiplier"]
 
     stdType2GSCLArea = loadOrignalGSCL45nmGDS()
     topThr = 5
@@ -45,7 +40,7 @@ def main():
               benchmarkName, "\n=================================================================================\n")
         # load liberty/spice/design BLIF
         subckts = loadSpiceSubcircuits(f"{current_path}/../stdCelllib/cellsAstranFriendly.sp")
-        BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum, allKCuts = loadDataAndPreprocess(
+        BLIFGraph, cells, netlist, stdCellTypesForFeature, clusterSeqs, clusterTree, allKCuts = loadDataAndPreprocess(
             libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
             blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
             K=cutsize,
@@ -54,7 +49,7 @@ def main():
         print("originalArea=", oriArea)
 
         outputPath = f"{current_path}/outputs/{benchmarkName}/"
-        mkdir(outputPath)
+        os.makedirs(outputPath, exist_ok=True)
 
         if (ASTRANBuildPath != ""):
             for oriStdCellType in stdCellTypesForFeature:
@@ -70,7 +65,24 @@ def main():
         astranArea = getArea(cells, stdType2AstranArea)
         print("astranArea=", astranArea)
 
-        clusterSeqs = sortPatternClusterSeqs(clusterSeqs)
+        newClusterSeqs = []
+        for clusterSeq in clusterSeqs:
+            cur_clusters = set(clusterSeq.patternClusters)
+            while cur_clusters:
+                cluster1 = cur_clusters.pop()
+                new_clusters = {cluster1}
+                g1 = BLIFGraph.subgraph(cluster1.cellIdsContained)
+                for cluster2 in cur_clusters:
+                    g2 = BLIFGraph.subgraph(cluster2.cellIdsContained)
+                    if SATMatch(g1, g2):
+                        new_clusters.add(cluster2)
+                cur_clusters -= new_clusters
+                newSeq = DesignPatternClusterSeq(clusterSeq.patternExtensionTrace)
+                newSeq.patternClusters = new_clusters
+                newClusterSeqs.append(newSeq)
+                pass
+            pass
+        pass
 
         # iteratively to pick the most frequent subgraph and extend them by absorbing their neighbors
         dumpedPaterns = dict()
@@ -194,13 +206,13 @@ def main():
             if (targetPatternTrace in countedSet):
                 continue
 
-            BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum, allKCuts = loadDataAndPreprocess(
+            BLIFGraph, cells, netlist, stdCellTypesForFeature, clusterSeqs, clusterTree, allKCuts = loadDataAndPreprocess(
                 libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
                 blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
                 K=cutsize,
-                startTime=startTime, bypassInitialCluster=True)
+                startTime=startTime)
 
-            clusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netlist, targetPatternTrace)
+            clusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, targetPatternTrace)
             endTime = time.time()
             print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", endTime - startTime)
 
@@ -208,7 +220,7 @@ def main():
             print("originalArea=", oriArea)
 
             outputPath = f"{current_path}/outputs/{benchmarkName}/"
-            mkdir(outputPath)
+            os.makedirs(outputPath, exist_ok=True)
 
             stdType2AstranArea = loadAstranGDS()
             astranArea = getArea(cells, stdType2AstranArea)

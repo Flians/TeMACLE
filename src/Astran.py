@@ -30,6 +30,9 @@ export layout {complexName} {commandDir}/{complexName}.gds
 exit
     """
 
+    if not os.path.exists(commandDir):
+        os.makedirs(commandDir)
+
     outputFile = open(f'{commandDir}/{complexName}.run', 'w')
     print(commands, file=outputFile)
     outputFile.close()

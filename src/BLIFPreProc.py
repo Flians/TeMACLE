@@ -1,12 +1,11 @@
 import blifparser.blifparser as blifparser
 import networkx as nx
 import numpy as np
-import tensorflow as tf
 import time
 import os
-import circuitgraph as cg
 from functools import reduce
-from itertools import product
+from collections import defaultdict
+from itertools import product, chain
 from liberty.parser import parse_liberty
 
 from BLIFGraphUtil import *
@@ -31,7 +30,6 @@ class S2VGraph(object):
         self.neighbors = []
         self.node_features = 0
         self.edge_mat = 0
-
         self.max_neighbor = 0
 
 
@@ -41,7 +39,7 @@ def softmax(x):
     return e_x / e_x.sum()
 
 
-def kcuts(BLIFGraph: nx.DiGraph(), n, k, computed=None):
+def kcuts(BLIFGraph: nx.DiGraph, n, k, computed=None):
     """
     Generate k-cuts.
 
@@ -85,23 +83,48 @@ def kcuts(BLIFGraph: nx.DiGraph(), n, k, computed=None):
     return cuts
 
 
+def ancestors(G, target, sources=None, include_self=True):
+    """Returns all nodes having a path to `target` in `G`.
+
+    Parameters
+    ----------
+    G : NetworkX DiGraph
+        A directed graph
+    sources : nods in `G`
+    target  : node in `G`
+    include_self : whether the return contains the target
+
+    Returns
+    -------
+    set()
+        The ancestors of target in G
+    """
+    if not G.has_node(target):
+        raise nx.NetworkXError(f"The node {target} is not in the graph.")
+    if sources:
+        sources = set(sources)
+        anc = [nx.bidirectional_shortest_path(G, source=source, target=target) for source in sources]
+        anc = set(chain(*anc))
+    else:
+        anc = {n for n, d in nx.shortest_path_length(G, target=target).items()}
+    return anc if include_self else anc - {target}
+
+
 def loadLibertyFile(fileName):
     # Read and parse a library.
     library = parse_liberty(open(fileName).read())
 
-    stdCellLib = dict()
-
     # Loop through all cells.
+    stdCellLib = dict()
     for cell_group in library.get_groups('cell'):
-        name = str(cell_group.args[0]).replace("\"", "").replace(" ", "").replace("\'", "")
-        # print(name)
+        name = cell_group.args[0]
         newStdCellType = StdCellType(name)
 
         # Loop through all pins of the cell.
         for pin_group in cell_group.get_groups('pin'):
-            pin_name = str(pin_group.args[0]).replace("\"", "").replace("\'", "")
-            # print(pin_name, "->", str(pin_group['direction']).replace("\"","").replace("\'",""))
-            newStdCellType.addPin(pin_name, str(pin_group['direction']).replace("\"", "").replace(" ", "").replace("\'", ""))
+            pin_name = pin_group.args[0]
+            newStdCellType.addPin(pin_name, pin_group['direction'])
+            newStdCellType.function = pin_group.get_attribute(key='function', default=newStdCellType.function)
 
         stdCellLib[name] = newStdCellType
 
@@ -120,15 +143,13 @@ def loadBoolGateFromBLIF(blif, stdCellLib):
 
 
 def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4):
-
+    # Read and parse a cell library.
     stdCellLib = loadLibertyFile(libFileName)
-
     # get the file path and pass it to the parser
     filepath = os.path.abspath(blifFileName)
     parser = blifparser.BlifParser(filepath)
 
-    # get the object that contains the parsed data
-    # from the parser
+    # get the object that contains the parsed data from the parser
     blif = parser.blif
     loadBoolGateFromBLIF(blif, stdCellLib)
 
@@ -147,7 +168,7 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4):
             curCell = DesignCell(idCnt, name, stdCellLib[refType])
             idCnt += 1
             for pin in tmpCircuit.params:
-                pinInfo = pin.split("=")
+                pinInfo = pin.split('=')
                 curCell.addCellPin(pinInfo[0], pinInfo[1])
             cellName2Obj[name] = curCell
             cells.append(curCell)
@@ -246,252 +267,83 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4):
     return BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts
 
 
-def extractAndEncodeSubgraph_Tree(cells, rootNode, depthLimit=2, clusterId=None):
-    depths = [0]
-    tree = [rootNode]
-    encodes = [cells[rootNode].stdCellType.typeName]
-    Que = [rootNode]
-    head = 0
-    while (head < len(tree)):
-        curNode = cells[Que[head]]
-        curDepth = depths[head]
-        if (curDepth >= depthLimit):
-            break
-        for inputNet in curNode.inputNets:
-            if (not inputNet.predCell is None):
-                shouldBypass = False
-                for typeKey in bypassTypes:
-                    if (inputNet.predCell.stdCellType.typeName.find(typeKey) >= 0):
-                        shouldBypass = True
-                        break
-                if ((not shouldBypass)):
-                    depths.append(curDepth + 1)
-                    Que.append(inputNet.predCell.id)
-                    if (not inputNet.predCell.id in tree):
-                        tree.append(inputNet.predCell.id)
-                    encodes.append(inputNet.predCell.stdCellType.typeName)
-        head += 1
+def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells, allKCuts):
+    clusterTree = defaultdict(lambda: defaultdict(list))
+    cid = 0
+    for root, cuts in allKCuts.items():
+        for cut in cuts:
+            cutNodes = ancestors(BLIFGraph, target=root, sources=cut)
+            if len(cutNodes) < 2:
+                continue
+            # cut inner nodes
+            cutInnerNodes = cutNodes - cut.union({root})
+            stdCell2Cnt = defaultdict(lambda: 0)
+            for node in cutInnerNodes:
+                ntype = BLIFGraph.nodes[node]['type']
+                stdCell2Cnt[ntype] += 1
+            # coding for root and inner nodes
+            coding = str(len(cutNodes)) + '|' + BLIFGraph.nodes[root]['type']
+            for nname in sorted(stdCell2Cnt):
+                coding += '|' + nname + '=' + str(stdCell2Cnt[nname])
+            # coding for cut leaves
+            cutLeaves = cut - {root}
+            stdCell2Cnt = defaultdict(lambda: 0)
+            for node in cutLeaves:
+                ntype = BLIFGraph.nodes[node]['type']
+                stdCell2Cnt[ntype] += 1
+            for nname in sorted(stdCell2Cnt):
+                coding += '|' + nname + '=' + str(stdCell2Cnt[nname])
+            coding += '|'
+            # coding for out degrees
+            cutGraph = BLIFGraph.subgraph(cutNodes)
+            odegree2Cnt = defaultdict(list)
+            for kv in cutGraph.out_degree():
+                ntype = BLIFGraph.nodes[kv[0]]['type']
+                odegree2Cnt[ntype].append(kv[1])
+            for nname in sorted(odegree2Cnt):
+                coding += ''.join(map(str, sorted(odegree2Cnt[nname])))
 
-    if (not clusterId is None):
-        for cellId in tree:
-            if (cells[cellId].clusterId >= 0):
-                return None, None
-        for cellId in tree:
-            cells[cellId].setClusterId(clusterId)
+            # new cluster
+            newCluster = DesignPatternCluster(cid, coding, cells, cutNodes, rootId=root, kcut=cut)
+            cid += 1
+            clusterTree[coding][root].append(newCluster)
+            pass
 
-    return tree, encodes
-
-
-def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, netlist):
-
-    treeDepth = 1
-
-    pattern2RootCells = dict()
-    for cell in cells:
-        shouldBypass = False
-        for typeKey in bypassTypes:
-            if (cell.stdCellType.typeName.find(typeKey) >= 0):
-                shouldBypass = True
-                break
-        if (shouldBypass):
+    pattern2Coding = defaultdict(list)
+    pattern2Cnt = defaultdict(lambda: 0)
+    simClusterTree = defaultdict(lambda: defaultdict(list))
+    for coding, codingTree in clusterTree.items():
+        if len(codingTree) < 2:
             continue
-        tree, code = extractAndEncodeSubgraph_Tree(cells, cell.id, treeDepth)
-        if (len(tree) < 2):
-            continue
-        codeStr = str(code).replace("\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
-        if (codeStr.find("bool-") >= 0):
-            continue
-        if (not codeStr in pattern2RootCells.keys()):
-            pattern2RootCells[codeStr] = []
-        pattern2RootCells[codeStr].append(cell.id)
+        simClusterTree[coding] = codingTree
+        for rootId, clusters in codingTree.items():
+            if (len(clusters) != 1):
+                print(">>> WARNNING: The node", str(rootId), "has multiple same cuts.")
+            pattern2Coding[coding] += clusters
+            pattern2Cnt[coding] += len(clusters)
 
-    pattern2Cnt = []
-    for key in pattern2RootCells.keys():
-        pattern2Cnt.append((key, len(pattern2RootCells[key])))
-    sorted_by_second = sorted(pattern2Cnt, key=lambda tup: -tup[1])
-    print("top pattern types: ", sorted_by_second[:30])
-
-    patternToBeLabeled = []
-    labelId = 0
-    labeledCnt = 0
-    clusterCellsCnt = 0
+    sorted_by_second = sorted(pattern2Cnt.items(), key=lambda k_v: k_v[1], reverse=True)
+    print("top pattern types: ", sorted_by_second)
 
     initialClusterSeqs = []
-    for tmpType in sorted_by_second[:30]:
-        patternToBeLabeled.append(tmpType[0])
+    for tmpType in sorted_by_second:
         newSeq = DesignPatternClusterSeq(tmpType[0])
-        for cellId in pattern2RootCells[tmpType[0]]:
-            BLIFGraph.nodes()[cellId]['nodeLabel'] = labelId
-            tree, code = extractAndEncodeSubgraph_Tree(cells, cellId, treeDepth, labeledCnt)  # color the nodes in a pattern
-            if (tree is None):
-                continue
-            code = str(code).replace("\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
-            newCluster = DesignPatternCluster(labeledCnt, code, cells, tree, labelId)
-            for cellId in tree:
-                cells[cellId].setCluster(newCluster)
-
-            newSeq.addCluster(newCluster)
-            labeledCnt += 1
-            clusterCellsCnt += len(tree)
-        if (len(newSeq.patternClusters) > 0):
-            initialClusterSeqs.append(newSeq)
-            labelId += 1
-        else:
-            del newSeq
-
+        newSeq.patternClusters = pattern2Coding[tmpType[0]]
+        initialClusterSeqs.append(newSeq)
     resSeqs = sortPatternClusterSeqs(initialClusterSeqs)
 
-    print("labeled ", labeledCnt, " nodes (", labeledCnt / BLIFGraph.number_of_nodes() * 100, "%)")
-    print("clustered ", clusterCellsCnt, " nodes (", clusterCellsCnt / BLIFGraph.number_of_nodes() * 100, "%)")
-
-    return resSeqs, labeledCnt
+    return resSeqs, simClusterTree
 
 
-def heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netlist, targetPatternTrace):
-
-    treeDepth = 1
-
-    pattern2RootCells = dict()
-    for cell in cells:
-        shouldBypass = False
-        for typeKey in bypassTypes:
-            if (cell.stdCellType.typeName.find(typeKey) >= 0):
-                shouldBypass = True
-                break
-        if (shouldBypass):
-            continue
-        tree, code = extractAndEncodeSubgraph_Tree(cells, cell.id, treeDepth)
-        if (len(tree) < 2):
-            continue
-        codeStr = str(code).replace("\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
-        if (codeStr.find("bool-") >= 0):
-            continue
-        if (targetPatternTrace.find(codeStr) != 0):
-            continue
-        if (not codeStr in pattern2RootCells.keys()):
-            pattern2RootCells[codeStr] = []
-        pattern2RootCells[codeStr].append(cell.id)
-
-    pattern2Cnt = []
-    for key in pattern2RootCells.keys():
-        pattern2Cnt.append((key, len(pattern2RootCells[key])))
-    sorted_by_second = sorted(pattern2Cnt, key=lambda tup: -tup[1])
-    print("top pattern types: ", sorted_by_second[:30])
-
-    patternToBeLabeled = []
-    labelId = 0
-    labeledCnt = 0
-    clusterCellsCnt = 0
-
-    initialClusterSeqs = []
-    for tmpType in sorted_by_second[:30]:
-        patternToBeLabeled.append(tmpType[0])
-        newSeq = DesignPatternClusterSeq(tmpType[0])
-        for cellId in pattern2RootCells[tmpType[0]]:
-            BLIFGraph.nodes()[cellId]['nodeLabel'] = labelId
-            tree, code = extractAndEncodeSubgraph_Tree(   # color the nodes in a pattern
-                cells, cellId, treeDepth, labeledCnt)
-            if (tree is None):
-                continue
-            code = str(code).replace("\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
-            newCluster = DesignPatternCluster(labeledCnt, code, cells, tree, labelId)
-            for cellId in tree:
-                cells[cellId].setCluster(newCluster)
-
-            newSeq.addCluster(newCluster)
-            labeledCnt += 1
-            clusterCellsCnt += len(tree)
-        if (len(newSeq.patternClusters) > 0):
-            initialClusterSeqs.append(newSeq)
-        else:
-            del newSeq
-
-        labelId += 1
-
-    resSeqs = sortPatternClusterSeqs(initialClusterSeqs)
-
-    print("labeled ", labeledCnt, " nodes (", labeledCnt / BLIFGraph.number_of_nodes() * 100, "%)")
-    print("clustered ", clusterCellsCnt, " nodes (", clusterCellsCnt / BLIFGraph.number_of_nodes() * 100, "%)")
-
-    return resSeqs, labeledCnt
-
-
-def convertBLIFGraphIntoDataset(BLIFGraph, stdCellTypesForFeature, maxNumType=36):
-
-    print('converting BLIF Graph Into Dataset data')
-    g_list = []
-    feat_dict = {}
-
-    g = BLIFGraph
-    node_tags = []
-
-    node_features = None
-
-    labelsListForNode = []
-
-    maxLabel = 0
-
-    typeSet = set()
-    for i in g.nodes():
-        typeSet.add(g.nodes()[i]['type'])
-
-    typeSet = list(typeSet)
-    typeSet.sort()
-    for typeId, stdCellType in enumerate(stdCellTypesForFeature):
-        feat_dict[stdCellType] = typeId
-
-    for tmpType in typeSet:
-        if (not tmpType in feat_dict.keys()):
-            feat_dict[tmpType] = len(feat_dict)
-
-    print("feat_dict: ", feat_dict)
-    print("typeSet: ", typeSet)
-    # assert(len(typeSet) < maxNumType)
-
-    for i in g.nodes():
-        if (g.nodes()[i]['nodeLabel'] >= 0):
-            labelsListForNode.append(g.nodes()[i]['nodeLabel'])
-            maxLabel = max(maxLabel, g.nodes()[i]['nodeLabel'])
-
-        node_tags.append(feat_dict[g.nodes()[i]['type']])
-
-    g_list = [S2VGraph(g, None, node_tags)]
-
-    # add labels (based on pattern) and edge_mat
-    for g in g_list:
-
-        g.label = labelsListForNode
-        edges = [list((pair[0], pair[1], 1)) for pair in g.g.edges()]
-        g.edge_mat = tf.transpose(tf.constant(edges))
-
-    # add node feature based on node type
-    for g in g_list:
-
-        node_features = np.zeros((len(g.node_tags), maxNumType))
-        node_features[range(len(g.node_tags)), [
-            tag for tag in g.node_tags]] = 1
-
-        g.node_features = tf.constant(node_features)
-
-    print("# data: %d" % len(node_features))
-
-    return g_list, maxLabel + 1
-
-
-def loadDataAndPreprocess(libFileName="sky130_fd_sc_hd__tt_025C_1v80.lib", blifFileName="rocket.blif", K=4, startTime=0, bypassInitialCluster=False):
+def loadDataAndPreprocess(libFileName="../stdCelllib/gscl45nm.lib", blifFileName="../benchmark/blif/adder.blif", K=4, startTime=0):
     BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts = genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=K)
     print("genGraphFromLibertyAndBLIF done. time esclaped: ", time.time() - startTime)
 
-    initialClusterSeqs = None
-    clusterNum = None
-    if (not bypassInitialCluster):
-        initialClusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, netlist)
-        print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", time.time() - startTime)
-
-    dataset, maxLabelIndex = convertBLIFGraphIntoDataset(BLIFGraph, stdCellTypesForFeature, 36)
+    initialClusterSeqs, clusterTree = heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, allKCuts)
+    print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", time.time() - startTime)
 
     print("loadDataAndPreprocess done. time esclaped: ", time.time() - startTime)
-    return BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, initialClusterSeqs, clusterNum, allKCuts
+    return BLIFGraph, cells, netlist, stdCellTypesForFeature, initialClusterSeqs, clusterTree, allKCuts
 
 
 def getArea(cells, type2Area):

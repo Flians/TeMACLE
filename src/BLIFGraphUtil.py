@@ -13,6 +13,7 @@ class StdCellType(object):
         self.outputPins = []
         self.inputPinMap = dict()
         self.outputPinMap = dict()
+        self.function = None
 
     def addPin(self, pinName, direction):
         if (direction == "input"):
@@ -38,6 +39,7 @@ class DesignCell(object):
         self.featureV = None
         self.featureOrder = None
         self.stopType = False
+        self.function = None
 
     def addCellPin(self, refPinName, netName):
         if (refPinName in self.stdCellType.inputPins):
@@ -85,8 +87,8 @@ class DesignNet(object):
 
 
 class DesignPatternCluster(object):
-    def __init__(self, clusterId, patternStr, cells, cellIdsContained, clusterTypeId):
-        self.patternExtensionTrace = patternStr.replace("\'", "").replace("\\", "").replace("\"", "")
+    def __init__(self, clusterId, patternStr, cells, cellIdsContained, clusterTypeId=-1, rootId=None, kcut=None):
+        self.patternExtensionTrace = patternStr
         self.clusterId = clusterId
         self.cellIdsContained = cellIdsContained
         self.cellsContained = []
@@ -94,6 +96,8 @@ class DesignPatternCluster(object):
             self.cellsContained.append(cells[cellId])
         self.disabled = False
         self.clusterTypeId = clusterTypeId
+        self.rootId = rootId
+        self.kcut = kcut
 
     def addCell(self, cell):
         self.cellIdsContained.append(cell.id)
@@ -102,7 +106,7 @@ class DesignPatternCluster(object):
 
 class DesignPatternClusterSeq(object):
     def __init__(self, patternStr):
-        self.patternExtensionTrace = patternStr.replace("\'", "").replace("\\", "").replace("\"", "")
+        self.patternExtensionTrace = patternStr
         self.patternClusters = []
 
     def addCluster(self, patternCluster):

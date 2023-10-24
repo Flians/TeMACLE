@@ -1,9 +1,9 @@
 
 read_liberty -lib ../stdCelllib/gscl45nm.lib
-read -sv ./boomModule/vFiles/*.v
-hierarchy -top RegisterFileSynthesizable
+read -sv ../*.v
+hierarchy -top full_adder_1
 flatten
-synth -top RegisterFileSynthesizable
+synth -top full_adder_1
 flatten
 
 # the high-level stuff
@@ -20,5 +20,5 @@ clean
 opt
 clean
 
-write_blif /home/zslwyuan-laptop/Softwares/yosys/blifPatternExtraction_Jingsong/benchmark/blif//BoomRegisterFile.blif
+write_blif -impltf ./blif/full_adder_1.blif
 
