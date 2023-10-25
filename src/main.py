@@ -23,7 +23,7 @@ def main():
                   "square", "BoomBranchPredictor",
                   "GemminiLoopMatmul", "GemminiLoopConv", "DCache", "BoomRegisterFile", "GemminiMesh", ]
     # benchmarks = ["adder", "ctrl", "i2c", "multiplier", "router"]
-    benchmarks = ["multiplier"]
+    benchmarks = ["adder"]
 
     stdType2GSCLArea = loadOrignalGSCL45nmGDS()
     topThr = 5
@@ -73,17 +73,19 @@ def main():
                 new_clusters = {cluster1}
                 g1 = BLIFGraph.subgraph(cluster1.cellIdsContained)
                 for cluster2 in cur_clusters:
+                    if cluster1.rootId == cluster2.rootId:
+                        continue
                     g2 = BLIFGraph.subgraph(cluster2.cellIdsContained)
                     if SATMatch(g1, g2):
                         new_clusters.add(cluster2)
                 cur_clusters -= new_clusters
                 newSeq = DesignPatternClusterSeq(clusterSeq.patternExtensionTrace)
-                newSeq.patternClusters = new_clusters
+                newSeq.patternClusters = list(new_clusters)
                 newClusterSeqs.append(newSeq)
                 pass
             pass
         pass
-
+        resSeqs = sortPatternClusterSeqs(newClusterSeqs)
         # iteratively to pick the most frequent subgraph and extend them by absorbing their neighbors
         dumpedPaterns = dict()
         detectedPatterns = []
@@ -94,6 +96,8 @@ def main():
         lastComplexSelection = 0
         targetPatternTrace = ""
         benchmarkFailure = False
+        print('!')
+        return 0
 
         for i in range(0, topThr):
             if (len(clusterSeqs[0].patternClusters) == 0):
