@@ -105,11 +105,14 @@ class DesignPatternCluster(object):
 
 
 class DesignPatternClusterSeq(object):
-    def __init__(self, patternStr):
+    def __init__(self, patternStr, patternClusters: list[DesignPatternCluster] = []):
         self.patternExtensionTrace = patternStr
-        self.patternClusters = []
+        self.patternClusters: list[DesignPatternCluster] = patternClusters
 
-    def addCluster(self, patternCluster):
+    def __lt__( self , other):
+        return self.patternExtensionTrace < other.patternExtensionTrace
+
+    def addCluster(self, patternCluster: DesignPatternCluster):
         self.patternClusters.append(patternCluster)
 
 
@@ -131,22 +134,8 @@ def removeEmptySeqsAndDisableClusters(seqs):
     return newClusterSeqs
 
 
-def sortPatternClusterSeqs(seqs):
-    newClusterSeqsCnts = []
-    newClusterSeqsSize = []
-
-    for curSeq in seqs:
-        newClusterSeqsCnts.append(len(curSeq.patternClusters) * len(curSeq.patternClusters[0].cellIdsContained))
-        newClusterSeqsSize.append(len(curSeq.patternClusters[0].cellIdsContained))
-
-    newClusterSeqsCnts_Order = np.lexsort((np.array(newClusterSeqsSize), -np.array(newClusterSeqsCnts)))
-
-    resSeqs = []
-
-    for SeqsId in newClusterSeqsCnts_Order:
-        resSeqs.append(seqs[SeqsId])
-
-    return resSeqs
+def sortPatternClusterSeqs(seqs: list[DesignPatternClusterSeq]) -> list[DesignPatternClusterSeq]:
+    return sorted(seqs, key=lambda item: (-len(item.patternClusters[0].cellIdsContained) * len(item.patternClusters), -len(item.patternClusters[0].cellIdsContained)))
 
 
 def drawColorfulFigureForGraphWithAttributes(tmp_graph, colorArrtibute='type', save_to_file="", withLabel=True, fig=None, figsize=None, prog='dot'):

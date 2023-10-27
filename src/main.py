@@ -1,6 +1,7 @@
 import os
 import time
 import matplotlib
+from queue import PriorityQueue
 
 from spice import *
 from Astran import *
@@ -28,8 +29,9 @@ def main():
     stdType2GSCLArea = loadOrignalGSCL45nmGDS()
     topThr = 5
     ratioThr = 0.05
-    cntThr = 30
+    cntThr = 10
     cutsize = 4
+    fliterThr = 10
 
     for benchmarkName in benchmarks:
         startTime = time.time()
@@ -40,7 +42,7 @@ def main():
               benchmarkName, "\n=================================================================================\n")
         # load liberty/spice/design BLIF
         subckts = loadSpiceSubcircuits(f"{current_path}/../stdCelllib/cellsAstranFriendly.sp")
-        BLIFGraph, cells, netlist, stdCellTypesForFeature, clusterSeqs, clusterTree, allKCuts = loadDataAndPreprocess(
+        BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts, clusterTree = loadDataAndPreprocess(
             libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
             blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
             K=cutsize,
@@ -51,8 +53,9 @@ def main():
         outputPath = f"{current_path}/outputs/{benchmarkName}/"
         os.makedirs(outputPath, exist_ok=True)
 
+        # generate Astran-based cells
         if (ASTRANBuildPath != ""):
-            for oriStdCellType in stdCellTypesForFeature:
+            for oriStdCellType, oriStdCellFreq in stdCellTypesForFeature:
                 if (oriStdCellType.find("bool") >= 0):
                     continue
                 if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
@@ -65,10 +68,36 @@ def main():
         astranArea = getArea(cells, stdType2AstranArea)
         print("astranArea=", astranArea)
 
-        newClusterSeqs = []
-        for clusterSeq in clusterSeqs:
-            cur_clusters = set(clusterSeq.patternClusters)
-            while cur_clusters:
+        # fliter clusters and get Top-K clusters
+        pattern2Coding = defaultdict(list)
+        pattern2Cnt = defaultdict(lambda: [0, 0])
+        for coding, codingTree in clusterTree.items():
+            if len(codingTree) < 2:
+                continue
+            nnode = int(coding[:coding.index('|')])
+            if nnode > cntThr:  # limit the maximum node number of each cluster
+                continue
+            for rootId, clusters in codingTree.items():
+                pattern2Coding[coding] += clusters
+                pattern2Cnt[coding][1] += len(clusters)  # the number of clusters
+            pattern2Cnt[coding][0] = pattern2Cnt[coding][1] * nnode  # total number of nodes
+
+        sorted_by_second = sorted(pattern2Cnt.items(), key=lambda k_v: (-k_v[1][0], -k_v[1][1]))[:fliterThr]
+        print("top pattern types: ", sorted_by_second)
+
+        # statistical Top-K cluster frequency
+        clusterSeqs = PriorityQueue(topThr)
+        for coding, _ in sorted_by_second:
+            nnode = int(coding[:coding.index('|')])
+            cur_clusters = set(pattern2Coding[coding])
+            while cur_clusters and len(cur_clusters) > 1:
+                if clusterSeqs.full():
+                    cur_low = clusterSeqs.get()
+                    if (len(cur_clusters) * nnode, len(cur_clusters)) <= cur_low[0]:
+                        clusterSeqs.put(cur_low)
+                        break
+                    else:
+                        clusterSeqs.put(cur_low)
                 cluster1 = cur_clusters.pop()
                 new_clusters = {cluster1}
                 g1 = BLIFGraph.subgraph(cluster1.cellIdsContained)
@@ -79,240 +108,85 @@ def main():
                     if SATMatch(g1, g2):
                         new_clusters.add(cluster2)
                 cur_clusters -= new_clusters
-                newSeq = DesignPatternClusterSeq(clusterSeq.patternExtensionTrace)
-                newSeq.patternClusters = list(new_clusters)
-                newClusterSeqs.append(newSeq)
-                pass
-            pass
+                if len(new_clusters) < 2:
+                    continue
+                clusterSeqs.put(((len(new_clusters) * nnode, len(new_clusters)), DesignPatternClusterSeq(coding, list(new_clusters))))
         pass
-        resSeqs = sortPatternClusterSeqs(newClusterSeqs)
-        # iteratively to pick the most frequent subgraph and extend them by absorbing their neighbors
-        dumpedPaterns = dict()
-        detectedPatterns = []
 
-        patternNum = len(clusterSeqs)
         bestSaveArea = 0
         lastSaveGSCLArea = 0
         lastComplexSelection = 0
-        targetPatternTrace = ""
-        benchmarkFailure = False
-        print('!')
-        return 0
+        recordPatternDetails = []
 
-        for i in range(0, topThr):
-            if (len(clusterSeqs[0].patternClusters) == 0):
-                break
-            if (len(clusterSeqs[0].patternClusters[0].cellIdsContained) >= 11):
+        for patternTraceId in range(topThr):
+            (ntnode, ncluster), clusterSeq = clusterSeqs.get()
+            nnode = ntnode // ncluster
+            if (ncluster == 0 or nnode >= cntThr):
                 continue
 
             saveArea = 0
             saveGSCLArea = 0
             complexSelection = []
-            for j in range(0, topThr):
-                if (j >= len(clusterSeqs)):
-                    break
-                tmpClusterSeq = clusterSeqs[j]
-                patternTraceId = tmpClusterSeq.patternClusters[0].clusterTypeId
-                patternSubgraph = BLIFGraph.subgraph(tmpClusterSeq.patternClusters[0].cellIdsContained)
 
-                if (not patternTraceId in dumpedPaterns.keys()):
-                    if (len(tmpClusterSeq.patternClusters[0].cellIdsContained) >= 11):
-                        continue
-                    print("dealing with pattern#", patternTraceId, " with ", len(tmpClusterSeq.patternClusters), " clusters (size=", len(tmpClusterSeq.patternClusters[0].cellIdsContained), ")")
-
-                    if (len(tmpClusterSeq.patternClusters[0].cellIdsContained) * len(tmpClusterSeq.patternClusters) < ratioThr * len(cells) and len(tmpClusterSeq.patternClusters) < cntThr):
-                        print("===Warning: the pattern is too small and bypassed. pattern: [", tmpClusterSeq.patternExtensionTrace, "]",
-                              len(tmpClusterSeq.patternClusters[0].cellIdsContained) * len(tmpClusterSeq.patternClusters), "<<<", len(cells))
-                        break
-                    dumpedPaterns[tmpClusterSeq.patternExtensionTrace] = patternTraceId
-                    detectedPatterns.append(tmpClusterSeq.patternExtensionTrace)
-
-                    drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/COMPLEX{patternTraceId}.png', withLabel=True, figsize=(20, 20))
-
-                    # export the SPICE netlist of the complex of cells
-                    exportSpiceNetlist(tmpClusterSeq, subckts, str(patternTraceId), outputPath)
-
-                    # if ASTRAN is available, run it to get the layout and area evaluation
-                    if (ASTRANBuildPath != ""):
-                        if (not os.path.exists(f'{outputPath}/COMPLEX{patternTraceId}.gds')):
-                            if (len(tmpClusterSeq.patternClusters[0].cellIdsContained) < 11):
-                                try:
-                                    runAstranForNetlist(AstranPath=ASTRANBuildPath,
-                                                        gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
-                                                        technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
-                                                        spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
-                                    loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
-                                except:
-                                    print("WARNING :", benchmarkName, " fails!")
-                                    benchmarkFailure = True
-
-                if (benchmarkFailure):
-                    break
-                exampleCells = []
-                for cellId in tmpClusterSeq.patternClusters[0].cellIdsContained:
-                    exampleCells.append(cells[cellId])
-
-                oriUnitAstranArea = getArea(exampleCells, stdType2AstranArea)
-                oriUnitGSCLArea = getArea(exampleCells, stdType2GSCLArea)
-                newUnitAstranArea = loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
-                if (oriUnitAstranArea - newUnitAstranArea > 0):
-                    complexSelection.append((f'COMPLEX{patternTraceId}', len(tmpClusterSeq.patternClusters),
-                                             len(tmpClusterSeq.patternClusters[0].cellIdsContained), tmpClusterSeq.patternExtensionTrace))
-                    saveArea += (oriUnitAstranArea - newUnitAstranArea) * len(tmpClusterSeq.patternClusters)
-                    saveGSCLArea += (oriUnitGSCLArea - newUnitAstranArea) * len(tmpClusterSeq.patternClusters)
-
-            if (benchmarkFailure):
-                break
-
-            print("saveArea=", saveArea, " / ", saveArea / astranArea * 100, "%")
-            if (saveArea > bestSaveArea):
-                bestSaveArea = saveArea
-                lastSaveGSCLArea = saveGSCLArea
-                lastComplexSelection = complexSelection
-                fileResult = open(outputPath + "/bestRecord-" + benchmarkName, 'w')
-                print(bestSaveArea, " <- compared to Astran GDS area", file=fileResult)
-                print(bestSaveArea / astranArea * 100, "% <- compared to Astran GDS area", file=fileResult)
-                print(lastSaveGSCLArea, " <- compared to GSCL GDS area", file=fileResult)
-                print(lastSaveGSCLArea / oriArea * 100, "% <- compared to GSCL GDS area", file=fileResult)
-                print("The generated complex cells are (name, clusterNum, cellNumInOneCluster, patternCode):", file=fileResult)
-                for complexName in lastComplexSelection:
-                    print(complexName, file=fileResult)
-                print("\n runtime:", time.time() - startTime, " (s)", file=fileResult)
-                fileResult.close()
-            else:
-                break
-
-            clusterSeq = clusterSeqs[0]
-
-            assert (ratioThr > 0)
-            if (len(clusterSeq.patternClusters[0].cellIdsContained) * len(clusterSeq.patternClusters) < ratioThr * len(cells)
-                    and len(clusterSeq.patternClusters) < cntThr):
-                break
-
-            newSeqOfClusters, patternNum = growASeqOfClusters(BLIFGraph, clusterSeq, clusterNum, patternNum, paintPattern=True)
-
-            # export the SPICE netlist of the complex of cells
-            exportSpiceNetlist(newSeqOfClusters[0], subckts, len(clusterSeqs), outputPath)
-
-            clusterSeqs = clusterSeqs[1:]
-            clusterSeqs += newSeqOfClusters
-            clusterSeqs = removeEmptySeqsAndDisableClusters(clusterSeqs)
-            clusterSeqs = sortPatternClusterSeqs(clusterSeqs)
-
-        if (benchmarkFailure):
-            continue
-
-        countedSet = set()
-        recordPatternDetails = []
-        detectedPatterns.reverse()
-        fileResult = open(f'{outputPath}/bestRecord-seperate{benchmarkName}', 'w')
-        for targetPatternTrace in detectedPatterns:
-            if (targetPatternTrace in countedSet):
+            print("dealing with pattern#", patternTraceId, " with ", ncluster, " clusters (size=", nnode, ")")
+            if (ntnode < ratioThr * len(cells) and ncluster < cntThr):
+                print("===Warning: the pattern is too small and bypassed. pattern: [", clusterSeq.patternExtensionTrace, "]", ntnode, "<<<", len(cells))
                 continue
 
-            BLIFGraph, cells, netlist, stdCellTypesForFeature, clusterSeqs, clusterTree, allKCuts = loadDataAndPreprocess(
-                libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
-                blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
-                K=cutsize,
-                startTime=startTime)
+            patternSubgraph = BLIFGraph.subgraph(clusterSeq.patternClusters[0].cellIdsContained)
+            drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/COMPLEX{patternTraceId}.png', withLabel=True, figsize=(20, 20))
 
-            clusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, targetPatternTrace)
-            endTime = time.time()
-            print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", endTime - startTime)
+            # export the SPICE netlist of the complex of cells
+            exportSpiceNetlist(clusterSeq, subckts, str(patternTraceId), outputPath)
 
-            oriArea = getArea(cells, stdType2GSCLArea)
-            print("originalArea=", oriArea)
-
-            outputPath = f"{current_path}/outputs/{benchmarkName}/"
-            os.makedirs(outputPath, exist_ok=True)
-
-            stdType2AstranArea = loadAstranGDS()
-            astranArea = getArea(cells, stdType2AstranArea)
-            print("astranArea=", astranArea)
-
-            clusterSeqs = sortPatternClusterSeqs(clusterSeqs)
-
-            patternNum = len(clusterSeqs)
-            bestSaveArea = 0
-            lastSaveGSCLArea = 0
-            lastComplexSelection = 0
-
-            for i in range(0, 10):
-                print("searching for ", targetPatternTrace)
-                if (len(clusterSeqs[0].patternClusters) == 0):
-                    break
-                if (len(clusterSeqs[0].patternClusters[0].cellIdsContained) >= 11):
+            # if ASTRAN is available, run it to get the layout and area evaluation
+            if (ASTRANBuildPath != "" and not os.path.exists(f'{outputPath}/COMPLEX{patternTraceId}.gds')):
+                try:
+                    runAstranForNetlist(AstranPath=ASTRANBuildPath,
+                                        gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
+                                        technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
+                                        spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
+                    loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
+                    print("\n>>> : Synthesis pattern#", patternTraceId, "successfully!")
+                except:
+                    print("\n>>> : Synthesis pattern#", patternTraceId, "unsuccessfully!")
                     continue
 
-                saveArea = 0
-                saveGSCLArea = 0
-                complexSelection = []
-                touch = False
-                for j in range(0, 1):
-                    if (j >= len(clusterSeqs)):
-                        break
-                    tmpClusterSeq = clusterSeqs[j]
-                    patternTraceId = dumpedPaterns[tmpClusterSeq.patternExtensionTrace]
-                    patternSubgraph = BLIFGraph.subgraph(tmpClusterSeq.patternClusters[0].cellIdsContained)
+            exampleCells = clusterSeq.patternClusters[0].cellsContained
+            oriUnitAstranArea = getArea(exampleCells, stdType2AstranArea)
+            oriUnitGSCLArea = getArea(exampleCells, stdType2GSCLArea)
+            newUnitAstranArea = loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
+            if (oriUnitAstranArea - newUnitAstranArea > 0):
+                complexSelection.append((f'COMPLEX{patternTraceId}', ncluster, nnode, clusterSeq.patternExtensionTrace))
+                saveArea += (oriUnitAstranArea - newUnitAstranArea) * ncluster
+                saveGSCLArea += (oriUnitGSCLArea - newUnitAstranArea) * ncluster
+                recordPatternDetails.append(((oriUnitAstranArea - newUnitAstranArea) * ncluster,
+                                             (oriUnitAstranArea - newUnitAstranArea) * ncluster / astranArea * 100,
+                                             ncluster,
+                                             nnode,
+                                             ntnode,
+                                             f'COMPLEX{patternTraceId}',
+                                             clusterSeq.patternExtensionTrace))
 
-                    exampleCells = []
-                    for cellId in tmpClusterSeq.patternClusters[0].cellIdsContained:
-                        exampleCells.append(cells[cellId])
+        print("saveArea=", saveArea, " / ", saveArea / astranArea * 100, "%")
+        if (saveArea > bestSaveArea):
+            bestSaveArea = saveArea
+            lastSaveGSCLArea = saveGSCLArea
+            lastComplexSelection = complexSelection
+            fileResult = open(outputPath + "/bestRecord-" + benchmarkName, 'w')
+            print(bestSaveArea, " <- compared to Astran GDS area", file=fileResult)
+            print(bestSaveArea / astranArea * 100, "% <- compared to Astran GDS area", file=fileResult)
+            print(lastSaveGSCLArea, " <- compared to GSCL GDS area", file=fileResult)
+            print(lastSaveGSCLArea / oriArea * 100, "% <- compared to GSCL GDS area", file=fileResult)
+            print("The generated complex cells are (name, clusterNum, cellNumInOneCluster, patternCode):", file=fileResult)
+            for complexName in lastComplexSelection:
+                print(complexName, file=fileResult)
+            print("\n runtime:", time.time() - startTime, " (s)", file=fileResult)
+            fileResult.close()
+        else:
+            continue
 
-                    complexSelection.append((f'COMPLEX{patternTraceId}', len(tmpClusterSeq.patternClusters),
-                                             len(tmpClusterSeq.patternClusters[0].cellIdsContained), tmpClusterSeq.patternExtensionTrace))
-                    oriUnitAstranArea = getArea(exampleCells, stdType2AstranArea)
-                    oriUnitGSCLArea = getArea(exampleCells, stdType2GSCLArea)
-                    newUnitAstranArea = loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
-                    saveArea += (oriUnitAstranArea - newUnitAstranArea) * len(tmpClusterSeq.patternClusters)
-                    saveGSCLArea += (oriUnitGSCLArea - newUnitAstranArea) * len(tmpClusterSeq.patternClusters)
-
-                    touch = True
-
-                print("saveArea=", saveArea, " / ", saveArea / astranArea * 100, "%")
-                if (touch and (not tmpClusterSeq.patternExtensionTrace in countedSet)):
-
-                    countedSet.add(tmpClusterSeq.patternExtensionTrace)
-                    bestSaveArea = saveArea
-                    lastSaveGSCLArea = saveGSCLArea
-                    lastComplexSelection = complexSelection
-
-                    # print(bestSaveArea, " <- compared to Astran GDS area",
-                    #       file=fileResult)
-                    # print(bestSaveArea/astranArea*100,
-                    #       "% <- compared to Astran GDS area", file=fileResult)
-                    # print(lastSaveGSCLArea,
-                    #       " <- compared to GSCL GDS area", file=fileResult)
-                    # print(lastSaveGSCLArea/oriArea*100,
-                    #       "% <- compared to GSCL GDS area", file=fileResult)
-                    # print(
-                    #     "The generated complex cells are (name, clusterNum, cellNumInOneCluster, patternCode):", file=fileResult)
-
-                    recordPatternDetails.append((bestSaveArea, bestSaveArea / astranArea * 100,
-                                                 len(tmpClusterSeq.patternClusters),
-                                                 len(tmpClusterSeq.patternClusters[0].cellIdsContained),
-                                                 len(tmpClusterSeq.patternClusters[0].cellIdsContained) * len(tmpClusterSeq.patternClusters),
-                                                 f'COMPLEX{patternTraceId}',
-                                                 tmpClusterSeq.patternExtensionTrace)
-                                                )
-                    if (targetPatternTrace == lastComplexSelection[0][3]):
-                        break
-
-                clusterSeq = clusterSeqs[0]
-                if (len(clusterSeq.patternClusters[0].cellIdsContained) * len(clusterSeq.patternClusters) < ratioThr * len(cells)
-                        and len(clusterSeq.patternClusters) < cntThr):
-                    break
-
-                newSeqOfClusters, patternNum = growASeqOfClusters_BasedOn(BLIFGraph, clusterSeq, clusterNum, patternNum, paintPattern=True, targetPatternTrace=targetPatternTrace)
-
-                # export the SPICE netlist of the complex of cells
-                exportSpiceNetlist(newSeqOfClusters[0], subckts, len(clusterSeqs), outputPath)
-
-                clusterSeqs = clusterSeqs[1:]
-                clusterSeqs += newSeqOfClusters
-                clusterSeqs = removeEmptySeqsAndDisableClusters(clusterSeqs)
-                clusterSeqs = sortPatternClusterSeqs(clusterSeqs)
-
+        fileResult = open(f'{outputPath}/bestRecord-patterns-{benchmarkName}', 'w')
         recordPatternDetails = sorted(recordPatternDetails, key=lambda x: -x[0])
         print("| designOverallArea | saveArea | saveRatio | patternCnt | patternSize | patternCoverage | patternName | patternCode |", file=fileResult)
         for saveArea, saveRatio, patternCnt, patternSize, patternCoverage, patternName, patternCode in recordPatternDetails:

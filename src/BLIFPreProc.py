@@ -3,6 +3,7 @@ import networkx as nx
 import numpy as np
 import time
 import os
+from typing import Any, Dict, List, Set
 from functools import reduce
 from collections import defaultdict
 from itertools import product, chain
@@ -20,7 +21,7 @@ def softmax(x):
     return e_x / e_x.sum()
 
 
-def kcuts(BLIFGraph: nx.DiGraph, n, k, computed=None):
+def kcuts(BLIFGraph: nx.DiGraph, n, k, computed: Dict[Any, List[Set]] = None) -> List[Set]:
     """
     Generate k-cuts.
 
@@ -64,7 +65,7 @@ def kcuts(BLIFGraph: nx.DiGraph, n, k, computed=None):
     return cuts
 
 
-def ancestors(G, target, sources=None, include_self=True):
+def ancestors(G, target, sources=None, include_self=True) -> Set:
     """Returns all nodes having a path to `target` in `G`.
 
     Parameters
@@ -91,7 +92,7 @@ def ancestors(G, target, sources=None, include_self=True):
     return anc if include_self else anc - {target}
 
 
-def loadLibertyFile(fileName):
+def loadLibertyFile(fileName) -> Dict[str, StdCellType]:
     # Read and parse a library.
     library = parse_liberty(open(fileName).read())
 
@@ -112,7 +113,7 @@ def loadLibertyFile(fileName):
     return stdCellLib
 
 
-def loadBoolGateFromBLIF(blif, stdCellLib):
+def loadBoolGateFromBLIF(blif, stdCellLib) -> None:
     for boolFunc in blif.booleanfunctions:
         truthTableStr = "bool-" + str(boolFunc.truthtable)
         if (not truthTableStr in stdCellLib.keys()):
@@ -123,7 +124,7 @@ def loadBoolGateFromBLIF(blif, stdCellLib):
             stdCellLib[truthTableStr] = newStdCellType
 
 
-def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4):
+def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], List[tuple], Dict[int, Set]]:
     # Read and parse a cell library.
     stdCellLib = loadLibertyFile(libFileName)
     # get the file path and pass it to the parser
@@ -139,12 +140,10 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4):
 
     cellName2Obj = dict()
     cells = []
-    netName2Obj = dict()
-    nets = []
     idCnt = 0
     for tmpCircuit in blif.subcircuits:
         refType = tmpCircuit.modelname
-        if (refType in stdCellLib.keys()):
+        if refType in stdCellLib:
             name = str(tmpCircuit)
             curCell = DesignCell(idCnt, name, stdCellLib[refType])
             idCnt += 1
@@ -173,63 +172,50 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4):
             print(refType, " is not in liberty file.")
             assert (False)
 
+    stdCellType2Cells = defaultdict(list)
+    netName2Obj = dict()
+    nets = []
     idCnt = 0
-    stdCellType2Cells = dict()
     for designCell in cells:
-        if (not designCell.stdCellType.typeName in stdCellType2Cells.keys()):
-            stdCellType2Cells[designCell.stdCellType.typeName] = []
         stdCellType2Cells[designCell.stdCellType.typeName].append(designCell)
         for refPin, inputNet in zip(designCell.inputPinRefNames, designCell.inputNetNames):
-            if (not inputNet in netName2Obj.keys()):
+            if not (inputNet in netName2Obj):
                 curNet = DesignNet(idCnt, inputNet)
+                idCnt += 1
                 netName2Obj[inputNet] = curNet
                 nets.append(curNet)
-                idCnt += 1
             else:
                 curNet = netName2Obj[inputNet]
             designCell.addInputNet(curNet)
             curNet.addPin(refPin, designCell, True)
         for refPin, outputNet in zip(designCell.outputPinRefNames, designCell.outputNetNames):
-            if (not outputNet in netName2Obj.keys()):
+            if not (outputNet in netName2Obj):
                 curNet = DesignNet(idCnt, outputNet)
+                idCnt += 1
                 netName2Obj[outputNet] = curNet
                 nets.append(curNet)
-                idCnt += 1
             else:
                 curNet = netName2Obj[outputNet]
             designCell.addOutputNet(curNet)
             curNet.addPin(refPin, designCell, False)
 
     stdCellType2Cnt = []
-    for key in stdCellType2Cells.keys():
-        stdCellType2Cnt.append((key, len(stdCellType2Cells[key])))
-    sorted_by_second = sorted(stdCellType2Cnt, key=lambda tup: -tup[1])
-    print("top std cell types: ", sorted_by_second[1:30])
-
-    stdCellTypesForFeature = []
-    for tmpType in sorted_by_second:
-        stdCellTypesForFeature.append(tmpType[0])
-    print("top std cell type names: ", stdCellTypesForFeature)
+    for ctype, ccells in stdCellType2Cells.items():
+        stdCellType2Cnt.append((ctype, len(ccells)))
+    stdCellTypesForFeature = sorted(stdCellType2Cnt, key=lambda tup: -tup[1])
+    print("top std cell types: ", stdCellTypesForFeature)
 
     print("creating networkx graph with ", len(cells), " nodes")
     BLIFGraph = nx.DiGraph()
-    nodeType = dict()
     netlist = []
     for designCell in cells:
-        if (designCell.stdCellType.typeName in stdCellTypesForFeature):
-            nodeType[designCell.id] = designCell.stdCellType.typeName
-        else:
-            nodeType[designCell.id] = "minorType"
-        BLIFGraph.add_node(designCell.id, type=nodeType[designCell.id], nodeLabel=-1, name=designCell.name)
-
+        BLIFGraph.add_node(designCell.id, type=designCell.stdCellType.typeName, nodeLabel=-1, name=designCell.name)
         for inputNet in designCell.inputNets:
-            if (not inputNet.predCell is None):
+            if inputNet.predCell is not None:
                 netlist.append((inputNet.predCell.id, designCell.id))
-
         for outputNet in designCell.outputNets:
-            if (len(outputNet.succCells) < 10000):
-                for succCell in outputNet.succCells:
-                    netlist.append((designCell.id, succCell.id))
+            for succCell in outputNet.succCells:
+                netlist.append((designCell.id, succCell.id))
 
     BLIFGraph.add_edges_from(netlist)
     print("created networkx graph with ", len(cells), " nodes")
@@ -248,7 +234,7 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4):
     return BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts
 
 
-def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells, allKCuts):
+def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells, allKCuts) -> Dict[str, Dict[int, list]]:
     clusterTree = defaultdict(lambda: defaultdict(list))
     cid = 0
     for root, cuts in allKCuts.items():
@@ -288,43 +274,19 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells, a
             newCluster = DesignPatternCluster(cid, coding, cells, cutNodes, rootId=root, kcut=cut)
             cid += 1
             clusterTree[coding][root].append(newCluster)
-            pass
 
-    pattern2Coding = defaultdict(list)
-    pattern2Cnt = defaultdict(lambda: 0)
-    simClusterTree = defaultdict(lambda: defaultdict(list))
-    for coding, codingTree in clusterTree.items():
-        if len(codingTree) < 2:
-            continue
-        simClusterTree[coding] = codingTree
-        for rootId, clusters in codingTree.items():
-            if (len(clusters) != 1):
-                print(">>> WARNNING: The node", str(rootId), "has multiple same cuts.")
-            pattern2Coding[coding] += clusters
-            pattern2Cnt[coding] += len(clusters)
-
-    sorted_by_second = sorted(pattern2Cnt.items(), key=lambda k_v: k_v[1], reverse=True)
-    print("top pattern types: ", sorted_by_second)
-
-    initialClusterSeqs = []
-    for tmpType in sorted_by_second:
-        newSeq = DesignPatternClusterSeq(tmpType[0])
-        newSeq.patternClusters = pattern2Coding[tmpType[0]]
-        initialClusterSeqs.append(newSeq)
-    resSeqs = sortPatternClusterSeqs(initialClusterSeqs)
-
-    return resSeqs, simClusterTree
+    return clusterTree
 
 
-def loadDataAndPreprocess(libFileName="../stdCelllib/gscl45nm.lib", blifFileName="../benchmark/blif/adder.blif", K=4, startTime=0):
+def loadDataAndPreprocess(libFileName="../stdCelllib/gscl45nm.lib", blifFileName="../benchmark/blif/adder.blif", K=4, startTime=0) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], List[tuple], Dict[int, Set], Dict[str, Dict[int, list]]]:
     BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts = genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=K)
     print("genGraphFromLibertyAndBLIF done. time esclaped: ", time.time() - startTime)
 
-    initialClusterSeqs, clusterTree = heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, allKCuts)
+    clusterTree = heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, allKCuts)
     print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", time.time() - startTime)
 
     print("loadDataAndPreprocess done. time esclaped: ", time.time() - startTime)
-    return BLIFGraph, cells, netlist, stdCellTypesForFeature, initialClusterSeqs, clusterTree, allKCuts
+    return BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts, clusterTree
 
 
 def getArea(cells, type2Area):
