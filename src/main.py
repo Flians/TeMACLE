@@ -5,18 +5,21 @@ from queue import PriorityQueue
 
 from spice import *
 from Astran import *
+from BLIFFSM import *
 from BLIFPreProc import *
 from GDSIIAnalysis import *
-from BLIFFSM import *
 
 
 def main():
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
     current_path = os.path.dirname(os.path.abspath(__file__))
-    os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
-    # ASTRANBuildPath = ""  # empty when Astran is unavailable.
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    ASTRANBuildPath = f"{current_path}/../tools/astran/Astran/build"
+    # os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
+    # AstranPath = ""  # empty when Astran is unavailable.
+    AstranPath = f"{current_path}/../tools/astran/Astran/build/bin/Astran"
+    gurobiPath="/Library/gurobi1003/macos_universal2/bin/gurobi_cl" 
+    # gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl"
+    technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+    stdSpiceNetlistPath=f"{current_path}/../stdCelllib/cellsAstranFriendly.sp"
 
     benchmarks = ["sqrt",
                   "voter", "arbiter", "cavlc", "div",
@@ -27,11 +30,11 @@ def main():
     benchmarks = ["adder"]
 
     stdType2GSCLArea = loadOrignalGSCL45nmGDS()
-    topThr = 5
-    ratioThr = 0.05
-    cntThr = 10
+    topThr = 5 # The maximum number of patterns chosen
+    cntThr = 10 # # The maximum node number of each pattern
     cutsize = 4
     fliterThr = 10
+    ratioThr = 0.05
 
     for benchmarkName in benchmarks:
         startTime = time.time()
@@ -41,7 +44,7 @@ def main():
         print("=================================================================================\n",
               benchmarkName, "\n=================================================================================\n")
         # load liberty/spice/design BLIF
-        subckts = loadSpiceSubcircuits(f"{current_path}/../stdCelllib/cellsAstranFriendly.sp")
+        subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
         BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts, clusterTree = loadDataAndPreprocess(
             libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
             blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
@@ -54,15 +57,15 @@ def main():
         os.makedirs(outputPath, exist_ok=True)
 
         # generate Astran-based cells
-        if (ASTRANBuildPath != ""):
+        if (AstranPath != ""):
             for oriStdCellType, oriStdCellFreq in stdCellTypesForFeature:
                 if (oriStdCellType.find("bool") >= 0):
                     continue
                 if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
                     continue
-                runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
-                                    technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
-                                    spiceNetlistPath=f'{current_path}/../stdCelllib/cellsAstranFriendly.sp',
+                runAstranForNetlist(AstranPath=AstranPath, gurobiPath=gurobiPath,
+                                    technologyPath=technologyPath,
+                                    spiceNetlistPath=stdSpiceNetlistPath,
                                     complexName=oriStdCellType, commandDir=f'{current_path}/originalAstranStdCells/')
         stdType2AstranArea = loadAstranGDS()
         astranArea = getArea(cells, stdType2AstranArea)
@@ -118,7 +121,7 @@ def main():
         lastComplexSelection = 0
         recordPatternDetails = []
 
-        for patternTraceId in range(topThr):
+        for i in range(topThr):
             (ntnode, ncluster), clusterSeq = clusterSeqs.get()
             nnode = ntnode // ncluster
             if (ncluster == 0 or nnode >= cntThr):
@@ -127,6 +130,7 @@ def main():
             saveArea = 0
             saveGSCLArea = 0
             complexSelection = []
+            patternTraceId = str(i) + '_' + ','.join(map(str, sorted(list(clusterSeq.patternClusters[0].cellIdsContained))))
 
             print("dealing with pattern#", patternTraceId, " with ", ncluster, " clusters (size=", nnode, ")")
             if (ntnode < ratioThr * len(cells) and ncluster < cntThr):
@@ -140,12 +144,13 @@ def main():
             exportSpiceNetlist(clusterSeq, subckts, str(patternTraceId), outputPath)
 
             # if ASTRAN is available, run it to get the layout and area evaluation
-            if (ASTRANBuildPath != "" and not os.path.exists(f'{outputPath}/COMPLEX{patternTraceId}.gds')):
+            if (AstranPath != "" and not os.path.exists(f'{outputPath}/COMPLEX{patternTraceId}.gds')):
                 try:
-                    runAstranForNetlist(AstranPath=ASTRANBuildPath,
-                                        gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
-                                        technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
-                                        spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
+                    runAstranForNetlist(AstranPath=AstranPath,
+                                        gurobiPath=gurobiPath,
+                                        technologyPath=technologyPath,
+                                        spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', 
+                                        complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
                     loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
                     print("\n>>> : Synthesis pattern#", patternTraceId, "successfully!")
                 except:

@@ -37,7 +37,7 @@ exit
     print(commands, file=outputFile)
     outputFile.close()
 
-    os.system(f"{AstranPath}/bin/Astran --shell {commandDir}/{complexName}.run > {commandDir}/{complexName}.Astranlog")
+    os.system(f"{AstranPath} --shell {commandDir}/{complexName}.run > {commandDir}/{complexName}.Astranlog")
     pass
 
 
@@ -56,6 +56,6 @@ exit
         print(commands, file=outputFile)
         outputFile.close()
 
-        os.system(f"{AstranPath}/bin/Astran --shell {commandDir}/{complexName}.run > {commandDir}/{complexName}.Astranlog")
+        os.system(f"{AstranPath} --shell {commandDir}/{complexName}.run > {commandDir}/{complexName}.Astranlog")
         if (os.path.exists(f'{commandDir}/{complexName}.gds')):
             return

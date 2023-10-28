@@ -210,12 +210,9 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4) -> tuple[nx.DiGra
     netlist = []
     for designCell in cells:
         BLIFGraph.add_node(designCell.id, type=designCell.stdCellType.typeName, nodeLabel=-1, name=designCell.name)
-        for inputNet in designCell.inputNets:
-            if inputNet.predCell is not None:
-                netlist.append((inputNet.predCell.id, designCell.id))
         for outputNet in designCell.outputNets:
-            for succCell in outputNet.succCells:
-                netlist.append((designCell.id, succCell.id))
+            for succCell, oPin in zip(outputNet.succCells, outputNet.succPins):
+                netlist.append((designCell.id, succCell.id, {'pins': designCell.stdCellType.typeName + '|' + outputNet.predPin + '|' + oPin + '|' + succCell.stdCellType.typeName}))
 
     BLIFGraph.add_edges_from(netlist)
     print("created networkx graph with ", len(cells), " nodes")
