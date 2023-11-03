@@ -37,3 +37,8 @@ def loadAstranGDS():
                 typeName2GDSSize[gdsFile.replace(".gds", "")] = float(line.replace("-> Cell Size (W x H): ", "").split("x")[0]) * 0.8 * 3.2
 
     return typeName2GDSSize
+
+if __name__ == '__main__':
+    gdsii = gdspy.GdsLibrary(
+            infile=f'{dirname(abspath(__file__))}/outputs/multiplier/COMPLEX0.gds')
+    pass

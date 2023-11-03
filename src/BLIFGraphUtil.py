@@ -1,7 +1,42 @@
+import bisect
 import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import count
-import numpy as np
+from typing import List
+
+stdCellOPEqu = {
+    "AND2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
+    "AND2X2": {'A': ['A', 'B'], 'B': ['A', 'B']},
+    "AOI21X1": {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C']},
+    "AOI22X1": {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C', 'D'], 'D': ['C', 'D']},
+    "BUFX2": {'A': ['A']},
+    "BUFX4": {'A': ['A']},
+    "CLKBUF1": {'A': ['A']},
+    "CLKBUF2": {'A': ['A']},
+    "CLKBUF3": {'A': ['A']},
+    "DFFNEGX1": {'D': ['D'], 'CLK': ['CLK']},
+    "DFFPOSX1": {'D': ['D'], 'CLK': ['CLK']},
+    "DFFSR": {'D': ['D'], 'R': ['R'], 'S': ['S'], 'CLK': ['CLK']},
+    "FAX1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
+    "HAX1": {'A': ['A', 'B'], 'B': ['A', 'B']},
+    "INVX1": {'A': ['A']},
+    "INVX2": {'A': ['A']},
+    "INVX4": {'A': ['A']},
+    "INVX8": {'A': ['A']},
+    "LATCH": {'D': ['D'], 'CLK': ['CLK']},
+    "MUX2X1": {'A': ['A'], 'B': ['B'], 'S': ['S']},
+    "NAND2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
+    "NAND3X1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
+    "NOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
+    "NOR3X1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
+    "OAI21X1": {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C']},
+    "OR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
+    "OR2X2": {'A': ['A', 'B'], 'B': ['A', 'B']},
+    "TBUFX1": {'A': ['A'], 'EN': ['EN']},
+    "TBUFX2": {'A': ['A'], 'EN': ['EN']},
+    "XNOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
+    "XOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']}
+}
 
 
 class StdCellType(object):
@@ -13,13 +48,16 @@ class StdCellType(object):
         self.outputPins = []
         self.inputPinMap = dict()
         self.outputPinMap = dict()
-        self.function = None
+        self.outputFuncMap = dict()
+        self.inputPinEqu = dict()
 
-    def addPin(self, pinName, direction):
+    def addPin(self, pinName, direction, function=None):
         if (direction == "input"):
             self.inputPins.append(pinName)
+            self.inputPinEqu[pinName] = stdCellOPEqu[self.typeName][pinName]
         if (direction == "output"):
             self.outputPins.append(pinName)
+            self.outputFuncMap[pinName] = function
         self.pins.append(pinName)
 
 
@@ -90,30 +128,29 @@ class DesignPatternCluster(object):
     def __init__(self, clusterId, patternStr, cells, cellIdsContained, clusterTypeId=-1, rootId=None, kcut=None):
         self.patternExtensionTrace = patternStr
         self.clusterId = clusterId
-        self.cellIdsContained = cellIdsContained
-        self.cellsContained = []
-        for cellId in cellIdsContained:
-            self.cellsContained.append(cells[cellId])
+        self.cellIdsContained = sorted(list(cellIdsContained))
+        self.cellsContained = [cells[cellId] for cellId in self.cellIdsContained]
         self.disabled = False
         self.clusterTypeId = clusterTypeId
         self.rootId = rootId
         self.kcut = kcut
 
-    def addCell(self, cell):
-        self.cellIdsContained.append(cell.id)
-        self.cellsContained.append(cell)
+    def addCell(self, cell: DesignCell):
+        bisect.insort(self.cellIdsContained, cell.id)
+        bisect.insort(self.cellsContained, cell, key=lambda x: x.id)
 
 
 class DesignPatternClusterSeq(object):
     def __init__(self, patternStr, patternClusters: list[DesignPatternCluster] = []):
         self.patternExtensionTrace = patternStr
-        self.patternClusters: list[DesignPatternCluster] = patternClusters
+        self.patternClusters: list[DesignPatternCluster] = sorted(list(patternClusters), key=lambda item: item.cellIdsContained)
 
-    def __lt__( self , other):
+    def __lt__(self, other):
         return self.patternExtensionTrace < other.patternExtensionTrace
 
     def addCluster(self, patternCluster: DesignPatternCluster):
         self.patternClusters.append(patternCluster)
+        bisect.insort(self.patternClusters, patternCluster, key=lambda x: x.cellIdsContained)
 
 
 def removeEmptySeqsAndDisableClusters(seqs):
@@ -186,3 +223,9 @@ def drawColorfulFigureForGraphWithAttributes(tmp_graph, colorArrtibute='type', s
     plt.close()
 
     return
+
+
+def obtainClusterFunc(rootId: int, patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
+    patternFunc = ''
+
+    return patternFunc

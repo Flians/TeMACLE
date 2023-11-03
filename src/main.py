@@ -13,13 +13,18 @@ from GDSIIAnalysis import *
 def main():
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
     current_path = os.path.dirname(os.path.abspath(__file__))
-    # os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
+    os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
     # AstranPath = ""  # empty when Astran is unavailable.
     AstranPath = f"{current_path}/../tools/astran/Astran/build/bin/Astran"
-    gurobiPath="/Library/gurobi1003/macos_universal2/bin/gurobi_cl" 
-    # gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl"
+    # gurobiPath="/Library/gurobi1003/macos_universal2/bin/gurobi_cl" 
+    gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl"
     technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
     stdSpiceNetlistPath=f"{current_path}/../stdCelllib/cellsAstranFriendly.sp"
+
+    # load liberty/spice
+    stdType2GSCLArea = loadOrignalGSCL45nmGDS()
+    subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
+    stdCellLib = loadLibertyFile(f"{current_path}/../stdCelllib/gscl45nm.lib")
 
     benchmarks = ["sqrt",
                   "voter", "arbiter", "cavlc", "div",
@@ -29,7 +34,6 @@ def main():
     # benchmarks = ["adder", "ctrl", "i2c", "multiplier", "router"]
     benchmarks = ["adder"]
 
-    stdType2GSCLArea = loadOrignalGSCL45nmGDS()
     topThr = 5 # The maximum number of patterns chosen
     cntThr = 10 # # The maximum node number of each pattern
     cutsize = 4
@@ -44,9 +48,8 @@ def main():
         print("=================================================================================\n",
               benchmarkName, "\n=================================================================================\n")
         # load liberty/spice/design BLIF
-        subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
         BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts, clusterTree = loadDataAndPreprocess(
-            libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
+            stdCellLib=stdCellLib,
             blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
             K=cutsize,
             startTime=startTime)
@@ -63,7 +66,8 @@ def main():
                     continue
                 if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
                     continue
-                runAstranForNetlist(AstranPath=AstranPath, gurobiPath=gurobiPath,
+                runAstranForNetlist(AstranPath=AstranPath, 
+                                    gurobiPath=gurobiPath,
                                     technologyPath=technologyPath,
                                     spiceNetlistPath=stdSpiceNetlistPath,
                                     complexName=oriStdCellType, commandDir=f'{current_path}/originalAstranStdCells/')
@@ -141,7 +145,7 @@ def main():
             drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/COMPLEX{patternTraceId}.png', withLabel=True, figsize=(20, 20))
 
             # export the SPICE netlist of the complex of cells
-            exportSpiceNetlist(clusterSeq, subckts, str(patternTraceId), outputPath)
+            exportSpiceNetlist(clusterSeq, subckts, patternTraceId, outputPath)
 
             # if ASTRAN is available, run it to get the layout and area evaluation
             if (AstranPath != "" and not os.path.exists(f'{outputPath}/COMPLEX{patternTraceId}.gds')):
@@ -151,7 +155,6 @@ def main():
                                         technologyPath=technologyPath,
                                         spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', 
                                         complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
-                    loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
                     print("\n>>> : Synthesis pattern#", patternTraceId, "successfully!")
                 except:
                     print("\n>>> : Synthesis pattern#", patternTraceId, "unsuccessfully!")
@@ -172,6 +175,8 @@ def main():
                                              ntnode,
                                              f'COMPLEX{patternTraceId}',
                                              clusterSeq.patternExtensionTrace))
+                patternFunc = obtainClusterFunc(clusterSeq.patternClusters[0].rootId, patternSubgraph,cells)
+                pass
 
         print("saveArea=", saveArea, " / ", saveArea / astranArea * 100, "%")
         if (saveArea > bestSaveArea):

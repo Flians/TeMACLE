@@ -1,14 +1,14 @@
 class SPSubcircuit(object):
     def __init__(self, texts):
-        self.name = texts[0].split(" ")[1]
+        self.texts = [line.replace('\n', '') for line in texts]
+        self.name = self.texts[0].split(' ')[1]
         self.interfaces = []
         self.internalSignals = []
-        self.texts = [line.replace('\n', '') for line in texts]
 
-        for interface in texts[0].split(" ")[2:]:
+        for interface in self.texts[0].split(' ')[2:]:
             self.interfaces.append(interface)
 
-        for line in texts[1:-1]:
+        for line in self.texts[1:-1]:
             if (line.find('M') == 0):
                 eles = line.split(' ')[1:5]
                 for ele in eles:
@@ -26,7 +26,7 @@ class SPSubcircuit(object):
             if (signal == 'VCC' or signal == 'GND'):
                 continue
             for i in range(0, len(self.texts)):
-                eles = self.texts[i].split(" ")
+                eles = self.texts[i].split(' ')
                 for j in range(0, len(eles)):
                     if (eles[j] == signal):
                         eles[j] = prefix + signal
@@ -43,7 +43,7 @@ class SPSubcircuit(object):
             self.internalSignals[i] = prefix + self.internalSignals[i]
 
         for i in range(0, len(self.texts)):
-            eles = self.texts[i].split(" ")
+            eles = self.texts[i].split(' ')
             if (len(eles) > 0):
                 if (eles[0].find('M') == 0):
                     eles[0] = 'M' + prefix + eles[0][1:]
@@ -52,7 +52,7 @@ class SPSubcircuit(object):
     def replaceInputPin(self, oriPinName, newPinName):
         replaced = False
         for i in range(0, len(self.texts)):
-            eles = self.texts[i].split(" ")
+            eles = self.texts[i].split(' ')
             for j in range(0, len(eles)):
                 if (eles[j] == oriPinName):
                     eles[j] = newPinName
@@ -131,7 +131,7 @@ def exportSpiceNetlist(cluserSeq, subckts, mergeCellTypeId, outputDir):
 
     mergeCellName = "COMPLEX" + str(mergeCellTypeId)
     interfaceList = list(interfaceSet)
-    firstLine = ".subckt " + mergeCellName + " " + " ".join(interfaceList)
+    firstLine = ".subckt " + mergeCellName + ' ' + ' '.join(interfaceList)
     internalLines = [firstLine]
     for ele in spiceList:
         internalLines = internalLines + ele.texts[1:-1]

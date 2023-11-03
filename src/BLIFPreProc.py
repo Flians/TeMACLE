@@ -105,8 +105,7 @@ def loadLibertyFile(fileName) -> Dict[str, StdCellType]:
         # Loop through all pins of the cell.
         for pin_group in cell_group.get_groups('pin'):
             pin_name = pin_group.args[0]
-            newStdCellType.addPin(pin_name, pin_group['direction'])
-            newStdCellType.function = pin_group.get_attribute(key='function', default=newStdCellType.function)
+            newStdCellType.addPin(pin_name, pin_group['direction'], pin_group.get_attribute(key='function', default=None))
 
         stdCellLib[name] = newStdCellType
 
@@ -120,13 +119,11 @@ def loadBoolGateFromBLIF(blif, stdCellLib) -> None:
             newStdCellType = StdCellType(truthTableStr)
             for i in range(0, len(boolFunc.v_params) - 1):
                 newStdCellType.addPin("IN" + str(i), 'input')
-            newStdCellType.addPin("OUT0", 'output')
+            newStdCellType.addPin("OUT0", 'output', boolFunc.v_params[0])
             stdCellLib[truthTableStr] = newStdCellType
 
 
-def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], List[tuple], Dict[int, Set]]:
-    # Read and parse a cell library.
-    stdCellLib = loadLibertyFile(libFileName)
+def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName: str, K: int = 4) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], List[tuple], Dict[int, Set]]:
     # get the file path and pass it to the parser
     filepath = os.path.abspath(blifFileName)
     parser = blifparser.BlifParser(filepath)
@@ -212,7 +209,7 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4) -> tuple[nx.DiGra
         BLIFGraph.add_node(designCell.id, type=designCell.stdCellType.typeName, nodeLabel=-1, name=designCell.name)
         for outputNet in designCell.outputNets:
             for succCell, oPin in zip(outputNet.succCells, outputNet.succPins):
-                netlist.append((designCell.id, succCell.id, {'pins': designCell.stdCellType.typeName + '|' + outputNet.predPin + '|' + oPin + '|' + succCell.stdCellType.typeName}))
+                netlist.append((designCell.id, succCell.id, {'pins': designCell.stdCellType.typeName + ':' + outputNet.predPin + '-' + succCell.stdCellType.typeName + ':' + ','.join(succCell.stdCellType.inputPinEqu[oPin])}))
 
     BLIFGraph.add_edges_from(netlist)
     print("created networkx graph with ", len(cells), " nodes")
@@ -231,7 +228,7 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=4) -> tuple[nx.DiGra
     return BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts
 
 
-def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells, allKCuts) -> Dict[str, Dict[int, list]]:
+def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: List[DesignCell], allKCuts: Dict[int, Set]) -> Dict[str, Dict[int, list]]:
     clusterTree = defaultdict(lambda: defaultdict(list))
     cid = 0
     for root, cuts in allKCuts.items():
@@ -266,6 +263,12 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells, a
                 odegree2Cnt[ntype].append(kv[1])
             for nname in sorted(odegree2Cnt):
                 coding += ''.join(map(str, sorted(odegree2Cnt[nname])))
+            # coding for inner edges
+            edges2Cnt = defaultdict(lambda: 0)
+            for es, et in cutGraph.edges:
+                edges2Cnt[cutGraph[es][et]['pins']] += 1
+            for ename in sorted(edges2Cnt):
+                coding += '|' + ename + '=' + str(edges2Cnt[ename])
 
             # new cluster
             newCluster = DesignPatternCluster(cid, coding, cells, cutNodes, rootId=root, kcut=cut)
@@ -275,8 +278,8 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells, a
     return clusterTree
 
 
-def loadDataAndPreprocess(libFileName="../stdCelllib/gscl45nm.lib", blifFileName="../benchmark/blif/adder.blif", K=4, startTime=0) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], List[tuple], Dict[int, Set], Dict[str, Dict[int, list]]]:
-    BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts = genGraphFromLibertyAndBLIF(libFileName, blifFileName, K=K)
+def loadDataAndPreprocess(stdCellLib: Dict[str, StdCellType], blifFileName="../benchmark/blif/adder.blif", K=4, startTime=0) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], List[tuple], Dict[int, Set], Dict[str, Dict[int, list]]]:
+    BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts = genGraphFromLibertyAndBLIF(stdCellLib, blifFileName, K=K)
     print("genGraphFromLibertyAndBLIF done. time esclaped: ", time.time() - startTime)
 
     clusterTree = heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, allKCuts)
@@ -286,7 +289,7 @@ def loadDataAndPreprocess(libFileName="../stdCelllib/gscl45nm.lib", blifFileName
     return BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts, clusterTree
 
 
-def getArea(cells, type2Area):
+def getArea(cells: List[DesignCell], type2Area):
     resArea = 0
     for cell in cells:
         if (cell.stdCellType.typeName in type2Area.keys()):

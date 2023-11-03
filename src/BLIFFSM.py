@@ -50,7 +50,7 @@ def SATMatch(G1: nx.DiGraph, G2: nx.DiGraph) -> bool:
                 solver.add_clause([getVar(n2, i, j, False), getVar(n2, i, k, False)])
                 solver.add_clause([getVar(n2, j, i, False), getVar(n2, k, i, False)])
 
-    # edge matching
+    # edge Attributes
     for k in range(n2):
         for l in range(n2):
             if k == l:  # no self-loop
@@ -61,6 +61,12 @@ def SATMatch(G1: nx.DiGraph, G2: nx.DiGraph) -> bool:
             if not G1.has_edge(nodes_G1[k], nodes_G1[l]):
                 for src, tar in G2.out_edges():
                     solver.add_clause([getVar(n2, k, idMap_G2[src], False), getVar(n2, l, idMap_G2[tar], False)])
+
+    # edge attribute Attributes
+    for src1, tar1 in G1.out_edges():
+        for src2, tar2 in G2.out_edges():
+            if G1[src1][tar1]['pins'] != G2[src2][tar2]['pins']:
+                solver.add_clause([getVar(n2, idMap_G1[src1], idMap_G2[src2], False), getVar(n2, idMap_G1[tar1], idMap_G2[tar2], False)])
 
     # solve the model
     sat, solution = solver.solve()

@@ -2,6 +2,9 @@
 
 ## Build
 
+ identify logic gates in the layout extracted netlist (SPICE) of digital circuits and generate gate-level Verilog netlist
+https://github.com/rachelselinar/ReGDS-Logic-Gate-Extraction.git
+
 For pygraphviz in Mac
 ``` bash
 brew install graphviz
