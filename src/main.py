@@ -36,15 +36,10 @@ def main():
 
     topThr = 5 # The maximum number of patterns chosen
     cntThr = 10 # # The maximum node number of each pattern
-    cutsize = 4
-    fliterThr = 10
-    ratioThr = 0.05
+    cutsize = 3
 
     for benchmarkName in benchmarks:
         startTime = time.time()
-        if (benchmarkName == "tc_008_arthmetic_sin"):
-            ratioThr = 0.025
-
         print("=================================================================================\n",
               benchmarkName, "\n=================================================================================\n")
         
@@ -97,7 +92,7 @@ def main():
                     pattern2Cnt[coding][1] += len(clusters)  # the number of clusters
                 pattern2Cnt[coding][0] = pattern2Cnt[coding][1] * nnode  # total number of nodes
 
-            sorted_by_second = sorted(pattern2Cnt.items(), key=lambda k_v: (-k_v[1][0], -k_v[1][1]))[:fliterThr]
+            sorted_by_second = sorted(pattern2Cnt.items(), key=lambda k_v: (-k_v[1][0], -k_v[1][1]))
             print("top pattern types: ", sorted_by_second)
 
             # statistical Top-K cluster frequency
@@ -127,7 +122,7 @@ def main():
                         continue
                     clusterSeqs.put(((len(new_clusters) * nnode, len(new_clusters)), DesignPatternClusterSeq(coding, list(new_clusters))))
 
-            for _ in range(topThr):
+            while not clusterSeqs.empty():
                 (ntnode, ncluster), clusterSeq = clusterSeqs.get()
                 nnode = ntnode // ncluster
                 if (ncluster == 0 or nnode >= cntThr):
@@ -135,16 +130,12 @@ def main():
 
                 patternTraceId = str(cid) + '_' + ','.join(map(str, sorted(list(clusterSeq.patternClusters[0].cellIdsContained))))
                 print("dealing with pattern#", patternTraceId, "with", ncluster, "clusters ( size =", nnode, ")")
-                if (ntnode < ratioThr * len(cells) and ncluster < cntThr):
-                    print("===Warning: the pattern is too small and bypassed. pattern: [", clusterSeq.patternExtensionTrace, "]", ntnode, "<<<", len(cells))
-                    continue
 
                 patternSubgraph = BLIFGraph.subgraph(clusterSeq.patternClusters[0].cellIdsContained)
                 drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/{patternTraceId}.png', withLabel=True, figsize=(20, 20))
 
                 # export the SPICE netlist of the complex of cells
                 exportSpiceNetlist(clusterSeq, subckts, patternTraceId, outputPath)
-
                 # if ASTRAN is available, run it to get the layout and area evaluation
                 if (AstranPath != "" and not os.path.exists(f'{outputPath}/{patternTraceId}.gds')):
                     try:
@@ -163,7 +154,7 @@ def main():
                 newUnitAstranArea = loadAstranArea(outputPath, f'{patternTraceId}')
                 if oriUnitAstranArea > newUnitAstranArea:
                     # construct a new cell
-                    patternFunc, ipins, opins, IPEqu = obtainClusterFunc(patternSubgraph,cells)
+                    patternFunc, ipins, opins, IPEqu = obtainClusterFunc(patternSubgraph, cells)
                     newCell = Group('cell', [patternTraceId], [Attribute('area', newUnitAstranArea), Attribute('nnode', nnode)], [Group('pin',[ipin],[Attribute('direction', 'input')]) for ipin in ipins] + [Group('pin',[opin],[Attribute('direction', 'output'), Attribute('function', EscapedString(patternFunc[opin]))]) for opin in opins])
                     liberty.groups.append(newCell)
                     with open(f'{outputPath}/{patternTraceId}.lib', 'w') as lib_writer:
@@ -185,23 +176,39 @@ def main():
     clean;
     opt;
     clean;
-    write_blif -impltf {outputPath}/{patternTraceId}.blif;"'''):
+    write_blif -impltf {outputPath}/{patternTraceId}.blif;
+    stat -liberty {outputPath}/{patternTraceId}.lib;"'''):
                         print('>>> remapping failed!')
+                        liberty.groups.pop()
+                        del stdCellIPEqu[patternTraceId]
                     else:
                         print('>>> remapping succeed!')
+                        newCell = StdCellType(patternTraceId)
+                        for ipin in ipins:
+                            newCell.addPin(ipin, 'input')
+                        for opin in opins:
+                            newCell.addPin(opin, 'output', patternFunc[opin])
+                        stdCellLib[patternTraceId] = stdCellLib
                         # load spice/design BLIF
-                        blifFileName = F'{outputPath}/{patternTraceId}.blif'
-                        BLIFGraph, cells, stdCellTypesForFeature, clusterTree = loadDataAndPreprocess(
+                        BLIFGraph_, cells_, stdCellTypesForFeature_, clusterTree_ = loadDataAndPreprocess(
                             stdCellLib=stdCellLib,
-                            blifFileName=blifFileName,
+                            blifFileName=F'{outputPath}/{patternTraceId}.blif',
                             K=cutsize,
                             startTime=startTime)
                         stdType2AstranArea[patternTraceId] = newUnitAstranArea
-                        newAstranArea = getArea(cells, stdType2AstranArea)
+                        newAstranArea = getArea(cells_, stdType2AstranArea)
                         print("astranArea=", newAstranArea)
                         if newAstranArea >= bestAstranArea:
-                            print('>>> area increased after remapping!')
+                            print('>>> area increased after remapping!\n')
+                            liberty.groups.pop()
+                            del stdCellIPEqu[patternTraceId]
+                            del stdCellLib[patternTraceId]
+                            del stdType2AstranArea[patternTraceId]
                             continue
+                        else:
+                            print(f'>>> choose the cluster {patternTraceId}!\n')
+                        BLIFGraph, cells, stdCellTypesForFeature, clusterTree = BLIFGraph_, cells_, stdCellTypesForFeature_, clusterTree_
+                        blifFileName = F'{outputPath}/{patternTraceId}.blif'
                         bestAstranArea = newAstranArea
                         complexSelection.append((f'{patternTraceId}', ncluster, nnode, clusterSeq.patternExtensionTrace))
                         recordPatternDetails.append(((oriUnitAstranArea - newUnitAstranArea) * ncluster,
@@ -211,6 +218,7 @@ def main():
                                                 ntnode,
                                                 f'{patternTraceId}',
                                                 clusterSeq.patternExtensionTrace))
+                        break
                     pass
                 
         saveArea = bestAstranArea - astranArea

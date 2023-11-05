@@ -141,6 +141,12 @@ class DesignPatternCluster(object):
         bisect.insort(self.cellIdsContained, cell.id)
         bisect.insort(self.cellsContained, cell, key=lambda x: x.id)
 
+    def nnode(self) -> int:
+        nnode = 0
+        for node in self.cellsContained:
+            nnode += node.stdCellType.nnode
+        return nnode
+
 
 class DesignPatternClusterSeq(object):
     def __init__(self, patternStr, patternClusters: list[DesignPatternCluster] = []):
@@ -234,14 +240,14 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
     for nid in nx.topological_sort(patternSubgraph.reverse()):
         curr_node = cells[nid]
         if not patternFunc:
-            patternFunc = curr_node.stdCellType.outputFuncMap
-            opins = curr_node.outputPinRefNames
+            patternFunc = curr_node.stdCellType.outputFuncMap.copy()
+            opins = curr_node.outputPinRefNames.copy()
             for ipin in curr_node.inputPinRefNames:
                 for opin in curr_node.outputPinRefNames:
                     patternFunc[opin] = patternFunc[opin].replace(ipin, f'{ipin}_{nid}')
                     ipins.append(f'{ipin}_{nid}')
         else:
-            funcs = curr_node.stdCellType.outputFuncMap
+            funcs = curr_node.stdCellType.outputFuncMap.copy()
             for ipin in curr_node.inputPinRefNames:
                 for opin in curr_node.outputPinRefNames:
                     funcs[opin] = funcs[opin].replace(ipin, f'{ipin}_{nid}')

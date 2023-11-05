@@ -279,6 +279,11 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
 
     return BLIFGraph, cells, stdCellTypesForFeature, allKCuts
 
+def count_nnode(cellsContained: List[int], cells: List[DesignCell]) -> int:
+    nnode = 0
+    for nid in cellsContained:
+        nnode += cells[nid].stdCellType.nnode
+    return nnode
 
 def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: List[DesignCell], allKCuts: Dict[int, Set]) -> Dict[str, Dict[int, list]]:
     clusterTree = defaultdict(lambda: defaultdict(list))
@@ -295,7 +300,7 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: L
                 ntype = BLIFGraph.nodes[node]['type']
                 stdCell2Cnt[ntype] += 1
             # coding for root and inner nodes
-            coding = str(len(cutNodes)) + '|' + BLIFGraph.nodes[root]['type']
+            coding = str(count_nnode(cutNodes, cells)) + '|' + BLIFGraph.nodes[root]['type']
             for nname in sorted(stdCell2Cnt):
                 coding += '|' + nname + '=' + str(stdCell2Cnt[nname])
             # coding for cut leaves
