@@ -51,6 +51,7 @@ class StdCellType(object):
         self.outputPinMap = dict()
         self.outputFuncMap = dict()
         self.inputPinEqu = dict()
+        self.nnode = 1
 
     def addPin(self, pinName, direction, function:str=None):
         if (direction == "input"):

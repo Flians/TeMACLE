@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Set
 from functools import reduce
 from collections import defaultdict
 from itertools import product, chain
-from liberty.parser import parse_liberty
+from liberty.parser import parse_liberty, Group, EscapedString
 
 from BLIFGraphUtil import *
 
@@ -92,15 +92,66 @@ def ancestors(G, target, sources=None, include_self=True) -> Set:
     return anc if include_self else anc - {target}
 
 
-def loadLibertyFile(fileName) -> Dict[str, StdCellType]:
-    # Read and parse a library.
-    library = parse_liberty(open(fileName).read())
+def writeLiberty(liberty: Group, indent: str = " " * 2) -> List[str]:
+        """
+        Create the liberty file format line by line.
+        :return: A list of lines.
+        """
+
+        def format_value(v) -> str:
+            return str(v)
+
+        define_lines = list()
+        for d in liberty.defines:
+            define_lines.append('{};'.format(d))
+
+        sub_group_lines = [writeLiberty(g, indent=indent) for g in liberty.groups]
+
+        attr_lines = list()
+
+        for attr in liberty.attributes:
+            attr_name, attr_value = attr.name, attr.value
+            if isinstance(attr_value, list):
+                # Complex attribute
+                formatted = [format_value(x) for x in attr_value]
+
+                if any((isinstance(x, EscapedString) for x in attr_value)):
+                    attr_lines.append('{} (\\'.format(attr_name))
+                    for i, l in enumerate(formatted):
+                        if i < len(formatted) - 1:
+                            end = ', \\'
+                        else:
+                            end = '\\'
+                        attr_lines.append(indent + l + end)
+                    attr_lines.append(');')
+                else:
+                    values = "({})".format(", ".join(formatted))
+                    attr_lines.append("{} {};".format(attr_name, values))
+            else:
+                # Simple attribute
+                values = format_value(attr_value)
+                attr_lines.append("{}: {};".format(attr_name, values))
+
+        lines = list()
+        lines.append("{} ({}) {{".format(liberty.group_name, ", ".join([format_value(f) for f in liberty.args])))
+
+        for l in chain(define_lines, attr_lines, *sub_group_lines):
+            lines.append(indent + l)
+
+        lines.append("}")
+
+        return lines
+
+def loadLibertyFile(fileName) -> tuple[Dict[str, StdCellType], Group]:
+    # Read and parse a liberty.
+    liberty = parse_liberty(open(fileName).read())
 
     # Loop through all cells.
     stdCellLib = dict()
-    for cell_group in library.get_groups('cell'):
+    for cell_group in liberty.get_groups('cell'):
         name = cell_group.args[0]
         newStdCellType = StdCellType(name)
+        newStdCellType.nnode = cell_group.get_attribute(key='nnode', default=1)
 
         # Loop through all pins of the cell.
         for pin_group in cell_group.get_groups('pin'):
@@ -110,7 +161,7 @@ def loadLibertyFile(fileName) -> Dict[str, StdCellType]:
 
         stdCellLib[name] = newStdCellType
 
-    return stdCellLib
+    return stdCellLib, liberty
 
 
 def loadBoolGateFromBLIF(blif, stdCellLib) -> None:
@@ -124,7 +175,7 @@ def loadBoolGateFromBLIF(blif, stdCellLib) -> None:
             stdCellLib[truthTableStr] = newStdCellType
 
 
-def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName: str, K: int = 4) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], List[tuple], Dict[int, Set]]:
+def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName: str, K: int = 4) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], Dict[int, Set]]:
     # get the file path and pass it to the parser
     filepath = os.path.abspath(blifFileName)
     parser = blifparser.BlifParser(filepath)
@@ -226,7 +277,7 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
             if cell.outputNets[0].name in blif.outputs.outputs:
                 kcuts(BLIFGraph=BLIFGraph, n=cell.id, k=K, computed=allKCuts)
 
-    return BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts
+    return BLIFGraph, cells, stdCellTypesForFeature, allKCuts
 
 
 def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: List[DesignCell], allKCuts: Dict[int, Set]) -> Dict[str, Dict[int, list]]:
@@ -279,15 +330,15 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: L
     return clusterTree
 
 
-def loadDataAndPreprocess(stdCellLib: Dict[str, StdCellType], blifFileName="../benchmark/blif/adder.blif", K=4, startTime=0) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], List[tuple], Dict[int, Set], Dict[str, Dict[int, list]]]:
-    BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts = genGraphFromLibertyAndBLIF(stdCellLib, blifFileName, K=K)
+def loadDataAndPreprocess(stdCellLib: Dict[str, StdCellType], blifFileName="../benchmark/blif/adder.blif", K=4, startTime=0) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], Dict[str, Dict[int, list]]]:
+    BLIFGraph, cells, stdCellTypesForFeature, allKCuts = genGraphFromLibertyAndBLIF(stdCellLib, blifFileName, K=K)
     print("genGraphFromLibertyAndBLIF done. time esclaped: ", time.time() - startTime)
 
     clusterTree = heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, allKCuts)
     print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", time.time() - startTime)
 
     print("loadDataAndPreprocess done. time esclaped: ", time.time() - startTime)
-    return BLIFGraph, cells, netlist, stdCellTypesForFeature, allKCuts, clusterTree
+    return BLIFGraph, cells, stdCellTypesForFeature, clusterTree
 
 
 def getArea(cells: List[DesignCell], type2Area):

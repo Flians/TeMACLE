@@ -129,7 +129,7 @@ def exportSpiceNetlist(cluserSeq, subckts, mergeCellTypeId, outputDir):
                 assert ("cl" + str(orderId) + "#" + outputPinName in interfaceSet)
                 interfaceSet.remove("cl" + str(orderId) + "#" + outputPinName)
 
-    mergeCellName = "COMPLEX" + str(mergeCellTypeId)
+    mergeCellName = str(mergeCellTypeId)
     interfaceList = list(interfaceSet)
     firstLine = ".subckt " + mergeCellName + ' ' + ' '.join(interfaceList)
     internalLines = [firstLine]
