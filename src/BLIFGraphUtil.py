@@ -3,8 +3,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import count
 from typing import List
+from sympy import symbols, simplify_logic
 
-stdCellOPEqu = {
+stdCellIPEqu = {
     "AND2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
     "AND2X2": {'A': ['A', 'B'], 'B': ['A', 'B']},
     "AOI21X1": {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C']},
@@ -51,10 +52,10 @@ class StdCellType(object):
         self.outputFuncMap = dict()
         self.inputPinEqu = dict()
 
-    def addPin(self, pinName, direction, function=None):
+    def addPin(self, pinName, direction, function:str=None):
         if (direction == "input"):
             self.inputPins.append(pinName)
-            self.inputPinEqu[pinName] = stdCellOPEqu[self.typeName][pinName]
+            self.inputPinEqu[pinName] = stdCellIPEqu[self.typeName][pinName]
         if (direction == "output"):
             self.outputPins.append(pinName)
             self.outputFuncMap[pinName] = function
@@ -225,7 +226,75 @@ def drawColorfulFigureForGraphWithAttributes(tmp_graph, colorArrtibute='type', s
     return
 
 
-def obtainClusterFunc(rootId: int, patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
-    patternFunc = ''
-
-    return patternFunc
+def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
+    patternFunc = {}
+    opins = []
+    ipins = []
+    for nid in nx.topological_sort(patternSubgraph.reverse()):
+        curr_node = cells[nid]
+        if not patternFunc:
+            patternFunc = curr_node.stdCellType.outputFuncMap
+            opins = curr_node.outputPinRefNames
+            for ipin in curr_node.inputPinRefNames:
+                for opin in curr_node.outputPinRefNames:
+                    patternFunc[opin] = patternFunc[opin].replace(ipin, f'{ipin}_{nid}')
+                    ipins.append(f'{ipin}_{nid}')
+        else:
+            funcs = curr_node.stdCellType.outputFuncMap
+            for ipin in curr_node.inputPinRefNames:
+                for opin in curr_node.outputPinRefNames:
+                    funcs[opin] = funcs[opin].replace(ipin, f'{ipin}_{nid}')
+                    ipins.append(f'{ipin}_{nid}')
+            for onet in curr_node.outputNets:
+                for onode, oipin in zip(onet.succCells, onet.succPins):
+                    tpin = f'{oipin}_{onode.id}'
+                    for opin in opins:
+                        patternFunc[opin] = patternFunc[opin].replace(tpin, funcs[onet.predPin])
+    # remove useless variables
+    useless = set()
+    for ipin in ipins:
+        for func in patternFunc.values():
+            if not (ipin in func):
+                useless.add(ipin)
+    ipins = sorted(list(set(ipins) - useless), key=lambda x: (int(x.split('_')[1]), x.split('_')[0]))
+    # simplify function expression
+    vars = symbols(ipins)
+    for pid, ipin in enumerate(ipins):
+        for opin in opins:
+            patternFunc[opin] = patternFunc[opin].replace(ipin, f'vars[{pid}]')
+    funcs = []
+    for opin in opins:
+        func = patternFunc[opin].replace(' ', '&').replace('+', '|').replace('!', '~')
+        funcs.append(func)
+        patternFunc[opin] = str(simplify_logic(eval(func))).replace(' ', '').replace('&', ' ').replace('|', '+').replace('~', '!')
+    # rename variables
+    new_ipins = []
+    varsMap = {}
+    for id, ipin in enumerate(ipins):
+        pid = chr(65 + id)
+        for opin in opins:
+            patternFunc[opin] = patternFunc[opin].replace(ipin, pid)
+        new_ipins.append(pid)
+        varsMap[pid] = f'vars[{id}]'
+    # record equivalent input pins
+    IPEqu = {}
+    allPins = set(new_ipins)
+    while allPins:
+        cur = allPins.pop()
+        curPins = {cur}
+        for other in allPins:
+            flag = True
+            for func in funcs:
+                tmp = func.replace(varsMap[other], 'A@A')
+                tmp = tmp.replace(varsMap[cur], varsMap[other])
+                tmp = tmp.replace('A@A', varsMap[cur])
+                if not eval(func).equals(eval(tmp)):
+                    flag = False
+                    break
+            if flag:
+                curPins.add(other)
+        IPEqu[cur] = sorted(list(curPins))
+        for i in curPins - {cur}:
+            IPEqu[i] = list(IPEqu[cur])
+        allPins -= curPins
+    return patternFunc, new_ipins, opins, IPEqu

@@ -13,11 +13,11 @@ from GDSIIAnalysis import *
 def main():
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
     current_path = os.path.dirname(os.path.abspath(__file__))
-    os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
+    # os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
     # AstranPath = ""  # empty when Astran is unavailable.
     AstranPath = f"{current_path}/../tools/astran/Astran/build/bin/Astran"
-    # gurobiPath="/Library/gurobi1003/macos_universal2/bin/gurobi_cl" 
-    gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl"
+    gurobiPath="/Library/gurobi1003/macos_universal2/bin/gurobi_cl" 
+    # gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl"
     technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
     stdSpiceNetlistPath=f"{current_path}/../stdCelllib/cellsAstranFriendly.sp"
 
@@ -136,7 +136,7 @@ def main():
             complexSelection = []
             patternTraceId = str(i) + '_' + ','.join(map(str, sorted(list(clusterSeq.patternClusters[0].cellIdsContained))))
 
-            print("dealing with pattern#", patternTraceId, " with ", ncluster, " clusters (size=", nnode, ")")
+            print("dealing with pattern#", patternTraceId, "with", ncluster, "clusters ( size =", nnode, ")")
             if (ntnode < ratioThr * len(cells) and ncluster < cntThr):
                 print("===Warning: the pattern is too small and bypassed. pattern: [", clusterSeq.patternExtensionTrace, "]", ntnode, "<<<", len(cells))
                 continue
@@ -175,7 +175,7 @@ def main():
                                              ntnode,
                                              f'COMPLEX{patternTraceId}',
                                              clusterSeq.patternExtensionTrace))
-                patternFunc = obtainClusterFunc(clusterSeq.patternClusters[0].rootId, patternSubgraph,cells)
+                patternFunc = obtainClusterFunc(patternSubgraph,cells)
                 pass
 
         print("saveArea=", saveArea, " / ", saveArea / astranArea * 100, "%")

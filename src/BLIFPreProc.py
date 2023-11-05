@@ -105,7 +105,8 @@ def loadLibertyFile(fileName) -> Dict[str, StdCellType]:
         # Loop through all pins of the cell.
         for pin_group in cell_group.get_groups('pin'):
             pin_name = pin_group.args[0]
-            newStdCellType.addPin(pin_name, pin_group['direction'], pin_group.get_attribute(key='function', default=None))
+            func = pin_group.get_attribute(key='function', default=None)
+            newStdCellType.addPin(pin_name, pin_group['direction'], func.value if func else func)
 
         stdCellLib[name] = newStdCellType
 
