@@ -41,7 +41,7 @@ stdCellIPEqu = {
 
 
 class StdCellType(object):
-    def __init__(self, typeName):
+    def __init__(self, typeName, nnode:int = 1):
         self.id = id
         self.typeName = typeName
         self.pins = []
@@ -51,7 +51,7 @@ class StdCellType(object):
         self.outputPinMap = dict()
         self.outputFuncMap = dict()
         self.inputPinEqu = dict()
-        self.nnode = 1
+        self.nnode = nnode
 
     def addPin(self, pinName, direction, function:str=None):
         if (direction == "input"):
@@ -127,7 +127,7 @@ class DesignNet(object):
 
 
 class DesignPatternCluster(object):
-    def __init__(self, clusterId, patternStr, cells, cellIdsContained, clusterTypeId=-1, rootId=None, kcut=None):
+    def __init__(self, clusterId, patternStr, cells, cellIdsContained, clusterTypeId=-1, rootId=None, kcut=None, graph:nx.DiGraph = None):
         self.patternExtensionTrace = patternStr
         self.clusterId = clusterId
         self.cellIdsContained = sorted(list(cellIdsContained))
@@ -136,6 +136,7 @@ class DesignPatternCluster(object):
         self.clusterTypeId = clusterTypeId
         self.rootId = rootId
         self.kcut = kcut
+        self.graph = graph
 
     def addCell(self, cell: DesignCell):
         bisect.insort(self.cellIdsContained, cell.id)
@@ -247,6 +248,15 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
                     patternFunc[opin] = patternFunc[opin].replace(ipin, f'{ipin}_{nid}')
                     ipins.append(f'{ipin}_{nid}')
         else:
+            if patternSubgraph.nodes[nid]['type'] == 'INPUT':
+                for opin in curr_node.outputPinRefNames:
+                    ipins.append(f'{opin}_{nid}')
+                for onet in curr_node.outputNets:
+                    for onode, oipin in zip(onet.succCells, onet.succPins):
+                        tpin = f'{oipin}_{onode.id}'
+                        for opin in opins:
+                            patternFunc[opin] = patternFunc[opin].replace(tpin, f'{onet.predPin}_{nid}')
+                continue
             funcs = curr_node.stdCellType.outputFuncMap.copy()
             for ipin in curr_node.inputPinRefNames:
                 for opin in curr_node.outputPinRefNames:

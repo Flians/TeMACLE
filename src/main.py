@@ -20,11 +20,12 @@ def main():
     gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl"
     technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
     stdSpiceNetlistPath=f"{current_path}/../stdCelllib/cellsAstranFriendly.sp"
+    initialLibertyPath = f"{current_path}/../stdCelllib/gscl45nm.lib"
 
     # load liberty/spice
     stdType2GSCLArea = loadOrignalGSCL45nmGDS()
     subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
-    stdCellLib, liberty = loadLibertyFile(f"{current_path}/../stdCelllib/gscl45nm.lib")
+    stdCellLib, liberty = loadLibertyFile(initialLibertyPath)
 
     benchmarks = ["sqrt",
                   "voter", "arbiter", "cavlc", "div",
@@ -42,18 +43,40 @@ def main():
         startTime = time.time()
         print("=================================================================================\n",
               benchmarkName, "\n=================================================================================\n")
-        
+        outputPath = f"{current_path}/outputs/{benchmarkName}/"
+        os.makedirs(outputPath, exist_ok=True)
+        # mapping
+        blifFileName = f'{outputPath}/{benchmarkName}.blif'
+        if not os.path.exists(blifFileName):
+            if os.system(
+f'''yosys -p "read_liberty -lib {initialLibertyPath};
+read_blif {current_path}/../benchmark/blif/{benchmarkName}.blif;
+hierarchy -auto-top;
+flatten;
+synth -auto-top;
+flatten;
+proc; fsm; opt; memory; opt;
+dfflibmap -liberty {initialLibertyPath};
+abc -liberty {initialLibertyPath};
+opt;
+opt;
+clean;
+opt;
+clean;
+write_blif -impltf {blifFileName};
+stat -liberty {initialLibertyPath};"'''):
+                print('>>> mapping failed!')
+                continue
+            else:
+                print('>>> mapping succeed!')
         # load spice/design BLIF
         BLIFGraph, cells, stdCellTypesForFeature, clusterTree = loadDataAndPreprocess(
             stdCellLib=stdCellLib,
-            blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
+            blifFileName=blifFileName,
             K=cutsize,
             startTime=startTime)
         oriArea = getArea(cells, stdType2GSCLArea)
         print("originalArea=", oriArea)
-
-        outputPath = f"{current_path}/outputs/{benchmarkName}/"
-        os.makedirs(outputPath, exist_ok=True)
 
         # generate Astran-based cells
         if (AstranPath != ""):
@@ -76,7 +99,7 @@ def main():
         bestAstranArea = astranArea
         complexSelection = []
         recordPatternDetails = []
-        blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif"
+        patternFuncs = set()
         for cid in range(topThr):
             # fliter clusters and get Top-K clusters
             pattern2Coding = defaultdict(list)
@@ -96,7 +119,7 @@ def main():
             print("top pattern types: ", sorted_by_second)
 
             # statistical Top-K cluster frequency
-            clusterSeqs = PriorityQueue(topThr)
+            clusterSeqs = PriorityQueue(topThr * 2)
             for coding, _ in sorted_by_second:
                 nnode = int(coding[:coding.index('|')])
                 cur_clusters = set(pattern2Coding[coding])
@@ -110,12 +133,10 @@ def main():
                             clusterSeqs.put(cur_low)
                     cluster1 = cur_clusters.pop()
                     new_clusters = {cluster1}
-                    g1 = BLIFGraph.subgraph(cluster1.cellIdsContained)
                     for cluster2 in cur_clusters:
                         if cluster1.rootId == cluster2.rootId:
                             continue
-                        g2 = BLIFGraph.subgraph(cluster2.cellIdsContained)
-                        if SATMatch(g1, g2):
+                        if SATMatch(cluster1.graph, cluster2.graph):
                             new_clusters.add(cluster2)
                     cur_clusters -= new_clusters
                     if len(new_clusters) < 2:
@@ -130,21 +151,32 @@ def main():
 
                 patternTraceId = str(cid) + '_' + ','.join(map(str, sorted(list(clusterSeq.patternClusters[0].cellIdsContained))))
                 print("dealing with pattern#", patternTraceId, "with", ncluster, "clusters ( size =", nnode, ")")
+                patternSubgraph = clusterSeq.patternClusters[0].graph
+                # construct the cluster's function
+                patternFunc, ipins, opins, IPEqu = obtainClusterFunc(patternSubgraph, cells)
+                flag = True
+                for opin, func in patternFunc.items():
+                    if func not in patternFuncs:
+                        flag = False
+                        patternFuncs.add(func)
+                if flag:
+                    continue
 
-                patternSubgraph = BLIFGraph.subgraph(clusterSeq.patternClusters[0].cellIdsContained)
                 drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/{patternTraceId}.png', withLabel=True, figsize=(20, 20))
-
                 # export the SPICE netlist of the complex of cells
                 exportSpiceNetlist(clusterSeq, subckts, patternTraceId, outputPath)
                 # if ASTRAN is available, run it to get the layout and area evaluation
                 if (AstranPath != "" and not os.path.exists(f'{outputPath}/{patternTraceId}.gds')):
                     try:
-                        runAstranForNetlist(AstranPath=AstranPath,
+                        if runAstranForNetlist(AstranPath=AstranPath,
                                             gurobiPath=gurobiPath,
                                             technologyPath=technologyPath,
                                             spiceNetlistPath=f'{outputPath}/{patternTraceId}.sp', 
-                                            complexName=f'{patternTraceId}', commandDir=outputPath)
-                        print("\n>>> : Synthesis pattern#", patternTraceId, "successfully!")
+                                            complexName=f'{patternTraceId}', commandDir=outputPath):
+                            print("\n>>> : Synthesis pattern#", patternTraceId, "successfully!")
+                        else:
+                            print("\n>>> : Synthesis pattern#", patternTraceId, "unsuccessfully!")
+                            continue
                     except:
                         print("\n>>> : Synthesis pattern#", patternTraceId, "unsuccessfully!")
                         continue
@@ -154,7 +186,6 @@ def main():
                 newUnitAstranArea = loadAstranArea(outputPath, f'{patternTraceId}')
                 if oriUnitAstranArea > newUnitAstranArea:
                     # construct a new cell
-                    patternFunc, ipins, opins, IPEqu = obtainClusterFunc(patternSubgraph, cells)
                     newCell = Group('cell', [patternTraceId], [Attribute('area', newUnitAstranArea), Attribute('nnode', nnode)], [Group('pin',[ipin],[Attribute('direction', 'input')]) for ipin in ipins] + [Group('pin',[opin],[Attribute('direction', 'output'), Attribute('function', EscapedString(patternFunc[opin]))]) for opin in opins])
                     liberty.groups.append(newCell)
                     with open(f'{outputPath}/{patternTraceId}.lib', 'w') as lib_writer:
@@ -170,7 +201,7 @@ def main():
     flatten;
     proc; fsm; opt; memory; opt;
     dfflibmap -liberty {outputPath}/{patternTraceId}.lib;
-    abc  -liberty {outputPath}/{patternTraceId}.lib;
+    abc -liberty {outputPath}/{patternTraceId}.lib;
     opt;
     opt;
     clean;
@@ -221,7 +252,7 @@ def main():
                         break
                     pass
                 
-        saveArea = bestAstranArea - astranArea
+        saveArea = astranArea - bestAstranArea
         print("saveArea=", saveArea, " / ", saveArea / astranArea * 100, "%")
         if (saveArea > bestSaveArea):
             bestSaveArea = saveArea
@@ -234,7 +265,7 @@ def main():
             print("\n runtime:", time.time() - startTime, " (s)", file=fileResult)
             fileResult.close()
         else:
-            assert(False)
+            print('There is no improvement for', benchmarkName)
 
         fileResult = open(f'{outputPath}/bestRecord-patterns-{benchmarkName}', 'w')
         recordPatternDetails = sorted(recordPatternDetails, key=lambda x: -x[0])

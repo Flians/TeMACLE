@@ -85,8 +85,7 @@ def ancestors(G, target, sources=None, include_self=True) -> Set:
         raise nx.NetworkXError(f"The node {target} is not in the graph.")
     if sources:
         sources = set(sources)
-        anc = [nx.bidirectional_shortest_path(G, source=source, target=target) for source in sources]
-        anc = set(chain(*anc))
+        anc = set(chain(*chain.from_iterable([nx.all_simple_paths(G, source=source, target=target) for source in sources])))
     else:
         anc = {n for n, d in nx.shortest_path_length(G, target=target).items()}
     return anc if include_self else anc - {target}
@@ -290,45 +289,45 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: L
     cid = 0
     for root, cuts in allKCuts.items():
         for cut in cuts:
+            root_leaves = cut.union({root})
             cutNodes = ancestors(BLIFGraph, target=root, sources=cut)
-            if len(cutNodes) < 2:
+            if len(cutNodes) <= len(root_leaves):
                 continue
             # cut inner nodes
-            cutInnerNodes = cutNodes - cut.union({root})
+            cutInnerNodes = cutNodes - root_leaves
             stdCell2Cnt = defaultdict(lambda: 0)
             for node in cutInnerNodes:
                 ntype = BLIFGraph.nodes[node]['type']
                 stdCell2Cnt[ntype] += 1
             # coding for root and inner nodes
-            coding = str(count_nnode(cutNodes, cells)) + '|' + BLIFGraph.nodes[root]['type']
+            nonleaves = cutInnerNodes.union({root})
+            coding = str(count_nnode(nonleaves, cells)) + '|' + str(len(cut)) + '|' + BLIFGraph.nodes[root]['type']
             for nname in sorted(stdCell2Cnt):
                 coding += '|' + nname + '=' + str(stdCell2Cnt[nname])
-            # coding for cut leaves
+            # construct subgraph
+            cutGraph = nx.DiGraph(BLIFGraph.subgraph(cutNodes))
             cutLeaves = cut - {root}
-            stdCell2Cnt = defaultdict(lambda: 0)
             for node in cutLeaves:
-                ntype = BLIFGraph.nodes[node]['type']
-                stdCell2Cnt[ntype] += 1
-            for nname in sorted(stdCell2Cnt):
-                coding += '|' + nname + '=' + str(stdCell2Cnt[nname])
+                cutGraph.nodes[node]['type'] = 'INPUT'
             coding += '|'
             # coding for out degrees
-            cutGraph = BLIFGraph.subgraph(cutNodes)
             odegree2Cnt = defaultdict(list)
             for kv in cutGraph.out_degree():
-                ntype = BLIFGraph.nodes[kv[0]]['type']
+                ntype = cutGraph.nodes[kv[0]]['type']
                 odegree2Cnt[ntype].append(kv[1])
             for nname in sorted(odegree2Cnt):
                 coding += ''.join(map(str, sorted(odegree2Cnt[nname])))
             # coding for inner edges
             edges2Cnt = defaultdict(lambda: 0)
             for es, et in cutGraph.edges:
+                if cutGraph.nodes[es]['type'] == 'INPUT':
+                    cutGraph[es][et]['pins'] = 'INPUT:Y-' + cutGraph[es][et]['pins'].split('-')[1]
                 edges2Cnt[cutGraph[es][et]['pins']] += 1
             for ename in sorted(edges2Cnt):
                 coding += '|' + ename + '=' + str(edges2Cnt[ename])
 
             # new cluster
-            newCluster = DesignPatternCluster(cid, coding, cells, cutNodes, rootId=root, kcut=cut)
+            newCluster = DesignPatternCluster(cid, coding, cells, nonleaves, rootId=root, kcut=cut, graph=cutGraph)
             cid += 1
             clusterTree[coding][root].append(newCluster)
 

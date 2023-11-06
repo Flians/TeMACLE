@@ -37,8 +37,7 @@ exit
     print(commands, file=outputFile)
     outputFile.close()
 
-    os.system(f"{AstranPath} --shell {commandDir}/{complexName}.run > {commandDir}/{complexName}.Astranlog")
-    pass
+    return os.system(f"{AstranPath} --shell {commandDir}/{complexName}.run > {commandDir}/{complexName}.Astranlog") == 0
 
 
 def runAstranForNetlist2(AstranPath, gurobiPath, technologyPath, spiceNetlistPath, complexName, commandDir):
