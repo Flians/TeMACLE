@@ -58,3 +58,34 @@ exit
         os.system(f"{AstranPath} --shell {commandDir}/{complexName}.run > {commandDir}/{complexName}.Astranlog")
         if (os.path.exists(f'{commandDir}/{complexName}.gds')):
             return
+
+if __name__ == '__main__':
+    current_path = os.path.dirname(os.path.abspath(__file__))
+    os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
+    AstranPath = f"{current_path}/../tools/astran/Astran/build/bin/Astran"
+    # gurobiPath="/Library/gurobi1003/macos_universal2/bin/gurobi_cl" 
+    gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl"
+    technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+    stdSpiceNetlistPath=f"{current_path}/../stdCelllib/cellsAstranFriendly.sp"
+
+    from GDSIIAnalysis import STDCellNames
+    import threading
+
+    threads = []
+    for oriStdCellType in STDCellNames:
+        if (oriStdCellType.find("bool") >= 0 or oriStdCellType == 'PI'):
+            continue
+        if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
+            continue
+        threads.append(threading.Thread(target=runAstranForNetlist, args=(AstranPath, 
+                            gurobiPath,
+                            technologyPath,
+                            stdSpiceNetlistPath,
+                            oriStdCellType, 
+                            f'{current_path}/originalAstranStdCells/')))
+    # start thread
+    for itme in threads:
+        itme.start()
+    # wait end
+    for itme in threads:
+        itme.join()

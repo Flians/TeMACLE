@@ -5,7 +5,6 @@ import time
 import os
 from typing import Any, Dict, List, Set
 from functools import reduce
-from collections import defaultdict
 from itertools import product, chain
 from liberty.parser import parse_liberty, Group, EscapedString
 
@@ -65,7 +64,7 @@ def kcuts(BLIFGraph: nx.DiGraph, n, k, computed: Dict[Any, List[Set]] = None) ->
     return cuts
 
 
-def ancestors(G, target, sources=None, include_self=True) -> Set:
+def ancestors(G:nx.DiGraph, target, sources=None, include_self=True) -> Set:
     """Returns all nodes having a path to `target` in `G`.
 
     Parameters
@@ -81,14 +80,40 @@ def ancestors(G, target, sources=None, include_self=True) -> Set:
     set()
         The ancestors of target in G
     """
+    def dfs(cur, sources=None, computed: Dict[Any, List]=None) -> Set:
+        if computed is None:
+            computed = {}
+
+        if cur in computed:
+            return computed[cur]
+        
+        curPred = set()
+        for pred in G.predecessors(cur):
+            if sources and pred in sources:
+                curPred.add(pred)
+            else:
+                tmp = dfs(pred, sources, computed)
+                if tmp:
+                    curPred |= tmp
+                if not sources or tmp:
+                    curPred.add(pred)
+        computed[cur] = curPred
+        return curPred
+    
     if not G.has_node(target):
         raise nx.NetworkXError(f"The node {target} is not in the graph.")
-    if sources:
-        sources = set(sources)
-        anc = set(chain(*chain.from_iterable([nx.all_simple_paths(G, source=source, target=target) for source in sources])))
-    else:
-        anc = {n for n, d in nx.shortest_path_length(G, target=target).items()}
-    return anc if include_self else anc - {target}
+    anc = dfs(target, set(sources))
+
+    unvisited = sources - anc
+    if unvisited:
+        for tar in sources:
+            tmp = dfs(tar, unvisited)
+            if unvisited - tmp:
+                pass
+            else:
+                anc |= tmp
+
+    return anc | {target} if include_self else anc 
 
 
 def writeLiberty(liberty: Group, indent: str = " " * 2) -> List[str]:
@@ -146,11 +171,10 @@ def loadLibertyFile(fileName) -> tuple[Dict[str, StdCellType], Group]:
     liberty = parse_liberty(open(fileName).read())
 
     # Loop through all cells.
-    stdCellLib = dict()
+    stdCellLib = {'PI': StdCellType('PI', 0)}
     for cell_group in liberty.get_groups('cell'):
         name = cell_group.args[0]
-        newStdCellType = StdCellType(name)
-        newStdCellType.nnode = cell_group.get_attribute(key='nnode', default=1)
+        newStdCellType = StdCellType(name, cell_group.get_attribute(key='nnode', default=1))
 
         # Loop through all pins of the cell.
         for pin_group in cell_group.get_groups('pin'):
@@ -203,6 +227,11 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
         else:
             print(refType, " is not in liberty file.")
             assert (False)
+    for pi in blif.inputs.inputs:
+        curPI = DesignCell(idCnt, pi, stdCellLib['PI'])
+        curPI.addCellPin('Y', pi)
+        cells.append(curPI)
+        idCnt += 1
 
     for logicGate in blif.booleanfunctions:
         refType = "bool-" + str(logicGate.truthtable)
@@ -220,12 +249,12 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
             print(refType, " is not in liberty file.")
             assert (False)
 
-    stdCellType2Cells = defaultdict(list)
+    stdCellType2Cells = dict()
     netName2Obj = dict()
     nets = []
     idCnt = 0
     for designCell in cells:
-        stdCellType2Cells[designCell.stdCellType.typeName].append(designCell)
+        stdCellType2Cells.setdefault(designCell.stdCellType.typeName, []).append(designCell)
         for refPin, inputNet in zip(designCell.inputPinRefNames, designCell.inputNetNames):
             if not (inputNet in netName2Obj):
                 curNet = DesignNet(idCnt, inputNet)
@@ -285,43 +314,47 @@ def count_nnode(cellsContained: List[int], cells: List[DesignCell]) -> int:
     return nnode
 
 def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: List[DesignCell], allKCuts: Dict[int, Set]) -> Dict[str, Dict[int, list]]:
-    clusterTree = defaultdict(lambda: defaultdict(list))
+    clusterTree = {}
     cid = 0
     for root, cuts in allKCuts.items():
         for cut in cuts:
-            root_leaves = cut.union({root})
+            if len(cut) <= 1:
+                continue
+            root_leaves = cut | {root}
             cutNodes = ancestors(BLIFGraph, target=root, sources=cut)
             if len(cutNodes) <= len(root_leaves):
                 continue
             # cut inner nodes
             cutInnerNodes = cutNodes - root_leaves
-            stdCell2Cnt = defaultdict(lambda: 0)
+            stdCell2Cnt = {}
             for node in cutInnerNodes:
                 ntype = BLIFGraph.nodes[node]['type']
+                stdCell2Cnt.setdefault(ntype, 0)
                 stdCell2Cnt[ntype] += 1
             # coding for root and inner nodes
-            nonleaves = cutInnerNodes.union({root})
+            nonleaves = cutInnerNodes | {root}
             coding = str(count_nnode(nonleaves, cells)) + '|' + str(len(cut)) + '|' + BLIFGraph.nodes[root]['type']
             for nname in sorted(stdCell2Cnt):
                 coding += '|' + nname + '=' + str(stdCell2Cnt[nname])
             # construct subgraph
-            cutGraph = nx.DiGraph(BLIFGraph.subgraph(cutNodes))
+            cutGraph = BLIFGraph.subgraph(cutNodes).copy()
             cutLeaves = cut - {root}
             for node in cutLeaves:
                 cutGraph.nodes[node]['type'] = 'INPUT'
             coding += '|'
             # coding for out degrees
-            odegree2Cnt = defaultdict(list)
-            for kv in cutGraph.out_degree():
-                ntype = cutGraph.nodes[kv[0]]['type']
-                odegree2Cnt[ntype].append(kv[1])
+            odegree2Cnt = {}
+            for node, out_degree in cutGraph.out_degree():
+                ntype = cutGraph.nodes[node]['type']
+                odegree2Cnt.setdefault(ntype, []).append(out_degree)
             for nname in sorted(odegree2Cnt):
                 coding += ''.join(map(str, sorted(odegree2Cnt[nname])))
             # coding for inner edges
-            edges2Cnt = defaultdict(lambda: 0)
+            edges2Cnt = {}
             for es, et in cutGraph.edges:
                 if cutGraph.nodes[es]['type'] == 'INPUT':
                     cutGraph[es][et]['pins'] = 'INPUT:Y-' + cutGraph[es][et]['pins'].split('-')[1]
+                edges2Cnt.setdefault(cutGraph[es][et]['pins'], 0)
                 edges2Cnt[cutGraph[es][et]['pins']] += 1
             for ename in sorted(edges2Cnt):
                 coding += '|' + ename + '=' + str(edges2Cnt[ename])
@@ -329,6 +362,10 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: L
             # new cluster
             newCluster = DesignPatternCluster(cid, coding, cells, nonleaves, rootId=root, kcut=cut, graph=cutGraph)
             cid += 1
+            if coding not in clusterTree:
+                clusterTree[coding] = {}
+            if root not in clusterTree[coding]:
+                clusterTree[coding][root] = []
             clusterTree[coding][root].append(newCluster)
 
     return clusterTree
@@ -352,10 +389,30 @@ def getArea(cells: List[DesignCell], type2Area):
             resArea += type2Area[cell.stdCellType.typeName]
     return resArea
 
+def writeGenlib(liberty: Group, genlibPath:str) -> None:
+    # Loop through all cells.
+    with open(genlibPath, 'w') as genlib:
+        for cell_group in liberty.get_groups('cell'):
+            line = 'GATE ' + cell_group.args[0]
+            line += '\t' + str(cell_group.get_attribute(key='area', default=1))
+            # Loop through all pins of the cell.
+            nout = 0
+            for pin_group in cell_group.get_groups('pin'):
+                pin_name = pin_group.args[0]
+                func = pin_group.get_attribute(key='function', default=None)
+                if func:
+                    line += '\t' + pin_name + '=' + func.value.replace(' ', '*') + ';'
+                    nout += 1
+            if nout != 1: # single output
+                continue
+            line += '\t PIN * NONINV 1 1 1 0 1 0\n'
+            genlib.write(line)
+        genlib.write('GATE const_0\t0\tq=CONST0;\nGATE const_1\t0\tq=CONST1;\n')
 
 def main():
     loadDataAndPreprocess()
 
 
 if __name__ == '__main__':
-    main()
+    stdCellLib, liberty = loadLibertyFile('stdCelllib/gscl45nm.lib')
+    writeGenlib(liberty, 'gscl45nm.genlib')

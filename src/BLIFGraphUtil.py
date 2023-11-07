@@ -36,7 +36,8 @@ stdCellIPEqu = {
     "TBUFX1": {'A': ['A'], 'EN': ['EN']},
     "TBUFX2": {'A': ['A'], 'EN': ['EN']},
     "XNOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "XOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']}
+    "XOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
+    "bool-[['1', '1']]": {'IN0': ['IN0']}
 }
 
 
@@ -56,6 +57,8 @@ class StdCellType(object):
     def addPin(self, pinName, direction, function:str=None):
         if (direction == "input"):
             self.inputPins.append(pinName)
+            if 'bool-' in self.typeName:
+                pass
             self.inputPinEqu[pinName] = stdCellIPEqu[self.typeName][pinName]
         if (direction == "output"):
             self.outputPins.append(pinName)
@@ -245,26 +248,26 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
             opins = curr_node.outputPinRefNames.copy()
             for ipin in curr_node.inputPinRefNames:
                 for opin in curr_node.outputPinRefNames:
-                    patternFunc[opin] = patternFunc[opin].replace(ipin, f'{ipin}_{nid}')
-                    ipins.append(f'{ipin}_{nid}')
+                    patternFunc[opin] = patternFunc[opin].replace(ipin, f'({ipin}_{nid})')
+                    ipins.append(f'({ipin}_{nid})')
         else:
             if patternSubgraph.nodes[nid]['type'] == 'INPUT':
                 for opin in curr_node.outputPinRefNames:
-                    ipins.append(f'{opin}_{nid}')
+                    ipins.append(f'({opin}_{nid})')
                 for onet in curr_node.outputNets:
                     for onode, oipin in zip(onet.succCells, onet.succPins):
-                        tpin = f'{oipin}_{onode.id}'
+                        tpin = f'({oipin}_{onode.id})'
                         for opin in opins:
-                            patternFunc[opin] = patternFunc[opin].replace(tpin, f'{onet.predPin}_{nid}')
+                            patternFunc[opin] = patternFunc[opin].replace(tpin, f'({onet.predPin}_{nid})')
                 continue
             funcs = curr_node.stdCellType.outputFuncMap.copy()
             for ipin in curr_node.inputPinRefNames:
                 for opin in curr_node.outputPinRefNames:
-                    funcs[opin] = funcs[opin].replace(ipin, f'{ipin}_{nid}')
-                    ipins.append(f'{ipin}_{nid}')
+                    funcs[opin] = funcs[opin].replace(ipin, f'({ipin}_{nid})')
+                    ipins.append(f'({ipin}_{nid})')
             for onet in curr_node.outputNets:
                 for onode, oipin in zip(onet.succCells, onet.succPins):
-                    tpin = f'{oipin}_{onode.id}'
+                    tpin = f'({oipin}_{onode.id})'
                     for opin in opins:
                         patternFunc[opin] = patternFunc[opin].replace(tpin, funcs[onet.predPin])
     # remove useless variables
@@ -273,7 +276,7 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
         for func in patternFunc.values():
             if not (ipin in func):
                 useless.add(ipin)
-    ipins = sorted(list(set(ipins) - useless), key=lambda x: (int(x.split('_')[1]), x.split('_')[0]))
+    ipins = sorted(list(set(ipins) - useless), key=lambda x: (int(x.split('_')[1][:-1]), x.split('_')[0]))
     # simplify function expression
     vars = symbols(ipins)
     for pid, ipin in enumerate(ipins):
@@ -285,17 +288,17 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
         funcs.append(func)
         patternFunc[opin] = str(simplify_logic(eval(func))).replace(' ', '').replace('&', ' ').replace('|', '+').replace('~', '!')
     # rename variables
-    new_ipins = []
+    new_ipins = {}
     varsMap = {}
     for id, ipin in enumerate(ipins):
         pid = chr(65 + id)
         for opin in opins:
             patternFunc[opin] = patternFunc[opin].replace(ipin, pid)
-        new_ipins.append(pid)
+        new_ipins[ipin] = pid
         varsMap[pid] = f'vars[{id}]'
     # record equivalent input pins
     IPEqu = {}
-    allPins = set(new_ipins)
+    allPins = set(new_ipins.values())
     while allPins:
         cur = allPins.pop()
         curPins = {cur}

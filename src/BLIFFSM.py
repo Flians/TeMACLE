@@ -76,6 +76,6 @@ def SATMatch(G1: nx.DiGraph, G2: nx.DiGraph) -> bool:
         3rd IAPR-TC15 Workshop  on Graph-based Representations in Pattern Recognition, Cuen, pp. 149-159, 2001.
         https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.101.5342
     '''
-    # if sat != nx.is_isomorphic(G1, G2, node_match=iso.categorical_node_match("type", None), edge_match=iso.categorical_edge_match("pins", None)):
-    #    assert False
+    if sat != nx.is_isomorphic(G1, G2, node_match=iso.categorical_node_match("type", None), edge_match=iso.categorical_edge_match("pins", None)):
+        assert False
     return sat

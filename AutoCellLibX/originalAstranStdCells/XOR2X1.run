@@ -1,8 +1,8 @@
-set lpsolve "/opt/gurobi950/linux64/bin/gurobi_cl"
-load technology "../tools/astran/Astran/build/Work/tech_freePDK45.rul"
-load netlist "../stdCelllib/cellsAstranFriendly.sp"
+set lpsolve "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl"
+load technology "/home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+load netlist "/home/flynn/workplace/CEMapping/src/../stdCelllib/cellsAstranFriendly.sp"
 cellgen select XOR2X1
 cellgen autoflow
-export layout XOR2X1 ./originalAstranStdCells//XOR2X1.gds
+export layout XOR2X1 /home/flynn/workplace/CEMapping/src/originalAstranStdCells//XOR2X1.gds
 exit
-
+    

@@ -1,0 +1,11 @@
+set(MOCKTURTLE_EXAMPLES OFF)
+set(MOCKTURTLE_EXPERIMENTS OFF)
+if(CMAKE_HOST_WIN32)
+    add_compile_options("-fpermissive")
+endif()
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+add_subdirectory(mockturtle)
+add_subdirectory(pybind11)
+
+pybind11_add_module(SynPy ${CMAKE_CURRENT_SOURCE_DIR}/synthesis.cpp)
+target_link_libraries(SynPy PUBLIC mockturtle)

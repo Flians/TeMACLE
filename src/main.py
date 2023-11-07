@@ -3,11 +3,16 @@ import time
 import matplotlib
 from queue import PriorityQueue
 
+import sys
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(SCRIPT_DIR, '../build/tools'))
+import SynPy
+
 from spice import *
 from Astran import *
 from BLIFFSM import *
 from BLIFPreProc import *
-from GDSIIAnalysis import *
+from GDSIIAnalysis import STDCellNames, loadOrignalGSCL45nmGDS, loadAstranGDS
 from liberty.parser import Group, Attribute, EscapedString
 
 def main():
@@ -21,20 +26,41 @@ def main():
     technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
     stdSpiceNetlistPath=f"{current_path}/../stdCelllib/cellsAstranFriendly.sp"
     initialLibertyPath = f"{current_path}/../stdCelllib/gscl45nm.lib"
+    initialGenlibPath = f'{current_path}/../stdCelllib/gscl45nm.genlib'
+    
+    # generate Astran-based cells
+    if (AstranPath != ""):
+        for oriStdCellType in STDCellNames:
+            if (oriStdCellType.find("bool") >= 0 or oriStdCellType == 'PI'):
+                continue
+            if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
+                continue
+            runAstranForNetlist(AstranPath=AstranPath, 
+                                gurobiPath=gurobiPath,
+                                technologyPath=technologyPath,
+                                spiceNetlistPath=stdSpiceNetlistPath,
+                                complexName=oriStdCellType, commandDir=f'{current_path}/originalAstranStdCells/')
 
     # load liberty/spice
     stdType2GSCLArea = loadOrignalGSCL45nmGDS()
     subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
     stdCellLib, liberty = loadLibertyFile(initialLibertyPath)
+    stdType2AstranArea = loadAstranGDS()
+    # update area
+    for cell_group in liberty.get_groups('cell'):
+        for a in cell_group.attributes:
+            if a.name == 'area':
+                a.value = stdType2AstranArea[cell_group.args[0]]
+                break
+    writeGenlib(liberty, initialGenlibPath)
 
     benchmarks = ["sqrt",
                   "voter", "arbiter", "cavlc", "div",
                   "int2float", "max", "priority", "sin",
                   "square", "BoomBranchPredictor",
                   "GemminiLoopMatmul", "GemminiLoopConv", "DCache", "BoomRegisterFile", "GemminiMesh", ]
-    # benchmarks = ["adder", "ctrl", "i2c", "multiplier", "router"]
-    benchmarks = ["adder"]
-
+    benchmarks = ["adder", 'arbiter', 'bar', 'cavlc', "ctrl", 'dec', 'div', 'hyp', "i2c", 'int2float', 'log2', 'max', 'mem_ctrl', "multiplier", "priority", "router", 'sin', 'sqrt', "square", 'voter']
+    benchmarks = ['bar']
     topThr = 5 # The maximum number of patterns chosen
     cntThr = 10 # # The maximum node number of each pattern
     cutsize = 3
@@ -48,27 +74,34 @@ def main():
         # mapping
         blifFileName = f'{outputPath}/{benchmarkName}.blif'
         if not os.path.exists(blifFileName):
+            with open(f'{outputPath}/{benchmarkName}.lib', 'w') as lib_writer:
+                        lib_writer.write("\n".join(writeLiberty(liberty)))
+            initialRes = SynPy.synthesis(f'{current_path}/../benchmark/aig/{benchmarkName}.aig', initialGenlibPath, f'{outputPath}/{benchmarkName}.lib', blifFileName)
+            if initialRes[0] == -1:
+                """ 
             if os.system(
-f'''yosys -p "read_liberty -lib {initialLibertyPath};
-read_blif {current_path}/../benchmark/blif/{benchmarkName}.blif;
+f'''yosys -p "read_liberty -lib {outputPath}/{benchmarkName}.lib;
+read_verilog {current_path}/../benchmark/aig/{benchmarkName}.v;
 hierarchy -auto-top;
 flatten;
 synth -auto-top;
 flatten;
 proc; fsm; opt; memory; opt;
-dfflibmap -liberty {initialLibertyPath};
-abc -liberty {initialLibertyPath};
+dfflibmap -liberty {outputPath}/{benchmarkName}.lib;
+abc -liberty {outputPath}/{benchmarkName}.lib;
 opt;
 opt;
 clean;
 opt;
 clean;
 write_blif -impltf {blifFileName};
-stat -liberty {initialLibertyPath};"'''):
+stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
+                """
                 print('>>> mapping failed!')
                 continue
             else:
                 print('>>> mapping succeed!')
+            
         # load spice/design BLIF
         BLIFGraph, cells, stdCellTypesForFeature, clusterTree = loadDataAndPreprocess(
             stdCellLib=stdCellLib,
@@ -77,20 +110,6 @@ stat -liberty {initialLibertyPath};"'''):
             startTime=startTime)
         oriArea = getArea(cells, stdType2GSCLArea)
         print("originalArea=", oriArea)
-
-        # generate Astran-based cells
-        if (AstranPath != ""):
-            for oriStdCellType, oriStdCellFreq in stdCellTypesForFeature:
-                if (oriStdCellType.find("bool") >= 0):
-                    continue
-                if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
-                    continue
-                runAstranForNetlist(AstranPath=AstranPath, 
-                                    gurobiPath=gurobiPath,
-                                    technologyPath=technologyPath,
-                                    spiceNetlistPath=stdSpiceNetlistPath,
-                                    complexName=oriStdCellType, commandDir=f'{current_path}/originalAstranStdCells/')
-        stdType2AstranArea = loadAstranGDS()
         astranArea = getArea(cells, stdType2AstranArea)
         print("astranArea=", astranArea)
 
@@ -102,8 +121,8 @@ stat -liberty {initialLibertyPath};"'''):
         patternFuncs = set()
         for cid in range(topThr):
             # fliter clusters and get Top-K clusters
-            pattern2Coding = defaultdict(list)
-            pattern2Cnt = defaultdict(lambda: [0, 0])
+            pattern2Coding = {}
+            pattern2Cnt = {}
             for coding, codingTree in clusterTree.items():
                 if len(codingTree) < 2:
                     continue
@@ -111,15 +130,15 @@ stat -liberty {initialLibertyPath};"'''):
                 if nnode > cntThr:  # limit the maximum node number of each cluster
                     continue
                 for rootId, clusters in codingTree.items():
-                    pattern2Coding[coding] += clusters
-                    pattern2Cnt[coding][1] += len(clusters)  # the number of clusters
+                    pattern2Coding.setdefault(coding, []).extend(clusters)
+                    pattern2Cnt.setdefault(coding, [0, 0])[1] += len(clusters)  # the number of clusters
                 pattern2Cnt[coding][0] = pattern2Cnt[coding][1] * nnode  # total number of nodes
 
             sorted_by_second = sorted(pattern2Cnt.items(), key=lambda k_v: (-k_v[1][0], -k_v[1][1]))
             print("top pattern types: ", sorted_by_second)
 
             # statistical Top-K cluster frequency
-            clusterSeqs = PriorityQueue(topThr * 2)
+            clusterSeqs = PriorityQueue()
             for coding, _ in sorted_by_second:
                 nnode = int(coding[:coding.index('|')])
                 cur_clusters = set(pattern2Coding[coding])
@@ -149,11 +168,12 @@ stat -liberty {initialLibertyPath};"'''):
                 if (ncluster == 0 or nnode >= cntThr):
                     continue
 
-                patternTraceId = str(cid) + '_' + ','.join(map(str, sorted(list(clusterSeq.patternClusters[0].cellIdsContained))))
+                patternTraceId = 'G' + str(cid) + '_' + '_'.join(map(str, sorted(list(clusterSeq.patternClusters[0].cellIdsContained))))
                 print("dealing with pattern#", patternTraceId, "with", ncluster, "clusters ( size =", nnode, ")")
                 patternSubgraph = clusterSeq.patternClusters[0].graph
                 # construct the cluster's function
                 patternFunc, ipins, opins, IPEqu = obtainClusterFunc(patternSubgraph, cells)
+                assert(len(ipins) <= cutsize)
                 flag = True
                 for opin, func in patternFunc.items():
                     if func not in patternFuncs:
@@ -164,7 +184,7 @@ stat -liberty {initialLibertyPath};"'''):
 
                 drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/{patternTraceId}.png', withLabel=True, figsize=(20, 20))
                 # export the SPICE netlist of the complex of cells
-                exportSpiceNetlist(clusterSeq, subckts, patternTraceId, outputPath)
+                exportSpiceNetlist(clusterSeq, subckts, patternTraceId, ipins, opins, outputPath)
                 # if ASTRAN is available, run it to get the layout and area evaluation
                 if (AstranPath != "" and not os.path.exists(f'{outputPath}/{patternTraceId}.gds')):
                     try:
@@ -186,12 +206,17 @@ stat -liberty {initialLibertyPath};"'''):
                 newUnitAstranArea = loadAstranArea(outputPath, f'{patternTraceId}')
                 if oriUnitAstranArea > newUnitAstranArea:
                     # construct a new cell
-                    newCell = Group('cell', [patternTraceId], [Attribute('area', newUnitAstranArea), Attribute('nnode', nnode)], [Group('pin',[ipin],[Attribute('direction', 'input')]) for ipin in ipins] + [Group('pin',[opin],[Attribute('direction', 'output'), Attribute('function', EscapedString(patternFunc[opin]))]) for opin in opins])
+                    newCell = Group('cell', [patternTraceId], [Attribute('area', newUnitAstranArea), Attribute('nnode', nnode)], [Group('pin',[ipin],[Attribute('direction', 'input')]) for ipin in ipins.values()] + [Group('pin',[opin],[Attribute('direction', 'output'), Attribute('function', EscapedString(patternFunc[opin]))]) for opin in opins])
                     liberty.groups.append(newCell)
                     with open(f'{outputPath}/{patternTraceId}.lib', 'w') as lib_writer:
                         lib_writer.write("\n".join(writeLiberty(liberty)))
                     stdCellIPEqu[patternTraceId] = IPEqu
                     # remapping
+                    writeGenlib(liberty, f'{outputPath}/{patternTraceId}.genlib')
+                    initialRes = SynPy.synthesis(f'{current_path}/../benchmark/aig/{benchmarkName}.aig', f'{outputPath}/{patternTraceId}.genlib', 
+                                                 f'{outputPath}/{patternTraceId}.lib', f'{outputPath}/{patternTraceId}.blif')
+                    if initialRes[0] == -1:
+                        """
                     if os.system(
     f'''yosys -p "read_liberty -lib {outputPath}/{patternTraceId}.lib;
     read_blif {blifFileName};
@@ -209,17 +234,18 @@ stat -liberty {initialLibertyPath};"'''):
     clean;
     write_blif -impltf {outputPath}/{patternTraceId}.blif;
     stat -liberty {outputPath}/{patternTraceId}.lib;"'''):
+                        """
                         print('>>> remapping failed!')
                         liberty.groups.pop()
                         del stdCellIPEqu[patternTraceId]
                     else:
                         print('>>> remapping succeed!')
-                        newCell = StdCellType(patternTraceId)
-                        for ipin in ipins:
+                        newCell = StdCellType(patternTraceId, nnode)
+                        for ipin in ipins.values():
                             newCell.addPin(ipin, 'input')
                         for opin in opins:
                             newCell.addPin(opin, 'output', patternFunc[opin])
-                        stdCellLib[patternTraceId] = stdCellLib
+                        stdCellLib[patternTraceId] = newCell
                         # load spice/design BLIF
                         BLIFGraph_, cells_, stdCellTypesForFeature_, clusterTree_ = loadDataAndPreprocess(
                             stdCellLib=stdCellLib,
@@ -239,6 +265,7 @@ stat -liberty {initialLibertyPath};"'''):
                         else:
                             print(f'>>> choose the cluster {patternTraceId}!\n')
                         BLIFGraph, cells, stdCellTypesForFeature, clusterTree = BLIFGraph_, cells_, stdCellTypesForFeature_, clusterTree_
+                        subckts.update(loadSpiceSubcircuits(f'{outputPath}/{patternTraceId}.sp'))
                         blifFileName = F'{outputPath}/{patternTraceId}.blif'
                         bestAstranArea = newAstranArea
                         complexSelection.append((f'{patternTraceId}', ncluster, nnode, clusterSeq.patternExtensionTrace))
@@ -250,7 +277,8 @@ stat -liberty {initialLibertyPath};"'''):
                                                 f'{patternTraceId}',
                                                 clusterSeq.patternExtensionTrace))
                         break
-                    pass
+                else:
+                    print('>>> there is no area improvement for new pattern!')
                 
         saveArea = astranArea - bestAstranArea
         print("saveArea=", saveArea, " / ", saveArea / astranArea * 100, "%")

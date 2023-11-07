@@ -29,7 +29,7 @@ def main():
                   "int2float", "max", "priority", "sin",
                   "square", "BoomBranchPredictor",
                   "GemminiLoopMatmul", "GemminiLoopConv", "DCache", "BoomRegisterFile", "GemminiMesh", ]
-    benchmarks = ["adder", "ctrl", "i2c", "multiplier", "router"]
+    benchmarks = ["adder", 'arbiter', 'bar', 'cavlc', "ctrl", 'dec', 'div', 'hyp', "i2c", 'int2float', 'log2', 'max', 'mem_ctrl', "multiplier", "priority", "router", 'sin', 'sqrt', "square", 'voter']
 
     stdType2GSCLArea = loadOrignalGSCL45nmGDS()
     topThr = 5
@@ -306,3 +306,17 @@ def main():
 if __name__ == '__main__':
     matplotlib.use("Pdf")
     main()
+    ''' 
+    import sys
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    sys.path.append(os.path.join(SCRIPT_DIR, '../build/tools'))
+    import SynPy
+
+    current_path = os.path.dirname(os.path.abspath(__file__))
+    benchmarks = ["adder", 'arbiter', 'bar', 'cavlc', "ctrl", 'dec', 'div', 'hyp', "i2c", 'int2float', 'log2', 'max', 'mem_ctrl', "multiplier", "priority", "router", 'sin', 'sqrt', "square", 'voter']
+    for benchmarkName in benchmarks:
+        initialRes = SynPy.synthesis(f'{current_path}/../benchmark/aig/{benchmarkName}.aig', f'{current_path}/../stdCelllib/gscl45nm.genlib', 
+                                     f'{current_path}/../src/outputs/adder/adder.lib', f'{current_path}/../benchmark/blif/{benchmarkName}.blif')
+        if initialRes[0] == -1:
+            print(f'>>> synthesis {benchmarkName} failed!')
+    '''
