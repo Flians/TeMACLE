@@ -74,7 +74,7 @@ sudo apt install libcryptominisat5-dev
 
 ``` bash
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping.log 2>&1 &
-[3] 117228
+[1] 154280
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u AutoCellLibX/main.py > AutoCellLibX.log 2>&1 &
-[2] 123368
+[2] 155867
 ```

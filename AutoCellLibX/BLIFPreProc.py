@@ -40,7 +40,9 @@ def loadLibertyFile(fileName):
     # Read and parse a library.
     library = parse_liberty(open(fileName).read())
 
-    stdCellLib = dict()
+    stdCellLib = {'const_0': StdCellType('const_0'), 'const_1': StdCellType('const_1')}
+    stdCellLib['const_0'].addPin('q', 'output')
+    stdCellLib['const_1'].addPin('q', 'output')
 
     # Loop through all cells.
     for cell_group in library.get_groups('cell'):

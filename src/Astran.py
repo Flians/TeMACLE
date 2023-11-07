@@ -17,7 +17,7 @@ def loadAstranArea(GDSPath, typeName):
             if (line.find("-> Cell Size (W x H): ") >= 0):
                 return float(line.replace("-> Cell Size (W x H): ", "").split("x")[0]) * 0.8 * 3.2
 
-    assert (False)
+    return False
 
 
 def runAstranForNetlist(AstranPath, gurobiPath, technologyPath, spiceNetlistPath, complexName, commandDir):
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
     threads = []
     for oriStdCellType in STDCellNames:
-        if (oriStdCellType.find("bool") >= 0 or oriStdCellType == 'PI'):
+        if (oriStdCellType.find("bool") >= 0 or oriStdCellType in ['PI', 'const_0', 'const_1']):
             continue
         if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
             continue

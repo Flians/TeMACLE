@@ -171,7 +171,10 @@ def loadLibertyFile(fileName) -> tuple[Dict[str, StdCellType], Group]:
     liberty = parse_liberty(open(fileName).read())
 
     # Loop through all cells.
-    stdCellLib = {'PI': StdCellType('PI', 0)}
+    stdCellLib = {'PI': StdCellType('PI', 0), 'const_0': StdCellType('const_0', 0), 'const_1': StdCellType('const_1', 0)}
+    stdCellLib['PI'].addPin('Y', 'output')
+    stdCellLib['const_0'].addPin('q', 'output', 'CONST0')
+    stdCellLib['const_1'].addPin('q', 'output', 'CONST1')
     for cell_group in liberty.get_groups('cell'):
         name = cell_group.args[0]
         newStdCellType = StdCellType(name, cell_group.get_attribute(key='nnode', default=1))

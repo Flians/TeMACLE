@@ -31,7 +31,7 @@ def main():
     # generate Astran-based cells
     if (AstranPath != ""):
         for oriStdCellType in STDCellNames:
-            if (oriStdCellType.find("bool") >= 0 or oriStdCellType == 'PI'):
+            if (oriStdCellType.find("bool") >= 0 or oriStdCellType in ['PI', 'const_0', 'const_1']):
                 continue
             if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
                 continue
@@ -60,7 +60,6 @@ def main():
                   "square", "BoomBranchPredictor",
                   "GemminiLoopMatmul", "GemminiLoopConv", "DCache", "BoomRegisterFile", "GemminiMesh", ]
     benchmarks = ["adder", 'arbiter', 'bar', 'cavlc', "ctrl", 'dec', 'div', 'hyp', "i2c", 'int2float', 'log2', 'max', 'mem_ctrl', "multiplier", "priority", "router", 'sin', 'sqrt', "square", 'voter']
-    benchmarks = ['bar']
     topThr = 5 # The maximum number of patterns chosen
     cntThr = 10 # # The maximum node number of each pattern
     cutsize = 3
@@ -204,6 +203,9 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 exampleCells = clusterSeq.patternClusters[0].cellsContained
                 oriUnitAstranArea = getArea(exampleCells, stdType2AstranArea)
                 newUnitAstranArea = loadAstranArea(outputPath, f'{patternTraceId}')
+                if not newUnitAstranArea or newUnitAstranArea <=0:
+                    print("\n>>> : Synthesis pattern#", patternTraceId, "unsuccessfully!")
+                    continue
                 if oriUnitAstranArea > newUnitAstranArea:
                     # construct a new cell
                     newCell = Group('cell', [patternTraceId], [Attribute('area', newUnitAstranArea), Attribute('nnode', nnode)], [Group('pin',[ipin],[Attribute('direction', 'input')]) for ipin in ipins.values()] + [Group('pin',[opin],[Attribute('direction', 'output'), Attribute('function', EscapedString(patternFunc[opin]))]) for opin in opins])
