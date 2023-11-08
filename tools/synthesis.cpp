@@ -8,6 +8,7 @@
 #include <pybind11/stl.h>
 #include <string>
 #include <vector>
+#include <chrono>
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 #define NULLL_PATH "NUL"
@@ -85,6 +86,7 @@ std::pair<double, double> synthesis(const std::string &aigPath, const std::strin
   }
   // const uint32_t size_before = aig.num_gates();
   // const uint32_t depth_before = mockturtle::depth_view(aig).depth();
+  auto start = std::chrono::high_resolution_clock::now();
 
   mockturtle::lut_mapping_params ps;
   ps.cut_enumeration_ps.cut_size = 4u;
@@ -101,7 +103,9 @@ std::pair<double, double> synthesis(const std::string &aigPath, const std::strin
   mockturtle::dsd_resynthesis<mockturtle::aig_network, decltype(exact_resyn)> resyn(exact_resyn);
   aig = mockturtle::node_resynthesis<mockturtle::aig_network>(klut, resyn, {}, &nrst);
   auto cec1 = abc_cec_impl(aig, aigPath);
-
+  auto end = std::chrono::high_resolution_clock::now();
+  std::cout << "resyn runtime: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << std::endl;
+  
   /* library to map to technology */
   mockturtle::map_params ps2;
   ps2.cut_enumeration_ps.minimize_truth_table = true;
@@ -110,6 +114,8 @@ std::pair<double, double> synthesis(const std::string &aigPath, const std::strin
   mockturtle::binding_view<mockturtle::klut_network> res2 = map(aig, tech_lib, ps2, &st2);
   const auto cec2 = abc_cec_impl(res2, aigPath);
   fmt::print("[i] area: {}, depth: {}, cec1: {}, cec2: {}\n", st2.area, mockturtle::depth_view(res2).depth(), cec1, cec2);
+  start = std::chrono::high_resolution_clock::now();
+  std::cout << "mapping runtime: " << std::chrono::duration_cast<std::chrono::seconds>(start - end).count() << std::endl;
 
   std::string mappedPath = "/tmp/" + strRand(10) + ".v";
   mockturtle::write_verilog_with_binding(res2, mappedPath);

@@ -53,11 +53,11 @@ def main():
         print("originalArea=", oriArea)
 
         outputPath = f"{current_path}/outputs/{benchmarkName}/"
-        mkdir(outputPath)
+        os.makedirs(outputPath, exist_ok=True)
 
         if (ASTRANBuildPath != ""):
             for oriStdCellType in stdCellTypesForFeature:
-                if (oriStdCellType.find("bool") >= 0):
+                if (oriStdCellType.find("bool") >= 0 or oriStdCellType in ['const_0', 'const_1']):
                     continue
                 if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
                     continue
@@ -311,12 +311,17 @@ if __name__ == '__main__':
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
     sys.path.append(os.path.join(SCRIPT_DIR, '../build/tools'))
     import SynPy
+    import time
 
     current_path = os.path.dirname(os.path.abspath(__file__))
     benchmarks = ["adder", 'arbiter', 'bar', 'cavlc', "ctrl", 'dec', 'div', 'hyp', "i2c", 'int2float', 'log2', 'max', 'mem_ctrl', "multiplier", "priority", "router", 'sin', 'sqrt', "square", 'voter']
+    benchmarks = ['log2']
     for benchmarkName in benchmarks:
+        timer = time.time()
         initialRes = SynPy.synthesis(f'{current_path}/../benchmark/aig/{benchmarkName}.aig', f'{current_path}/../stdCelllib/gscl45nm.genlib', 
                                      f'{current_path}/../src/outputs/adder/adder.lib', f'{current_path}/../benchmark/blif/{benchmarkName}.blif')
         if initialRes[0] == -1:
             print(f'>>> synthesis {benchmarkName} failed!')
+        else:
+            print(f'>>> synthesis {benchmarkName} runtime: {time.time() - timer}')
     '''

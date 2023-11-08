@@ -68,7 +68,7 @@ def main():
         startTime = time.time()
         print("=================================================================================\n",
               benchmarkName, "\n=================================================================================\n")
-        outputPath = f"{current_path}/outputs/{benchmarkName}/"
+        outputPath = f"{current_path}/outputs_K{cutsize}/{benchmarkName}/"
         os.makedirs(outputPath, exist_ok=True)
         # mapping
         blifFileName = f'{outputPath}/{benchmarkName}.blif'
@@ -110,7 +110,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
         oriArea = getArea(cells, stdType2GSCLArea)
         print("originalArea=", oriArea)
         astranArea = getArea(cells, stdType2AstranArea)
-        print("astranArea=", astranArea)
+        print("initial astranArea=", astranArea)
 
         ########################### Load data before #############################################
         bestSaveArea = 0
@@ -256,7 +256,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                             startTime=startTime)
                         stdType2AstranArea[patternTraceId] = newUnitAstranArea
                         newAstranArea = getArea(cells_, stdType2AstranArea)
-                        print("astranArea=", newAstranArea)
+                        print("current astranArea=", newAstranArea)
                         if newAstranArea >= bestAstranArea:
                             print('>>> area increased after remapping!\n')
                             liberty.groups.pop()
