@@ -205,8 +205,8 @@ def main():
             oriArea = getArea(cells, stdType2GSCLArea)
             print("originalArea=", oriArea)
 
-            outputPath = f"{current_path}/outputs/{benchmarkName}/"
-            mkdir(outputPath)
+            # outputPath = f"{current_path}/outputs/{benchmarkName}/"
+            # mkdir(outputPath)
 
             stdType2AstranArea = loadAstranGDS()
             astranArea = getArea(cells, stdType2AstranArea)
@@ -315,7 +315,6 @@ if __name__ == '__main__':
 
     current_path = os.path.dirname(os.path.abspath(__file__))
     benchmarks = ["adder", 'arbiter', 'bar', 'cavlc', "ctrl", 'dec', 'div', 'hyp', "i2c", 'int2float', 'log2', 'max', 'mem_ctrl', "multiplier", "priority", "router", 'sin', 'sqrt', "square", 'voter']
-    benchmarks = ['log2']
     for benchmarkName in benchmarks:
         timer = time.time()
         initialRes = SynPy.synthesis(f'{current_path}/../benchmark/aig/{benchmarkName}.aig', f'{current_path}/../stdCelllib/gscl45nm.genlib', 

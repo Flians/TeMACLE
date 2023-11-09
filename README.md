@@ -6,7 +6,8 @@
 https://github.com/rachelselinar/ReGDS-Logic-Gate-Extraction.git
 
 For pygraphviz in Mac
-``` bash
+
+```bash
 brew install graphviz
 python -m pip install \
     --global-option=build_ext \
@@ -16,7 +17,8 @@ python -m pip install \
 ```
 
 For Astran
-``` bash
+
+```bash
 sudo apt install libglew-dev
 sudo apt install freeglut3-dev
 sudo apt install libgtk-3-dev
@@ -42,12 +44,14 @@ sudo apt install libwxgtk-webview3.2unofficial-dev
 ```
 
 For AutoCellLibX
+
 ```bash
 sudo apt install graphviz graphviz-dev
 pip install pygraphviz
 ```
 
 For PROBE_SMT_AutoCell
+
 ```bash
 sudo apt install libfmt-dev 
 sudo apt install libjsoncpp-dev
@@ -57,6 +61,7 @@ sudo apt install nlohmann-json3-dev
 ```
 
 For GraphMiner
+
 ```bash
 sudo apt install libpapi-dev
 sudo apt install libtbb-dev
@@ -65,6 +70,7 @@ sudo apt install libopenblas-dev
 ```
 
 For SATMargin
+
 ```bash
 sudo apt install cryptominisat
 sudo apt install libcryptominisat5-dev
@@ -72,7 +78,7 @@ sudo apt install libcryptominisat5-dev
 
 ## Run
 
-``` bash
+```bash
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping.log 2>&1 &
 [1] 154280
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u AutoCellLibX/main.py > AutoCellLibX.log 2>&1 &
@@ -82,6 +88,6 @@ flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/mai
 [3] 927439
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u main.py > ../cemapping_K4.log 2>&1 &
 [1] 926403
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/AutoCellLibX$ nohup python3 -u main.py > ../AutoCellLibX_2.log 2>&1 &
-[2] 925924
+flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/AutoCellLibX$ nohup python3 -u main.py > ../AutoCellLibX.log 2>&1 &
+[2] 1176052
 ```

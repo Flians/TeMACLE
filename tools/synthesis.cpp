@@ -113,7 +113,7 @@ std::pair<double, double> synthesis(const std::string &aigPath, const std::strin
   mockturtle::map_stats st2;
   mockturtle::binding_view<mockturtle::klut_network> res2 = map(aig, tech_lib, ps2, &st2);
   const auto cec2 = abc_cec_impl(res2, aigPath);
-  fmt::print("[i] area: {}, depth: {}, cec1: {}, cec2: {}\n", st2.area, mockturtle::depth_view(res2).depth(), cec1, cec2);
+  fmt::print("[i] area: {}, gates: {}, depth: {}, cec1: {}, cec2: {}\n", st2.area, res2.num_gates(), mockturtle::depth_view(res2).depth(), cec1, cec2);
   start = std::chrono::high_resolution_clock::now();
   std::cout << "mapping runtime: " << std::chrono::duration_cast<std::chrono::seconds>(start - end).count() << std::endl;
 
