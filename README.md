@@ -85,9 +85,9 @@ flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u AutoCel
 [2] 155867
 
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping_K3.log 2>&1 &
-[3] 927439
+[3] 16057
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u main.py > ../cemapping_K4.log 2>&1 &
-[1] 926403
+[1] 15727
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/AutoCellLibX$ nohup python3 -u main.py > ../AutoCellLibX.log 2>&1 &
-[2] 1176052
+[2] 12715
 ```

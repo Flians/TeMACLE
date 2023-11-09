@@ -65,7 +65,6 @@ def main():
     cutsize = 3
 
     for benchmarkName in benchmarks:
-        startTime = time.time()
         print("=================================================================================\n",
               benchmarkName, "\n=================================================================================\n")
         outputPath = f"{current_path}/outputs_K{cutsize}/{benchmarkName}/"
@@ -100,7 +99,9 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 continue
             else:
                 print('>>> mapping succeed!')
-            
+        
+        total_resyn_time = 0
+        startTime = time.time()
         # load spice/design BLIF
         BLIFGraph, cells, stdCellTypesForFeature, clusterTree = loadDataAndPreprocess(
             stdCellLib=stdCellLib,
@@ -217,6 +218,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                     writeGenlib(liberty, f'{outputPath}/{patternTraceId}.genlib')
                     initialRes = SynPy.synthesis(f'{current_path}/../benchmark/aig/{benchmarkName}.aig', f'{outputPath}/{patternTraceId}.genlib', 
                                                  f'{outputPath}/{patternTraceId}.lib', f'{outputPath}/{patternTraceId}.blif')
+                    total_resyn_time += initialRes[1]
                     if initialRes[0] == -1:
                         """
                     if os.system(
@@ -270,13 +272,13 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                         subckts.update(loadSpiceSubcircuits(f'{outputPath}/{patternTraceId}.sp'))
                         blifFileName = F'{outputPath}/{patternTraceId}.blif'
                         bestAstranArea = newAstranArea
-                        complexSelection.append((f'{patternTraceId}', ncluster, nnode, clusterSeq.patternExtensionTrace))
+                        complexSelection.append([patternTraceId, ncluster, nnode, clusterSeq.patternExtensionTrace])
                         recordPatternDetails.append(((oriUnitAstranArea - newUnitAstranArea) * ncluster,
                                                 (oriUnitAstranArea - newUnitAstranArea) * ncluster / astranArea * 100,
                                                 ncluster,
                                                 nnode,
                                                 ntnode,
-                                                f'{patternTraceId}',
+                                                patternTraceId,
                                                 clusterSeq.patternExtensionTrace))
                         break
                 else:
@@ -290,9 +292,19 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
             print(bestSaveArea, " <- compared to Astran GDS area", file=fileResult)
             print(bestSaveArea / astranArea * 100, "% <- compared to Astran GDS area", file=fileResult)
             print("The generated complex cells are (name, clusterNum, cellNumInOneCluster, patternCode):", file=fileResult)
+            cell_name_num = {x[0]:x[1] for x in stdCellTypesForFeature}
+            totalClusterCellNum = 0
+            eachClusterNum = []
+            totalCellNum = sum(stdCellLib[x[0]].nnode * x[1] for x in stdCellTypesForFeature)
             for complexName in complexSelection:
-                print(complexName, file=fileResult)
-            print("\n runtime:", time.time() - startTime, " (s)", file=fileResult)
+                complexName[1] = cell_name_num.get(complexName[0], 0)
+                if complexName[1] > 0:
+                    eachClusterNum.append(str(complexName[2]))
+                    totalClusterCellNum += complexName[1] * complexName[2]
+                    print(complexName, file=fileResult)
+            print('Pattern Sizes: ', '/'.join(eachClusterNum), file=fileResult)
+            print(f'Pattern Cov.: {totalClusterCellNum}/{totalCellNum}={totalClusterCellNum / totalCellNum}', file=fileResult)
+            print("\n runtime:", time.time() - startTime - total_resyn_time, " (s)", file=fileResult)
             fileResult.close()
         else:
             print('There is no improvement for', benchmarkName)

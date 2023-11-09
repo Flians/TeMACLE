@@ -104,7 +104,8 @@ std::pair<double, double> synthesis(const std::string &aigPath, const std::strin
   aig = mockturtle::node_resynthesis<mockturtle::aig_network>(klut, resyn, {}, &nrst);
   auto cec1 = abc_cec_impl(aig, aigPath);
   auto end = std::chrono::high_resolution_clock::now();
-  std::cout << "resyn runtime: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << std::endl;
+  auto resyn_time = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+  std::cout << "resyn runtime: " << resyn_time << std::endl;
   
   /* library to map to technology */
   mockturtle::map_params ps2;
@@ -124,7 +125,7 @@ std::pair<double, double> synthesis(const std::string &aigPath, const std::strin
     return std::make_pair(-1, -1);
   }
 
-  return std::make_pair(st2.area, mockturtle::depth_view(res2).depth());
+  return std::make_pair(st2.area, resyn_time);
 }
 
 PYBIND11_MODULE(SynPy, m) {

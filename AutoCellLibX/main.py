@@ -158,9 +158,15 @@ def main():
                 print(lastSaveGSCLArea, " <- compared to GSCL GDS area", file=fileResult)
                 print(lastSaveGSCLArea / oriArea * 100, "% <- compared to GSCL GDS area", file=fileResult)
                 print("The generated complex cells are (name, clusterNum, cellNumInOneCluster, patternCode):", file=fileResult)
+                eachClusterNum = []
+                totalClusterCellNum = 0
                 for complexName in lastComplexSelection:
                     print(complexName, file=fileResult)
-                print("\n runtime:", time.time() - startTime, " (s)", file=fileResult)
+                    eachClusterNum.append(str(complexName[2]))
+                    totalClusterCellNum += complexName[1] * complexName[2]
+                # print("\n runtime:", time.time() - startTime, " (s)", file=fileResult)
+                print('Pattern Sizes: ', '/'.join(eachClusterNum), file=fileResult)
+                print(f'Pattern Cov.: {totalClusterCellNum}/{len(cells)}={totalClusterCellNum / len(cells)}', file=fileResult)
                 fileResult.close()
             else:
                 break
@@ -182,6 +188,10 @@ def main():
             clusterSeqs = removeEmptySeqsAndDisableClusters(clusterSeqs)
             clusterSeqs = sortPatternClusterSeqs(clusterSeqs)
 
+        # record total runtime
+        with open(outputPath + "/bestRecord-" + benchmarkName, 'a') as fileResult:
+            fileResult.write(f"\n runtime: {time.time() - startTime} (s)\n")
+            
         if (benchmarkFailure):
             continue
 
@@ -199,8 +209,7 @@ def main():
                 startTime=startTime, bypassInitialCluster=True)
 
             clusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netlist, targetPatternTrace)
-            endTime = time.time()
-            print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", endTime - startTime)
+            print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", time.time() - startTime)
 
             oriArea = getArea(cells, stdType2GSCLArea)
             print("originalArea=", oriArea)
