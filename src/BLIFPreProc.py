@@ -344,24 +344,27 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: L
             cutLeaves = cut - {root}
             for node in cutLeaves:
                 cutGraph.nodes[node]['type'] = 'INPUT'
-            coding += '|'
+            # coding for inner edges
+            edges2Cnt = {}
+            initial_edges = set(cutGraph.edges)
+            for es, et in initial_edges:
+                if cutGraph.nodes[es]['type'] == 'INPUT':
+                    if cutGraph.nodes[et]['type'] == 'INPUT':
+                        cutGraph.remove_edge(es,et)
+                        continue
+                    cutGraph[es][et]['pins'] = 'INPUT:Y-' + cutGraph[es][et]['pins'].split('-')[1]
+                edges2Cnt.setdefault(cutGraph[es][et]['pins'], 0)
+                edges2Cnt[cutGraph[es][et]['pins']] += 1
+            for ename in sorted(edges2Cnt):
+                coding += '|' + ename + '=' + str(edges2Cnt[ename])
             # coding for out degrees
+            coding += '|'
             odegree2Cnt = {}
             for node, out_degree in cutGraph.out_degree():
                 ntype = cutGraph.nodes[node]['type']
                 odegree2Cnt.setdefault(ntype, []).append(out_degree)
             for nname in sorted(odegree2Cnt):
                 coding += ''.join(map(str, sorted(odegree2Cnt[nname])))
-            # coding for inner edges
-            edges2Cnt = {}
-            for es, et in cutGraph.edges:
-                if cutGraph.nodes[es]['type'] == 'INPUT':
-                    cutGraph[es][et]['pins'] = 'INPUT:Y-' + cutGraph[es][et]['pins'].split('-')[1]
-                edges2Cnt.setdefault(cutGraph[es][et]['pins'], 0)
-                edges2Cnt[cutGraph[es][et]['pins']] += 1
-            for ename in sorted(edges2Cnt):
-                coding += '|' + ename + '=' + str(edges2Cnt[ename])
-
             # new cluster
             newCluster = DesignPatternCluster(cid, coding, cells, nonleaves, rootId=root, kcut=cut, graph=cutGraph)
             cid += 1

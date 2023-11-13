@@ -348,7 +348,7 @@ bool DesignMng::readCommand(string cmd){
                             //Insert Boxes
                             list <Box>::iterator layer_it;
                             map <layer_name , list<Box> >::iterator layers_it; // iterador das camadas		
-                            for (layers_it = circuit->getLayout(words[2])->layers.begin(); layers_it != circuit->getLayout(words[2])->layers.end(); layers_it++) {
+                            for (layers_it = circuit->getLayout(upcase(words[2]))->layers.begin(); layers_it != circuit->getLayout(upcase(words[2]))->layers.end(); layers_it++) {
                                 if ( !layers_it->second.empty() ) {
                                     int layer = strToInt(rules->getGDSIIVal(layers_it->first));
                                     for ( layer_it = layers_it->second.begin(); layer_it != layers_it->second.end(); layer_it++ ){
@@ -364,14 +364,14 @@ bool DesignMng::readCommand(string cmd){
                                     }
                                 }
                             }
-                            
+
                             list<Label>::iterator labels_it;
-                            for (labels_it = circuit->getLayout(words[2])->labels.begin(); labels_it != circuit->getLayout(words[2])->labels.end(); labels_it++){
+                            for (labels_it = circuit->getLayout(upcase(words[2]))->labels.begin(); labels_it != circuit->getLayout(upcase(words[2]))->labels.end(); labels_it++){
                                 strcpy(tmp, labels_it->text.c_str());
                                 g.generateLabel(strToInt(rules->getGDSIIVal(MET1)), 2*labels_it->pt.getX(), 2*labels_it->pt.getY(), tmp);
                                 g.generateEndelement();
                             }
-                            
+
                             
                             g.generateEndStruct();
                             g.generateEndLibrary();

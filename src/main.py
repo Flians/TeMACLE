@@ -1,4 +1,5 @@
 import os
+import copy
 import time
 import matplotlib
 from queue import PriorityQueue
@@ -64,16 +65,19 @@ def main():
     cntThr = 10 # # The maximum node number of each pattern
     cutsize = 3
 
+    recover_stdCellLib, recover_liberty = copy.deepcopy(stdCellLib), copy.deepcopy(liberty)
     for benchmarkName in benchmarks:
         print("=================================================================================\n",
               benchmarkName, "\n=================================================================================\n")
         outputPath = f"{current_path}/outputs_K{cutsize}/{benchmarkName}/"
         os.makedirs(outputPath, exist_ok=True)
+        # copy library 
+        # stdCellLib, liberty = copy.deepcopy(recover_stdCellLib), copy.deepcopy(recover_liberty)
         # mapping
         blifFileName = f'{outputPath}/{benchmarkName}.blif'
         if not os.path.exists(blifFileName):
             with open(f'{outputPath}/{benchmarkName}.lib', 'w') as lib_writer:
-                        lib_writer.write("\n".join(writeLiberty(liberty)))
+                lib_writer.write("\n".join(writeLiberty(liberty)))
             initialRes = SynPy.synthesis(f'{current_path}/../benchmark/aig/{benchmarkName}.aig', initialGenlibPath, f'{outputPath}/{benchmarkName}.lib', blifFileName)
             if initialRes[0] == -1:
                 """ 
@@ -168,7 +172,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 if (ncluster == 0 or nnode >= cntThr):
                     continue
 
-                patternTraceId = 'G' + str(cid) + '_' + '_'.join(map(str, sorted(list(clusterSeq.patternClusters[0].cellIdsContained))))
+                patternTraceId = benchmarkName.upper() + '_G' + str(cid) + '_' + '_'.join(map(str, sorted(list(clusterSeq.patternClusters[0].cellIdsContained))))
                 print("dealing with pattern#", patternTraceId, "with", ncluster, "clusters ( size =", nnode, ")")
                 patternSubgraph = clusterSeq.patternClusters[0].graph
                 # construct the cluster's function
@@ -304,7 +308,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                     print(complexName, file=fileResult)
             print('Pattern Sizes: ', '/'.join(eachClusterNum), file=fileResult)
             print(f'Pattern Cov.: {totalClusterCellNum}/{totalCellNum}={totalClusterCellNum / totalCellNum}', file=fileResult)
-            print("\n runtime:", time.time() - startTime - total_resyn_time, " (s)", file=fileResult)
+            print("\nruntime:", time.time() - startTime - total_resyn_time, " (s)", file=fileResult)
             fileResult.close()
         else:
             print('There is no improvement for', benchmarkName)

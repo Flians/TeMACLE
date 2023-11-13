@@ -127,7 +127,8 @@ def main():
                                     loadAstranArea(outputPath, f'COMPLEX{patternTraceId}')
                                 except:
                                     print("WARNING :", benchmarkName, " fails!")
-                                    benchmarkFailure = True
+                                    # benchmarkFailure = True
+                                    break
 
                 if (benchmarkFailure):
                     break

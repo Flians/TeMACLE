@@ -129,6 +129,7 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap:dict, opins:l
 
     mergeCellName = str(patternTraceId)
     interfaceList = list(ipinMap.values()) + opins + ['VCC', 'GND']
+    # mergeCellName must be upper letters for the default Astran
     firstLine = ".subckt " + mergeCellName + ' ' + ' '.join(interfaceList)
     internalLines = [firstLine]
     for ele in spiceList:
