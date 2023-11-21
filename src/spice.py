@@ -98,8 +98,8 @@ def loadSpiceSubcircuits(filePath):
 
     return spiceSubcircuits
 
-def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap:dict, opins:list, outputDir):
-    cellsInCluster = cluserSeq.patternClusters[0].cellsContained
+def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap:dict, opins:list, outputDir, cindex: int = 0):
+    cellsInCluster = cluserSeq.patternClusters[cindex].cellsContained
     spiceList = []
     cell2orderId = dict()
     rootNode = None
@@ -110,7 +110,7 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap:dict, opins:l
         spiceList.append(SPSubcircuit(subckts[cell.stdCellType.typeName].texts))
         spiceList[-1].renamePrefix("cl" + ranStr + "_" + str(orderId) + "#")
         cell2orderId[cell] = orderId
-        if cell.id == cluserSeq.patternClusters[0].rootId:
+        if cell.id == cluserSeq.patternClusters[cindex].rootId:
             rootNode = (cell, orderId)
 
     # connect each input pins of each subcircuit

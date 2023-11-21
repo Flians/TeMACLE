@@ -64,6 +64,7 @@ def main():
     topThr = 5 # The maximum number of patterns chosen
     cntThr = 10 # # The maximum node number of each pattern
     cutsize = 3
+    ratioThr = 0.01
 
     recover_stdCellLib, recover_liberty = copy.deepcopy(stdCellLib), copy.deepcopy(liberty)
     for benchmarkName in benchmarks:
@@ -72,7 +73,7 @@ def main():
         outputPath = f"{current_path}/outputs_K{cutsize}/{benchmarkName}/"
         os.makedirs(outputPath, exist_ok=True)
         # copy library 
-        # stdCellLib, liberty = copy.deepcopy(recover_stdCellLib), copy.deepcopy(recover_liberty)
+        stdCellLib, liberty = copy.deepcopy(recover_stdCellLib), copy.deepcopy(recover_liberty)
         # mapping
         blifFileName = f'{outputPath}/{benchmarkName}.blif'
         if not os.path.exists(blifFileName):
@@ -139,7 +140,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 pattern2Cnt[coding][0] = pattern2Cnt[coding][1] * nnode  # total number of nodes
 
             sorted_by_second = sorted(pattern2Cnt.items(), key=lambda k_v: (-k_v[1][0], -k_v[1][1]))
-            print("top pattern types: ", sorted_by_second)
+            # print("top pattern types: ", sorted_by_second)
 
             # statistical Top-K cluster frequency
             clusterSeqs = PriorityQueue()
@@ -164,17 +165,22 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                     cur_clusters -= new_clusters
                     if len(new_clusters) < 2:
                         continue
-                    clusterSeqs.put(((len(new_clusters) * nnode, len(new_clusters)), DesignPatternClusterSeq(coding, list(new_clusters))))
-
+                    clusterSeqs.put(((len(new_clusters), nnode), DesignPatternClusterSeq(coding, list(new_clusters))))
+            
+            candidates = []
             while not clusterSeqs.empty():
-                (ntnode, ncluster), clusterSeq = clusterSeqs.get()
-                nnode = ntnode // ncluster
-                if (ncluster == 0 or nnode >= cntThr):
-                    continue
+                candidates.append(clusterSeqs.get())
 
-                patternTraceId = benchmarkName.upper() + '_G' + str(cid) + '_' + '_'.join(map(str, sorted(list(clusterSeq.patternClusters[0].cellIdsContained))))
+            for (ncluster, nnode), clusterSeq in reversed(candidates):
+                ntnode = nnode * ncluster
+                if (ncluster <= 1 or nnode >= cntThr or ntnode < BLIFGraph.number_of_nodes() * ratioThr):
+                    continue
+                cindex = 0
+                if benchmarkName in ['int2float', 'multiplier', 'sin', 'voter']:
+                    cindex = 1
+                patternTraceId = benchmarkName.upper() + '_G' + str(cid) + '_' + '_'.join(map(str, sorted(list(clusterSeq.patternClusters[cindex].cellIdsContained))))
                 print("dealing with pattern#", patternTraceId, "with", ncluster, "clusters ( size =", nnode, ")")
-                patternSubgraph = clusterSeq.patternClusters[0].graph
+                patternSubgraph = clusterSeq.patternClusters[cindex].graph
                 # construct the cluster's function
                 patternFunc, ipins, opins, IPEqu = obtainClusterFunc(patternSubgraph, cells)
                 assert(len(ipins) <= cutsize)
@@ -188,7 +194,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
 
                 drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/{patternTraceId}.png', withLabel=True, figsize=(20, 20))
                 # export the SPICE netlist of the complex of cells
-                exportSpiceNetlist(clusterSeq, subckts, patternTraceId, ipins, opins, outputPath)
+                exportSpiceNetlist(clusterSeq, subckts, patternTraceId, ipins, opins, outputPath, cindex=cindex)
                 # if ASTRAN is available, run it to get the layout and area evaluation
                 if (AstranPath != "" and not os.path.exists(f'{outputPath}/{patternTraceId}.gds')):
                     try:
@@ -205,7 +211,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                         print("\n>>> : Synthesis pattern#", patternTraceId, "unsuccessfully!")
                         continue
 
-                exampleCells = clusterSeq.patternClusters[0].cellsContained
+                exampleCells = clusterSeq.patternClusters[cindex].cellsContained
                 oriUnitAstranArea = getArea(exampleCells, stdType2AstranArea)
                 newUnitAstranArea = loadAstranArea(outputPath, f'{patternTraceId}')
                 if not newUnitAstranArea or newUnitAstranArea <=0:

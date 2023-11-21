@@ -91,30 +91,30 @@ std::pair<double, double> synthesis(const std::string &aigPath, const std::strin
   mockturtle::lut_mapping_params ps;
   ps.cut_enumeration_ps.cut_size = 4u;
   mockturtle::lut_mapping_stats st_lut;
-  /* collapse into k-LUT network */
+  // collapse into k-LUT network 
   mockturtle::mapping_view<mockturtle::aig_network, true> mapped_aig{aig};
   mockturtle::lut_mapping<decltype(mapped_aig), true>(mapped_aig, ps, &st_lut);
   mockturtle::klut_network klut = *mockturtle::collapse_mapped_network<mockturtle::klut_network>(mapped_aig);
-  /* node resynthesis */
+  // node resynthesis 
   mockturtle::exact_resynthesis_params ps_exact;
   ps_exact.cache = std::make_shared<mockturtle::exact_resynthesis_params::cache_map_t>();
   mockturtle::exact_aig_resynthesis<mockturtle::aig_network> exact_resyn(false, ps_exact);
   mockturtle::node_resynthesis_stats nrst;
   mockturtle::dsd_resynthesis<mockturtle::aig_network, decltype(exact_resyn)> resyn(exact_resyn);
   aig = mockturtle::node_resynthesis<mockturtle::aig_network>(klut, resyn, {}, &nrst);
-  auto cec1 = abc_cec_impl(aig, aigPath);
+  // auto cec1 = abc_cec_impl(aig, aigPath);
   auto end = std::chrono::high_resolution_clock::now();
   auto resyn_time = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
   std::cout << "resyn runtime: " << resyn_time << std::endl;
-  
+    
   /* library to map to technology */
   mockturtle::map_params ps2;
   ps2.cut_enumeration_ps.minimize_truth_table = true;
   ps2.cut_enumeration_ps.cut_limit = 24;
   mockturtle::map_stats st2;
-  mockturtle::binding_view<mockturtle::klut_network> res2 = map(aig, tech_lib, ps2, &st2);
-  const auto cec2 = abc_cec_impl(res2, aigPath);
-  fmt::print("[i] area: {}, gates: {}, depth: {}, cec1: {}, cec2: {}\n", st2.area, res2.num_gates(), mockturtle::depth_view(res2).depth(), cec1, cec2);
+  mockturtle::binding_view<mockturtle::klut_network> res2 = mockturtle::map(aig, tech_lib, ps2, &st2);
+  // const auto cec2 = abc_cec_impl(res2, aigPath);
+  fmt::print("[i] area: {}, gates: {}, depth: {}\n", st2.area, res2.num_gates(), mockturtle::depth_view(res2).depth());
   start = std::chrono::high_resolution_clock::now();
   std::cout << "mapping runtime: " << std::chrono::duration_cast<std::chrono::seconds>(start - end).count() << std::endl;
 

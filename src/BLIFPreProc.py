@@ -108,10 +108,10 @@ def ancestors(G:nx.DiGraph, target, sources=None, include_self=True) -> Set:
     if unvisited:
         for tar in sources:
             tmp = dfs(tar, unvisited)
-            if unvisited - tmp:
-                pass
-            else:
-                anc |= tmp
+            unvisited -= tmp
+            anc |= tmp
+            if not unvisited:
+                break
 
     return anc | {target} if include_self else anc 
 
@@ -327,15 +327,17 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: L
             cutNodes = ancestors(BLIFGraph, target=root, sources=cut)
             if len(cutNodes) <= len(root_leaves):
                 continue
-            # cut inner nodes
             cutInnerNodes = cutNodes - root_leaves
+            nonleaves = cutInnerNodes | {root}
+            if len(nonleaves) <= 1:
+                continue
+            # cut inner nodes
             stdCell2Cnt = {}
             for node in cutInnerNodes:
                 ntype = BLIFGraph.nodes[node]['type']
                 stdCell2Cnt.setdefault(ntype, 0)
                 stdCell2Cnt[ntype] += 1
             # coding for root and inner nodes
-            nonleaves = cutInnerNodes | {root}
             coding = str(count_nnode(nonleaves, cells)) + '|' + str(len(cut)) + '|' + BLIFGraph.nodes[root]['type']
             for nname in sorted(stdCell2Cnt):
                 coding += '|' + nname + '=' + str(stdCell2Cnt[nname])
@@ -350,11 +352,15 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: L
             for es, et in initial_edges:
                 if cutGraph.nodes[es]['type'] == 'INPUT':
                     if cutGraph.nodes[et]['type'] == 'INPUT':
-                        cutGraph.remove_edge(es,et)
+                        cutGraph.remove_edge(es,et) # remove edges between inputs
                         continue
                     cutGraph[es][et]['pins'] = 'INPUT:Y-' + cutGraph[es][et]['pins'].split('-')[1]
                 edges2Cnt.setdefault(cutGraph[es][et]['pins'], 0)
                 edges2Cnt[cutGraph[es][et]['pins']] += 1
+            # remove isolated nodes
+            cutGraph.remove_nodes_from(list(nx.isolates(cutGraph)))
+            if not cutGraph.nodes:
+                continue
             for ename in sorted(edges2Cnt):
                 coding += '|' + ename + '=' + str(edges2Cnt[ename])
             # coding for out degrees
