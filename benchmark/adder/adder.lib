@@ -1,0 +1,73 @@
+library (AQFP) {
+
+time_unit : "1ps";
+length_unit: "1um";
+align_x_unit: 10; 
+setup: 0;
+hold: 13.6;
+
+
+/* ***************************
+    BUFFER
+*****************************/
+
+cell(ADDER_G0_20_21) {
+  area: 1200;
+  width: 20;
+  height: 60;
+
+  pin (A) {
+    direction : input;
+    x_offset : 0;
+    y_offset : 10; 
+  }
+  pin (B) {
+    direction : input;
+    x_offset : 0;
+    y_offset : 30; 
+  }
+  pin (C) {
+    direction : input;
+    x_offset : 0;
+    y_offset : 50; 
+  }
+  pin (Y) {
+    direction : output;
+    x_offset : 20;
+    y_offset : 30;
+    function : "(A*B*C)+(A*!B*!C)+(B*!A*!C)+(C*!A*!B)";
+  }
+}
+
+cell(ADDER_G2_27_28_29) {
+  area: 800;
+  width: 20;
+  height: 40;
+  JJ_count: 2;
+  buffer: true;
+  max_fanout_wirelength: 700;
+
+  pin (A) {
+    direction : input;
+    x_offset : 0;
+    y_offset : 10; 
+  }
+  pin (B) {
+    direction : input;
+    x_offset : 0;
+    y_offset : 30; 
+  }
+  pin (C) {
+    direction : input;
+    x_offset : 0;
+    y_offset : 50; 
+  }
+  pin (Y) {
+    direction : output;
+    x_offset : 20;
+    y_offset : 30;
+    function : "(A*B+A*C+B*C)";
+  }
+}
+
+} /* end of library */
