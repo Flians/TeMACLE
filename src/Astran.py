@@ -66,7 +66,7 @@ if __name__ == '__main__':
     # gurobiPath="/Library/gurobi1003/macos_universal2/bin/gurobi_cl" 
     gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl"
     technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
-    stdSpiceNetlistPath=f"{current_path}/../stdCelllib/cellsAstranFriendly.sp"
+    stdSpiceNetlistPath=f"{current_path}/../stdCellLib/gscl45nm/cellsAstranFriendly.sp"
 
     from GDSIIAnalysis import STDCellNames
     import threading

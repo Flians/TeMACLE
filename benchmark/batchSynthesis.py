@@ -23,7 +23,7 @@ verilogList = ["./boomModule/vFiles/*.v"]  # "./gemmini/*.v"]
 #                "./EPFL/random_control/router/verilog/router.v"]
 
 # synTemplate = """
-# read_liberty -lib ../stdCelllib/gscl45nm.lib
+# read_liberty -lib ../stdCellLib/gscl45nm/gscl45nm.lib
 # read -sv TARGETVERILOG
 # hierarchy -top top
 # flatten
@@ -34,10 +34,10 @@ verilogList = ["./boomModule/vFiles/*.v"]  # "./gemmini/*.v"]
 # proc; fsm; opt; memory; opt
 
 # # mapping flip-flops to mycells.lib
-# dfflibmap -liberty ../stdCelllib/gscl45nm.lib
+# dfflibmap -liberty ../stdCellLib/gscl45nm/gscl45nm.lib
 
 # # mapping logic to mycells.lib
-# abc  -liberty ../stdCelllib/gscl45nm.lib
+# abc  -liberty ../stdCellLib/gscl45nm/gscl45nm.lib
 # opt
 # opt
 # clean
@@ -48,7 +48,7 @@ verilogList = ["./boomModule/vFiles/*.v"]  # "./gemmini/*.v"]
 # """
 
 synTemplate = """
-read_liberty -lib ../stdCelllib/gscl45nm.lib
+read_liberty -lib ../stdCellLib/gscl45nm/gscl45nm.lib
 read -sv TARGETVERILOG
 hierarchy -top RegisterFileSynthesizable
 flatten
@@ -59,10 +59,10 @@ flatten
 proc; fsm; opt; memory; opt
 
 # mapping flip-flops to mycells.lib
-dfflibmap -liberty ../stdCelllib/gscl45nm.lib
+dfflibmap -liberty ../stdCellLib/gscl45nm/gscl45nm.lib
 
 # mapping logic to mycells.lib
-abc  -liberty ../stdCelllib/gscl45nm.lib
+abc  -liberty ../stdCellLib/gscl45nm/gscl45nm.lib
 opt
 opt
 clean

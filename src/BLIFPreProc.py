@@ -426,5 +426,5 @@ def main():
 
 
 if __name__ == '__main__':
-    stdCellLib, liberty = loadLibertyFile('stdCelllib/gscl45nm.lib')
+    stdCellLib, liberty = loadLibertyFile('stdCellLib/gscl45nm/gscl45nm.lib')
     writeGenlib(liberty, 'gscl45nm.genlib')

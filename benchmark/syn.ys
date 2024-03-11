@@ -1,24 +1,25 @@
 
-read_liberty -lib ../stdCelllib/gscl45nm.lib
-read -sv ../*.v
-hierarchy -top full_adder_1
+read_liberty -lib ./stdCellLib/gscl45nm/gscl45nm.lib
+read_blif benchmark/blif/GemminiLoopConv.blif
+hierarchy -top full_adder
 flatten
-synth -top full_adder_1
+synth -top full_adder
 flatten
 
 # the high-level stuff
 proc; fsm; opt; memory; opt
 
 # mapping flip-flops to mycells.lib
-dfflibmap -liberty ../stdCelllib/gscl45nm.lib
+dfflibmap -liberty ./stdCellLib/gscl45nm/gscl45nm.lib
 
 # mapping logic to mycells.lib
-abc  -liberty ../stdCelllib/gscl45nm.lib
+abc  -liberty ../stdCellLib/gscl45nm/gscl45nm.lib
 opt
 opt
 clean
 opt
 clean
 
-write_blif -impltf ./blif/full_adder_1.blif
+write_blif -impltf benchmark/blif2/full_adder.blif
+write_aiger benchmark/aig/GemminiLoopConv.aig
 

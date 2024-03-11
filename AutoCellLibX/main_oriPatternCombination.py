@@ -48,9 +48,9 @@ def main():
         print("=================================================================================\n",
               benchmarkName, "\n=================================================================================\n")
         # load liberty/spice/design BLIF
-        subckts = loadSpiceSubcircuits(f"{current_path}/../stdCelllib/cellsAstranFriendly.sp")
+        subckts = loadSpiceSubcircuits(f"{current_path}/../stdCellLib/gscl45nm/cellsAstranFriendly.sp")
         BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
-            libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
+            libFileName=f"{current_path}/../stdCellLib/gscl45nm/gscl45nm.lib",
             blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
             startTime=startTime)
         oriArea = getArea(cells, stdType2GSCLArea)
@@ -67,7 +67,7 @@ def main():
                     continue
                 runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
                                     technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
-                                    spiceNetlistPath=f'{current_path}/../stdCelllib/cellsAstranFriendly.sp',
+                                    spiceNetlistPath=f'{current_path}/../stdCellLib/gscl45nm/cellsAstranFriendly.sp',
                                     complexName=oriStdCellType, commandDir=f'{current_path}/originalAstranStdCells/')
         stdType2AstranArea = loadAstranGDS()
         astranArea = getArea(cells, stdType2AstranArea)

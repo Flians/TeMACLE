@@ -44,9 +44,9 @@ def main():
         print("=================================================================================\n",
               benchmarkName, "\n=================================================================================\n")
         # load liberty/spice/design BLIF
-        subckts = loadSpiceSubcircuits(f"{current_path}/../stdCelllib/cellsAstranFriendly.sp")
+        subckts = loadSpiceSubcircuits(f"{current_path}/../stdCellLib/gscl45nm/cellsAstranFriendly.sp")
         BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
-            libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
+            libFileName=f"{current_path}/../stdCellLib/gscl45nm/gscl45nm.lib",
             blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
             startTime=startTime)
         oriArea = getArea(cells, stdType2GSCLArea)
@@ -63,7 +63,7 @@ def main():
                     continue
                 runAstranForNetlist(AstranPath=ASTRANBuildPath, gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl",
                                     technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul",
-                                    spiceNetlistPath=f'{current_path}/../stdCelllib/cellsAstranFriendly.sp',
+                                    spiceNetlistPath=f'{current_path}/../stdCellLib/gscl45nm/cellsAstranFriendly.sp',
                                     complexName=oriStdCellType, commandDir=f'{current_path}/originalAstranStdCells/')
         stdType2AstranArea = loadAstranGDS()
         astranArea = getArea(cells, stdType2AstranArea)
@@ -205,7 +205,7 @@ def main():
                 continue
 
             BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
-                libFileName=f"{current_path}/../stdCelllib/gscl45nm.lib",
+                libFileName=f"{current_path}/../stdCellLib/gscl45nm/gscl45nm.lib",
                 blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif",
                 startTime=startTime, bypassInitialCluster=True)
 
@@ -327,7 +327,7 @@ if __name__ == '__main__':
     benchmarks = ["adder", 'arbiter', 'bar', 'cavlc', "ctrl", 'dec', 'div', 'hyp', "i2c", 'int2float', 'log2', 'max', 'mem_ctrl', "multiplier", "priority", "router", 'sin', 'sqrt', "square", 'voter']
     for benchmarkName in benchmarks:
         timer = time.time()
-        initialRes = SynPy.synthesis(f'{current_path}/../benchmark/aig/{benchmarkName}.aig', f'{current_path}/../stdCelllib/gscl45nm.genlib', 
+        initialRes = SynPy.synthesis(f'{current_path}/../benchmark/aig/{benchmarkName}.aig', f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.genlib', 
                                      f'{current_path}/../src/outputs/adder/adder.lib', f'{current_path}/../benchmark/blif/{benchmarkName}.blif')
         if initialRes[0] == -1:
             print(f'>>> synthesis {benchmarkName} failed!')

@@ -91,8 +91,31 @@ flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/src$ nohup python3 -u mai
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/AutoCellLibX$ nohup python3 -u main.py > ../AutoCellLibX.log 2>&1 &
 [2] 12715
 
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/src$ nohup python3 -u main.py > ../cemapping_K4_2.log 2>&1 &
-[1] 2301389
+flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/src$ nohup python3 -u main.py > ../cemapping_K4.log 2>&1 &
+[1] 3337114
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/src$ nohup python3 -u main.py > ../cemapping_K3C.log 2>&1 &
 [1] 2478568
+flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping_K3_nc.log 2>&1 &
+[1] 3691552
+flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping_K4_nc.log 2>&1 &
+[1] 4036109
+flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping_K3_nc2.log 2>&1 &
+[1] 48727
+```
+
+`lclayout --output-dir tools/StdCellLib/Tech.SKY130/test/ --tech tools/StdCellLib/Tech.SKY130/librecell_tech.py --netlist stdCellLib/cellsAstranFriendly.sp --cell AND2X2 --verbose`
+
+``` bash
+pip install volare
+# Define the following environment variable
+export PDK_ROOT="/home/flynn/workplace/CEMapping/stdCellLib"
+# List remote the PDK you want to install (e.g. sky130 or gf180mcu) as follows:
+volare ls-remote --pdk sky130
+# Select one release for installation.
+volare enable --pdk sky130 bdc9412b3e468c102d01b7cf6337be06ec6e9c9a
+# To explore more options use:
+volare enable --help
+
+volare ls-remote --pdk gf180mcu
+volare enable --pdk gf180mcu bdc9412b3e468c102d01b7cf6337be06ec6e9c9a
 ```
