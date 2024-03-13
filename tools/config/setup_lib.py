@@ -60,7 +60,7 @@ setup(name='librecell-lib',
           'cython==0.29.37', # important
           'matplotlib==3.*',
           'networkx>=2.6.3',  # BSD
-          'pyspice==1.4.*',  # GPLv3
+          'pyspice>=1.4.3',  # GPLv3
           'scipy>=1.5.4',  # BSD
           'liberty-parser>=0.0.11',  # GPLv3
           'joblib>=0.14', # BSD-3-Clause
