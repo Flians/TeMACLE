@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #include <string.h>
 #include <cstdlib>

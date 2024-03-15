@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #include <iostream>
 #include <vector>
@@ -60,6 +60,7 @@ enum GRB_DoubleParam {
 enum GRB_IntParam {
   GRB_IntParam_SolutionLimit,
   GRB_IntParam_Method,
+  GRB_IntParam_ConcurrentMethod,
   GRB_IntParam_ScaleFlag,
   GRB_IntParam_SimplexPricing,
   GRB_IntParam_Quad,
@@ -91,6 +92,7 @@ enum GRB_IntParam {
   GRB_IntParam_BQPCuts,
   GRB_IntParam_PSDCuts,
   GRB_IntParam_LiftProjectCuts,
+  GRB_IntParam_MixingCuts,
   GRB_IntParam_CutAggPasses,
   GRB_IntParam_CutPasses,
   GRB_IntParam_GomoryPasses,
@@ -144,6 +146,7 @@ enum GRB_IntParam {
   GRB_IntParam_TuneJobs,
   GRB_IntParam_TuneCriterion,
   GRB_IntParam_TuneMetric,
+  GRB_IntParam_TuneDynamicJobs,
   GRB_IntParam_Disconnected,
   GRB_IntParam_UpdateMode,
   GRB_IntParam_Record,
@@ -170,7 +173,9 @@ enum GRB_IntParam {
   GRB_IntParam_NLPHeur,
   GRB_IntParam_WLSTokenDuration,
   GRB_IntParam_LicenseID,
-  GRB_IntParam_OBBT
+  GRB_IntParam_OBBT,
+  GRB_IntParam_FuncNonlinear,
+  GRB_IntParam_SolutionTarget
 };
 
 enum GRB_StringParam {
@@ -267,7 +272,8 @@ enum GRB_IntAttr {
   GRB_IntAttr_BatchErrorCode,
   GRB_IntAttr_BatchStatus,
   GRB_IntAttr_Fingerprint,
-  GRB_IntAttr_PoolIgnore
+  GRB_IntAttr_PoolIgnore,
+  GRB_IntAttr_FuncNonlinear
 };
 
 enum GRB_CharAttr {

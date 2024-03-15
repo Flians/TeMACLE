@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #include "Common.h"
 #include "attrprivate.h"
@@ -110,10 +110,16 @@ GRBGenConstr::set(GRB_DoubleAttr attr, double value)
 void
 GRBGenConstr::set(GRB_StringAttr attr, const string& value)
 {
+  set(attr, value.c_str());
+}
+
+void
+GRBGenConstr::set(GRB_StringAttr attr, const char* value)
+{
   if (genconRep == NULL || genconRep->Cmodel == NULL || genconRep->num < 0)
     throw GRBException("Variable not in model", GRB_ERROR_NOT_IN_MODEL);
   checkattrsize(genconRep->Cmodel, sattrname[attr], 5);
   int error = GRBsetstrattrelement(genconRep->Cmodel, sattrname[attr],
-                                   genconRep->num, (char *) value.c_str());
+                                   genconRep->num, value);
   if (error) throw GRBException("GenConstr::set", error);
 }

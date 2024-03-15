@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #include "Common.h"
 #include "attrprivate.h"
@@ -147,11 +147,18 @@ void
 GRBConstr::set(GRB_StringAttr attr,
                const string&  value)
 {
+  set(attr, value.c_str());
+}
+
+void
+GRBConstr::set(GRB_StringAttr attr,
+               const char*    value)
+{
   if (conRep == NULL || conRep->Cmodel == NULL || conRep->row_no < 0)
     throw GRBException("Constraint not in model", GRB_ERROR_NOT_IN_MODEL);
   checkattrsize(conRep->Cmodel, sattrname[attr], 2);
   int error = GRBsetstrattrelement(conRep->Cmodel, sattrname[attr],
-                                   conRep->row_no, (char *) value.c_str());
+                                   conRep->row_no, value);
   if (error) throw GRBException("Constr::set", error);
 }
 

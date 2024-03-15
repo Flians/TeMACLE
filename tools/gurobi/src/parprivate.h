@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #ifndef _CPP_PARPRIVATE_H_
 #define _CPP_PARPRIVATE_H_
@@ -53,6 +53,7 @@ static const char* dparname[] = {
 static const char* iparname[] = {
   "SolutionLimit",
   "Method",
+  "ConcurrentMethod",
   "ScaleFlag",
   "SimplexPricing",
   "Quad",
@@ -84,6 +85,7 @@ static const char* iparname[] = {
   "BQPCuts",
   "PSDCuts",
   "LiftProjectCuts",
+  "MixingCuts",
   "CutAggPasses",
   "CutPasses",
   "GomoryPasses",
@@ -137,6 +139,7 @@ static const char* iparname[] = {
   "TuneJobs",
   "TuneCriterion",
   "TuneMetric",
+  "TuneDynamicJobs",
   "Disconnected",
   "UpdateMode",
   "Record",
@@ -163,7 +166,9 @@ static const char* iparname[] = {
   "NLPHeur",
   "WLSTokenDuration",
   "LicenseID",
-  "OBBT"
+  "OBBT",
+  "FuncNonlinear",
+  "SolutionTarget"
 };
 
 static const char* sparname[] = {

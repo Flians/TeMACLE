@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #include <string.h>
 #include <assert.h>
@@ -82,18 +82,25 @@ GRBModel::GRBModel(const GRBEnv& env,
 
 GRBModel::GRBModel(const GRBModel& xmodel)
 {
-  Cenv   = xmodel.Cenv;
-  Cmodel = GRBcopymodel(xmodel.Cmodel);
-  if (Cmodel == NULL) throw
-    GRBException("Unable to create a model copy",
-                 GRB_ERROR_FAILED_TO_CREATE_MODEL);
+  int error = GRBcopymodeltoenv(xmodel.Cmodel, NULL, &Cmodel);
+  if (error) throw GRBException(string(GRBgeterrormsg(xmodel.Cenv)), error);
 
   // environment gets copied in GRBcopymodel
   Cenv = GRBgetenv(Cmodel);
 
   populate();
+}
 
-  cb = xmodel.cb;
+GRBModel::GRBModel(const GRBModel& xmodel,
+                   const GRBEnv&   targetenv)
+{
+  int error = GRBcopymodeltoenv(xmodel.Cmodel, targetenv.env, &Cmodel);
+  if (error) throw GRBException(string(GRBgeterrormsg(xmodel.Cenv)), error);
+
+  // environment gets copied in GRBcopymodel
+  Cenv = GRBgetenv(Cmodel);
+
+  populate();
 }
 
 GRBModel::~GRBModel()
@@ -941,6 +948,17 @@ GRBModel::setObjectiveN(GRBLinExpr obje,
                         double     reltol,
                         string     name)
 {
+  setObjectiveN(obje, index, priority, weight, abstol, reltol, name.c_str());
+}
+void
+GRBModel::setObjectiveN(GRBLinExpr  obje,
+                        int         index,
+                        int         priority,
+                        double      weight,
+                        double      abstol,
+                        double      reltol,
+                        const char* name)
+{
   int     len = obje.size();
   int    *ind = new int[len];
   double *val = new double[len];
@@ -954,7 +972,7 @@ GRBModel::setObjectiveN(GRBLinExpr obje,
   }
 
   int error = GRBsetobjectiven(Cmodel, index, priority, weight, abstol,
-                               reltol, (char *) name.c_str(), objcon,
+                               reltol, name, objcon,
                                len, ind, val);
   if (error) throw GRBException(string(GRBgeterrormsg(Cenv)), error);
 
@@ -1057,8 +1075,8 @@ GRBModel::getVars() const
 GRBVar
 GRBModel::getVarByName(const string& name)
 {
-  char *cname = (char *) name.c_str();
-  int   index = -1;
+  const char *cname = name.c_str();
+  int         index = -1;
 
   int error = GRBgetvarbyname(Cmodel, cname, &index);
 
@@ -1090,8 +1108,8 @@ GRBModel::getConstrs() const
 GRBConstr
 GRBModel::getConstrByName(const string& name)
 {
-  char *cname = (char *) name.c_str();
-  int   index = -1;
+  const char *cname = name.c_str();
+  int         index = -1;
 
   int error = GRBgetconstrbyname(Cmodel, cname, &index);
 
@@ -1137,8 +1155,19 @@ GRBModel::addVar(double  lb,
                  char    vtype,
                  string  varname)
 {
-  int   zero = 0;
-  char *name = (char *) varname.c_str();
+  return addVar(lb, ub, obj, vtype, varname.c_str());
+}
+
+GRBVar
+GRBModel::addVar(double      lb,
+                 double      ub,
+                 double      obj,
+                 char        vtype,
+                 const char* varname)
+{
+  int zero = 0;
+
+  char* name = (char *) varname;
 
   int error = GRBaddvars(Cmodel, 1, 0, &zero, NULL, NULL, &obj, &lb,
                          &ub, &vtype, &name);
@@ -1162,12 +1191,25 @@ GRBModel::addVar(double           lb,
                  const double*    coeffs,
                  string           varname)
 {
+  return addVar(lb, ub, obj, vtype, nonzeros, xconstrs, coeffs, varname.c_str());
+}
+
+GRBVar
+GRBModel::addVar(double           lb,
+                 double           ub,
+                 double           obj,
+                 char             vtype,
+                 int              nonzeros,
+                 const GRBConstr* xconstrs,
+                 const double*    coeffs,
+                 const char*      varname)
+{
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
 
   int     error = 0;
   int     zero = 0;
-  char*   name = (char *) varname.c_str();
+  char*   name = (char *) varname;
   double* xcoeffs = (double*) coeffs;
   int*    ind  = NULL;
 
@@ -1214,13 +1256,24 @@ GRBModel::addVar(double           lb,
                  const GRBColumn& col,
                  string           varname)
 {
+  return addVar(lb, ub, obj, vtype, col, varname.c_str());
+}
+
+GRBVar
+GRBModel::addVar(double           lb,
+                 double           ub,
+                 double           obj,
+                 char             vtype,
+                 const GRBColumn& col,
+                 const char*      varname)
+{
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
 
   int     error = 0;
   int     nonzeros = col.size();
   int     zero = 0;
-  char*   name = (char *) varname.c_str();
+  char*   name = (char *) varname;
   int*    ind  = NULL;
   double* val  = NULL;
 
@@ -1427,6 +1480,15 @@ GRBModel::addConstr(const GRBLinExpr& expr1,
                     const GRBLinExpr& expr2,
                     string            name)
 {
+  return addConstr(expr1, sense, expr2, name.c_str());
+}
+
+GRBConstr
+GRBModel::addConstr(const GRBLinExpr& expr1,
+                    char              sense,
+                    const GRBLinExpr& expr2,
+                    const char*       name)
+{
   GRBLinExpr ex = GRBLinExpr(expr1);
   ex -= expr2;
   return addConstr(ex, sense, -GRB_INFINITY, 0.0, name);
@@ -1438,6 +1500,15 @@ GRBModel::addConstr(const GRBLinExpr& expr1,
                     GRBVar            v,
                     string            name)
 {
+  return addConstr(expr1, sense, v, name.c_str());
+}
+
+GRBConstr
+GRBModel::addConstr(const GRBLinExpr& expr1,
+                    char              sense,
+                    GRBVar            v,
+                    const char*       name)
+{
   GRBLinExpr ex = GRBLinExpr(expr1);
   ex -= v;
   return addConstr(ex, sense, -GRB_INFINITY, 0.0, name);
@@ -1448,6 +1519,15 @@ GRBModel::addConstr(GRBVar v1,
                     char   sense,
                     GRBVar v2,
                     string name)
+{
+  return addConstr(v1, sense, v2, name.c_str());
+}
+
+GRBConstr
+GRBModel::addConstr(GRBVar      v1,
+                    char        sense,
+                    GRBVar      v2,
+                    const char* name)
 {
   GRBLinExpr ex;
   ex += v1;
@@ -1461,6 +1541,15 @@ GRBModel::addConstr(GRBVar v1,
                     double rhs,
                     string name)
 {
+  return addConstr(v1, sense, rhs, name.c_str());
+}
+
+GRBConstr
+GRBModel::addConstr(GRBVar      v1,
+                    char        sense,
+                    double      rhs,
+                    const char* name)
+{
   GRBLinExpr ex;
   ex += v1;
   return addConstr(ex, sense, -GRB_INFINITY, rhs, name);
@@ -1472,6 +1561,15 @@ GRBModel::addConstr(const GRBLinExpr&  expr,
                     double             rhs,
                     string             cname)
 {
+  return addConstr(expr, sense, rhs, cname.c_str());
+}
+
+GRBConstr
+GRBModel::addConstr(const GRBLinExpr&  expr,
+                    char               sense,
+                    double             rhs,
+                    const char*        cname)
+{
   return addConstr(expr, sense, -GRB_INFINITY, rhs, cname);
 }
 
@@ -1480,6 +1578,15 @@ GRBModel::addRange(const GRBLinExpr&  expr,
                    double             lhs,
                    double             rhs,
                    string             cname)
+{
+  return addRange(expr, lhs, rhs, cname.c_str());
+}
+
+GRBConstr
+GRBModel::addRange(const GRBLinExpr&  expr,
+                   double             lhs,
+                   double             rhs,
+                   const char*        cname)
 {
   if ((lhs <= -RANGEBD) == (rhs >= RANGEBD)) {
     newranges++;
@@ -1496,7 +1603,7 @@ GRBModel::addConstr(const GRBLinExpr&  expr,
                     char               sense,
                     double             lhs,
                     double             rhs,
-                    const string&      cname)
+                    const char*        cname)
 {
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -1507,7 +1614,7 @@ GRBModel::addConstr(const GRBLinExpr&  expr,
   int    nz     = expr.size();
   double xrhs   = rhs - expr.getConstant();
   double xlhs   = lhs;
-  char   *name  = (char *) cname.c_str();
+  char   *name  = (char *) cname;
 
   int    *ind = new int[nz];
   double *val = new double[nz];
@@ -1565,6 +1672,13 @@ GRBModel::addConstr(const GRBLinExpr&  expr,
 GRBConstr
 GRBModel::addConstr(const GRBTempConstr& tc,
                     string               cname)
+{
+  return addConstr(tc, cname.c_str());
+}
+
+GRBConstr
+GRBModel::addConstr(const GRBTempConstr& tc,
+                    const char*          cname)
 {
   if (tc.expr.size() > 0)
     throw GRBException("AddConstr is for linear constraints; use AddQConstr to create a quadratic constraint", GRB_ERROR_INVALID_ARGUMENT);
@@ -1795,6 +1909,15 @@ GRBModel::addQConstr(const GRBQuadExpr& expr1,
                      double             rhs,
                      string             cname)
 {
+  return addQConstr(expr1, sense, rhs, cname.c_str());
+}
+
+GRBQConstr
+GRBModel::addQConstr(const GRBQuadExpr& expr1,
+                     char               sense,
+                     double             rhs,
+                     const char*        cname)
+{
   return addQConstr(expr1-rhs, sense, cname);
 }
 
@@ -1804,6 +1927,15 @@ GRBModel::addQConstr(const GRBQuadExpr& expr1,
                      const GRBQuadExpr& expr2,
                      string             cname)
 {
+  return addQConstr(expr1, sense, expr2, cname.c_str());
+}
+
+GRBQConstr
+GRBModel::addQConstr(const GRBQuadExpr& expr1,
+                     char               sense,
+                     const GRBQuadExpr& expr2,
+                     const char*        cname)
+{
   return addQConstr(expr1-expr2, sense, cname);
 }
 
@@ -1811,13 +1943,20 @@ GRBQConstr
 GRBModel::addQConstr(const GRBTempConstr& constr,
                      string               cname)
 {
+  return addQConstr(constr, cname.c_str());
+}
+
+GRBQConstr
+GRBModel::addQConstr(const GRBTempConstr& constr,
+                     const char*          cname)
+{
   return addQConstr(constr.expr, constr.sense, cname);
 }
 
 GRBQConstr
 GRBModel::addQConstr(const GRBQuadExpr& expr,
                      char               sense,
-                     const string&      cname)
+                     const char*        cname)
 {
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -1825,7 +1964,7 @@ GRBModel::addQConstr(const GRBQuadExpr& expr,
   GRBLinExpr linexpr = expr.getLinExpr();
 
   int    error = 0;
-  char  *name  = (char *) cname.c_str();
+  char  *name  = (char *) cname;
 
   int     i;
   int     lnz  = linexpr.size();
@@ -1896,8 +2035,16 @@ GRBModel::addGenConstrMax(GRBVar        resvar,
                           double        constant,
                           string        cname)
 {
-  const char *name = (char *) cname.c_str();
+  return addGenConstrMax(resvar, xvars, len, constant, cname.c_str());
+}
 
+GRBGenConstr
+GRBModel::addGenConstrMax(GRBVar        resvar,
+                          const GRBVar* xvars,
+                          int           len,
+                          double        constant,
+                          const char*   name)
+{
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
   int resind = resvar.getcolno();
@@ -1931,8 +2078,16 @@ GRBModel::addGenConstrMin(GRBVar        resvar,
                           double        constant,
                           string        cname)
 {
-  const char *name = (char *) cname.c_str();
+  return addGenConstrMin(resvar, xvars, len, constant, cname.c_str());
+}
 
+GRBGenConstr
+GRBModel::addGenConstrMin(GRBVar        resvar,
+                          const GRBVar* xvars,
+                          int           len,
+                          double        constant,
+                          const char*   name)
+{
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
   int resind = resvar.getcolno();
@@ -1964,8 +2119,14 @@ GRBModel::addGenConstrAbs(GRBVar        resvar,
                           GRBVar        argvar,
                           string        cname)
 {
-  const char *name = (char *) cname.c_str();
+  return addGenConstrAbs(resvar, argvar, cname.c_str());
+}
 
+GRBGenConstr
+GRBModel::addGenConstrAbs(GRBVar        resvar,
+                          GRBVar        argvar,
+                          const char*   name)
+{
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
   int resind = resvar.getcolno();
@@ -1989,8 +2150,15 @@ GRBModel::addGenConstrAnd(GRBVar        resvar,
                           int           len,
                           string        cname)
 {
-  const char *name = (char *) cname.c_str();
+  return addGenConstrAnd(resvar, xvars, len, cname.c_str());
+}
 
+GRBGenConstr
+GRBModel::addGenConstrAnd(GRBVar        resvar,
+                          const GRBVar* xvars,
+                          int           len,
+                          const char*   name)
+{
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
   int resind = resvar.getcolno();
@@ -2023,8 +2191,15 @@ GRBModel::addGenConstrOr(GRBVar        resvar,
                          int           len,
                          string        cname)
 {
-  const char *name = (char *) cname.c_str();
+  return addGenConstrOr(resvar, xvars, len, cname.c_str());
+}
 
+GRBGenConstr
+GRBModel::addGenConstrOr(GRBVar        resvar,
+                         const GRBVar* xvars,
+                         int           len,
+                         const char*   name)
+{
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
   int resind = resvar.getcolno();
@@ -2058,8 +2233,16 @@ GRBModel::addGenConstrNorm(GRBVar        resvar,
                            double        which,
                            string        cname)
 {
-  const char *name = (char *) cname.c_str();
+  return addGenConstrNorm(resvar, xvars, len, which, cname.c_str());
+}
 
+GRBGenConstr
+GRBModel::addGenConstrNorm(GRBVar        resvar,
+                           const GRBVar* xvars,
+                           int           len,
+                           double        which,
+                           const char*   name)
+{
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
   int resind = resvar.getcolno();
@@ -2094,8 +2277,17 @@ GRBModel::addGenConstrIndicator(GRBVar            binvar,
                                 double            rhs,
                                 string            cname)
 {
-  const char *name = (char *) cname.c_str();
+  return addGenConstrIndicator(binvar, binval, expr, sense, rhs, cname.c_str());
+}
 
+GRBGenConstr
+GRBModel::addGenConstrIndicator(GRBVar            binvar,
+                                int               binval,
+                                const GRBLinExpr& expr,
+                                char              sense,
+                                double            rhs,
+                                const char*       name)
+{
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
   int binind = binvar.getcolno();
@@ -2141,6 +2333,15 @@ GRBModel::addGenConstrIndicator(GRBVar               binvar,
                                 const GRBTempConstr& constr,
                                 string               cname)
 {
+  return addGenConstrIndicator(binvar, binval, constr, cname.c_str());
+}
+
+GRBGenConstr
+GRBModel::addGenConstrIndicator(GRBVar               binvar,
+                                int                  binval,
+                                const GRBTempConstr& constr,
+                                const char*          cname)
+{
   if (constr.expr.size() > 0)
     throw GRBException("Indicators for quadratic constraints are not supported", GRB_ERROR_INVALID_ARGUMENT);
   return addGenConstrIndicator(binvar, binval, constr.expr.getLinExpr(), constr.sense, 0.0, cname);
@@ -2154,8 +2355,17 @@ GRBModel::addGenConstrPWL(GRBVar        xvar,
                           const double *ypts,
                           string        cname)
 {
-  const char *name = (char *) cname.c_str();
+  return addGenConstrPWL(xvar, yvar, npts, xpts, ypts, cname.c_str());
+}
 
+GRBGenConstr
+GRBModel::addGenConstrPWL(GRBVar        xvar,
+                          GRBVar        yvar,
+                          int           npts,
+                          const double *xpts,
+                          const double *ypts,
+                          const char*   name)
+{
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
   int xind = xvar.getcolno();
@@ -2184,8 +2394,18 @@ GRBModel::addGenConstrPoly(GRBVar        xvar,
                            string        cname,
                            string        coptions)
 {
-  const char *name    = (char *) cname.c_str();
-  const char *options = (char *) coptions.c_str();
+  return addGenConstrPoly(xvar, yvar, plen, p, cname.c_str(), coptions);
+}
+
+GRBGenConstr
+GRBModel::addGenConstrPoly(GRBVar        xvar,
+                           GRBVar        yvar,
+                           int           plen,
+                           const double* p,
+                           const char*   name,
+                           string        coptions)
+{
+  const char *options = coptions.c_str();
 
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -2208,8 +2428,16 @@ GRBModel::addGenConstrExp(GRBVar xvar,
                           string cname,
                           string coptions)
 {
-  const char *name    = (char *) cname.c_str();
-  const char *options = (char *) coptions.c_str();
+  return addGenConstrExp(xvar, yvar, cname.c_str(), coptions);
+}
+
+GRBGenConstr
+GRBModel::addGenConstrExp(GRBVar      xvar,
+                          GRBVar      yvar,
+                          const char* name,
+                          string      coptions)
+{
+  const char *options = coptions.c_str();
 
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -2233,8 +2461,17 @@ GRBModel::addGenConstrExpA(GRBVar xvar,
                            string cname,
                            string coptions)
 {
-  const char *name    = (char *) cname.c_str();
-  const char *options = (char *) coptions.c_str();
+  return addGenConstrExpA(xvar, yvar, a, cname.c_str(), coptions);
+}
+
+GRBGenConstr
+GRBModel::addGenConstrExpA(GRBVar      xvar,
+                           GRBVar      yvar,
+                           double      a,
+                           const char* name,
+                           string      coptions)
+{
+  const char *options = coptions.c_str();
 
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -2257,8 +2494,16 @@ GRBModel::addGenConstrLog(GRBVar xvar,
                           string cname,
                           string coptions)
 {
-  const char *name    = (char *) cname.c_str();
-  const char *options = (char *) coptions.c_str();
+  return addGenConstrLog(xvar, yvar, cname.c_str(), coptions);
+}
+
+GRBGenConstr
+GRBModel::addGenConstrLog(GRBVar      xvar,
+                          GRBVar      yvar,
+                          const char* name,
+                          string      coptions)
+{
+  const char *options = coptions.c_str();
 
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -2282,8 +2527,17 @@ GRBModel::addGenConstrLogA(GRBVar xvar,
                            string cname,
                            string coptions)
 {
-  const char *name    = (char *) cname.c_str();
-  const char *options = (char *) coptions.c_str();
+  return addGenConstrLogA(xvar, yvar, a, cname.c_str(), coptions);
+}
+
+GRBGenConstr
+GRBModel::addGenConstrLogA(GRBVar      xvar,
+                           GRBVar      yvar,
+                           double      a,
+                           const char* name,
+                           string      coptions)
+{
+  const char *options = coptions.c_str();
 
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -2307,8 +2561,17 @@ GRBModel::addGenConstrPow(GRBVar xvar,
                           string cname,
                           string coptions)
 {
-  const char *name    = (char *) cname.c_str();
-  const char *options = (char *) coptions.c_str();
+  return addGenConstrPow(xvar, yvar, a, cname.c_str(), coptions);
+}
+
+GRBGenConstr
+GRBModel::addGenConstrPow(GRBVar      xvar,
+                          GRBVar      yvar,
+                          double      a,
+                          const char* name,
+                          string      coptions)
+{
+  const char *options = coptions.c_str();
 
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -2331,8 +2594,16 @@ GRBModel::addGenConstrSin(GRBVar xvar,
                           string cname,
                           string coptions)
 {
-  const char *name    = (char *) cname.c_str();
-  const char *options = (char *) coptions.c_str();
+  return addGenConstrSin(xvar, yvar, cname.c_str(), coptions);
+}
+
+GRBGenConstr
+GRBModel::addGenConstrSin(GRBVar      xvar,
+                          GRBVar      yvar,
+                          const char* name,
+                          string      coptions)
+{
+  const char *options = coptions.c_str();
 
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -2355,8 +2626,16 @@ GRBModel::addGenConstrCos(GRBVar xvar,
                           string cname,
                           string coptions)
 {
-  const char *name    = (char *) cname.c_str();
-  const char *options = (char *) coptions.c_str();
+  return addGenConstrCos(xvar, yvar, cname.c_str(), coptions);
+}
+
+GRBGenConstr
+GRBModel::addGenConstrCos(GRBVar      xvar,
+                          GRBVar      yvar,
+                          const char* name,
+                          string      coptions)
+{
+  const char *options = coptions.c_str();
 
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -2379,8 +2658,16 @@ GRBModel::addGenConstrTan(GRBVar xvar,
                           string cname,
                           string coptions)
 {
-  const char *name    = (char *) cname.c_str();
-  const char *options = (char *) coptions.c_str();
+  return addGenConstrTan(xvar, yvar, cname.c_str(), coptions);
+}
+
+GRBGenConstr
+GRBModel::addGenConstrTan(GRBVar      xvar,
+                          GRBVar      yvar,
+                          const char* name,
+                          string      coptions)
+{
+  const char *options = coptions.c_str();
 
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -2404,8 +2691,16 @@ GRBModel::addGenConstrLogistic(GRBVar xvar,
                                string cname,
                                string coptions)
 {
-  const char *name    = (char *) cname.c_str();
-  const char *options = (char *) coptions.c_str();
+  return addGenConstrLogistic(xvar, yvar, cname.c_str(), coptions);
+}
+
+GRBGenConstr
+GRBModel::addGenConstrLogistic(GRBVar      xvar,
+                               GRBVar      yvar,
+                               const char* name,
+                               string      coptions)
+{
+  const char *options = coptions.c_str();
 
   if (Cmodel == NULL) throw
     GRBException("Model not loaded", GRB_ERROR_INTERNAL);
@@ -3284,30 +3579,6 @@ GRBModel::discardMultiobjEnvs()
   GRBdiscardmultiobjenvs(Cmodel);
 }
 
-void
-GRBModel::fixTuneParam(GRB_IntParam param)
-{
-  return getEnv().fixTuneParam(param);
-}
-
-void
-GRBModel::fixTuneParam(GRB_DoubleParam param)
-{
-  return getEnv().fixTuneParam(param);
-}
-
-void
-GRBModel::fixTuneParam(GRB_StringParam param)
-{
-  return getEnv().fixTuneParam(param);
-}
-
-void
-GRBModel::fixTuneParam(const string& param)
-{
-  return getEnv().fixTuneParam(param);
-}
-
 int
 GRBModel::get(GRB_IntParam param) const
 {
@@ -3340,6 +3611,18 @@ GRBModel::set(GRB_DoubleParam param, double value)
 
 void
 GRBModel::set(GRB_StringParam param, const string& value)
+{
+  return getEnv().set(param, value);
+}
+
+void
+GRBModel::set(GRB_StringParam param, const char* value)
+{
+  return getEnv().set(param, value);
+}
+
+void
+GRBModel::set(const string& param, const char* value)
 {
   return getEnv().set(param, value);
 }
@@ -3401,7 +3684,13 @@ GRBModel::set(GRB_DoubleAttr attr, double value)
 void
 GRBModel::set(GRB_StringAttr attr, const string& value)
 {
-  int error = GRBsetstrattr(Cmodel, sattrname[attr], (char*) value.c_str());
+  set(attr, value.c_str());
+}
+
+void
+GRBModel::set(GRB_StringAttr attr, const char* value)
+{
+  int error = GRBsetstrattr(Cmodel, sattrname[attr], value);
   if (error) throw GRBException(string(GRBgeterrormsg(Cenv)), error);
 }
 

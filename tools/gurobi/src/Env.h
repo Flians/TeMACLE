@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #ifndef _CPP_ENV_H_
 #define _CPP_ENV_H_
@@ -39,17 +39,15 @@ class GRBEnv
     ~GRBEnv();
     void start();
     void message(const std::string& msg);
-    void fixTuneParam(GRB_IntParam param);
-    void fixTuneParam(GRB_DoubleParam param);
-    void fixTuneParam(GRB_StringParam param);
-    void fixTuneParam(const std::string& paramname);
     int get(GRB_IntParam param) const;
     double get(GRB_DoubleParam param) const;
     std::string get(GRB_StringParam param) const;
     void set(GRB_IntParam param, int newvalue);
     void set(GRB_DoubleParam param, double newvalue);
     void set(GRB_StringParam param, const std::string& newvalue);
+    void set(GRB_StringParam param, const char* newvalue);
     void set(const std::string& paramname, const std::string& newvalue);
+    void set(const std::string& paramname, const char* newvalue);
     void getParamInfo(GRB_DoubleParam param, double* valP,
                       double* minP, double* maxP, double* defP);
     void getParamInfo(GRB_IntParam param, int* valP, int* minP,

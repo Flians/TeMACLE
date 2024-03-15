@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 
 #include "Common.h"
@@ -87,28 +87,6 @@ GRBEnv::start()
   if (error) throw GRBException(getErrorMsg(), error);
 }
 
-void
-GRBEnv::fixTuneParam(GRB_IntParam param)
-{
-  fixTuneParam(iparname[param]);
-}
-void
-GRBEnv::fixTuneParam(GRB_DoubleParam param)
-{
-  fixTuneParam(dparname[param]);
-}
-void
-GRBEnv::fixTuneParam(GRB_StringParam param)
-{
-  fixTuneParam(sparname[param]);
-}
-void
-GRBEnv::fixTuneParam(const string& paramname)
-{
-  int error = GRBfixtuneparam(env, paramname.c_str());
-  if (error) throw GRBException(getErrorMsg(), error);
-}
-
 int
 GRBEnv::get(GRB_IntParam param) const
 {
@@ -170,14 +148,26 @@ GRBEnv::set(GRB_DoubleParam param, double newvalue)
 void
 GRBEnv::set(GRB_StringParam param, const string& newvalue)
 {
-  int error = GRBsetstrparam(env, sparname[param], newvalue.c_str());
+  set(param, newvalue.c_str());
+}
+
+void
+GRBEnv::set(GRB_StringParam param, const char* newvalue)
+{
+  int error = GRBsetstrparam(env, sparname[param], newvalue);
   if (error) throw GRBException(getErrorMsg(), error);
 }
 
 void
 GRBEnv::set(const string& paramname, const string& newvalue)
 {
-  int error = GRBsetparam(env, paramname.c_str(), newvalue.c_str());
+  set(paramname, newvalue.c_str());
+}
+
+void
+GRBEnv::set(const string& paramname, const char* newvalue)
+{
+  int error = GRBsetparam(env, paramname.c_str(), newvalue);
   if (error) throw GRBException(getErrorMsg(), error);
 }
 

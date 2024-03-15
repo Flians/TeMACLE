@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #ifndef _CPP_QCONSTR_H_
 #define _CPP_QCONSTR_H_
@@ -42,5 +42,6 @@ class GRBQConstr
     void set(GRB_IntAttr attr, int value);
     void set(GRB_DoubleAttr attr, double value);
     void set(GRB_StringAttr attr, const std::string& value);
+    void set(GRB_StringAttr attr, const char* value);
 };
 #endif

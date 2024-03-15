@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #ifndef _CPP_BATCH_H_
 #define _CPP_BATCH_H_
@@ -32,6 +32,7 @@ class GRBBatch
     void set(GRB_IntAttr    attr, int         val);
     void set(GRB_DoubleAttr attr, double      val);
     void set(GRB_StringAttr attr, std::string val);
+    void set(GRB_StringAttr attr, const char* val);
 
     // Control functions
     void abort(void);

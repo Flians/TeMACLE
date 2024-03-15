@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #ifndef _CPP_ATTRPRIVATE_H_
 #define _CPP_ATTRPRIVATE_H_
@@ -70,7 +70,8 @@ static const char* iattrname[] = {
   "BatchErrorCode",
   "BatchStatus",
   "Fingerprint",
-  "PoolIgnore"
+  "PoolIgnore",
+  "FuncNonlinear"
 };
 
 static const char* cattrname[] = {

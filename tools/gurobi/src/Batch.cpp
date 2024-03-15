@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #include <string.h>
 #include <cstdlib>
@@ -89,6 +89,14 @@ GRBBatch::set(GRB_DoubleAttr attr, double val)
 
 void
 GRBBatch::set(GRB_StringAttr attr, std::string val)
+{
+  // Currently, no batch attribute is settable, we error out in set()
+  (void) val;  // avoid compiler warning
+  set(sattrname[attr]);
+}
+
+void
+GRBBatch::set(GRB_StringAttr attr, const char* val)
 {
   // Currently, no batch attribute is settable, we error out in set()
   (void) val;  // avoid compiler warning

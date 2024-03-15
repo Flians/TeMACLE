@@ -1,4 +1,4 @@
-// Copyright (C) 2023, Gurobi Optimization, LLC
+// Copyright (C) 2024, Gurobi Optimization, LLC
 // All Rights Reserved
 #ifndef _CPP_VAR_H_
 #define _CPP_VAR_H_
@@ -46,6 +46,7 @@ class GRBVar
     void set(GRB_CharAttr attr, char value);
     void set(GRB_DoubleAttr attr, double value);
     void set(GRB_StringAttr attr, const std::string& value);
+    void set(GRB_StringAttr attr, const char* value);
 
     bool sameAs(GRBVar v2);
 };

@@ -103,7 +103,12 @@ flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/mai
 [1] 48727
 ```
 
-`lclayout --output-dir tools/StdCellLib/Tech.SKY130/test/ --tech tools/StdCellLib/Tech.SKY130/librecell_tech.py --netlist stdCellLib/cellsAstranFriendly.sp --cell AND2X2 --verbose`
+``` bash
+pip3 install lclayout
+./stdCellLib/spice2cell.pl sky130_fd_sc_hd__a2bb2o_1.sp
+./stdCellLib/cell2spice.pl SKY130_FD_SC_HD__A2BB2O_1.cell
+lclayout --output-dir test/ --tech tools/StdCellLib/Tech.SKY130/librecell_tech.py --netlist SKY130_FD_SC_HD__A2BB2O_1.sp --cell SKY130_FD_SC_HD__A2BB2O_1 --verbose --signal-router dijkstra / steiner --placer meta / flat / hierarchical / smt
+```
 
 ``` bash
 pip install volare
@@ -118,4 +123,17 @@ volare enable --help
 
 volare ls-remote --pdk gf180mcu
 volare enable --pdk gf180mcu bdc9412b3e468c102d01b7cf6337be06ec6e9c9a
+```
+
+Charlib
+``` bash
+# Install our customized version of PySpice
+pip install git+https://github.com/infinitymdm/PySpice
+
+# Install CharLib
+pip install charlib
+
+# Install a compatible circuit simulator. ngspice
+sudo apt install ngspice-dev
+sudo apt install libngspice0-dev
 ```
