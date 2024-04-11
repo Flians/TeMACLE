@@ -80,5 +80,16 @@
         "future": "cpp",
         "span": "cpp"
     },
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "git.ignoreLimitWarning": true,
+    "[python]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "black-formatter.args": [
+        "--line-length=240",
+        "--skip-string-normalization"
+    ]
 }

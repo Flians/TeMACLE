@@ -1,20 +1,15 @@
-from os import listdir
-from os.path import isfile, join
 import os
 
 
 def loadAstranArea(GDSPath, typeName):
-    gdsFiles = [f for f in listdir(GDSPath) if isfile(join(GDSPath, f)) and f.find(".gds") >= 0]
-    for gdsFile in gdsFiles:
-        if (typeName + ".gds" != gdsFile):
-            continue
-        logFileName = GDSPath + gdsFile.replace(".gds", ".Astranlog")
-        logFile = open(logFileName, 'r')
+    gdsFile = os.path.join(GDSPath, typeName + '.gds')
+    if not os.path.exists(gdsFile):
+        return False
+    logFileName = os.path.join(GDSPath, typeName + '.Astranlog')
+    with open(logFileName, 'r', encoding='utf-8') as logFile:
         lines = logFile.readlines()
-        logFile.close()
-
         for line in lines:
-            if (line.find("-> Cell Size (W x H): ") >= 0):
+            if line.find("-> Cell Size (W x H): ") >= 0:
                 return float(line.replace("-> Cell Size (W x H): ", "").split("x")[0]) * 0.8 * 3.2
 
     return False
@@ -33,7 +28,7 @@ exit
     if not os.path.exists(commandDir):
         os.makedirs(commandDir)
 
-    outputFile = open(f'{commandDir}/{complexName}.run', 'w')
+    outputFile = open(f'{commandDir}/{complexName}.run', 'w', encoding='utf-8')
     print(commands, file=outputFile)
     outputFile.close()
 
@@ -51,38 +46,34 @@ export layout {complexName} {commandDir}/{complexName}.gds
 exit
     """
 
-        outputFile = open(f'{commandDir}/{complexName}.run', 'w')
+        outputFile = open(f'{commandDir}/{complexName}.run', 'w', encoding='utf-8')
         print(commands, file=outputFile)
         outputFile.close()
 
         os.system(f"{AstranPath} --shell {commandDir}/{complexName}.run > {commandDir}/{complexName}.Astranlog")
-        if (os.path.exists(f'{commandDir}/{complexName}.gds')):
+        if os.path.exists(f'{commandDir}/{complexName}.gds'):
             return
+
 
 if __name__ == '__main__':
     current_path = os.path.dirname(os.path.abspath(__file__))
     os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
     AstranPath = f"{current_path}/../tools/astran/Astran/build/bin/Astran"
-    # gurobiPath="/Library/gurobi1003/macos_universal2/bin/gurobi_cl" 
-    gurobiPath=f"{current_path}/../tools/gurobi/bin/gurobi_cl"
-    technologyPath=f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
-    stdSpiceNetlistPath=f"{current_path}/../stdCellLib/gscl45nm/cellsAstranFriendly.sp"
+    # gurobiPath="/Library/gurobi1003/macos_universal2/bin/gurobi_cl"
+    gurobiPath = f"{current_path}/../tools/gurobi/bin/gurobi_cl"
+    technologyPath = f"{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+    stdSpiceNetlistPath = f"{current_path}/../stdCellLib/gscl45nm/cellsAstranFriendly.sp"
 
     from GDSIIAnalysis import STDCellNames
     import threading
 
     threads = []
     for oriStdCellType in STDCellNames:
-        if (oriStdCellType.find("bool") >= 0 or oriStdCellType in ['PI', 'const_0', 'const_1']):
+        if oriStdCellType.find("bool") >= 0 or oriStdCellType in ['PI', 'const_0', 'const_1']:
             continue
-        if (os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds')):
+        if os.path.exists(f'{current_path}/originalAstranStdCells/{oriStdCellType}.gds'):
             continue
-        threads.append(threading.Thread(target=runAstranForNetlist, args=(AstranPath, 
-                            gurobiPath,
-                            technologyPath,
-                            stdSpiceNetlistPath,
-                            oriStdCellType, 
-                            f'{current_path}/originalAstranStdCells/')))
+        threads.append(threading.Thread(target=runAstranForNetlist, args=(AstranPath, gurobiPath, technologyPath, stdSpiceNetlistPath, oriStdCellType, f'{current_path}/originalAstranStdCells/')))
     # start thread
     for itme in threads:
         itme.start()

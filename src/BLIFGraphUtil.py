@@ -6,61 +6,75 @@ from typing import List
 from sympy import symbols, simplify_logic
 
 stdCellIPEqu = {
-    "AND2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "AND2X2": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "AOI21X1": {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C']},
-    "AOI22X1": {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C', 'D'], 'D': ['C', 'D']},
-    "BUFX2": {'A': ['A']},
-    "BUFX4": {'A': ['A']},
-    "CLKBUF1": {'A': ['A']},
-    "CLKBUF2": {'A': ['A']},
-    "CLKBUF3": {'A': ['A']},
-    "DFFNEGX1": {'D': ['D'], 'CLK': ['CLK']},
-    "DFFPOSX1": {'D': ['D'], 'CLK': ['CLK']},
-    "DFFSR": {'D': ['D'], 'R': ['R'], 'S': ['S'], 'CLK': ['CLK']},
-    "FAX1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
-    "HAX1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "INVX1": {'A': ['A']},
-    "INVX2": {'A': ['A']},
-    "INVX4": {'A': ['A']},
-    "INVX8": {'A': ['A']},
-    "LATCH": {'D': ['D'], 'CLK': ['CLK']},
-    "MUX2X1": {'A': ['A'], 'B': ['B'], 'S': ['S']},
-    "NAND2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "NAND3X1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
-    "NOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "NOR3X1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
-    "OAI21X1": {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C']},
-    "OR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "OR2X2": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "TBUFX1": {'A': ['A'], 'EN': ['EN']},
-    "TBUFX2": {'A': ['A'], 'EN': ['EN']},
-    "XNOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "XOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "bool-[['1', '1']]": {'IN0': ['IN0']}
+    'AND2X1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'AND2X2': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'AOI21X1': {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C']},
+    'AOI22X1': {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C', 'D'], 'D': ['C', 'D']},
+    'BUFX2': {'A': ['A']},
+    'BUFX4': {'A': ['A']},
+    'CLKBUF1': {'A': ['A']},
+    'CLKBUF2': {'A': ['A']},
+    'CLKBUF3': {'A': ['A']},
+    'DFFNEGX1': {'D': ['D'], 'CLK': ['CLK']},
+    'DFFPOSX1': {'D': ['D'], 'CLK': ['CLK']},
+    'DFFSR': {'D': ['D'], 'R': ['R'], 'S': ['S'], 'CLK': ['CLK']},
+    'FAX1': {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
+    'HAX1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'INVX1': {'A': ['A']},
+    'INVX2': {'A': ['A']},
+    'INVX4': {'A': ['A']},
+    'INVX8': {'A': ['A']},
+    'LATCH': {'D': ['D'], 'CLK': ['CLK']},
+    'MUX2X1': {'A': ['A'], 'B': ['B'], 'S': ['S']},
+    'NAND2X1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'NAND3X1': {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
+    'NOR2X1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'NOR3X1': {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
+    'OAI21X1': {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C']},
+    'OAI22X1': {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C', 'D'], 'D': ['C', 'D']},
+    'OR2X1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'OR2X2': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'TBUFX1': {'A': ['A'], 'EN': ['EN']},
+    'TBUFX2': {'A': ['A'], 'EN': ['EN']},
+    'XNOR2X1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'XOR2X1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    "bool-[['1', '1']]": {'IN0': ['IN0']},
+}
+
+stdCellIPEqu = {
+    'AND2x2': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'BUFx2': {'A': ['A']},
+    'INVx1': {'A': ['A']},
+    'NAND2x1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'NOR2x1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'OR2x2': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'XNOR2x1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'XOR2x1': {'A': ['A', 'B'], 'B': ['A', 'B']},
+    'TIEHIx1': {'H': ['H']},
+    'TIELOx1': {'L': ['L']},
 }
 
 
 class StdCellType(object):
-    def __init__(self, typeName, nnode:int = 1):
+    def __init__(self, typeName, nnode: int = 1):
         self.id = id
         self.typeName = typeName
         self.pins = []
         self.inputPins = []
         self.outputPins = []
-        self.inputPinMap = dict()
-        self.outputPinMap = dict()
-        self.outputFuncMap = dict()
-        self.inputPinEqu = dict()
+        self.inputPinMap = {}
+        self.outputPinMap = {}
+        self.outputFuncMap = {}
+        self.inputPinEqu = {}
         self.nnode = nnode
 
-    def addPin(self, pinName, direction, function:str=None):
-        if (direction == "input"):
+    def addPin(self, pinName, direction, function: str = None):  # type: ignore
+        if direction == 'input':
             self.inputPins.append(pinName)
             if 'bool-' in self.typeName:
                 pass
             self.inputPinEqu[pinName] = stdCellIPEqu[self.typeName][pinName]
-        if (direction == "output"):
+        if direction == 'output':
             self.outputPins.append(pinName)
             self.outputFuncMap[pinName] = function
         self.pins.append(pinName)
@@ -85,7 +99,7 @@ class DesignCell(object):
         self.function = None
 
     def addCellPin(self, refPinName, netName):
-        if (refPinName in self.stdCellType.inputPins):
+        if refPinName in self.stdCellType.inputPins:
             self.inputPinRefNames.append(refPinName)
             self.inputNetNames.append(netName)
         else:
@@ -120,7 +134,7 @@ class DesignNet(object):
         self.pins = []
 
     def addPin(self, pinName, cell, isSucc):
-        if (isSucc):
+        if isSucc:
             self.succPins.append(pinName)
             self.succCells.append(cell)
         else:
@@ -130,7 +144,7 @@ class DesignNet(object):
 
 
 class DesignPatternCluster(object):
-    def __init__(self, clusterId, patternStr, cells, cellIdsContained, clusterTypeId=-1, rootId=None, kcut=None, graph:nx.DiGraph = None):
+    def __init__(self, clusterId, patternStr, cells, cellIdsContained, clusterTypeId=-1, rootId=None, kcut=None, graph: nx.DiGraph = None):  # type: ignore
         self.patternExtensionTrace = patternStr
         self.clusterId = clusterId
         self.cellIdsContained = sorted(list(cellIdsContained))
@@ -168,12 +182,12 @@ class DesignPatternClusterSeq(object):
 def removeEmptySeqsAndDisableClusters(seqs):
     newClusterSeqs = []
     for curSeq in seqs:
-        if (len(curSeq.patternClusters) > 0):
+        if len(curSeq.patternClusters) > 0:
             newClusters = []
             for tmpCluster in curSeq.patternClusters:
-                if (not tmpCluster.disabled):
+                if not tmpCluster.disabled:
                     newClusters.append(tmpCluster)
-            if (len(newClusters) > 0):
+            if len(newClusters) > 0:
                 curSeq.patternClusters = newClusters
                 newClusterSeqs.append(curSeq)
             else:
@@ -187,10 +201,10 @@ def sortPatternClusterSeqs(seqs: list[DesignPatternClusterSeq]) -> list[DesignPa
     return sorted(seqs, key=lambda item: (-len(item.patternClusters[0].cellIdsContained) * len(item.patternClusters), -len(item.patternClusters[0].cellIdsContained)))
 
 
-def drawColorfulFigureForGraphWithAttributes(tmp_graph, colorArrtibute='type', save_to_file="", withLabel=True, fig=None, figsize=None, prog='dot'):
+def drawColorfulFigureForGraphWithAttributes(tmp_graph, colorArrtibute='type', save_to_file='', withLabel=True, fig=None, figsize=None, prog='dot'):
 
-    if (save_to_file == ""):
-        if (fig is None):
+    if save_to_file == '':
+        if fig is None:
             f = plt.figure(figsize=figsize)
         else:
             f = plt.figure(num=fig.number, figsize=figsize)
@@ -206,25 +220,24 @@ def drawColorfulFigureForGraphWithAttributes(tmp_graph, colorArrtibute='type', s
 
     ec = nx.draw_networkx_edges(tmp_graph, pos, alpha=1, width=5)
 
-    label_pos = dict()
-    for key in pos.keys():
-        label_pos[key] = (pos[key][0], pos[key][1])
+    label_pos = {}
+    for key, val in pos.items():
+        label_pos[key] = (val[0], val[1])
 
-    labels = dict((n, (str(d[colorArrtibute]) + "\n(" + str(d["name"]) + ")").replace("\\", "").replace("$", ""))
-                  for n, d in tmp_graph.nodes(data=True))
+    labels = dict((n, (str(d[colorArrtibute]) + '\n(' + str(d['name']) + ')').replace('\\', '').replace('$', '')) for n, d in tmp_graph.nodes(data=True))
 
-    if (withLabel):
+    if withLabel:
         nx.draw_networkx_labels(tmp_graph, label_pos, labels=labels, font_size=12)
 
-    nc = nx.draw_networkx_nodes(tmp_graph, pos, nodelist=nodes1, node_color=colors1, node_size=150, cmap=plt.cm.plasma)
+    nc = nx.draw_networkx_nodes(tmp_graph, pos, nodelist=nodes1, node_color=colors1, node_size=150, cmap=plt.cm.plasma)  # type: ignore
 
     plt.gca().set_axis_off()
     plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
     plt.margins(0, 0)
-    plt.gca().xaxis.set_major_locator(plt.NullLocator())
-    plt.gca().yaxis.set_major_locator(plt.NullLocator())
+    plt.gca().xaxis.set_major_locator(plt.NullLocator())  # type: ignore
+    plt.gca().yaxis.set_major_locator(plt.NullLocator())  # type: ignore
 
-    if (save_to_file == ""):
+    if save_to_file == '':
         plt.show()
     else:
         plt.savefig(save_to_file, bbox_inches='tight', pad_inches=0)
@@ -274,7 +287,7 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
     useless = set()
     for ipin in ipins:
         for func in patternFunc.values():
-            if not (ipin in func):
+            if ipin not in func:
                 useless.add(ipin)
     ipins = sorted(list(set(ipins) - useless), key=lambda x: (int(x.split('_')[1][:-1]), x.split('_')[0]))
     # simplify function expression
@@ -284,9 +297,13 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
             patternFunc[opin] = patternFunc[opin].replace(ipin, f'vars[{pid}]')
     funcs = []
     for opin in opins:
-        func = patternFunc[opin].replace(' ', '&').replace('+', '|').replace('!', '~')
+        func = patternFunc[opin]
+        if any(x in func for x in ['*', '+']):
+            func = func.replace(' ', '').replace('*', '&').replace('+', '|').replace('!', '~')
+        else:
+            func = func.replace(' ', '&').replace('+', '|').replace('!', '~')
         funcs.append(func)
-        patternFunc[opin] = str(simplify_logic(eval(func))).replace(' ', '').replace('&', ' ').replace('|', '+').replace('~', '!')
+        patternFunc[opin] = str(simplify_logic(eval(func))).replace(' ', '').replace('&', '*').replace('|', '+').replace('~', '!')
     # rename variables
     new_ipins = {}
     varsMap = {}

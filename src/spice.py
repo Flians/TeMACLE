@@ -1,5 +1,10 @@
 import string
 import random
+import re
+import PySpice
+import PySpice.Spice
+import PySpice.Spice.Parser
+
 
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -16,10 +21,10 @@ class SPSubcircuit(object):
             self.interfaces.append(interface)
 
         for line in self.texts[1:-1]:
-            if (line.find('M') == 0):
+            if line.find('M') == 0:
                 eles = line.split(' ')[1:5]
                 for ele in eles:
-                    if ((not ele in self.interfaces) and (not ele in self.internalSignals)):
+                    if (not ele in self.interfaces) and (not ele in self.internalSignals):
                         self.internalSignals.append(ele)
 
     def addInterface(self, ifName):
@@ -30,29 +35,29 @@ class SPSubcircuit(object):
 
     def renamePrefix(self, prefix):
         for signal in self.interfaces + self.internalSignals:
-            if (signal == 'VCC' or signal == 'GND'):
+            if signal in ['VCC', 'GND', 'VDD', 'VSS']:
                 continue
             for i in range(0, len(self.texts)):
                 eles = self.texts[i].split(' ')
                 for j in range(0, len(eles)):
-                    if (eles[j] == signal):
+                    if eles[j] == signal:
                         eles[j] = prefix + signal
                 self.texts[i] = ' '.join(eles)
 
         for i in range(0, len(self.interfaces)):
-            if (self.interfaces[i] == 'VCC' or self.interfaces[i] == 'GND'):
+            if self.interfaces[i] in ['VCC', 'GND', 'VDD', 'VSS']:
                 continue
             self.interfaces[i] = prefix + self.interfaces[i]
 
         for i in range(0, len(self.internalSignals)):
-            if (self.internalSignals[i] == 'VCC' or self.internalSignals[i] == 'GND'):
+            if self.internalSignals[i] in ['VCC', 'GND', 'VDD', 'VSS']:
                 continue
             self.internalSignals[i] = prefix + self.internalSignals[i]
 
         for i in range(0, len(self.texts)):
             eles = self.texts[i].split(' ')
-            if (len(eles) > 0):
-                if (eles[0].find('M') == 0):
+            if len(eles) > 0:
+                if eles[0].find('M') == 0:
                     eles[0] = 'M' + prefix + eles[0][1:]
                 self.texts[i] = ' '.join(eles)
 
@@ -61,15 +66,15 @@ class SPSubcircuit(object):
         for i in range(0, len(self.texts)):
             eles = self.texts[i].split(' ')
             for j in range(0, len(eles)):
-                if (eles[j] == oriPinName):
+                if eles[j] == oriPinName:
                     eles[j] = newPinName
                     replaced = True
             self.texts[i] = ' '.join(eles)
-        assert (replaced)
+        assert replaced
         for i in range(0, len(self.interfaces)):
-            if (self.interfaces[i] == 'VCC' or self.interfaces[i] == 'GND'):
+            if self.interfaces[i] in ['VCC', 'GND', 'VDD', 'VSS']:
                 continue
-            if (self.interfaces[i] == oriPinName):
+            if self.interfaces[i] == oriPinName:
                 self.interfaces[i] = newPinName
 
     def print(self):
@@ -78,30 +83,33 @@ class SPSubcircuit(object):
 
 
 def loadSpiceSubcircuits(filePath):
-    spFile = open(filePath, 'r')
-    lines = spFile.readlines()
-
-    spiceSubcircuits = dict()
-
-    lineId = 0
-    while (lineId < len(lines)):
-        if (lines[lineId].strip() and lines[lineId].strip()[0] != '*'
-             and lines[lineId].find(".subckt ") >= 0):
-            beginLineId = lineId
-            while (lines[lineId].find(".ends ") < 0):
-                lineId += 1
-            endLineId = lineId
-            newSubckt = SPSubcircuit(lines[beginLineId:endLineId + 1])
-            spiceSubcircuits[newSubckt.name] = newSubckt
-
-        lineId += 1
+    with open(filePath, 'r', encoding='utf-8') as spFile:
+        lines = spFile.readlines()
+        spiceSubcircuits = {}
+        cur_spice = []
+        flag = False
+        for line in lines:
+            line = line.strip()
+            if not line or line[0] == '*':
+                continue
+            if re.search("^.SUBCKT ", line, re.IGNORECASE):
+                flag = True
+                if cur_spice:
+                    newSubckt = SPSubcircuit(cur_spice)
+                    spiceSubcircuits[newSubckt.name.split('_')[0]] = newSubckt
+                cur_spice.clear()
+            if flag:
+                cur_spice.append(line)
+            if re.search("^.ENDS ", line, re.IGNORECASE):
+                flag = False
 
     return spiceSubcircuits
 
-def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap:dict, opins:list, outputDir, cindex: int = 0):
+
+def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins: list, outputDir, cindex: int = 0):
     cellsInCluster = cluserSeq.patternClusters[cindex].cellsContained
     spiceList = []
-    cell2orderId = dict()
+    cell2orderId = {}
     rootNode = None
     ranStr = id_generator()
 
@@ -122,19 +130,22 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap:dict, opins:l
             newPin = ipinMap.get(f'({predPinName}_{predCell.id})', None)
             if newPin:
                 spiceList[orderId].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + inputPinName, newPin)
-            if (predCell in cell2orderId.keys()):
+            if predCell in cell2orderId:
                 spiceList[orderId].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + inputPinName, "cl" + ranStr + "_" + str(cell2orderId[predCell]) + "#" + predPinName)
     for opin in opins:
-        spiceList[rootNode[1]].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + opin, opin)
+        spiceList[rootNode[1]].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + opin, opin)  # type: ignore
 
     mergeCellName = str(patternTraceId)
-    interfaceList = list(ipinMap.values()) + opins + ['VCC', 'GND']
+    if not ({'VDD', 'VSS'} - set(spiceList[0].interfaces)):
+        interfaceList = list(ipinMap.values()) + ['VDD', 'VSS'] + opins
+    else:
+        interfaceList = list(ipinMap.values()) + opins + ['VCC', 'GND']
     # mergeCellName must be upper letters for the default Astran
-    firstLine = ".subckt " + mergeCellName + ' ' + ' '.join(interfaceList)
+    firstLine = ".SUBCKT " + mergeCellName + ' ' + ' '.join(interfaceList)
     internalLines = [firstLine]
     for ele in spiceList:
         internalLines = internalLines + ele.texts[1:-1]
-    lastLine = ".ends " + mergeCellName
+    lastLine = ".ENDS "  # + mergeCellName
 
     internalLines.append(lastLine)
     internalLines.append("* pattern code: " + cluserSeq.patternExtensionTrace)
@@ -144,6 +155,21 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap:dict, opins:l
     for cell in cellsInCluster:
         internalLines.append("*   " + cell.name)
 
-    outputSP = open(outputDir + "/" + mergeCellName + '.sp', 'w')
-    print('\n'.join(internalLines), file=outputSP)
-    outputSP.close()
+    with open(outputDir + "/" + mergeCellName + '.sp', 'w', encoding='utf-8') as outputSP:
+        print('\n'.join(internalLines), file=outputSP)
+
+
+if __name__ == '__main__':
+    from PySpice.Spice.Netlist import Circuit, SubCircuit
+    from PySpice.Spice.Parser import SpiceParser
+
+    parser = SpiceParser('stdCellLib/asap7/asap7_75t_L.sp')
+    AND2x2 = parser.subcircuits[2]
+    OR2x2 = parser.subcircuits[182]
+    circuit = SubCircuit('ADDER_G0_1_4')
+    circuit.subcircuit(AND2x2)
+    circuit.subcircuit(OR2x2)
+    circuit.X('1', AND2x2.name, 'A', 'B', 'VDD', 'VSS', 'n1')
+    circuit.X('2', OR2x2.name, 'C', 'n1', 'VDD', 'VSS', 'Y')
+    print(circuit)
+    pass
