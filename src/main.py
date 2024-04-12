@@ -1,6 +1,7 @@
 import os
 import copy
 import time
+import shutil
 import matplotlib
 from queue import PriorityQueue
 
@@ -208,18 +209,34 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 for opin, func in patternFunc.items():
                     patternFunText += f'{func},'.replace(' ', '')
                 patternFunText = patternFunText[:-1]
-                # check if current pattern exists
+
+                flag = False
+                # check if current pattern has been used
                 if patternFunText not in patternFuncs:
                     pfunc = None
                     if len(patternFunc) == 1:
                         pfunc = next((x for x in patternFuncs if bool_map(func, x)), None)
                     patternFuncs.add(patternFunText)
                     if pfunc:
-                        continue
+                        flag = True
                 else:
+                    flag = True
+                if flag:
                     continue
 
-                # f'{extendCellPath}/{patternFunText};{nnode}.sp'
+                flag = False
+                # check if current pattern exists in pre-defined extened cell library
+                if patternFunText not in extendCellLib:
+                    pfunc = None
+                    if len(patternFunc) == 1:
+                        pfunc = next((x for x in extendCellLib if bool_map(func, x)), None)
+                    if pfunc:
+                        flag = True
+                else:
+                    flag = True
+                if flag:
+                    shutil.copy(f'{extendCellPath}/{pfunc};{nnode}.iCelllog', f'{outputPath}/{patternTraceId}.iCelllog')
+
                 # draw a schemaitc of this pattern
                 drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/{patternTraceId}.png', withLabel=True, figsize=(20, 20))
                 # export the SPICE netlist of the complex of cells
@@ -234,6 +251,12 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                             res = runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=f'{outputPath}/{patternTraceId}.sp', complexName=patternTraceId, commandDir=outputPath)
                         if res:
                             print('\n>>> : Synthesis pattern#', patternTraceId, 'successfully!')
+                            if flag is False:
+                                shutil.copy(f'{outputPath}/{patternTraceId}.iCelllog', f'{extendCellPath}/{patternFunText};{nnode}.iCelllog')
+                                shutil.copy(f'{outputPath}/{patternTraceId}.png', f'{extendCellPath}/{patternFunText};{nnode}.png')
+                                shutil.copy(f'{outputPath}/{patternTraceId}.run', f'{extendCellPath}/{patternFunText};{nnode}.run')
+                                shutil.copy(f'{outputPath}/{patternTraceId}.sp', f'{extendCellPath}/{patternFunText};{nnode}.sp')
+                                extendCellLib[patternFunText] = StdCellType(patternFunText, nnode)
                         else:
                             print('\n>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!')
                             continue
