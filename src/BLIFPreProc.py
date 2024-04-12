@@ -201,7 +201,12 @@ def loadLibertyFile(fileName) -> tuple[Dict[str, StdCellType], Group, Group]:
                     flag_1 = False
                 elif func.value == '0':
                     flag_0 = False
-                func = func.value
+                func = re.sub(' +', ' ', func.value.strip())  # combine multiple spaces into one
+                if ' ' in func:
+                    if any(x in func for x in ['*', '+']):
+                        func = re.sub(' ', '', func)
+                    else:
+                        func = re.sub(' ', '*', func)
             newStdCellType.addPin(pin_name, pin_group["direction"], func)
         stdCellLib[name] = newStdCellType
 
@@ -460,10 +465,12 @@ def writeGenlib(liberty: Group, genlibPath: str) -> None:
                 pin_name = pin_group.args[0]
                 func = pin_group.get_attribute(key='function', default=None)
                 if func:
-                    func = func.value
-                    func = re.sub(' +', ' ', func)  # combine multiple spaces into one
-                    if any(x in func for x in ['*', '+']):
-                        line += '\t' + pin_name + '=' + re.sub(' +', '', func) + ';'
+                    func = re.sub(' +', ' ', func.value.strip())  # combine multiple spaces into one
+                    if ' ' in func:
+                        if any(x in func for x in ['*', '+']):
+                            line += '\t' + pin_name + '=' + re.sub(' ', '', func) + ';'
+                        else:
+                            line += '\t' + pin_name + '=' + func.replace(' ', '*') + ';'
                     else:
                         if func in ['0', '1']:
                             if func == '0':
@@ -473,7 +480,7 @@ def writeGenlib(liberty: Group, genlibPath: str) -> None:
                             flag_constant = True
                             line += '\t' + pin_name + '=CONST' + func + ';'
                         else:
-                            line += '\t' + pin_name + '=' + func.replace(' ', '*') + ';'
+                            line += '\t' + pin_name + '=' + func + ';'
                     nout += 1
             if nout != 1:  # single output
                 continue

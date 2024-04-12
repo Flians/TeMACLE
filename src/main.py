@@ -233,7 +233,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                     continue
                 if oriCellArea > newCellArea:
                     # construct a new cell
-                    newCell = Group('cell', [patternTraceId], [Attribute('area', newCellArea), Attribute('nnode', nnode)], [Group('pin', [ipin], [Attribute('direction', 'input')]) for ipin in ipins.values()] + [Group('pin', [opin], [Attribute('direction', 'output'), Attribute('function', EscapedString(str(patternFunc[opin])))]) for opin in opins])  # type: ignore
+                    newCell = Group('cell', [patternTraceId], [Attribute('area', newCellArea), Attribute('nnode', nnode)], [Group('pin', [ipin], [Attribute('direction', 'input')]) for ipin in ipins.values()] + [Group('pin', [opin], [Attribute('direction', 'output'), Attribute('function', EscapedString(str(patternFunc[opin]).replace('~', '!').replace(' ', '')))]) for opin in opins])  # type: ignore
                     liberty.groups.append(newCell)
                     with open(f'{outputPath}/{patternTraceId}.lib', 'w', encoding='utf-8') as lib_writer:
                         lib_writer.write('\n'.join(writeLiberty(liberty)))
@@ -273,7 +273,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                         for ipin in ipins.values():
                             newCell.addPin(ipin, 'input')
                         for opin in opins:
-                            newCell.addPin(opin, 'output', str(patternFunc[opin]))
+                            newCell.addPin(opin, 'output', str(patternFunc[opin]).replace('~', '!').replace(' ', ''))
                         stdCellLib[patternTraceId] = newCell
                         # load spice/design BLIF
                         BLIFGraph_, cells_, stdCellTypesForFeature_, clusterTree_ = loadDataAndPreprocess(stdCellLib=stdCellLib, blifFileName=F'{outputPath}/{patternTraceId}.blif', K=cutsize, startTime=startTime)
