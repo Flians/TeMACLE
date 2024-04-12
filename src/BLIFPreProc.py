@@ -128,14 +128,13 @@ def writeLiberty(liberty: Group, indent: str = ' ' * 2) -> List[str]:
     def format_value(v) -> str:
         return str(v)
 
-    define_lines = list()
+    define_lines = []
     for d in liberty.defines:
         define_lines.append(f'{d};')
 
     sub_group_lines = [writeLiberty(g, indent=indent) for g in liberty.groups]
 
-    attr_lines = list()
-
+    attr_lines = []
     for attr in liberty.attributes:
         attr_name, attr_value = attr.name, attr.value
         if isinstance(attr_value, list):
@@ -143,7 +142,7 @@ def writeLiberty(liberty: Group, indent: str = ' ' * 2) -> List[str]:
             formatted = [format_value(x) for x in attr_value]
 
             if any((isinstance(x, EscapedString) for x in attr_value)):
-                attr_lines.append("{} (\\".format(attr_name))
+                attr_lines.append(f'{attr_name} (\\')
                 for i, l in enumerate(formatted):
                     if i < len(formatted) - 1:
                         end = ", \\"
@@ -152,19 +151,16 @@ def writeLiberty(liberty: Group, indent: str = ' ' * 2) -> List[str]:
                     attr_lines.append(indent + l + end)
                 attr_lines.append(");")
             else:
-                values = "({})".format(", ".join(formatted))
-                attr_lines.append("{} {};".format(attr_name, values))
+                values = f'({", ".join(formatted)})'
+                attr_lines.append(f'{attr_name} {values};')
         else:
             # Simple attribute
             values = format_value(attr_value)
-            attr_lines.append("{}: {};".format(attr_name, values))
+            attr_lines.append(f"{attr_name}: {values};")
 
-    lines = list()
-    lines.append("{} ({}) {{".format(liberty.group_name, ", ".join([format_value(f) for f in liberty.args])))
-
+    lines = [f'{liberty.group_name} ({", ".join([format_value(f) for f in liberty.args])}) {{']
     for l in chain(define_lines, attr_lines, *sub_group_lines):
         lines.append(indent + l)
-
     lines.append("}")
 
     return lines
@@ -204,18 +200,19 @@ def loadLibertyFile(fileName) -> tuple[Dict[str, StdCellType], Group, Group]:
                 func = re.sub(' +', ' ', func.value.strip())  # combine multiple spaces into one
                 if ' ' in func:
                     if any(x in func for x in ['*', '+']):
-                        func = re.sub(' ', '', func)
+                        func = func.replace(' ', '')
                     else:
-                        func = re.sub(' ', '*', func)
+                        func = func.replace(' ', '&')
+                func = func.replace('*', '&').replace('+', '|').replace('!', '~')
             newStdCellType.addPin(pin_name, pin_group["direction"], func)
         stdCellLib[name] = newStdCellType
 
     if flag_0:
         stdCellLib['const_0'] = StdCellType("const_0", 0)
-        stdCellLib["const_0"].addPin("q", "output", "CONST0")
+        stdCellLib["const_0"].addPin("q", "output", "0")
     if flag_1:
         stdCellLib['const_1'] = StdCellType("const_1", 0)
-        stdCellLib["const_1"].addPin("q", "output", "CONST1")
+        stdCellLib["const_1"].addPin("q", "output", "1")
 
     return stdCellLib, liberty_used, liberty
 

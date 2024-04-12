@@ -266,7 +266,7 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
             v_inet = symbols(curr_node.inputNetNames, bool=True)
             curFunc = curr_node.stdCellType.outputFuncMap.copy()
             for opin, onet in zip(curr_node.outputPinRefNames, curr_node.outputNetNames):
-                cur_f = simplify_logic(eval(curFunc[opin].replace('!', '~')))
+                cur_f = simplify_logic(eval(curFunc[opin]))
                 for ipin, inet in zip(v_ipin, v_inet):  # type: ignore
                     cur_f = cur_f.subs(ipin, inet)
                     net2pin[str(inet)] = f'{ipin}_{nid}'
