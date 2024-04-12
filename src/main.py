@@ -55,6 +55,11 @@ def main():
     stdType2Area = loadAstranGDS() if SCSynthesis == 'Astran' else loadiCellGDS()
     stdCellLib, liberty, liberty_all = loadLibertyFile(initialLibertyPath)
     subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
+    if SCSynthesis == 'iCell':
+        subckts_ = {}
+        for name, spsub in subckts.items():
+            subckts_[name.split('_')[0]] = spsub
+        subckts = subckts_
     stdType2LibArea = {}
     # update area
     for cell_group in liberty.get_groups('cell'):
@@ -228,7 +233,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                     continue
                 if oriCellArea > newCellArea:
                     # construct a new cell
-                    newCell = Group('cell', [patternTraceId], [Attribute('area', newCellArea), Attribute('nnode', nnode)], [Group('pin', [ipin], [Attribute('direction', 'input')]) for ipin in ipins.values()] + [Group('pin', [opin], [Attribute('direction', 'output'), Attribute('function', EscapedString(patternFunc[opin]))]) for opin in opins])  # type: ignore
+                    newCell = Group('cell', [patternTraceId], [Attribute('area', newCellArea), Attribute('nnode', nnode)], [Group('pin', [ipin], [Attribute('direction', 'input')]) for ipin in ipins.values()] + [Group('pin', [opin], [Attribute('direction', 'output'), Attribute('function', EscapedString(str(patternFunc[opin])))]) for opin in opins])  # type: ignore
                     liberty.groups.append(newCell)
                     with open(f'{outputPath}/{patternTraceId}.lib', 'w', encoding='utf-8') as lib_writer:
                         lib_writer.write('\n'.join(writeLiberty(liberty)))
@@ -268,7 +273,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                         for ipin in ipins.values():
                             newCell.addPin(ipin, 'input')
                         for opin in opins:
-                            newCell.addPin(opin, 'output', patternFunc[opin])
+                            newCell.addPin(opin, 'output', str(patternFunc[opin]))
                         stdCellLib[patternTraceId] = newCell
                         # load spice/design BLIF
                         BLIFGraph_, cells_, stdCellTypesForFeature_, clusterTree_ = loadDataAndPreprocess(stdCellLib=stdCellLib, blifFileName=F'{outputPath}/{patternTraceId}.blif', K=cutsize, startTime=startTime)

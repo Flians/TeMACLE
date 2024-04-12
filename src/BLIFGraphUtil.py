@@ -3,7 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import count
 from typing import List
-from sympy import symbols, simplify_logic
+from sympy import symbols, simplify_logic, bool_map, var
 
 stdCellIPEqu = {
     'AND2X1': {'A': ['A', 'B'], 'B': ['A', 'B']},
@@ -254,78 +254,55 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
     patternFunc = {}
     opins = []
     ipins = []
+    net2pin = {}
     for nid in nx.topological_sort(patternSubgraph.reverse()):
         curr_node = cells[nid]
-        if not patternFunc:
-            patternFunc = curr_node.stdCellType.outputFuncMap.copy()
-            opins = curr_node.outputPinRefNames.copy()
-            for ipin in curr_node.inputPinRefNames:
-                for opin in curr_node.outputPinRefNames:
-                    patternFunc[opin] = patternFunc[opin].replace(ipin, f'({ipin}_{nid})')
-                    ipins.append(f'({ipin}_{nid})')
+        if patternSubgraph.nodes[nid]['type'] == 'INPUT':
+            ipins.extend(curr_node.outputNetNames)
         else:
-            if patternSubgraph.nodes[nid]['type'] == 'INPUT':
-                for opin in curr_node.outputPinRefNames:
-                    ipins.append(f'({opin}_{nid})')
-                for onet in curr_node.outputNets:
-                    for onode, oipin in zip(onet.succCells, onet.succPins):
-                        tpin = f'({oipin}_{onode.id})'
-                        for opin in opins:
-                            patternFunc[opin] = patternFunc[opin].replace(tpin, f'({onet.predPin}_{nid})')
-                continue
-            funcs = curr_node.stdCellType.outputFuncMap.copy()
-            for ipin in curr_node.inputPinRefNames:
-                for opin in curr_node.outputPinRefNames:
-                    funcs[opin] = funcs[opin].replace(ipin, f'({ipin}_{nid})')
-                    ipins.append(f'({ipin}_{nid})')
-            for onet in curr_node.outputNets:
-                for onode, oipin in zip(onet.succCells, onet.succPins):
-                    tpin = f'({oipin}_{onode.id})'
-                    for opin in opins:
-                        patternFunc[opin] = patternFunc[opin].replace(tpin, funcs[onet.predPin])
-    # remove useless variables
-    useless = set()
-    for ipin in ipins:
-        for func in patternFunc.values():
-            if ipin not in func:
-                useless.add(ipin)
-    ipins = sorted(list(set(ipins) - useless), key=lambda x: (int(x.split('_')[1][:-1]), x.split('_')[0]))
-    # simplify function expression
-    vars = symbols(ipins)
-    for pid, ipin in enumerate(ipins):
-        for opin in opins:
-            patternFunc[opin] = patternFunc[opin].replace(ipin, f'vars[{pid}]')
-    funcs = []
-    for opin in opins:
-        func = patternFunc[opin]
-        if any(x in func for x in ['*', '+']):
-            func = func.replace(' ', '').replace('*', '&').replace('+', '|').replace('!', '~')
-        else:
-            func = func.replace(' ', '&').replace('+', '|').replace('!', '~')
-        funcs.append(func)
-        patternFunc[opin] = str(simplify_logic(eval(func))).replace(' ', '').replace('&', '*').replace('|', '+').replace('~', '!')
+            if not patternFunc:
+                opins = curr_node.outputNetNames.copy()
+            v_ipin = var(curr_node.inputPinRefNames, bool=True)
+            v_inet = symbols(curr_node.inputNetNames, bool=True)
+            curFunc = curr_node.stdCellType.outputFuncMap.copy()
+            for opin, onet in zip(curr_node.outputPinRefNames, curr_node.outputNetNames):
+                cur_f = simplify_logic(eval(curFunc[opin]))
+                for ipin, inet in zip(v_ipin, v_inet):  # type: ignore
+                    cur_f = cur_f.subs(ipin, inet)
+                    net2pin[str(inet)] = f'{ipin}_{nid}'
+                if onet in opins:
+                    patternFunc[onet] = cur_f
+                    net2pin[onet] = f'{opin}_{nid}'
+                else:
+                    for on, of in patternFunc.items():
+                        patternFunc[on] = of.subs(symbols(onet, bool=True), cur_f)
     # rename variables
     new_ipins = {}
-    varsMap = {}
     for id, ipin in enumerate(ipins):
         pid = chr(65 + id)
         for opin in opins:
-            patternFunc[opin] = patternFunc[opin].replace(ipin, pid)
-        new_ipins[ipin] = pid
-        varsMap[pid] = f'vars[{id}]'
+            patternFunc[opin] = patternFunc[opin].subs(symbols(ipin, bool=True), symbols(pid, bool=True))
+        new_ipins[net2pin[ipin]] = pid
+        ipins[id] = pid
+    patternFunc_ = {}
+    for id, opin in enumerate(opins):
+        newOP = 'Y' if len(opins) == 1 else 'Y' + chr(65 + id)
+        patternFunc_[newOP] = patternFunc[opin]
+        opins[id] = newOP
+    patternFunc = patternFunc_
     # record equivalent input pins
     IPEqu = {}
-    allPins = set(new_ipins.values())
+    allPins = set(ipins)
     while allPins:
         cur = allPins.pop()
         curPins = {cur}
         for other in allPins:
             flag = True
-            for func in funcs:
-                tmp = func.replace(varsMap[other], 'A@A')
-                tmp = tmp.replace(varsMap[cur], varsMap[other])
-                tmp = tmp.replace('A@A', varsMap[cur])
-                if not eval(func).equals(eval(tmp)):
+            for opin, func in patternFunc.items():
+                tmp = func.subs(symbols(other, bool=True), symbols('A@A', bool=True))
+                tmp = tmp.subs(symbols(cur, bool=True), symbols(other, bool=True))
+                tmp = tmp.subs(symbols('A@A', bool=True), symbols(cur, bool=True))
+                if not func.equals(tmp):
                     flag = False
                     break
             if flag:

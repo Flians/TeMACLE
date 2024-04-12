@@ -94,14 +94,13 @@ def loadSpiceSubcircuits(filePath):
                 continue
             if re.search("^.SUBCKT ", line, re.IGNORECASE):
                 flag = True
-                if cur_spice:
-                    newSubckt = SPSubcircuit(cur_spice)
-                    spiceSubcircuits[newSubckt.name.split('_')[0]] = newSubckt
-                cur_spice.clear()
             if flag:
                 cur_spice.append(line)
-            if re.search("^.ENDS ", line, re.IGNORECASE):
+            if re.search("^.ENDS", line, re.IGNORECASE):
                 flag = False
+                newSubckt = SPSubcircuit(cur_spice)
+                spiceSubcircuits[newSubckt.name] = newSubckt
+                cur_spice.clear()
 
     return spiceSubcircuits
 
