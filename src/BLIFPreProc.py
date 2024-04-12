@@ -492,6 +492,31 @@ def writeGenlib(liberty: Group, genlibPath: str) -> None:
             genlib.write('GATE const_1\t0\tq=CONST1;\n')
 
 
+def loadExtendCells(fileDir: str) -> Dict[str, StdCellType]:
+    extendCellLib = {}
+    for item in os.listdir(fileDir):
+        if not item.endswith(".sp"):
+            continue
+        ipins = set()
+        funcs = {}
+        eqs_nnode = item[:-3].split(';')
+        nnode = int(eqs_nnode[1])
+        eqs = eqs_nnode[0].split(',')
+        for id, eq in enumerate(eqs):
+            newOP = 'Y' if len(eqs) == 1 else 'Y' + chr(65 + id)
+            func = simplify_logic(eq)
+            funcs[newOP] = func
+            ipins.union(set(func.free_symbols))
+
+        newCell = StdCellType(','.join(eqs), nnode)
+        for ipin in ipins:
+            newCell.addPin(ipin, 'input')
+        for opin, ofunc in funcs.items():
+            newCell.addPin(opin, 'output', str(ofunc).replace(' ', ''))
+        extendCellLib[newCell.typeName] = newCell
+    return extendCellLib
+
+
 if __name__ == '__main__':
     stdCellLib, liberty_used, liberty = loadLibertyFile('stdCellLib/gscl45nm/gscl45nm.lib')
     writeGenlib(liberty_used, 'gscl45nm.genlib')

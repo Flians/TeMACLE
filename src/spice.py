@@ -105,7 +105,7 @@ def loadSpiceSubcircuits(filePath):
     return spiceSubcircuits
 
 
-def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins: list, outputDir, cindex: int = 0):
+def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins: list, outputPath: str, cindex: int = 0):
     cellsInCluster = cluserSeq.patternClusters[cindex].cellsContained
     spiceList = []
     cell2orderId = {}
@@ -134,27 +134,27 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins:
     for opin in opins:
         spiceList[rootNode[1]].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + opin, opin)  # type: ignore
 
-    mergeCellName = str(patternTraceId)
+    mergeCellName = str(patternTraceId).upper()
     if not ({'VDD', 'VSS'} - set(spiceList[0].interfaces)):
         interfaceList = list(ipinMap.values()) + ['VDD', 'VSS'] + opins
     else:
         interfaceList = list(ipinMap.values()) + opins + ['VCC', 'GND']
     # mergeCellName must be upper letters for the default Astran
-    firstLine = ".SUBCKT " + mergeCellName + ' ' + ' '.join(interfaceList)
+    firstLine = f'.SUBCKT {mergeCellName} {" ".join(interfaceList)}'
     internalLines = [firstLine]
     for ele in spiceList:
         internalLines = internalLines + ele.texts[1:-1]
     lastLine = ".ENDS "  # + mergeCellName
 
     internalLines.append(lastLine)
-    internalLines.append("* pattern code: " + cluserSeq.patternExtensionTrace)
-    internalLines.append("* " + str(len(cluserSeq.patternClusters)) + " occurrences in design ")
-    internalLines.append("* each contains " + str(len(cellsInCluster)) + " cells")
+    internalLines.append(f"* pattern code: {cluserSeq.patternExtensionTrace}")
+    internalLines.append(f"* {len(cluserSeq.patternClusters)} occurrences in design")
+    internalLines.append(f"* each contains {len(cellsInCluster)} cells")
     internalLines.append("* Example occurence:")
     for cell in cellsInCluster:
-        internalLines.append("*   " + cell.name)
+        internalLines.append(f"*   {cell.name}")
 
-    with open(outputDir + "/" + mergeCellName + '.sp', 'w', encoding='utf-8') as outputSP:
+    with open(outputPath, 'w', encoding='utf-8') as outputSP:
         print('\n'.join(internalLines), file=outputSP)
 
 

@@ -2,8 +2,8 @@ import bisect
 import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import count
-from typing import List
-from sympy import symbols, simplify_logic, bool_map, var
+from typing import List, Dict
+from sympy import Basic, symbols, simplify_logic, bool_map, var
 
 stdCellIPEqu = {
     'AND2X1': {'A': ['A', 'B'], 'B': ['A', 'B']},
@@ -250,7 +250,7 @@ def drawColorfulFigureForGraphWithAttributes(tmp_graph, colorArrtibute='type', s
     return
 
 
-def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]):
+def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> tuple[Dict[str, Basic], Dict[str, str], List[str], Dict[str, List[str]]]:
     patternFunc = {}
     opins = []
     ipins = []

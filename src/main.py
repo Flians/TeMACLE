@@ -36,10 +36,12 @@ def main():
     stdSpiceNetlistPath = f'{current_path}/../stdCellLib/gscl45nm/cellsAstranFriendly.sp'
     initialLibertyPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.lib'
     initialGenlibPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.genlib'
+    extendCellPath = f'{current_path}/../stdCellLib/gscl45nm/extend'
 
     stdSpiceNetlistPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.sp'
     initialLibertyPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.lib'
     initialGenlibPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.genlib'
+    extendCellPath = f'{current_path}/../stdCellLib/asap7/extend'
 
     # generate SCSynthesis-based cells
     if (AstranPath != '' and SCSynthesis == 'Astran') or (iCellPath != '' and SCSynthesis == 'iCell'):
@@ -51,9 +53,11 @@ def main():
             elif SCSynthesis == 'iCell' and loadiCellArea(GDSPath=f'{current_path}/originaliCellStdCells/', typeName=f'{oriStdCellType}_ASAP7_75t_L') is False:
                 runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=stdSpiceNetlistPath, complexName=f'{oriStdCellType}_ASAP7_75t_L', commandDir=f'{current_path}/originaliCellStdCells/')
 
-    # load liberty/spice
+    # load GDS
     stdType2Area = loadAstranGDS() if SCSynthesis == 'Astran' else loadiCellGDS()
+    # load liberty
     stdCellLib, liberty, liberty_all = loadLibertyFile(initialLibertyPath)
+    # load spice
     subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
     if SCSynthesis == 'iCell':
         subckts_ = {}
@@ -72,9 +76,12 @@ def main():
                 else:
                     stdType2Area[cell_name] = a.value
                 break
-
+    # initial .genlib
     writeGenlib(liberty, initialGenlibPath)
+    # load extended cell library
+    extendCellLib = loadExtendCells(extendCellPath)
 
+    # benchmarks and parameters
     benchmarks = ['sqrt', 'voter', 'arbiter', 'cavlc', 'div', 'int2float', 'max', 'priority', 'sin', 'square', 'BoomBranchPredictor', 'GemminiLoopMatmul', 'GemminiLoopConv', 'DCache', 'BoomRegisterFile', 'GemminiMesh']
     benchmarks = ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']
     topThr = 5  # The maximum number of patterns chosen
@@ -197,18 +204,26 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 # construct the cluster's function
                 patternFunc, ipins, opins, IPEqu = obtainClusterFunc(patternSubgraph, cells)
                 assert len(ipins) <= cutsize
-                flag = True
+                patternFunText = ''
                 for opin, func in patternFunc.items():
-                    if func not in patternFuncs:
-                        flag = False
-                        patternFuncs.add(func)
-                if flag:
+                    patternFunText += f'{func},'.replace(' ', '')
+                patternFunText = patternFunText[:-1]
+                # check if current pattern exists
+                if patternFunText not in patternFuncs:
+                    pfunc = None
+                    if len(patternFunc) == 1:
+                        pfunc = next((x for x in patternFuncs if bool_map(func, x)), None)
+                    patternFuncs.add(patternFunText)
+                    if pfunc:
+                        continue
+                else:
                     continue
 
-                # patternFunText = str(patternFunc[opin]).replace(' ', '')
+                # f'{extendCellPath}/{patternFunText};{nnode}.sp'
+                # draw a schemaitc of this pattern
                 drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/{patternTraceId}.png', withLabel=True, figsize=(20, 20))
                 # export the SPICE netlist of the complex of cells
-                exportSpiceNetlist(clusterSeq, subckts, patternTraceId, ipins, opins, outputPath, cindex=cindex)
+                exportSpiceNetlist(clusterSeq, subckts, patternTraceId, ipins, opins, outputPath=f'{outputPath}/{patternTraceId}.sp', cindex=cindex)
                 # if SC synthesizer is available, run it to get the layout and area evaluation
                 if (AstranPath != '' and SCSynthesis == 'Astran') or (iCellPath != '' and SCSynthesis == 'iCell'):
                     try:
