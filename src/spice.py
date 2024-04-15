@@ -105,7 +105,7 @@ def loadSpiceSubcircuits(filePath):
     return spiceSubcircuits
 
 
-def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins: list, outputPath: str, cindex: int = 0):
+def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins: list, func: str, outputPath: str, cindex: int = 0):
     cellsInCluster = cluserSeq.patternClusters[cindex].cellsContained
     spiceList = []
     cell2orderId = {}
@@ -126,7 +126,7 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins:
             predCell = inputNet.predCell
             predPinName = inputNet.predPin
             # rename interfaces
-            newPin = ipinMap.get(f'({predPinName}_{predCell.id})', None)
+            newPin = ipinMap.get(f'{inputPinName}_{curCell.id}', None)
             if newPin:
                 spiceList[orderId].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + inputPinName, newPin)
             if predCell in cell2orderId:
@@ -150,6 +150,7 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins:
     internalLines.append(f"* pattern code: {cluserSeq.patternExtensionTrace}")
     internalLines.append(f"* {len(cluserSeq.patternClusters)} occurrences in design")
     internalLines.append(f"* each contains {len(cellsInCluster)} cells")
+    internalLines.append(f"* function: {func}")
     internalLines.append("* Example occurence:")
     for cell in cellsInCluster:
         internalLines.append(f"*   {cell.name}")

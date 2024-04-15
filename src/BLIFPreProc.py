@@ -66,7 +66,55 @@ def kcuts(BLIFGraph: nx.DiGraph, n, k, computed: Dict[Any, List[Set]] = None) ->
     return cuts
 
 
-def ancestors(G: nx.DiGraph, target, sources=None, include_self=True) -> Set:
+def kcuts_PIs_POs(BLIFGraph: nx.DiGraph, k) -> Dict[Any, List[Set]]:  # type: ignore
+    """
+    Generate all k-cuts from PIs to POs.
+
+    Parameters
+    ----------
+    k : int
+            Maximum cut width.
+
+    Returns
+    -------
+    iter of str
+            k-cuts.
+
+    """
+    computed: Dict[Any, List[Set]] = {}
+
+    # helper function
+    def merge_cut_sets(a_cuts, b_cuts):
+        merged_cuts = []
+        for a_cut, b_cut in product(a_cuts, b_cuts):
+            merged_cut = a_cut | b_cut
+            if len(merged_cut) <= k:
+                merged_cuts.append(merged_cut)
+        return merged_cuts
+
+    for n in nx.topological_sort(BLIFGraph):
+        pres = set(BLIFGraph.predecessors(n))
+        if pres:
+            fanin_cut_sets = [computed[f] for f in pres]
+            cuts = reduce(merge_cut_sets, fanin_cut_sets) + [{n}]
+        else:
+            cuts = [{n}]
+        # add cuts
+        computed[n] = cuts
+    return computed
+
+
+def calculate_longest_distances(G: nx.DiGraph) -> List[int]:
+    n = G.number_of_nodes()
+    dist: List[int] = [n for i in range(n)]
+    for u in nx.topological_sort(G):
+        for v in G.successors(u):
+            if dist[v] > dist[u] + 1:
+                dist[v] = dist[u] + 1
+    return dist
+
+
+def ancestors(G: nx.DiGraph, target, sources: Set[int] = None, include_self=True) -> Set:
     """Returns all nodes having a path to `target` in `G`.
 
     Parameters
@@ -83,7 +131,7 @@ def ancestors(G: nx.DiGraph, target, sources=None, include_self=True) -> Set:
         The ancestors of target in G
     """
 
-    def dfs(cur, sources=None, computed: Dict[Any, List] = None) -> Set:  # type: ignore
+    def dfs(cur, sources: Set[int] = None, dist: List[int] = None, min_depth: int = None, computed: Dict[Any, List] = None) -> Set:  # type: ignore
         if computed is None:
             computed = {}
 
@@ -92,10 +140,12 @@ def ancestors(G: nx.DiGraph, target, sources=None, include_self=True) -> Set:
 
         curPred = set()
         for pred in G.predecessors(cur):
+            if dist and min_depth is not None and dist[pred] < min_depth:
+                continue
             if sources and pred in sources:
                 curPred.add(pred)
             else:
-                tmp = dfs(pred, sources, computed)
+                tmp = dfs(pred, sources, dist, min_depth, computed)
                 if tmp:
                     curPred |= tmp
                 if not sources or tmp:
@@ -105,12 +155,19 @@ def ancestors(G: nx.DiGraph, target, sources=None, include_self=True) -> Set:
 
     if not G.has_node(target):
         raise nx.NetworkXError(f'The node {target} is not in the graph.')
-    anc = dfs(target, set(sources))  # type: ignore
+    if sources:
+        for s in sources:
+            if not G.has_node(s):
+                raise nx.NetworkXError(f'The node {s} is not in the graph.')
+        dist: List[int] = calculate_longest_distances(G)
+        min_depth: int = min(sources, key=lambda v: dist[v])
+
+    anc = dfs(target, set(sources), dist, min_depth)  # type: ignore
 
     unvisited = sources - anc  # type: ignore
     if unvisited:
         for tar in sources:  # type: ignore
-            tmp = dfs(tar, unvisited)
+            tmp = dfs(tar, unvisited, dist, min_depth)
             unvisited -= tmp
             anc |= tmp
             if not unvisited:
@@ -228,7 +285,7 @@ def loadBoolGateFromBLIF(blif, stdCellLib) -> None:
             stdCellLib[truthTableStr] = newStdCellType
 
 
-def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName: str, K: int = 4) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], Dict[int, Set]]:
+def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName: str, K: int = 4) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], Dict[Any, List[Set]]]:
     # get the file path and pass it to the parser
     filepath = os.path.abspath(blifFileName)
     parser = blifparser.BlifParser(filepath)
@@ -240,7 +297,7 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
     # get the dictionary with the number of occurrencies of each keyword
     print(blif.nkeywords, "\n")
 
-    cellName2Obj = dict()
+    cellName2Obj = {}
     cells = []
     idCnt = 0
     for tmpCircuit in blif.subcircuits:
@@ -336,27 +393,23 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
     print("created networkx graph with ", len(cells), " nodes")
 
     # calculte all k-cuts
-    allKCuts = {}
+    allKCuts = kcuts_PIs_POs(BLIFGraph=BLIFGraph, k=K)
     for cell in cells:
         for tmpType in bypassTypes:
             if cell.stdCellType.typeName.find(tmpType) >= 0:
                 cell.stopType = True
-        if cell.outputNets:
-            assert len(cell.outputNets) == 1
-            if cell.outputNets[0].name in blif.outputs.outputs:  # type: ignore
-                kcuts(BLIFGraph=BLIFGraph, n=cell.id, k=K, computed=allKCuts)
 
     return BLIFGraph, cells, stdCellTypesForFeature, allKCuts
 
 
-def count_nnode(cellsContained: List[int], cells: List[DesignCell]) -> int:
+def count_nnode(cellsContained: Set[int], cells: List[DesignCell]) -> int:
     nnode = 0
     for nid in cellsContained:
         nnode += cells[nid].stdCellType.nnode
     return nnode
 
 
-def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: List[DesignCell], allKCuts: Dict[int, Set]) -> Dict[str, Dict[int, list]]:
+def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: List[DesignCell], allKCuts: Dict[int, List[Set]]) -> Dict[str, Dict[int, list]]:
     clusterTree = {}
     cid = 0
     for root, cuts in allKCuts.items():
@@ -506,7 +559,7 @@ def loadExtendCells(fileDir: str) -> Dict[str, StdCellType]:
             newOP = 'Y' if len(eqs) == 1 else 'Y' + chr(65 + id)
             func = simplify_logic(eq)
             funcs[newOP] = func
-            ipins.union(set(func.free_symbols))
+            ipins = ipins.union(set(func.free_symbols))
 
         newCell = StdCellType(','.join(eqs), nnode)
         for ipin in ipins:

@@ -86,7 +86,7 @@ def main():
     benchmarks = ['sqrt', 'voter', 'arbiter', 'cavlc', 'div', 'int2float', 'max', 'priority', 'sin', 'square', 'BoomBranchPredictor', 'GemminiLoopMatmul', 'GemminiLoopConv', 'DCache', 'BoomRegisterFile', 'GemminiMesh']
     benchmarks = ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']
     topThr = 5  # The maximum number of patterns chosen
-    cntThr = 10  # # The maximum node number of each pattern
+    cntThr = 5  # # The maximum node number of each pattern
     cutsize = 3
     ratioThr = 0.01
 
@@ -144,7 +144,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
         bestSCCArea = sccArea
         complexSelection = []
         recordPatternDetails = []
-        patternFuncs = set()
+        patternFuncs = set([','.join(list(x.outputFuncMap.values())) for name, x in stdCellLib.items() if name != "PI"])
         for cid in range(topThr):
             # fliter clusters and get Top-K clusters
             pattern2Coding = {}
@@ -232,23 +232,50 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                         pfunc = next((x for x in extendCellLib if bool_map(func, x)), None)
                     if pfunc:
                         flag = True
+                        # need to change function
                 else:
                     flag = True
                 if flag:
-                    shutil.copy(f'{extendCellPath}/{pfunc};{nnode}.iCelllog', f'{outputPath}/{patternTraceId}.iCelllog')
+                    if not pfunc:
+                        pfunc = patternFunText
+                    extCell = extendCellLib[pfunc]
+                    if extCell.nnode <= nnode:
+                        nnode = extCell.nnode
+                        shutil.copy(f'{extendCellPath}/{pfunc};{nnode}.iCelllog', f'{outputPath}/{patternTraceId}.iCelllog')
+                    else:
+                        flag = False
+                        extendCellLib.pop(pfunc)
+                        # os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.iCelllog')
+                        # os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.png')
+                        # os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.run')
+                        # os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.sp')
 
                 # draw a schemaitc of this pattern
                 drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/{patternTraceId}.png', withLabel=True, figsize=(20, 20))
                 # export the SPICE netlist of the complex of cells
-                exportSpiceNetlist(clusterSeq, subckts, patternTraceId, ipins, opins, outputPath=f'{outputPath}/{patternTraceId}.sp', cindex=cindex)
+                if flag and pfunc in ['(A&B)|(A&C)|(B&C)', '(A&B&~C)|(A&C&~B)|(B&C&~A)|(~A&~B&~C)', 'A&B&C', 'A|B|C']:
+                    shutil.copy(f'{extendCellPath}/{pfunc};{nnode}.sp', f'{outputPath}/{patternTraceId}.sp')
+                    with open(f'{outputPath}/{patternTraceId}.sp', 'r+', encoding='utf-8') as file:  # change the name of .SUBCKT
+                        lines = file.readlines()
+                        tmp = lines[0].split(' ')
+                        tmp[1] = patternTraceId
+                        lines[0] = ' '.join(tmp)
+                        file.seek(0)
+                        file.writelines(lines)
+                else:
+                    exportSpiceNetlist(clusterSeq, subckts, patternTraceId, ipins, opins, patternFunText, outputPath=f'{outputPath}/{patternTraceId}.sp', cindex=cindex)
                 # if SC synthesizer is available, run it to get the layout and area evaluation
                 if (AstranPath != '' and SCSynthesis == 'Astran') or (iCellPath != '' and SCSynthesis == 'iCell'):
                     try:
                         res = True
                         if SCSynthesis == 'Astran' and loadAstranArea(outputPath, patternTraceId) is False:
                             res = runAstranForNetlist(AstranPath=AstranPath, gurobiPath=gurobiPath, technologyPath=technologyPath, spiceNetlistPath=f'{outputPath}/{patternTraceId}.sp', complexName=patternTraceId, commandDir=outputPath)
-                        elif SCSynthesis == 'iCell' and loadiCellArea(outputPath, patternTraceId) is False:
-                            res = runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=f'{outputPath}/{patternTraceId}.sp', complexName=patternTraceId, commandDir=outputPath)
+                        elif SCSynthesis == 'iCell':
+                            if not os.path.exists(os.path.join(outputPath, f'{patternTraceId}.iCelllog')):
+                                res = runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=f'{outputPath}/{patternTraceId}.sp', complexName=patternTraceId, commandDir=outputPath)
+                            elif loadiCellArea(outputPath, patternTraceId) is False:
+                                print('\n>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!')
+                                continue
                         if res:
                             print('\n>>> : Synthesis pattern#', patternTraceId, 'successfully!')
                             if flag is False:
@@ -268,7 +295,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 oriCellArea = getArea(exampleCells, stdType2Area)
                 newCellArea = SCSynthesis == 'Astran' if loadAstranArea(outputPath, patternTraceId) else loadiCellArea(outputPath, patternTraceId)
                 if not newCellArea or newCellArea <= 0:
-                    print('\n>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully due to more area!')
+                    print('\n>>> : New pattern#', patternTraceId, 'has more area!')
                     continue
                 if oriCellArea > newCellArea:
                     # construct a new cell

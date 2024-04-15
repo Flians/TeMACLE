@@ -73,7 +73,8 @@ class StdCellType(object):
             self.inputPins.append(pinName)
             if 'bool-' in self.typeName:
                 pass
-            self.inputPinEqu[pinName] = stdCellIPEqu[self.typeName][pinName]
+            if self.typeName in stdCellIPEqu:
+                self.inputPinEqu[pinName] = stdCellIPEqu[self.typeName][pinName]
         if direction == 'output':
             self.outputPins.append(pinName)
             self.outputFuncMap[pinName] = function
@@ -272,7 +273,6 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> t
                     net2pin[str(inet)] = f'{ipin}_{nid}'
                 if onet in opins:
                     patternFunc[onet] = cur_f
-                    net2pin[onet] = f'{opin}_{nid}'
                 else:
                     for on, of in patternFunc.items():
                         patternFunc[on] = of.subs(symbols(onet, bool=True), cur_f)
@@ -287,7 +287,7 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> t
     patternFunc_ = {}
     for id, opin in enumerate(opins):
         newOP = 'Y' if len(opins) == 1 else 'Y' + chr(65 + id)
-        patternFunc_[newOP] = patternFunc[opin]
+        patternFunc_[newOP] = simplify_logic(patternFunc[opin])
         opins[id] = newOP
     patternFunc = patternFunc_
     # record equivalent input pins
