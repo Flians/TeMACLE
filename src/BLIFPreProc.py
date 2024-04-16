@@ -104,6 +104,59 @@ def kcuts_PIs_POs(BLIFGraph: nx.DiGraph, k) -> Dict[Any, List[Set]]:  # type: ig
     return computed
 
 
+def kcuts_kcones_PIs_POs(BLIFGraph: nx.DiGraph, k) -> tuple[Dict[Any, List[Set]], Dict[str, Set[int]]]:  # type: ignore
+    """
+    Generate all k-cuts from PIs to POs.
+
+    Parameters
+    ----------
+    k : int
+            Maximum cut width.
+
+    Returns
+    -------
+    iter of str
+            k-cuts.
+
+    """
+    computed: Dict[Any, List[Set]] = {}
+    all_cones: Dict[str, Set[int]] = {}
+
+    for n in nx.topological_sort(BLIFGraph):
+        it = BLIFGraph.predecessors(n)
+        pre = next(it, None)
+        if pre is not None:
+            cuts = copy.deepcopy(computed[pre])
+            partial_cones: Dict[str, Set[int]] = {}
+            for a_cut in cuts:
+                la = ','.join(map(str, sorted(a_cut | {pre})))
+                lc = ','.join(map(str, sorted(a_cut | {n})))
+                partial_cones[lc] = all_cones[la] | {n, pre}
+            for pre2 in it:
+                merged_cuts = []
+                cuts2 = copy.deepcopy(computed[pre2])
+                for a_cut, b_cut in product(cuts, cuts2):
+                    merged_cut = a_cut | b_cut
+                    if len(merged_cut) <= k:
+                        merged_cuts.append(merged_cut)
+                        la = ','.join(map(str, sorted(a_cut | {n})))
+                        lb = ','.join(map(str, sorted(b_cut | {pre2})))
+                        lc = ','.join(map(str, sorted(merged_cut | {n})))
+                        partial_cones[lc] = partial_cones[la] | all_cones[lb] | {pre, pre2}
+                cuts = merged_cuts
+                pre = pre2
+            for a_cut in cuts:
+                lc = ','.join(map(str, sorted(a_cut | {n})))
+                all_cones[lc] = partial_cones[lc]
+            cuts += [{n}]
+        else:
+            cuts = [{n}]
+        # add cuts
+        computed[n] = cuts
+        all_cones[str(n)] = {n}
+    return computed, all_cones
+
+
 def calculate_longest_distances(G: nx.DiGraph) -> List[int]:
     n = G.number_of_nodes()
     dist: List[int] = [n for i in range(n)]
@@ -285,7 +338,7 @@ def loadBoolGateFromBLIF(blif, stdCellLib) -> None:
             stdCellLib[truthTableStr] = newStdCellType
 
 
-def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName: str, K: int = 4) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], Dict[Any, List[Set]]]:
+def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName: str, K: int = 4) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], Dict[Any, List[Set]], Dict[str, Set[int]]]:
     # get the file path and pass it to the parser
     filepath = os.path.abspath(blifFileName)
     parser = blifparser.BlifParser(filepath)
@@ -336,8 +389,8 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
             print(refType, " is not in liberty file.")
             assert False
 
-    stdCellType2Cells = dict()
-    netName2Obj = dict()
+    stdCellType2Cells = {}
+    netName2Obj = {}
     nets = []
     idCnt = 0
     for designCell in cells:
@@ -393,13 +446,15 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
     print("created networkx graph with ", len(cells), " nodes")
 
     # calculte all k-cuts
-    allKCuts = kcuts_PIs_POs(BLIFGraph=BLIFGraph, k=K)
+    # allKCones = None
+    # allKCuts = kcuts_PIs_POs(BLIFGraph=BLIFGraph, k=K)
+    allKCuts, allKCones = kcuts_kcones_PIs_POs(BLIFGraph=BLIFGraph, k=K)
     for cell in cells:
         for tmpType in bypassTypes:
             if cell.stdCellType.typeName.find(tmpType) >= 0:
                 cell.stopType = True
 
-    return BLIFGraph, cells, stdCellTypesForFeature, allKCuts
+    return BLIFGraph, cells, stdCellTypesForFeature, allKCuts, allKCones
 
 
 def count_nnode(cellsContained: Set[int], cells: List[DesignCell]) -> int:
@@ -409,7 +464,7 @@ def count_nnode(cellsContained: Set[int], cells: List[DesignCell]) -> int:
     return nnode
 
 
-def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: List[DesignCell], allKCuts: Dict[int, List[Set]]) -> Dict[str, Dict[int, list]]:
+def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: List[DesignCell], allKCuts: Dict[int, List[Set]], allKCones: Dict[str, Set[int]]) -> Dict[str, Dict[int, list]]:
     clusterTree = {}
     cid = 0
     for root, cuts in allKCuts.items():
@@ -417,7 +472,8 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph: nx.DiGraph, cells: L
             if len(cut) <= 1:
                 continue
             root_leaves = cut | {root}
-            cutNodes = ancestors(BLIFGraph, target=root, sources=cut)
+            # cutNodes = ancestors(BLIFGraph, target=root, sources=cut)
+            cutNodes = allKCones[','.join(map(str, sorted(root_leaves)))]
             if len(cutNodes) <= len(root_leaves):
                 continue
             cutInnerNodes = cutNodes - root_leaves
@@ -482,10 +538,10 @@ def loadDataAndPreprocess(
     K=4,
     startTime: float = 0,
 ) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], Dict[str, Dict[int, list]]]:
-    BLIFGraph, cells, stdCellTypesForFeature, allKCuts = genGraphFromLibertyAndBLIF(stdCellLib, blifFileName, K=K)
+    BLIFGraph, cells, stdCellTypesForFeature, allKCuts, allKCones = genGraphFromLibertyAndBLIF(stdCellLib, blifFileName, K=K)
     print("genGraphFromLibertyAndBLIF done. time esclaped: ", time.time() - startTime)
 
-    clusterTree = heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, allKCuts)
+    clusterTree = heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, allKCuts, allKCones)
     print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", time.time() - startTime)
 
     print("loadDataAndPreprocess done. time esclaped: ", time.time() - startTime)
