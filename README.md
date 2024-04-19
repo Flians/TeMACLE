@@ -2,6 +2,8 @@
 
 ## Build
 
+GDS online viewer: https://eecs.blog/BlazorApps/GDSViewer/
+
  identify logic gates in the layout extracted netlist (SPICE) of digital circuits and generate gate-level Verilog netlist
 https://github.com/rachelselinar/ReGDS-Logic-Gate-Extraction.git
 
@@ -101,6 +103,9 @@ flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/mai
 [1] 4036109
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping_K3_nc2.log 2>&1 &
 [1] 48727
+
+flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 src/main.py > iCell_k3.log 2>&1 &
+[1] 5862
 ```
 
 ``` bash
