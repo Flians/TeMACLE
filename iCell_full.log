@@ -1,0 +1,1920 @@
+=================================================================================
+ adder 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/adder.aig
+resyn runtime: 0
+[i] area: 81.70631917566061, gates: 764, depth: 382
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/ZE20N5NCHY.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/adder//adder_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/ZE20N5NCHY.v
+Parsing Verilog input from `/tmp/ZE20N5NCHY.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: bb1e453812
+CPU: user 0.10s system 0.00s, MEM: 22.01 MB total, 15.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 47% 2x read_verilog (0 sec), 47% 2x read_liberty (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/adder.aig
+resyn runtime: 0
+[i] area: 52.07975926250219, gates: 511, depth: 129
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/NAOJ9M56RR.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/adder//adder_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/NAOJ9M56RR.v
+Parsing Verilog input from `/tmp/NAOJ9M56RR.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 4ea1d8af52
+CPU: user 0.65s system 0.08s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 85% 2x read_liberty (0 sec), 14% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+adder saveArea=(81.70631917566061-52.07975926250219) / 52.07975926250219 =  36.25981467781483 %
+=================================================================================
+ arbiter 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/arbiter.aig
+resyn runtime: 0
+[i] area: 1066.512434039265, gates: 12286, depth: 89
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/9N3TOZ3VL6.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/arbiter//arbiter_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/9N3TOZ3VL6.v
+Parsing Verilog input from `/tmp/9N3TOZ3VL6.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: b02ee08139
+CPU: user 0.91s system 0.06s, MEM: 111.96 MB total, 105.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 87% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/arbiter.aig
+resyn runtime: 0
+[i] area: 394.12656468153, gates: 4633, depth: 30
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/6QK3XQEF6P.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/arbiter//arbiter_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/6QK3XQEF6P.v
+Parsing Verilog input from `/tmp/6QK3XQEF6P.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 34eae6f178
+CPU: user 1.10s system 0.05s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 55% 2x read_liberty (0 sec), 41% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+arbiter saveArea=(1066.512434039265-394.12656468153) / 394.12656468153 =  63.04529116563307 %
+=================================================================================
+ bar 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/bar.aig
+resyn runtime: 0
+[i] area: 277.18038364872336, gates: 3172, depth: 15
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/HGENZ2CCXA.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/bar//bar_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/HGENZ2CCXA.v
+Parsing Verilog input from `/tmp/HGENZ2CCXA.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: a7baeef447
+CPU: user 0.25s system 0.01s, MEM: 40.57 MB total, 34.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 75% 2x read_verilog (0 sec), 18% 2x read_liberty (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/bar.aig
+resyn runtime: 0
+[i] area: 140.30333932116628, gates: 1774, depth: 8
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/G9P1RIUVG9.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/bar//bar_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/G9P1RIUVG9.v
+Parsing Verilog input from `/tmp/G9P1RIUVG9.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 4bf5166137
+CPU: user 0.81s system 0.04s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 74% 2x read_liberty (0 sec), 23% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+bar saveArea=(277.18038364872336-140.30333932116628) / 140.30333932116628 =  49.38193768467551 %
+=================================================================================
+ cavlc 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/cavlc.aig
+resyn runtime: 55
+[i] area: 69.77988079190254, gates: 813, depth: 19
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/AVZXKBULUE.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/cavlc//cavlc_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/AVZXKBULUE.v
+Parsing Verilog input from `/tmp/AVZXKBULUE.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: a486e9b141
+CPU: user 0.09s system 0.01s, MEM: 22.01 MB total, 15.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 48% 2x read_liberty (0 sec), 46% 2x read_verilog (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/cavlc.aig
+resyn runtime: 55
+[i] area: 28.664279978722334, gates: 354, depth: 7
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/BJ1J1MHTNZ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/cavlc//cavlc_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/BJ1J1MHTNZ.v
+Parsing Verilog input from `/tmp/BJ1J1MHTNZ.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 8defbb2274
+CPU: user 0.71s system 0.04s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 85% 2x read_liberty (0 sec), 13% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+cavlc saveArea=(69.77988079190254-28.664279978722334) / 28.664279978722334 =  58.921855908288364 %
+=================================================================================
+ ctrl 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/ctrl.aig
+resyn runtime: 0
+[i] area: 12.3930001296103, gates: 146, depth: 8
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/6HU3M89X5R.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/ctrl//ctrl_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/6HU3M89X5R.v
+Parsing Verilog input from `/tmp/6HU3M89X5R.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: b40d1c28f4
+CPU: user 0.06s system 0.01s, MEM: 22.01 MB total, 15.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 82% 2x read_liberty (0 sec), 14% 2x read_verilog (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/ctrl.aig
+resyn runtime: 0
+[i] area: 5.817419994622469, gates: 70, depth: 3
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/TI0ODTUQ60.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/ctrl//ctrl_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/TI0ODTUQ60.v
+Parsing Verilog input from `/tmp/TI0ODTUQ60.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 823e54c8b2
+CPU: user 0.63s system 0.09s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 88% 2x read_liberty (0 sec), 11% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+ctrl saveArea=(12.3930001296103-5.817419994622469) / 5.817419994622469 =  53.05882406373057 %
+=================================================================================
+ dec 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/dec.aig
+resyn runtime: 0
+[i] area: 27.906120367348194, gates: 326, depth: 5
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/8E0PXH3KBP.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/dec//dec_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/8E0PXH3KBP.v
+Parsing Verilog input from `/tmp/8E0PXH3KBP.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: cda8dc939a
+CPU: user 0.06s system 0.01s, MEM: 22.01 MB total, 15.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 67% 2x read_liberty (0 sec), 28% 2x read_verilog (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/dec.aig
+resyn runtime: 0
+[i] area: 18.166680216789246, gates: 300, depth: 3
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/1MGY851KZM.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/dec//dec_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/1MGY851KZM.v
+Parsing Verilog input from `/tmp/1MGY851KZM.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 19860f08eb
+CPU: user 0.65s system 0.08s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 86% 2x read_liberty (0 sec), 13% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+dec saveArea=(27.906120367348194-18.166680216789246) / 18.166680216789246 =  34.90073153255179 %
+=================================================================================
+ div 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/div.aig
+resyn runtime: 0
+[i] area: 3665.4848822541535, gates: 37529, depth: 4336
+mapping runtime: 1
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/ZU6OOC2KAS.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/div//div_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/ZU6OOC2KAS.v
+Parsing Verilog input from `/tmp/ZU6OOC2KAS.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 0bdfbd3fcc
+CPU: user 3.00s system 0.10s, MEM: 308.20 MB total, 298.48 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 90% 2x read_verilog (2 sec), 7% 2x write_blif (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/div.aig
+resyn runtime: 0
+[i] area: 2358.081690363586, gates: 25341, depth: 1477
+mapping runtime: 1
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/9I0C8U3CPF.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/div//div_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/9I0C8U3CPF.v
+Parsing Verilog input from `/tmp/9I0C8U3CPF.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 1eb30cecad
+CPU: user 2.87s system 0.11s, MEM: 240.64 MB total, 233.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 72% 2x read_verilog (2 sec), 21% 2x read_liberty (0 sec), ...
+>>> full mapping succeed!
+div saveArea=(3665.4848822541535-2358.081690363586) / 2358.081690363586 =  35.66794663975145 %
+=================================================================================
+ hyp 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/hyp.aig
+resyn runtime: 43
+[i] area: 19206.671332944185, gates: 197756, depth: 21358
+mapping runtime: 6
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/8T58H3GHN1.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/hyp//hyp_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/8T58H3GHN1.v
+Parsing Verilog input from `/tmp/8T58H3GHN1.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: dab35cfe30
+CPU: user 16.86s system 0.64s, MEM: 1544.42 MB total, 1530.98 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 91% 2x read_verilog (15 sec), 8% 2x write_blif (1 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/hyp.aig
+resyn runtime: 43
+[i] area: 11972.935528475791, gates: 123581, depth: 6610
+mapping runtime: 7
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/ZR3H2CEKX2.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/hyp//hyp_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/ZR3H2CEKX2.v
+Parsing Verilog input from `/tmp/ZR3H2CEKX2.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 328ca7658d
+CPU: user 13.24s system 0.50s, MEM: 1074.61 MB total, 1066.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 86% 2x read_verilog (11 sec), 8% 2x write_blif (1 sec), ...
+>>> full mapping succeed!
+hyp saveArea=(19206.671332944185-11972.935528475791) / 11972.935528475791 =  37.66262086268301 %
+=================================================================================
+ i2c 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/i2c.aig
+resyn runtime: 7
+[i] area: 132.18228145316243, gates: 1556, depth: 20
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/MUYQQZWMEG.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/i2c//i2c_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/MUYQQZWMEG.v
+Parsing Verilog input from `/tmp/MUYQQZWMEG.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 86f3978f3a
+CPU: user 0.12s system 0.02s, MEM: 27.91 MB total, 21.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 62% 2x read_verilog (0 sec), 31% 2x read_liberty (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/i2c.aig
+resyn runtime: 7
+[i] area: 56.14758010953665, gates: 746, depth: 7
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/H7UPEAKOSE.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/i2c//i2c_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/H7UPEAKOSE.v
+Parsing Verilog input from `/tmp/H7UPEAKOSE.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 60a95a9065
+CPU: user 0.72s system 0.06s, MEM: 133.27 MB total, 126.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 82% 2x read_liberty (0 sec), 16% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+i2c saveArea=(132.18228145316243-56.14758010953665) / 56.14758010953665 =  57.522612340874126 %
+=================================================================================
+ int2float 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/int2float.aig
+resyn runtime: 0
+[i] area: 23.911200258880854, gates: 277, depth: 17
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/DYGIAKIE9Z.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/int2float//int2float_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/DYGIAKIE9Z.v
+Parsing Verilog input from `/tmp/DYGIAKIE9Z.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 0cb8a709e6
+CPU: user 0.06s system 0.01s, MEM: 22.01 MB total, 15.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 72% 2x read_liberty (0 sec), 23% 2x read_verilog (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/int2float.aig
+resyn runtime: 0
+[i] area: 9.258299980312586, gates: 116, depth: 7
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/JW9VR8K060.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/int2float//int2float_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/JW9VR8K060.v
+Parsing Verilog input from `/tmp/JW9VR8K060.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 65b7e3dc7a
+CPU: user 0.70s system 0.05s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 86% 2x read_liberty (0 sec), 13% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+int2float saveArea=(23.911200258880854-9.258299980312586) / 9.258299980312586 =  61.28048830642049 %
+=================================================================================
+ log2 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/log2.aig
+resyn runtime: 4
+[i] area: 2630.377802912146, gates: 28143, depth: 435
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/AK52ZCL5SE.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/log2//log2_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/AK52ZCL5SE.v
+Parsing Verilog input from `/tmp/AK52ZCL5SE.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 9034aa4f4f
+CPU: user 2.13s system 0.13s, MEM: 233.28 MB total, 226.68 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 90% 2x read_verilog (2 sec), 7% 2x write_blif (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/log2.aig
+resyn runtime: 4
+[i] area: 1303.6415257491171, gates: 13613, depth: 160
+mapping runtime: 1
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/8NQTIBMQVU.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/log2//log2_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/8NQTIBMQVU.v
+Parsing Verilog input from `/tmp/8NQTIBMQVU.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 4f5f99b793
+CPU: user 1.92s system 0.04s, MEM: 144.09 MB total, 137.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 62% 2x read_verilog (1 sec), 32% 2x read_liberty (0 sec), ...
+>>> full mapping succeed!
+log2 saveArea=(2630.377802912146-1303.6415257491171) / 1303.6415257491171 =  50.439000652080146 %
+=================================================================================
+ max 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/max.aig
+resyn runtime: 0
+[i] area: 279.01746233180165, gates: 3327, depth: 351
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/8XLSGPYGDG.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/max//max_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/8XLSGPYGDG.v
+Parsing Verilog input from `/tmp/8XLSGPYGDG.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: ffa320cddb
+CPU: user 0.25s system 0.02s, MEM: 41.57 MB total, 35.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 74% 2x read_verilog (0 sec), 17% 2x read_liberty (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/max.aig
+resyn runtime: 0
+[i] area: 152.40473974496126, gates: 1967, depth: 114
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/306OY84AJH.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/max//max_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/306OY84AJH.v
+Parsing Verilog input from `/tmp/306OY84AJH.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 284a2d92dc
+CPU: user 0.80s system 0.06s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 74% 2x read_liberty (0 sec), 24% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+max saveArea=(279.01746233180165-152.40473974496126) / 152.40473974496126 =  45.37806398521223 %
+=================================================================================
+ mem_ctrl 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/mem_ctrl.aig
+resyn runtime: 4
+[i] area: 4417.113110162318, gates: 51020, depth: 147
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/UO3DDL5FXP.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/mem_ctrl//mem_ctrl_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/UO3DDL5FXP.v
+Parsing Verilog input from `/tmp/UO3DDL5FXP.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 5fa36127cf
+CPU: user 4.01s system 0.19s, MEM: 412.71 MB total, 404.74 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 91% 2x read_verilog (3 sec), 7% 2x write_blif (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/mem_ctrl.aig
+resyn runtime: 4
+[i] area: 1967.264819059521, gates: 25939, depth: 47
+mapping runtime: 1
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/JG7E7S6618.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/mem_ctrl//mem_ctrl_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/JG7E7S6618.v
+Parsing Verilog input from `/tmp/JG7E7S6618.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: d5cccda3aa
+CPU: user 3.18s system 0.10s, MEM: 265.55 MB total, 258.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 74% 2x read_verilog (2 sec), 19% 2x read_liberty (0 sec), ...
+>>> full mapping succeed!
+mem_ctrl saveArea=(4417.113110162318-1967.264819059521) / 1967.264819059521 =  55.4626569436609 %
+=================================================================================
+ multiplier 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/multiplier.aig
+resyn runtime: 2
+[i] area: 2068.537493161857, gates: 21127, depth: 352
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/SK4QXA3CNF.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/multiplier//multiplier_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/SK4QXA3CNF.v
+Parsing Verilog input from `/tmp/SK4QXA3CNF.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 4c2f0d1e09
+CPU: user 1.58s system 0.07s, MEM: 180.54 MB total, 173.02 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 89% 2x read_verilog (1 sec), 7% 2x write_blif (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/multiplier.aig
+resyn runtime: 2
+[i] area: 1117.2508056014776, gates: 10548, depth: 118
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/PH8LWNJM2O.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/multiplier//multiplier_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/PH8LWNJM2O.v
+Parsing Verilog input from `/tmp/PH8LWNJM2O.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 1c3368742b
+CPU: user 1.52s system 0.07s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 55% 2x read_verilog (0 sec), 39% 2x read_liberty (0 sec), ...
+>>> full mapping succeed!
+multiplier saveArea=(2068.537493161857-1117.2508056014776) / 1117.2508056014776 =  45.98837056157454 %
+=================================================================================
+ priority 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/priority.aig
+resyn runtime: 0
+[i] area: 112.12020146101713, gates: 1442, depth: 127
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/B6OWWRTQ7G.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/priority//priority_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/B6OWWRTQ7G.v
+Parsing Verilog input from `/tmp/B6OWWRTQ7G.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: e1c920b263
+CPU: user 0.12s system 0.01s, MEM: 26.57 MB total, 20.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 59% 2x read_verilog (0 sec), 34% 2x read_liberty (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/priority.aig
+resyn runtime: 0
+[i] area: 57.35771993920207, gates: 802, depth: 51
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/K2R2FGQSWO.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/priority//priority_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/K2R2FGQSWO.v
+Parsing Verilog input from `/tmp/K2R2FGQSWO.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 9f472b1865
+CPU: user 0.72s system 0.06s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 82% 2x read_liberty (0 sec), 16% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+priority saveArea=(112.12020146101713-57.35771993920207) / 57.35771993920207 =  48.842653516686134 %
+=================================================================================
+ router 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/router.aig
+resyn runtime: 0
+[i] area: 27.687420193105936, gates: 327, depth: 47
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/P6LKQ2NXYM.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/router//router_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/P6LKQ2NXYM.v
+Parsing Verilog input from `/tmp/P6LKQ2NXYM.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: bf302752be
+CPU: user 0.07s system 0.01s, MEM: 22.01 MB total, 15.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 70% 2x read_liberty (0 sec), 26% 2x read_verilog (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/router.aig
+resyn runtime: 0
+[i] area: 15.483959902077913, gates: 202, depth: 14
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/2NXXFNRZ88.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/router//router_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/2NXXFNRZ88.v
+Parsing Verilog input from `/tmp/2NXXFNRZ88.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: a6f7abdc4f
+CPU: user 0.66s system 0.06s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 86% 2x read_liberty (0 sec), 12% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+router saveArea=(27.687420193105936-15.483959902077913) / 15.483959902077913 =  44.07583012759939 %
+=================================================================================
+ sin 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/sin.aig
+resyn runtime: 11
+[i] area: 470.80278131738305, gates: 5177, depth: 214
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/RDAE67QCCL.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/sin//sin_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/RDAE67QCCL.v
+Parsing Verilog input from `/tmp/RDAE67QCCL.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 69fb163b89
+CPU: user 0.37s system 0.02s, MEM: 55.67 MB total, 49.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 81% 2x read_verilog (0 sec), 11% 2x read_liberty (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/sin.aig
+resyn runtime: 11
+[i] area: 253.79405789077282, gates: 2840, depth: 78
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/4F8QBNGT6P.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/sin//sin_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/4F8QBNGT6P.v
+Parsing Verilog input from `/tmp/4F8QBNGT6P.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 6fdc743ab6
+CPU: user 0.86s system 0.07s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 68% 2x read_liberty (0 sec), 29% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+sin saveArea=(470.80278131738305-253.79405789077282) / 253.79405789077282 =  46.093339300032255 %
+=================================================================================
+ sqrt 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/sqrt.aig
+resyn runtime: 0
+[i] area: 1624.3869592919946, gates: 18363, depth: 6045
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/HN7JTAOYSX.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/sqrt//sqrt_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/HN7JTAOYSX.v
+Parsing Verilog input from `/tmp/HN7JTAOYSX.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 11e6c101a2
+CPU: user 1.32s system 0.07s, MEM: 156.27 MB total, 148.30 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 89% 2x read_verilog (1 sec), 7% 2x write_blif (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/sqrt.aig
+resyn runtime: 0
+[i] area: 1005.4076321683824, gates: 11856, depth: 2038
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/8ZG0EB1ONQ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/sqrt//sqrt_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/8ZG0EB1ONQ.v
+Parsing Verilog input from `/tmp/8ZG0EB1ONQ.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 4a3f404fa2
+CPU: user 1.64s system 0.06s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 58% 2x read_verilog (0 sec), 37% 2x read_liberty (0 sec), ...
+>>> full mapping succeed!
+sqrt saveArea=(1624.3869592919946-1005.4076321683824) / 1005.4076321683824 =  38.10541100338558 %
+=================================================================================
+ square 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/square.aig
+resyn runtime: 9
+[i] area: 1660.3412399701774, gates: 17617, depth: 330
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/VWFXX511FZ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/square//square_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/VWFXX511FZ.v
+Parsing Verilog input from `/tmp/VWFXX511FZ.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 322c4508cf
+CPU: user 1.34s system 0.06s, MEM: 153.18 MB total, 145.08 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 89% 2x read_verilog (1 sec), 7% 2x write_blif (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/square.aig
+resyn runtime: 10
+[i] area: 876.491272393614, gates: 9011, depth: 108
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/KWG8WLS6VU.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/square//square_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/KWG8WLS6VU.v
+Parsing Verilog input from `/tmp/KWG8WLS6VU.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: d1d364c04e
+CPU: user 1.39s system 0.07s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 52% 2x read_verilog (0 sec), 43% 2x read_liberty (0 sec), ...
+>>> full mapping succeed!
+square saveArea=(1660.3412399701774-876.491272393614) / 876.491272393614 =  47.21017274681695 %
+=================================================================================
+ voter 
+=================================================================================
+
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/voter.aig
+resyn runtime: 0
+[i] area: 1031.8994932360947, gates: 10578, depth: 60
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/83R83YF1R6.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/voter//voter_init.blif;' --
+
+1. Executing Liberty frontend.
+Imported 58 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/83R83YF1R6.v
+Parsing Verilog input from `/tmp/83R83YF1R6.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: b04adbe840
+CPU: user 0.77s system 0.04s, MEM: 98.05 MB total, 91.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 87% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
+>>> initial mapping succeed!
+[i] WARNING: 31 gates IGNORED (e.g., OAI33xp33_ASAP7_75t_L), too many inputs for the library settings
+[i] processing /home/flynn/workplace/CEMapping/benchmark/aig/voter.aig
+resyn runtime: 0
+[i] area: 668.3034529089928, gates: 6655, depth: 32
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib; read_verilog /tmp/O2K217IJN4.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/full/voter//voter_full.blif;' --
+
+1. Executing Liberty frontend.
+Imported 202 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/O2K217IJN4.v
+Parsing Verilog input from `/tmp/O2K217IJN4.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: a0d15e5454
+CPU: user 1.19s system 0.08s, MEM: 133.27 MB total, 126.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 51% 2x read_liberty (0 sec), 44% 2x read_verilog (0 sec), ...
+>>> full mapping succeed!
+voter saveArea=(1031.8994932360947-668.3034529089928) / 668.3034529089928 =  35.23560605566772 %

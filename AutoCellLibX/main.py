@@ -93,7 +93,7 @@ def main():
                     runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=stdSpiceNetlistPath, complexName=f'{oriStdCellType}_ASAP7_75t_L', commandDir=f'{current_path}/originaliCellStdCells/')
         stdType2Area = loadAstranGDS() if SCSynthesis == 'Astran' else loadiCellGDS()
         sccArea = getArea(cells, stdType2Area)
-        print("synthesized {SCSynthesis}Area=", sccArea)
+        print(f"synthesized {SCSynthesis}Area=", sccArea)
 
         clusterSeqs = sortPatternClusterSeqs(clusterSeqs)
 

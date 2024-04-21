@@ -1,0 +1,330 @@
+=================================================================================
+ adder 
+=================================================================================
+
+{'.model': 1, '.inputs': 1, '.outputs': 1, '.search': 0, '.subckt': 764, '.latch': 0, '.names': 0, '.end': 1, '.start_kiss': 0, '.i': 0, '.o': 0, '.s': 0, '.p': 0, '.r': 0, '.end_kiss': 0, '.default_input_arrival': 0, '.default_output_required': 0, '.default_input_drive': 0, '.default_output_load': 0, '.default_max_input_load': 0, '.latch_order': 0, '.code': 0, '.exdc': 0} 
+
+top std cell types:  [('PI', 256), ('AND2x2', 255), ('OR2x2', 254), ('XNOR2x1', 250), ('XOR2x1', 5)]
+creating networkx graph with  1020  nodes
+created networkx graph with  1020  nodes
+genGraphFromLibertyAndBLIF done. time esclaped:  0.13741159439086914
+heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped:  0.23855233192443848
+loadDataAndPreprocess done. time esclaped:  0.23858237266540527
+originalArea= 89.14211999999944
+initial iCellArea= 81.70631999999956
+dealing with pattern# ADDER_G0_1_4 with 254 clusters ( size = 2 )
+>>> : Synthesis pattern# ADDER_G0_1_4 successfully!
+
+[i] processing /home/flynn/workplace/CEMapping/src/../benchmark/aig/adder.aig
+resyn runtime: 0
+[i] area: 89.14211831986904, gates: 891, depth: 255
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib /home/flynn/workplace/CEMapping/src/../outputs/iCell/K3/adder//ADDER_G0_1_4.lib; read_verilog /tmp/1TJRP5NF1B.v; write_blif -impltf /home/flynn/workplace/CEMapping/src/../outputs/iCell/K3/adder//ADDER_G0_1_4.blif;' --
+
+1. Executing Liberty frontend.
+Imported 11 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/1TJRP5NF1B.v
+Parsing Verilog input from `/tmp/1TJRP5NF1B.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 1c54e53db5
+CPU: user 0.07s system 0.00s, MEM: 22.70 MB total, 16.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 83% 2x read_verilog (0 sec), 8% 2x read_liberty (0 sec), ...
+>>> remapping succeed!
+{'.model': 1, '.inputs': 1, '.outputs': 1, '.search': 0, '.subckt': 891, '.latch': 0, '.names': 0, '.end': 1, '.start_kiss': 0, '.i': 0, '.o': 0, '.s': 0, '.p': 0, '.r': 0, '.end_kiss': 0, '.default_input_arrival': 0, '.default_output_required': 0, '.default_input_drive': 0, '.default_output_load': 0, '.default_max_input_load': 0, '.latch_order': 0, '.code': 0, '.exdc': 0} 
+
+top std cell types:  [('PI', 256), ('INVx1', 254), ('XNOR2x1', 254), ('OR2x2', 127), ('ADDER_G0_1_4', 127), ('AND2x2', 126), ('NAND2x1', 2), ('XOR2x1', 1)]
+creating networkx graph with  1147  nodes
+created networkx graph with  1147  nodes
+genGraphFromLibertyAndBLIF done. time esclaped:  1.5398104190826416
+heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped:  1.764134168624878
+loadDataAndPreprocess done. time esclaped:  1.7641801834106445
+current iCellArea= 89.14211999999938
+>>> area increased after remapping!
+
+dealing with pattern# ADDER_G0_4_7 with 253 clusters ( size = 2 )
+>>> : Synthesis pattern# ADDER_G0_4_7 successfully!
+
+[i] processing /home/flynn/workplace/CEMapping/src/../benchmark/aig/adder.aig
+resyn runtime: 0
+[i] area: 78.00299818068743, gates: 637, depth: 255
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib /home/flynn/workplace/CEMapping/src/../outputs/iCell/K3/adder//ADDER_G0_4_7.lib; read_verilog /tmp/TT6H731KI7.v; write_blif -impltf /home/flynn/workplace/CEMapping/src/../outputs/iCell/K3/adder//ADDER_G0_4_7.blif;' --
+
+1. Executing Liberty frontend.
+Imported 11 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/TT6H731KI7.v
+Parsing Verilog input from `/tmp/TT6H731KI7.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: a85797dbe8
+CPU: user 0.06s system 0.00s, MEM: 20.99 MB total, 14.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 81% 2x read_verilog (0 sec), 10% 2x read_liberty (0 sec), ...
+>>> remapping succeed!
+{'.model': 1, '.inputs': 1, '.outputs': 1, '.search': 0, '.subckt': 637, '.latch': 0, '.names': 0, '.end': 1, '.start_kiss': 0, '.i': 0, '.o': 0, '.s': 0, '.p': 0, '.r': 0, '.end_kiss': 0, '.default_input_arrival': 0, '.default_output_required': 0, '.default_input_drive': 0, '.default_output_load': 0, '.default_max_input_load': 0, '.latch_order': 0, '.code': 0, '.exdc': 0} 
+
+top std cell types:  [('PI', 256), ('XNOR2x1', 248), ('AND2x2', 128), ('OR2x2', 127), ('ADDER_G0_4_7', 127), ('XOR2x1', 7)]
+creating networkx graph with  893  nodes
+created networkx graph with  893  nodes
+genGraphFromLibertyAndBLIF done. time esclaped:  2.3647959232330322
+heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped:  2.430269479751587
+loadDataAndPreprocess done. time esclaped:  2.4303171634674072
+current iCellArea= 78.00299999999973
+>>> choose the cluster ADDER_G0_4_7!
+
+dealing with pattern# ADDER_G1_1_4 with 127 clusters ( size = 2 )
+dealing with pattern# ADDER_G1_9_10_11 with 126 clusters ( size = 4 )
+>>> : Synthesis pattern# ADDER_G1_9_10_11 successfully!
+
+[i] processing /home/flynn/workplace/CEMapping/src/../benchmark/aig/adder.aig
+resyn runtime: 0
+[i] area: 65.01221847906709, gates: 636, depth: 129
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib /home/flynn/workplace/CEMapping/src/../outputs/iCell/K3/adder//ADDER_G1_9_10_11.lib; read_verilog /tmp/P21OALCGKT.v; write_blif -impltf /home/flynn/workplace/CEMapping/src/../outputs/iCell/K3/adder//ADDER_G1_9_10_11.blif;' --
+
+1. Executing Liberty frontend.
+Imported 12 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/P21OALCGKT.v
+Parsing Verilog input from `/tmp/P21OALCGKT.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 3f652bd2f2
+CPU: user 0.06s system 0.00s, MEM: 20.62 MB total, 14.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 80% 2x read_verilog (0 sec), 11% 2x read_liberty (0 sec), ...
+>>> remapping succeed!
+{'.model': 1, '.inputs': 1, '.outputs': 1, '.search': 0, '.subckt': 636, '.latch': 0, '.names': 0, '.end': 1, '.start_kiss': 0, '.i': 0, '.o': 0, '.s': 0, '.p': 0, '.r': 0, '.end_kiss': 0, '.default_input_arrival': 0, '.default_output_required': 0, '.default_input_drive': 0, '.default_output_load': 0, '.default_max_input_load': 0, '.latch_order': 0, '.code': 0, '.exdc': 0} 
+
+top std cell types:  [('PI', 256), ('INVx1', 253), ('XNOR2x1', 253), ('ADDER_G1_9_10_11', 127), ('XOR2x1', 2), ('NAND2x1', 1)]
+creating networkx graph with  892  nodes
+created networkx graph with  892  nodes
+genGraphFromLibertyAndBLIF done. time esclaped:  3.1519744396209717
+heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped:  3.228550672531128
+loadDataAndPreprocess done. time esclaped:  3.2285869121551514
+current iCellArea= 65.01222000000004
+>>> choose the cluster ADDER_G1_9_10_11!
+
+dealing with pattern# ADDER_G2_3_4 with 126 clusters ( size = 2 )
+>>> : Synthesis pattern# ADDER_G2_3_4 successfully!
+
+[i] processing /home/flynn/workplace/CEMapping/src/../benchmark/aig/adder.aig
+resyn runtime: 0
+[i] area: 50.22809923440218, gates: 256, depth: 128
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib /home/flynn/workplace/CEMapping/src/../outputs/iCell/K3/adder//ADDER_G2_3_4.lib; read_verilog /tmp/Q639XXT3ZU.v; write_blif -impltf /home/flynn/workplace/CEMapping/src/../outputs/iCell/K3/adder//ADDER_G2_3_4.blif;' --
+
+1. Executing Liberty frontend.
+Imported 13 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/Q639XXT3ZU.v
+Parsing Verilog input from `/tmp/Q639XXT3ZU.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: 19140864b7
+CPU: user 0.04s system 0.00s, MEM: 18.16 MB total, 11.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 73% 2x read_verilog (0 sec), 19% 2x read_liberty (0 sec), ...
+>>> remapping succeed!
+{'.model': 1, '.inputs': 1, '.outputs': 1, '.search': 0, '.subckt': 256, '.latch': 0, '.names': 0, '.end': 1, '.start_kiss': 0, '.i': 0, '.o': 0, '.s': 0, '.p': 0, '.r': 0, '.end_kiss': 0, '.default_input_arrival': 0, '.default_output_required': 0, '.default_input_drive': 0, '.default_output_load': 0, '.default_max_input_load': 0, '.latch_order': 0, '.code': 0, '.exdc': 0} 
+
+top std cell types:  [('PI', 256), ('ADDER_G2_3_4', 127), ('ADDER_G1_9_10_11', 127), ('XOR2x1', 1), ('AND2x2', 1)]
+creating networkx graph with  512  nodes
+created networkx graph with  512  nodes
+genGraphFromLibertyAndBLIF done. time esclaped:  3.888417959213257
+heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped:  3.888874053955078
+loadDataAndPreprocess done. time esclaped:  3.8888895511627197
+current iCellArea= 50.22809999999989
+>>> choose the cluster ADDER_G2_3_4!
+
+saveArea= 31.478219999999673  /  38.52605281941451 %
+=================================================================================
+ arbiter 
+=================================================================================
+
+{'.model': 1, '.inputs': 1, '.outputs': 1, '.search': 0, '.subckt': 12286, '.latch': 0, '.names': 0, '.end': 1, '.start_kiss': 0, '.i': 0, '.o': 0, '.s': 0, '.p': 0, '.r': 0, '.end_kiss': 0, '.default_input_arrival': 0, '.default_output_required': 0, '.default_input_drive': 0, '.default_output_load': 0, '.default_max_input_load': 0, '.latch_order': 0, '.code': 0, '.exdc': 0} 
+
+top std cell types:  [('AND2x2', 6016), ('OR2x2', 6014), ('PI', 256), ('INVx1', 189), ('NOR2x1', 67)]
+creating networkx graph with  12542  nodes
+created networkx graph with  12542  nodes
+genGraphFromLibertyAndBLIF done. time esclaped:  1.7924327850341797
+heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped:  5.966811895370483
+loadDataAndPreprocess done. time esclaped:  5.966882228851318
+originalArea= 1066.5124200001987
+initial iCellArea= 1066.5124200001987
+dealing with pattern# ARBITER_G0_2_11957 with 5760 clusters ( size = 2 )
+>>> : Synthesis pattern# ARBITER_G0_2_11957 successfully!
+
+[i] processing /home/flynn/workplace/CEMapping/src/../benchmark/aig/arbiter.aig
+resyn runtime: 0
+[i] area: 928.3523088358343, gates: 6910, depth: 46
+mapping runtime: 0
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib /home/flynn/workplace/CEMapping/src/../outputs/iCell/K3/arbiter//ARBITER_G0_2_11957.lib; read_verilog /tmp/L4M4RGIK4H.v; write_blif -impltf /home/flynn/workplace/CEMapping/src/../outputs/iCell/K3/arbiter//ARBITER_G0_2_11957.blif;' --
+
+1. Executing Liberty frontend.
+Imported 11 cell types from liberty file.
+
+2. Executing Verilog-2005 frontend: /tmp/L4M4RGIK4H.v
+Parsing Verilog input from `/tmp/L4M4RGIK4H.v' to AST representation.
+Generating RTLIL representation for module `\top'.
+Successfully finished Verilog frontend.
+
+3. Executing BLIF backend.
+
+End of script. Logfile hash: f32a7b85ae
+CPU: user 0.60s system 0.02s, MEM: 77.83 MB total, 71.47 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 91% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
+>>> remapping succeed!
+{'.model': 1, '.inputs': 1, '.outputs': 1, '.search': 0, '.subckt': 6910, '.latch': 0, '.names': 0, '.end': 1, '.start_kiss': 0, '.i': 0, '.o': 0, '.s': 0, '.p': 0, '.r': 0, '.end_kiss': 0, '.default_input_arrival': 0, '.default_output_required': 0, '.default_input_drive': 0, '.default_output_load': 0, '.default_max_input_load': 0, '.latch_order': 0, '.code': 0, '.exdc': 0} 
+
+top std cell types:  [('ARBITER_G0_2_11957', 5759), ('AND2x2', 383), ('INVx1', 317), ('OR2x2', 256), ('PI', 256), ('NAND2x1', 128), ('NOR2x1', 67)]
+creating networkx graph with  7166  nodes
+created networkx graph with  7166  nodes
+genGraphFromLibertyAndBLIF done. time esclaped:  17.0154447555542
+heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped:  17.179821729660034
+loadDataAndPreprocess done. time esclaped:  17.179871797561646
+current iCellArea= 928.3523400000529
+>>> choose the cluster ARBITER_G0_2_11957!
+
+dealing with pattern# ARBITER_G1_0_470 with 317 clusters ( size = 3 )
+>>> : Synthesis pattern# ARBITER_G1_0_470 successfully!
+
+>>> there is no area improvement for new pattern!
+dealing with pattern# ARBITER_G1_0_7_470 with 256 clusters ( size = 4 )

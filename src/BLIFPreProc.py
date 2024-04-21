@@ -613,7 +613,11 @@ def loadExtendCells(fileDir: str) -> Dict[str, StdCellType]:
         eqs = eqs_nnode[0].split(',')
         for id, eq in enumerate(eqs):
             newOP = 'Y' if len(eqs) == 1 else 'Y' + chr(65 + id)
-            func = simplify_logic(eq)
+            try:
+                func = simplify_logic(eq)
+            except:
+                var(re.sub(r'[&|!()]', ' ', eq), bool=True)
+                func = simplify_logic(eval(eq))
             funcs[newOP] = func
             ipins = ipins.union(set(func.free_symbols))
 

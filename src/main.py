@@ -372,6 +372,8 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
             fileResult = open(f'{outputPath}/bestRecord-{benchmarkName}', 'w', encoding='utf-8')
             print(bestSaveArea, f' <- compared to {SCSynthesis} GDS area', file=fileResult)
             print(bestSaveArea / sccArea * 100, f'% <- compared to {SCSynthesis} GDS area', file=fileResult)
+            print(oriArea - bestSCCArea, ' <- compared to GSCL GDS area', file=fileResult)
+            print((oriArea - bestSCCArea) / sccArea * 100, '% <- compared to GSCL GDS area', file=fileResult)
             print('The generated complex cells are (name, clusterNum, cellNumInOneCluster, patternCode):', file=fileResult)
             cell_name_num = {x[0]: x[1] for x in stdCellTypesForFeature}
             totalClusterCellNum = 0
