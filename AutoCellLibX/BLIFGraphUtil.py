@@ -204,27 +204,27 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> t
     patternFunc = {}
     opins = []
     ipins = []
+    for node in patternSubgraph.nodes:
+        if patternSubgraph.in_degree(node) == 0:
+            ipins += cells[node].inputNetNames.copy()
+        if patternSubgraph.out_degree(node) == 0:
+            opins += cells[node].outputNetNames.copy()
     net2pin = {}
     for nid in nx.topological_sort(patternSubgraph.reverse()):
         curr_node = cells[nid]
-        if patternSubgraph.nodes[nid]['type'] == 'INPUT':
-            ipins.extend(curr_node.outputNetNames)
-        else:
-            if not patternFunc:
-                opins = curr_node.outputNetNames.copy()
-            v_ipin = var(curr_node.inputPinRefNames, bool=True)
-            v_inet = symbols(curr_node.inputNetNames, bool=True)
-            curFunc = curr_node.stdCellType.outputFuncMap.copy()
-            for opin, onet in zip(curr_node.outputPinRefNames, curr_node.outputNetNames):
-                cur_f = simplify_logic(eval(curFunc[opin]))
-                for ipin, inet in zip(v_ipin, v_inet):  # type: ignore
-                    cur_f = cur_f.subs(ipin, inet)
-                    net2pin[str(inet)] = f'{ipin}_{nid}'
-                if onet in opins:
-                    patternFunc[onet] = cur_f
-                else:
-                    for on, of in patternFunc.items():
-                        patternFunc[on] = of.subs(symbols(onet, bool=True), cur_f)
+        v_ipin = var(curr_node.inputPinRefNames, bool=True)
+        v_inet = symbols(curr_node.inputNetNames, bool=True)
+        curFunc = curr_node.stdCellType.outputFuncMap.copy()
+        for opin, onet in zip(curr_node.outputPinRefNames, curr_node.outputNetNames):
+            cur_f = simplify_logic(eval(curFunc[opin]))
+            for ipin, inet in zip(v_ipin, v_inet):  # type: ignore
+                cur_f = cur_f.subs(ipin, inet)
+                net2pin[str(inet)] = f'{ipin}_{nid}'
+            if onet in opins:
+                patternFunc[onet] = cur_f
+            else:
+                for on, of in patternFunc.items():
+                    patternFunc[on] = of.subs(symbols(onet, bool=True), cur_f)
     # rename variables
     new_ipins = {}
     new_opins = {}

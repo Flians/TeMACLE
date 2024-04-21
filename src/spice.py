@@ -1,9 +1,6 @@
 import string
 import random
 import re
-import PySpice
-import PySpice.Spice
-import PySpice.Spice.Parser
 
 
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
@@ -150,6 +147,7 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins:
     internalLines.append(f"* pattern code: {cluserSeq.patternExtensionTrace}")
     internalLines.append(f"* {len(cluserSeq.patternClusters)} occurrences in design")
     internalLines.append(f"* each contains {len(cellsInCluster)} cells")
+    internalLines.append(f"* pin map: {ipinMap}")
     internalLines.append(f"* function: {func}")
     internalLines.append("* Example occurence:")
     for cell in cellsInCluster:
@@ -172,4 +170,3 @@ if __name__ == '__main__':
     circuit.X('1', AND2x2.name, 'A', 'B', 'VDD', 'VSS', 'n1')
     circuit.X('2', OR2x2.name, 'C', 'n1', 'VDD', 'VSS', 'Y')
     print(circuit)
-    pass

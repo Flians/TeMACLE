@@ -22,7 +22,7 @@ def runiCellForNetlist(iCellPath, spiceNetlistPath, complexName, commandDir):
     if not os.path.exists(commandDir):
         os.makedirs(commandDir)
 
-    commands = f'{iCellPath} -a 1 -i {spiceNetlistPath} -c {complexName} -t 3600'
+    commands = f'{iCellPath} -a 1 -i {spiceNetlistPath} -c {complexName} -t 1800'
     with open(f'{commandDir}/{complexName}.run', 'w', encoding='utf-8') as outputFile:
         outputFile.write(commands)
 

@@ -93,7 +93,7 @@ def main():
     recover_stdCellLib, recover_liberty = copy.deepcopy(stdCellLib), copy.deepcopy(liberty)
     for benchmarkName in benchmarks:
         print('=================================================================================\n', benchmarkName, '\n=================================================================================\n')
-        outputPath = f'{current_path}/outputs/{SCSynthesis}/K{cutsize}/{benchmarkName}/'
+        outputPath = f'{current_path}/../outputs/{SCSynthesis}/K{cutsize}/{benchmarkName}/'
         os.makedirs(outputPath, exist_ok=True)
         # copy library
         stdCellLib, liberty = copy.deepcopy(recover_stdCellLib), copy.deepcopy(recover_liberty)
@@ -197,7 +197,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 if ncluster <= 1 or nnode >= cntThr or ntnode < BLIFGraph.number_of_nodes() * ratioThr:
                     continue
                 cindex = 0
-                if benchmarkName in ['int2float', 'multiplier', 'sin', 'voter']:
+                if SCSynthesis == 'Astran' and benchmarkName in ['int2float', 'multiplier', 'sin', 'voter']:
                     cindex = 1
                 patternTraceId = benchmarkName.upper() + '_G' + str(cid) + '_' + '_'.join(map(str, sorted(list(clusterSeq.patternClusters[cindex].cellIdsContained))))  # type: ignore
                 print('dealing with pattern#', patternTraceId, 'with', ncluster, 'clusters ( size =', nnode, ')')
@@ -239,7 +239,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                     if not pfunc:
                         pfunc = patternFunText
                     extCell = extendCellLib[pfunc]
-                    if extCell.nnode <= nnode:
+                    if extCell.nnode <= nnode or patternFunText in ['~A|~B|~C']:
                         nnode = extCell.nnode
                         shutil.copy(f'{extendCellPath}/{pfunc};{nnode}.iCelllog', f'{outputPath}/{patternTraceId}.iCelllog')
                     else:
@@ -274,10 +274,10 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                             if not os.path.exists(os.path.join(outputPath, f'{patternTraceId}.iCelllog')):
                                 res = runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=f'{outputPath}/{patternTraceId}.sp', complexName=patternTraceId, commandDir=outputPath)
                             elif loadiCellArea(outputPath, patternTraceId) is False:
-                                print('\n>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!')
+                                print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
                                 continue
                         if res:
-                            print('\n>>> : Synthesis pattern#', patternTraceId, 'successfully!')
+                            print('>>> : Synthesis pattern#', patternTraceId, 'successfully!\n')
                             if flag is False:
                                 shutil.copy(f'{outputPath}/{patternTraceId}.iCelllog', f'{extendCellPath}/{patternFunText};{nnode}.iCelllog')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.png', f'{extendCellPath}/{patternFunText};{nnode}.png')
@@ -285,17 +285,17 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                                 shutil.copy(f'{outputPath}/{patternTraceId}.sp', f'{extendCellPath}/{patternFunText};{nnode}.sp')
                                 extendCellLib[patternFunText] = StdCellType(patternFunText, nnode)
                         else:
-                            print('\n>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!')
+                            print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
                             continue
                     except:
-                        print('\n>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!')
+                        print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
                         continue
 
                 exampleCells = clusterSeq.patternClusters[cindex].cellsContained
                 oriCellArea = getArea(exampleCells, stdType2Area)
                 newCellArea = SCSynthesis == 'Astran' if loadAstranArea(outputPath, patternTraceId) else loadiCellArea(outputPath, patternTraceId)
                 if not newCellArea or newCellArea <= 0:
-                    print('\n>>> : New pattern#', patternTraceId, 'has more area!')
+                    print('>>> : New pattern#', patternTraceId, 'has more area!\n')
                     continue
                 if oriCellArea > newCellArea:
                     # construct a new cell

@@ -11,6 +11,8 @@ from Astran import loadAstranArea, runAstranForNetlist
 from GDSIIAnalysis import loadOrignalGSCL45nmGDS, STDCellNames, loadAstranGDS, loadiCellGDS
 import shutil
 
+var('A B C D E F')  # FOR Sympy
+
 
 def mkdir(pathStr):
     if os.path.exists(pathStr):
@@ -153,7 +155,7 @@ def main():
                     # check if current pattern exists in pre-defined extened cell library
                     if patternFunText not in extendCellLib:
                         if len(patternFunc) == 1:
-                            pfunc = next((x for x in extendCellLib if bool_map(next(iter(patternFunc.values())), x)), None)
+                            pfunc = next((x for x in extendCellLib if bool_map(next(iter(patternFunc.values())), eval(x))), None)
                         if pfunc:
                             flag = True
                             # need to change function
@@ -177,10 +179,10 @@ def main():
                                 if not os.path.exists(os.path.join(outputPath, f'COMPLEX{patternTraceId}.iCelllog')):
                                     res = runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
                                 elif loadiCellArea(outputPath, f'COMPLEX{patternTraceId}') is False:
-                                    print('\n>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!')
+                                    print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
                                     break
                             if res:
-                                print('\n>>> : Synthesis pattern#', patternTraceId, 'successfully!')
+                                print('>>> : Synthesis pattern#', patternTraceId, 'successfully!\n')
                                 if flag is False:
                                     shutil.copy(f'{outputPath}/COMPLEX{patternTraceId}.iCelllog', f'{extendCellPath}/{patternFunText};{nnode}.iCelllog')
                                     shutil.copy(f'{outputPath}/COMPLEX{patternTraceId}.png', f'{extendCellPath}/{patternFunText};{nnode}.png')
@@ -188,10 +190,10 @@ def main():
                                     shutil.copy(f'{outputPath}/COMPLEX{patternTraceId}.sp', f'{extendCellPath}/{patternFunText};{nnode}.sp')
                                     extendCellLib[patternFunText] = StdCellType(patternFunText, nnode)
                             else:
-                                print('\n>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!')
+                                print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
                                 break
                         except:
-                            print('\n>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!')
+                            print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
                             break
 
                 if benchmarkFailure:
@@ -285,7 +287,7 @@ def main():
 
             stdType2Area = loadAstranGDS() if SCSynthesis == 'Astran' else loadiCellGDS()
             sccArea = getArea(cells, stdType2Area)
-            print("astranArea=", sccArea)
+            print(f"{SCSynthesis}Area=", sccArea)
 
             clusterSeqs = sortPatternClusterSeqs(clusterSeqs)
 

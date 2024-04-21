@@ -30,6 +30,9 @@ def runiCellForNetlist(iCellPath, spiceNetlistPath, complexName, commandDir):
     try:
         res = os.system(f'{commands} > {commandDir}/{complexName}.iCelllog') == 0
     except:
+        res = False
+
+    if res is False:
         commands = f'{iCellPath} -a 2 -i {spiceNetlistPath} -c {complexName} -t 600'
         with open(f'{commandDir}/{complexName}.run', 'w', encoding='utf-8') as outputFile:
             outputFile.write(commands)
