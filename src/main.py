@@ -229,7 +229,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 if patternFunText not in extendCellLib:
                     pfunc = None
                     if len(patternFunc) == 1:
-                        pfunc = next((x for x in extendCellLib if bool_map(func, x)), None)
+                        pfunc = next((x for x, xfun in extendCellLib.items() if bool_map(func, next(iter(xfun.outputFuncMap.values())))), None)
                     if pfunc:
                         flag = True
                         # need to change function
@@ -253,15 +253,11 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 # draw a schemaitc of this pattern
                 drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/{patternTraceId}.png', withLabel=True, figsize=(20, 20))
                 # export the SPICE netlist of the complex of cells
-                if flag and pfunc in ['(A&B)|(A&C)|(B&C)', '(A&B&~C)|(A&C&~B)|(B&C&~A)|(~A&~B&~C)', 'A&B&C', 'A|B|C']:
-                    shutil.copy(f'{extendCellPath}/{pfunc};{nnode}.sp', f'{outputPath}/{patternTraceId}.sp')
-                    with open(f'{outputPath}/{patternTraceId}.sp', 'r+', encoding='utf-8') as file:  # change the name of .SUBCKT
-                        lines = file.readlines()
-                        tmp = lines[0].split(' ')
-                        tmp[1] = patternTraceId
-                        lines[0] = ' '.join(tmp)
-                        file.seek(0)
-                        file.writelines(lines)
+                if flag and len(patternFunc) == 1:
+                    extendCellSpices = loadSpiceSubcircuits(f'{extendCellPath}/{pfunc};{nnode}.sp')
+                    extendCellSpice = next(iter(extendCellSpices.values()))
+                    pin_map = bool_map(next(iter(extCell.outputFuncMap.values())), func)
+                    exportSpiceNetlistByCopy(clusterSeq, extendCellSpice, patternTraceId, nnode, pin_map[1], ipins, opins, patternFunText, outputPath=f'{outputPath}/{patternTraceId}.sp', cindex=cindex)
                 else:
                     exportSpiceNetlist(clusterSeq, subckts, patternTraceId, ipins, opins, patternFunText, outputPath=f'{outputPath}/{patternTraceId}.sp', cindex=cindex)
                 # if SC synthesizer is available, run it to get the layout and area evaluation
@@ -299,7 +295,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                     continue
                 if oriCellArea > newCellArea:
                     # construct a new cell
-                    newCell = Group('cell', [patternTraceId], [Attribute('area', newCellArea), Attribute('nnode', nnode)], [Group('pin', [ipin], [Attribute('direction', 'input')]) for ipin in ipins.values()] + [Group('pin', [opin], [Attribute('direction', 'output'), Attribute('function', EscapedString(str(patternFunc[opin]).replace(' ', '').replace('&', '*').replace('|', '+').replace('~', '!')))]) for opin in opins])  # type: ignore
+                    newCell = Group('cell', [patternTraceId], [Attribute('area', newCellArea), Attribute('nnode', nnode)], [Group('pin', [ipin], [Attribute('direction', 'input')]) for ipin in ipins.values()] + [Group('pin', [opin], [Attribute('direction', 'output'), Attribute('function', EscapedString(str(patternFunc[opin]).replace(' ', '').replace('&', '*').replace('|', '+').replace('~', '!')))]) for opin in opins.values()])  # type: ignore
                     liberty.groups.append(newCell)
                     with open(f'{outputPath}/{patternTraceId}.lib', 'w', encoding='utf-8') as lib_writer:
                         lib_writer.write('\n'.join(writeLiberty(liberty)))
@@ -338,7 +334,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                         newCell = StdCellType(patternTraceId, nnode)
                         for ipin in ipins.values():
                             newCell.addPin(ipin, 'input')
-                        for opin in opins:
+                        for opin in opins.values():
                             newCell.addPin(opin, 'output', str(patternFunc[opin]).replace(' ', ''))
                         stdCellLib[patternTraceId] = newCell
                         # load spice/design BLIF

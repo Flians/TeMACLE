@@ -251,11 +251,10 @@ def drawColorfulFigureForGraphWithAttributes(tmp_graph, colorArrtibute='type', s
     return
 
 
-def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> tuple[Dict[str, Basic], Dict[str, str], List[str], Dict[str, List[str]]]:
+def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> tuple[Dict[str, Basic], Dict[str, str], Dict[str, str], Dict[str, List[str]]]:
     patternFunc = {}
     opins = []
     ipins = []
-    net2pin = {}
     for nid in nx.topological_sort(patternSubgraph.reverse()):
         curr_node = cells[nid]
         if patternSubgraph.nodes[nid]['type'] == 'INPUT':
@@ -270,7 +269,6 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> t
                 cur_f = simplify_logic(eval(curFunc[opin]))
                 for ipin, inet in zip(v_ipin, v_inet):  # type: ignore
                     cur_f = cur_f.subs(ipin, inet)
-                    net2pin[str(inet)] = f'{ipin}_{nid}'
                 if onet in opins:
                     patternFunc[onet] = cur_f
                 else:
@@ -278,17 +276,18 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> t
                         patternFunc[on] = of.subs(symbols(onet, bool=True), cur_f)
     # rename variables
     new_ipins = {}
+    new_opins = {}
     for id, ipin in enumerate(ipins):
         pid = chr(65 + id)
         for opin in opins:
             patternFunc[opin] = patternFunc[opin].subs(symbols(ipin, bool=True), symbols(pid, bool=True))
-        new_ipins[net2pin[ipin]] = pid
+        new_ipins[ipin] = pid
         ipins[id] = pid
     patternFunc_ = {}
     for id, opin in enumerate(opins):
         newOP = 'Y' if len(opins) == 1 else 'Y' + chr(65 + id)
         patternFunc_[newOP] = simplify_logic(patternFunc[opin])
-        opins[id] = newOP
+        new_opins[opin] = newOP
     patternFunc = patternFunc_
     # record equivalent input pins
     IPEqu = {}
@@ -311,4 +310,4 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> t
         for i in curPins - {cur}:
             IPEqu[i] = list(IPEqu[cur])
         allPins -= curPins
-    return patternFunc, new_ipins, opins, IPEqu
+    return patternFunc, new_ipins, new_opins, IPEqu

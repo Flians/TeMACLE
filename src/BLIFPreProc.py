@@ -625,7 +625,7 @@ def loadExtendCells(fileDir: str) -> Dict[str, StdCellType]:
         for ipin in ipins:
             newCell.addPin(ipin, 'input')
         for opin, ofunc in funcs.items():
-            newCell.addPin(opin, 'output', str(ofunc).replace(' ', ''))
+            newCell.addPin(opin, 'output', ofunc)
         extendCellLib[newCell.typeName] = newCell
     return extendCellLib
 

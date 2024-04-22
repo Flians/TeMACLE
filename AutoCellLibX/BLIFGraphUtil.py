@@ -209,7 +209,6 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> t
             ipins += cells[node].inputNetNames.copy()
         if patternSubgraph.out_degree(node) == 0:
             opins += cells[node].outputNetNames.copy()
-    net2pin = {}
     for nid in nx.topological_sort(patternSubgraph.reverse()):
         curr_node = cells[nid]
         v_ipin = var(curr_node.inputPinRefNames, bool=True)
@@ -219,7 +218,6 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> t
             cur_f = simplify_logic(eval(curFunc[opin]))
             for ipin, inet in zip(v_ipin, v_inet):  # type: ignore
                 cur_f = cur_f.subs(ipin, inet)
-                net2pin[str(inet)] = f'{ipin}_{nid}'
             if onet in opins:
                 patternFunc[onet] = cur_f
             else:

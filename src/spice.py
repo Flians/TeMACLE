@@ -102,20 +102,18 @@ def loadSpiceSubcircuits(filePath):
     return spiceSubcircuits
 
 
-def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins: list, func: str, outputPath: str, cindex: int = 0):
+def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opinMap: dict, func: str, outputPath: str, cindex: int = 0):
     cellsInCluster = cluserSeq.patternClusters[cindex].cellsContained
     spiceList = []
     cell2orderId = {}
-    rootNode = None
     ranStr = id_generator()
+    opins = []
 
     # rename signals and transistors
     for orderId, cell in enumerate(cellsInCluster):
         spiceList.append(SPSubcircuit(subckts[cell.stdCellType.typeName].texts))
         spiceList[-1].renamePrefix("cl" + ranStr + "_" + str(orderId) + "#")
         cell2orderId[cell] = orderId
-        if cell.id == cluserSeq.patternClusters[cindex].rootId:
-            rootNode = (cell, orderId)
 
     # connect each input pins of each subcircuit
     for orderId, curCell in enumerate(cellsInCluster):
@@ -123,13 +121,17 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins:
             predCell = inputNet.predCell
             predPinName = inputNet.predPin
             # rename interfaces
-            newPin = ipinMap.get(f'{inputPinName}_{curCell.id}', None)
+            newPin = ipinMap.get(inputNet.name, None)
             if newPin:
                 spiceList[orderId].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + inputPinName, newPin)
             if predCell in cell2orderId:
                 spiceList[orderId].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + inputPinName, "cl" + ranStr + "_" + str(cell2orderId[predCell]) + "#" + predPinName)
-    for opin in opins:
-        spiceList[rootNode[1]].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + opin, opin)  # type: ignore
+        for outputNet, outputPinName in zip(curCell.outputNets, curCell.outputPinRefNames):
+            # rename interfaces
+            newPin = opinMap.get(outputNet.name, None)
+            if newPin:
+                spiceList[orderId].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + outputPinName, newPin)
+                opins.append(newPin)
 
     mergeCellName = str(patternTraceId).upper()
     if not ({'VDD', 'VSS'} - set(spiceList[0].interfaces)):
@@ -147,13 +149,37 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opins:
     internalLines.append(f"* pattern code: {cluserSeq.patternExtensionTrace}")
     internalLines.append(f"* {len(cluserSeq.patternClusters)} occurrences in design")
     internalLines.append(f"* each contains {len(cellsInCluster)} cells")
-    internalLines.append(f"* pin map: {ipinMap}")
+    internalLines.append(f"* pin map: {ipinMap} {opinMap}")
     internalLines.append(f"* function: {func}")
     internalLines.append("* Example occurence:")
     for cell in cellsInCluster:
         internalLines.append(f"*   {cell.name}")
 
     with open(outputPath, 'w', encoding='utf-8') as outputSP:
+        print('\n'.join(internalLines), file=outputSP)
+
+
+def exportSpiceNetlistByCopy(clusterSeq, extendCellSpice, patternTraceId, nnode, pin_map: dict, ipinMap: dict, opinMap: dict, func: str, outputPath: str, cindex: int = 0):
+    extendCellSpice.name = patternTraceId
+    ranStr = id_generator()
+    new_pin_map = {}
+    for old_var, new_var in pin_map.items():
+        if old_var.name != new_var.name:
+            extendCellSpice.replaceInputPin(old_var.name, f'{ranStr}_{old_var.name}')
+            new_pin_map[f'{ranStr}_{old_var.name}'] = new_var.name
+    for old_name, new_name in new_pin_map.items():
+        extendCellSpice.replaceInputPin(old_name, new_name)
+    with open(outputPath, 'w', encoding='utf-8') as outputSP:  # change the name of .SUBCKT
+        firstLine = f'.SUBCKT {patternTraceId} {" ".join(extendCellSpice.interfaces)}'
+        internalLines = [firstLine] + extendCellSpice.texts[1:]
+        internalLines.append(f"* pattern code: {clusterSeq.patternExtensionTrace}")
+        internalLines.append(f"* {len(clusterSeq.patternClusters)} occurrences in design")
+        internalLines.append(f"* each contains {nnode} cells")
+        internalLines.append(f"* pin map: {ipinMap} {opinMap}")
+        internalLines.append(f"* function: {func}")
+        internalLines.append("* Example occurence:")
+        for cell in clusterSeq.patternClusters[cindex].cellsContained:
+            internalLines.append(f"*   {cell.name}")
         print('\n'.join(internalLines), file=outputSP)
 
 

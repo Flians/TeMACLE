@@ -68,10 +68,24 @@ for lib in ['asap7sc7p5t_AO_LVT_TT_nldm_211120.lib', 'asap7sc7p5t_OA_LVT_TT_nldm
     liberty = parse_liberty(open(os.path.join(root_path, lib), encoding='utf-8').read())
     for cell_group in liberty.get_groups('cell'):
         full_liberty.groups.append(cell_group)
-with open('stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib', 'w', encoding='utf-8') as lib_writer:
-    lib_writer.write('\n'.join(writeLiberty(full_liberty)))
-writeGenlib(full_liberty, 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.genlib')
 
+K3_groups = []
+for cell_group in full_liberty.get_groups('cell'):
+    ipin = 0
+    flag = True
+    for pin in cell_group.get_groups('pin'):
+        if pin.get_attribute(key="clock", default=None) == 'true':
+            flag = False
+            break
+        if pin.get_attribute(key="direction", default=None) == 'input':
+            ipin += 1
+    if ipin <= 3 and flag:
+        K3_groups.append(cell_group)
+full_liberty.groups = K3_groups
+with open('stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib', 'w', encoding='utf-8') as lib_writer:
+    lib_writer.write('\n'.join(writeLiberty(full_liberty)))
+writeGenlib(full_liberty, 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.genlib')
+'''
 
 benchmarks = ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']
 for benchmarkName in benchmarks:
@@ -85,7 +99,9 @@ for benchmarkName in benchmarks:
     else:
         print('>>> initial mapping succeed!')
 
-    fullRes = SynPy.synthesis(f'{current_path}/benchmark/aig/{benchmarkName}.aig', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.genlib', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib', f'{outputPath}/{benchmarkName}_full.blif')
+    fullRes = SynPy.synthesis(
+        f'{current_path}/benchmark/aig/{benchmarkName}.aig', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.genlib', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib', f'{outputPath}/{benchmarkName}_full.blif'
+    )
     if fullRes[0] == -1:
         print('>>> full mapping failed!')
         continue
@@ -96,14 +112,15 @@ for benchmarkName in benchmarks:
 '''
 
 
-for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_256']:
+for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128', 'full_adder_256']:
     outputPath = f'{current_path}/outputs/iCell/adder/{adder}/'
     os.makedirs(outputPath, exist_ok=True)
-    if os.system(f'yosys -p "read_verilog {current_path}/benchmark/adder/{adder}.v; hierarchy -top {adder}; flatten; synth -top {adder}; abc -g AND; write_aiger {outputPath}/{adder}.aig;"'):
+    if os.system(f'yosys -p "read_verilog {current_path}/benchmark/adder/{adder}.v; hierarchy -top {adder}; flatten; synth -top {adder}; aigmap; write_aiger {outputPath}/{adder}.aig;"'):
         print('>>> aig writing failed!')
         continue
     else:
         print('>>> aig writing succeed!')
+
     initRes = SynPy.synthesis(f'{outputPath}/{adder}.aig', 'stdCellLib/asap7/asap7_75t_L.genlib', 'stdCellLib/asap7/asap7_75t_L.lib', f'{outputPath}/{adder}_init.blif')
     if initRes[0] == -1:
         print('>>> initial mapping failed!')
@@ -111,7 +128,7 @@ for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_256
     else:
         print('>>> initial mapping succeed with area =', initRes[0])
 
-    fullRes = SynPy.synthesis(f'{outputPath}/{adder}.aig', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.genlib', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28.lib', f'{outputPath}/{adder}_full.blif')
+    fullRes = SynPy.synthesis(f'{outputPath}/{adder}.aig', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.genlib', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib', f'{outputPath}/{adder}_full.blif')
     if fullRes[0] == -1:
         print('>>> full mapping failed!')
         continue
@@ -128,3 +145,4 @@ for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_256
     print(f'{adder} initial mapping area = {initRes[0]}')
     print(f'{adder} full mapping area = {fullRes[0]}')
     print(f'{adder} Temacle mapping area = {temacleRes[0]}')
+'''

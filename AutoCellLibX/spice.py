@@ -149,7 +149,7 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opinMa
     internalLines.append(f"* pattern code: {cluserSeq.patternExtensionTrace}")
     internalLines.append(f"* {len(cluserSeq.patternClusters)} occurrences in design")
     internalLines.append(f"* each contains {len(cellsInCluster)} cells")
-    internalLines.append(f"* pin map: {ipinMap}")
+    internalLines.append(f"* pin map: {ipinMap} {opinMap}")
     internalLines.append(f"* function: {func}")
     internalLines.append("* Example occurence:")
     for cell in cellsInCluster:
