@@ -30,7 +30,7 @@ from sympy.logic.boolalg import Xnor, Xor, Or, And, Nor
 A, B, C = symbols('A,B,C')
 bool_map(A & (~B | ~C), And(A, ~And(B, C)))
 bool_map(~B & (C | ~A), ~B & (A | ~C))
-
+bool_map((~A & ~B) | (~C & ~B), ~B & (~A | ~C))
 
 # import gdstk
 # The GDSII file is called a library, which contains multiple cells.
@@ -85,7 +85,6 @@ full_liberty.groups = K3_groups
 with open('stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib', 'w', encoding='utf-8') as lib_writer:
     lib_writer.write('\n'.join(writeLiberty(full_liberty)))
 writeGenlib(full_liberty, 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.genlib')
-'''
 
 benchmarks = ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']
 for benchmarkName in benchmarks:
@@ -145,4 +144,3 @@ for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128
     print(f'{adder} initial mapping area = {initRes[0]}')
     print(f'{adder} full mapping area = {fullRes[0]}')
     print(f'{adder} Temacle mapping area = {temacleRes[0]}')
-'''
