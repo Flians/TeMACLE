@@ -601,32 +601,38 @@ def writeGenlib(liberty: Group, genlibPath: str) -> None:
             genlib.write('GATE const_1\t0\tq=CONST1;\n')
 
 
+def loadExtendCell(fileDir: str, filePath: str) -> StdCellType:
+    if not filePath.endswith(".sp"):
+        return None
+    ipins = set()
+    funcs = {}
+    eqs_nnode = filePath[:-3].split(';')
+    nnode = int(eqs_nnode[1])
+    eqs = eqs_nnode[0].split(',')
+    for id, eq in enumerate(eqs):
+        newOP = 'Y' if len(eqs) == 1 else 'Y' + chr(65 + id)
+        try:
+            func = simplify_logic(eq)
+        except:
+            var(re.sub(r'[&|!()]', ' ', eq), bool=True)
+            func = simplify_logic(eval(eq))
+        funcs[newOP] = func
+        ipins = ipins.union(set(func.free_symbols))
+
+    newCell = StdCellType(','.join(eqs), nnode)
+    for ipin in ipins:
+        newCell.addPin(ipin, 'input')
+    for opin, ofunc in funcs.items():
+        newCell.addPin(opin, 'output', ofunc)
+    return newCell
+
+
 def loadExtendCells(fileDir: str) -> Dict[str, StdCellType]:
     extendCellLib = {}
     for item in os.listdir(fileDir):
-        if not item.endswith(".sp"):
-            continue
-        ipins = set()
-        funcs = {}
-        eqs_nnode = item[:-3].split(';')
-        nnode = int(eqs_nnode[1])
-        eqs = eqs_nnode[0].split(',')
-        for id, eq in enumerate(eqs):
-            newOP = 'Y' if len(eqs) == 1 else 'Y' + chr(65 + id)
-            try:
-                func = simplify_logic(eq)
-            except:
-                var(re.sub(r'[&|!()]', ' ', eq), bool=True)
-                func = simplify_logic(eval(eq))
-            funcs[newOP] = func
-            ipins = ipins.union(set(func.free_symbols))
-
-        newCell = StdCellType(','.join(eqs), nnode)
-        for ipin in ipins:
-            newCell.addPin(ipin, 'input')
-        for opin, ofunc in funcs.items():
-            newCell.addPin(opin, 'output', ofunc)
-        extendCellLib[newCell.typeName] = newCell
+        newCell = loadExtendCell(fileDir, item)
+        if newCell is not None:
+            extendCellLib[newCell.typeName] = newCell
     return extendCellLib
 
 

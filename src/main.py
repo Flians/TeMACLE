@@ -229,7 +229,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 if patternFunText not in extendCellLib:
                     pfunc = None
                     if len(patternFunc) == 1:
-                        pfunc = next((x for x, xfun in extendCellLib.items() if bool_map(func, next(iter(xfun.outputFuncMap.values())))), None)
+                        pfunc = next((x for x, xfun in extendCellLib.items() if xfun and bool_map(func, next(iter(xfun.outputFuncMap.values())))), None)
                     if pfunc:
                         flag = True
                         # need to change function
@@ -279,7 +279,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                                 shutil.copy(f'{outputPath}/{patternTraceId}.png', f'{extendCellPath}/{patternFunText};{nnode}.png')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.run', f'{extendCellPath}/{patternFunText};{nnode}.run')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.sp', f'{extendCellPath}/{patternFunText};{nnode}.sp')
-                                extendCellLib[patternFunText] = StdCellType(patternFunText, nnode)
+                                extendCellLib[patternFunText] = loadExtendCell(extendCellPath, f'{patternFunText};{nnode}.sp')
                         else:
                             print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
                             continue
