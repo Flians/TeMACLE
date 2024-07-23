@@ -25,24 +25,25 @@ def main():
     current_path = os.path.dirname(os.path.abspath(__file__))
     os.environ['LD_LIBRARY_PATH'] = f'{current_path}/../tools/gurobi/lib:' + os.environ.get('LD_LIBRARY_PATH', ';')
 
-    SCSynthesis = 'iCell'  #'Astran'
+    # SCSynthesis = 'iCell'
+    SCSynthesis = 'Astran'
 
     iCellPath = f'{current_path}/../tools/iCell/iCell'
-    # gurobiPath='/Library/gurobi1003/macos_universal2/bin/gurobi_cl'
-    gurobiPath = f'{current_path}/../tools/gurobi/bin/gurobi_cl'
-    # AstranPath = ''  # empty when Astran is unavailable.
     AstranPath = f'{current_path}/../tools/astran/Astran/build/bin/Astran'
-    technologyPath = f'{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul'
 
-    stdSpiceNetlistPath = f'{current_path}/../stdCellLib/gscl45nm/cellsAstranFriendly.sp'
-    initialLibertyPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.lib'
-    initialGenlibPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.genlib'
-    extendCellPath = f'{current_path}/../stdCellLib/gscl45nm/extend'
-
-    stdSpiceNetlistPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.sp'
-    initialLibertyPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.lib'
-    initialGenlibPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.genlib'
-    extendCellPath = f'{current_path}/../stdCellLib/asap7/extend'
+    if SCSynthesis == 'Astran':
+        # gurobiPath='/Library/gurobi1003/macos_universal2/bin/gurobi_cl'
+        gurobiPath = f'{current_path}/../tools/gurobi/bin/gurobi_cl'
+        technologyPath = f'{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul'
+        stdSpiceNetlistPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.sp'
+        initialLibertyPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.lib'
+        initialGenlibPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.genlib'
+        extendCellPath = f'{current_path}/../stdCellLib/gscl45nm/extend'
+    else:
+        stdSpiceNetlistPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.sp'
+        initialLibertyPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.lib'
+        initialGenlibPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.genlib'
+        extendCellPath = f'{current_path}/../stdCellLib/asap7/extend'
 
     # generate SCSynthesis-based cells
     if (AstranPath != '' and SCSynthesis == 'Astran') or (iCellPath != '' and SCSynthesis == 'iCell'):
@@ -72,10 +73,13 @@ def main():
         for a in cell_group.attributes:
             if a.name == 'area':
                 stdType2LibArea[cell_name] = a.value
+                stdType2Area[cell_name] = a.value
+                '''
                 if cell_name in stdType2Area:
                     a.value = stdType2Area[cell_name]
                 else:
                     stdType2Area[cell_name] = a.value
+                '''
                 break
     # initial .genlib
     writeGenlib(liberty, initialGenlibPath)
@@ -241,11 +245,11 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                     extCell = extendCellLib[pfunc]
                     if extCell.nnode <= nnode or patternFunText in ['~A|~B|~C']:
                         nnode = extCell.nnode
-                        shutil.copy(f'{extendCellPath}/{pfunc};{nnode}.iCelllog', f'{outputPath}/{patternTraceId}.iCelllog')
+                        shutil.copy(f'{extendCellPath}/{pfunc};{nnode}.{SCSynthesis}log', f'{outputPath}/{patternTraceId}.{SCSynthesis}log')
                     else:
                         flag = False
                         extendCellLib.pop(pfunc)
-                        # os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.iCelllog')
+                        # os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.{SCSynthesis}log')
                         # os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.png')
                         # os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.run')
                         # os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.sp')
@@ -267,7 +271,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                         if SCSynthesis == 'Astran' and loadAstranArea(outputPath, patternTraceId) is False:
                             res = runAstranForNetlist(AstranPath=AstranPath, gurobiPath=gurobiPath, technologyPath=technologyPath, spiceNetlistPath=f'{outputPath}/{patternTraceId}.sp', complexName=patternTraceId, commandDir=outputPath)
                         elif SCSynthesis == 'iCell':
-                            if not os.path.exists(os.path.join(outputPath, f'{patternTraceId}.iCelllog')):
+                            if not os.path.exists(os.path.join(outputPath, f'{patternTraceId}.{SCSynthesis}log')):
                                 res = runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=f'{outputPath}/{patternTraceId}.sp', complexName=patternTraceId, commandDir=outputPath)
                             elif loadiCellArea(outputPath, patternTraceId) is False:
                                 print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
@@ -275,7 +279,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                         if res:
                             print('>>> : Synthesis pattern#', patternTraceId, 'successfully!\n')
                             if flag is False:
-                                shutil.copy(f'{outputPath}/{patternTraceId}.iCelllog', f'{extendCellPath}/{patternFunText};{nnode}.iCelllog')
+                                shutil.copy(f'{outputPath}/{patternTraceId}.{SCSynthesis}log', f'{extendCellPath}/{patternFunText};{nnode}.{SCSynthesis}log')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.png', f'{extendCellPath}/{patternFunText};{nnode}.png')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.run', f'{extendCellPath}/{patternFunText};{nnode}.run')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.sp', f'{extendCellPath}/{patternFunText};{nnode}.sp')
@@ -289,7 +293,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
 
                 exampleCells = clusterSeq.patternClusters[cindex].cellsContained
                 oriCellArea = getArea(exampleCells, stdType2Area)
-                newCellArea = SCSynthesis == 'Astran' if loadAstranArea(outputPath, patternTraceId) else loadiCellArea(outputPath, patternTraceId)
+                newCellArea = loadAstranArea(outputPath, patternTraceId) if SCSynthesis == 'Astran' else loadiCellArea(outputPath, patternTraceId)
                 if not newCellArea or newCellArea <= 0:
                     print('>>> : New pattern#', patternTraceId, 'has more area!\n')
                     continue

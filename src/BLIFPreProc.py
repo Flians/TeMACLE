@@ -301,6 +301,7 @@ def loadLibertyFile(fileName) -> tuple[Dict[str, StdCellType], Group, Group]:
         # Loop through all pins of the cell.
         for pin_group in cell_group.get_groups("pin"):
             pin_name = pin_group.args[0]
+            var(pin_name, bool=True)
             func = pin_group.get_attribute(key="function", default=None)
             if func:
                 if func.value == '1':
@@ -315,7 +316,8 @@ def loadLibertyFile(fileName) -> tuple[Dict[str, StdCellType], Group, Group]:
                         func = func.replace(' ', '&')
                 func = func.replace('*', '&').replace('+', '|').replace('!', '~')
             newStdCellType.addPin(pin_name, pin_group["direction"], func)
-        stdCellLib[name] = newStdCellType
+        if len(newStdCellType.outputPins) == 1:  # limit the multiple outputs
+            stdCellLib[name] = newStdCellType
 
     if flag_0:
         stdCellLib['const_0'] = StdCellType("const_0", 0)

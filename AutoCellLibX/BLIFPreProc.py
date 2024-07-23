@@ -12,6 +12,8 @@ import re
 from typing import Any, Dict, List, Set
 from sympy import Basic, symbols, simplify_logic, bool_map, var
 
+var('A B C D E F')  # FOR Sympy
+
 
 class S2VGraph(object):
     def __init__(self, g, label, node_tags=None, node_features=None):

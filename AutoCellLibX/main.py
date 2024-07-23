@@ -10,6 +10,7 @@ from iCell import loadiCellArea, runiCellForNetlist
 from Astran import loadAstranArea, runAstranForNetlist
 from GDSIIAnalysis import loadOrignalGSCL45nmGDS, STDCellNames, loadAstranGDS, loadiCellGDS
 import shutil
+import copy
 
 var('A B C D E F')  # FOR Sympy
 
@@ -92,6 +93,7 @@ def main():
                 elif SCSynthesis == 'iCell' and loadiCellArea(GDSPath=f'{current_path}/originaliCellStdCells/', typeName=f'{oriStdCellType}_ASAP7_75t_L') is False:
                     runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=stdSpiceNetlistPath, complexName=f'{oriStdCellType}_ASAP7_75t_L', commandDir=f'{current_path}/originaliCellStdCells/')
         stdType2Area = loadAstranGDS() if SCSynthesis == 'Astran' else loadiCellGDS()
+        stdType2Area = copy.deepcopy(stdType2GSCLArea)
         sccArea = getArea(cells, stdType2Area)
         print(f"synthesized {SCSynthesis}Area=", sccArea)
 

@@ -106,6 +106,8 @@ flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/mai
 
 flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 src/main.py > iCell_k3.log 2>&1 &
 [1] 5862
+flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u AutoCellLibX/main.py > iCell_AutoCellLibX.log 2>&1 &
+[5] 41314
 ```
 
 ``` bash

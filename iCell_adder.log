@@ -457,13 +457,13 @@ Module full_adder_16: replaced 78 cells with 382 new cells, skipped 30 cells.
 6. Executing AIGER backend.
 
 End of script. Logfile hash: f787031733
-CPU: user 0.17s system 0.01s, MEM: 17.29 MB total, 10.50 MB resident
+CPU: user 0.15s system 0.02s, MEM: 17.29 MB total, 11.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
 Time spent: 22% 13x opt_clean (0 sec), 12% 11x opt_expr (0 sec), ...
 >>> aig writing succeed!
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16.aig
 resyn runtime: 0
-[i] area: 10.264319896697998, gates: 96, depth: 48
+[i] area: 11.897280156612396, gates: 112, depth: 48
 mapping runtime: 0
 
  /----------------------------------------------------------------------------\
@@ -489,23 +489,23 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/IWWUDELTRI.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/MKYNLKTURV.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 58 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/IWWUDELTRI.v
-Parsing Verilog input from `/tmp/IWWUDELTRI.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/MKYNLKTURV.v
+Parsing Verilog input from `/tmp/MKYNLKTURV.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 8959e58413
+End of script. Logfile hash: 0c1495c498
 CPU: user 0.05s system 0.01s, MEM: 22.01 MB total, 15.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 85% 2x read_liberty (0 sec), 12% 2x read_verilog (0 sec), ...
->>> initial mapping succeed with area = 10.264319896697998
+Time spent: 84% 2x read_liberty (0 sec), 12% 2x read_verilog (0 sec), ...
+>>> initial mapping succeed with area = 11.897280156612396
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16.aig
 resyn runtime: 0
 [i] area: 6.531839907169342, gates: 64, depth: 17
@@ -534,20 +534,20 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib; read_verilog /tmp/FF9JC668RH.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_full.blif;' --
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib; read_verilog /tmp/18L2VZL1QW.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_full.blif;' --
 
 1. Executing Liberty frontend.
 Imported 88 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/FF9JC668RH.v
-Parsing Verilog input from `/tmp/FF9JC668RH.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/18L2VZL1QW.v
+Parsing Verilog input from `/tmp/18L2VZL1QW.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 9a275db74f
-CPU: user 0.06s system 0.01s, MEM: 20.98 MB total, 14.50 MB resident
+End of script. Logfile hash: 412927752f
+CPU: user 0.06s system 0.00s, MEM: 20.98 MB total, 14.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
 Time spent: 83% 2x read_liberty (0 sec), 14% 2x read_verilog (0 sec), ...
 >>> full mapping succeed with area = 6.531839907169342
@@ -579,24 +579,24 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/E32O90TO9O.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_temacle.blif;' --
+-- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/P463A63VL8.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 13 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/E32O90TO9O.v
-Parsing Verilog input from `/tmp/E32O90TO9O.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/P463A63VL8.v
+Parsing Verilog input from `/tmp/P463A63VL8.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 4162735a0e
-CPU: user 0.02s system 0.00s, MEM: 15.95 MB total, 9.50 MB resident
+End of script. Logfile hash: 18ed635dd2
+CPU: user 0.01s system 0.01s, MEM: 15.95 MB total, 9.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 48% 2x read_liberty (0 sec), 39% 2x read_verilog (0 sec), ...
+Time spent: 51% 2x read_liberty (0 sec), 39% 2x read_verilog (0 sec), ...
 >>> Temacle mapping succeed with area = 6.298559904098511
-full_adder_16 initial mapping area = 10.264319896697998
+full_adder_16 initial mapping area = 11.897280156612396
 full_adder_16 full mapping area = 6.531839907169342
 full_adder_16 Temacle mapping area = 6.298559904098511
 
@@ -1074,13 +1074,13 @@ Module full_adder_32: replaced 158 cells with 766 new cells, skipped 62 cells.
 6. Executing AIGER backend.
 
 End of script. Logfile hash: 79189055d8
-CPU: user 0.28s system 0.01s, MEM: 17.93 MB total, 12.00 MB resident
+CPU: user 0.28s system 0.00s, MEM: 17.93 MB total, 12.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
 Time spent: 22% 13x opt_clean (0 sec), 14% 7x opt (0 sec), ...
 >>> aig writing succeed!
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32.aig
 resyn runtime: 0
-[i] area: 20.528639793395996, gates: 192, depth: 96
+[i] area: 23.794560313224792, gates: 224, depth: 96
 mapping runtime: 0
 
  /----------------------------------------------------------------------------\
@@ -1106,23 +1106,23 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/SYYIGV28JQ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/9CH8S04FE1.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 58 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/SYYIGV28JQ.v
-Parsing Verilog input from `/tmp/SYYIGV28JQ.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/9CH8S04FE1.v
+Parsing Verilog input from `/tmp/9CH8S04FE1.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 92c6a39054
-CPU: user 0.06s system 0.01s, MEM: 22.01 MB total, 15.50 MB resident
+End of script. Logfile hash: ac8fed7d66
+CPU: user 0.06s system 0.00s, MEM: 22.01 MB total, 15.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 78% 2x read_liberty (0 sec), 18% 2x read_verilog (0 sec), ...
->>> initial mapping succeed with area = 20.528639793395996
+Time spent: 75% 2x read_liberty (0 sec), 21% 2x read_verilog (0 sec), ...
+>>> initial mapping succeed with area = 23.794560313224792
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32.aig
 resyn runtime: 0
 [i] area: 13.063679814338684, gates: 128, depth: 33
@@ -1151,22 +1151,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib; read_verilog /tmp/VLCPENEY1Q.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_full.blif;' --
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib; read_verilog /tmp/Q2LULVM23V.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_full.blif;' --
 
 1. Executing Liberty frontend.
 Imported 88 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/VLCPENEY1Q.v
-Parsing Verilog input from `/tmp/VLCPENEY1Q.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/Q2LULVM23V.v
+Parsing Verilog input from `/tmp/Q2LULVM23V.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 5b97b0650d
+End of script. Logfile hash: 47b061dae7
 CPU: user 0.04s system 0.01s, MEM: 20.98 MB total, 14.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 81% 2x read_liberty (0 sec), 15% 2x read_verilog (0 sec), ...
+Time spent: 78% 2x read_liberty (0 sec), 18% 2x read_verilog (0 sec), ...
 >>> full mapping succeed with area = 13.063679814338684
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32.aig
 resyn runtime: 0
@@ -1196,24 +1196,24 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/82LJ86BN71.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_temacle.blif;' --
+-- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/1XJX8HY7D5.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 13 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/82LJ86BN71.v
-Parsing Verilog input from `/tmp/82LJ86BN71.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/1XJX8HY7D5.v
+Parsing Verilog input from `/tmp/1XJX8HY7D5.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 7fe00d4365
+End of script. Logfile hash: 2f0bbb9e71
 CPU: user 0.02s system 0.00s, MEM: 16.21 MB total, 9.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 50% 2x read_verilog (0 sec), 39% 2x read_liberty (0 sec), ...
+Time spent: 54% 2x read_verilog (0 sec), 36% 2x read_liberty (0 sec), ...
 >>> Temacle mapping succeed with area = 12.597119808197021
-full_adder_32 initial mapping area = 20.528639793395996
+full_adder_32 initial mapping area = 23.794560313224792
 full_adder_32 full mapping area = 13.063679814338684
 full_adder_32 Temacle mapping area = 12.597119808197021
 
@@ -1723,13 +1723,13 @@ Module full_adder_64: replaced 318 cells with 1534 new cells, skipped 126 cells.
 6. Executing AIGER backend.
 
 End of script. Logfile hash: c369b2b7f0
-CPU: user 0.51s system 0.01s, MEM: 19.73 MB total, 13.00 MB resident
+CPU: user 0.56s system 0.01s, MEM: 19.68 MB total, 13.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 23% 13x opt_clean (0 sec), 15% 7x opt (0 sec), ...
+Time spent: 23% 13x opt_clean (0 sec), 13% 7x opt (0 sec), ...
 >>> aig writing succeed!
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64.aig
 resyn runtime: 0
-[i] area: 41.05727958679199, gates: 384, depth: 192
+[i] area: 47.589120626449585, gates: 448, depth: 192
 mapping runtime: 0
 
  /----------------------------------------------------------------------------\
@@ -1755,23 +1755,23 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/P7GO3ZZEBY.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/GULFMCWQV8.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 58 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/P7GO3ZZEBY.v
-Parsing Verilog input from `/tmp/P7GO3ZZEBY.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/GULFMCWQV8.v
+Parsing Verilog input from `/tmp/GULFMCWQV8.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 600f7b8e0d
-CPU: user 0.07s system 0.01s, MEM: 22.01 MB total, 15.50 MB resident
+End of script. Logfile hash: 7b5b55213b
+CPU: user 0.07s system 0.00s, MEM: 22.01 MB total, 15.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 65% 2x read_liberty (0 sec), 30% 2x read_verilog (0 sec), ...
->>> initial mapping succeed with area = 41.05727958679199
+Time spent: 62% 2x read_liberty (0 sec), 32% 2x read_verilog (0 sec), ...
+>>> initial mapping succeed with area = 47.589120626449585
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64.aig
 resyn runtime: 0
 [i] area: 26.127359628677368, gates: 256, depth: 65
@@ -1800,22 +1800,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib; read_verilog /tmp/XQWZHTJMEY.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_full.blif;' --
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib; read_verilog /tmp/JOGKUV5PMS.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_full.blif;' --
 
 1. Executing Liberty frontend.
 Imported 88 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/XQWZHTJMEY.v
-Parsing Verilog input from `/tmp/XQWZHTJMEY.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/JOGKUV5PMS.v
+Parsing Verilog input from `/tmp/JOGKUV5PMS.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 5441fc8249
-CPU: user 0.06s system 0.00s, MEM: 20.98 MB total, 14.50 MB resident
+End of script. Logfile hash: 1a471ee4bc
+CPU: user 0.06s system 0.01s, MEM: 20.98 MB total, 14.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 70% 2x read_liberty (0 sec), 25% 2x read_verilog (0 sec), ...
+Time spent: 72% 2x read_liberty (0 sec), 24% 2x read_verilog (0 sec), ...
 >>> full mapping succeed with area = 26.127359628677368
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64.aig
 resyn runtime: 0
@@ -1845,24 +1845,24 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/3QVW3ZW58U.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_temacle.blif;' --
+-- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/4WIAB3Q1VS.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 13 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/3QVW3ZW58U.v
-Parsing Verilog input from `/tmp/3QVW3ZW58U.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/4WIAB3Q1VS.v
+Parsing Verilog input from `/tmp/4WIAB3Q1VS.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 84c990d704
-CPU: user 0.03s system 0.00s, MEM: 16.86 MB total, 10.50 MB resident
+End of script. Logfile hash: b81e64666b
+CPU: user 0.03s system 0.00s, MEM: 16.85 MB total, 10.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 69% 2x read_verilog (0 sec), 23% 2x read_liberty (0 sec), ...
+Time spent: 65% 2x read_verilog (0 sec), 26% 2x read_liberty (0 sec), ...
 >>> Temacle mapping succeed with area = 25.194239616394043
-full_adder_64 initial mapping area = 41.05727958679199
+full_adder_64 initial mapping area = 47.589120626449585
 full_adder_64 full mapping area = 26.127359628677368
 full_adder_64 Temacle mapping area = 25.194239616394043
 
@@ -2436,13 +2436,13 @@ Module full_adder_128: replaced 638 cells with 3070 new cells, skipped 254 cells
 6. Executing AIGER backend.
 
 End of script. Logfile hash: 064e456f9b
-CPU: user 0.97s system 0.01s, MEM: 23.53 MB total, 17.50 MB resident
+CPU: user 0.99s system 0.02s, MEM: 23.42 MB total, 17.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
 Time spent: 24% 13x opt_clean (0 sec), 15% 7x opt (0 sec), ...
 >>> aig writing succeed!
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128.aig
 resyn runtime: 0
-[i] area: 82.11455917358398, gates: 768, depth: 384
+[i] area: 95.17824125289917, gates: 896, depth: 384
 mapping runtime: 0
 
  /----------------------------------------------------------------------------\
@@ -2468,23 +2468,23 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/CVZNXTHWYM.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/VP4E42EFLZ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 58 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/CVZNXTHWYM.v
-Parsing Verilog input from `/tmp/CVZNXTHWYM.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/VP4E42EFLZ.v
+Parsing Verilog input from `/tmp/VP4E42EFLZ.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: f9003fafa4
-CPU: user 0.09s system 0.01s, MEM: 22.01 MB total, 15.50 MB resident
+End of script. Logfile hash: 7e36ec5e41
+CPU: user 0.10s system 0.00s, MEM: 22.87 MB total, 16.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 49% 2x read_liberty (0 sec), 45% 2x read_verilog (0 sec), ...
->>> initial mapping succeed with area = 82.11455917358398
+Time spent: 49% 2x read_verilog (0 sec), 44% 2x read_liberty (0 sec), ...
+>>> initial mapping succeed with area = 95.17824125289917
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128.aig
 resyn runtime: 0
 [i] area: 52.254719257354736, gates: 512, depth: 129
@@ -2513,22 +2513,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib; read_verilog /tmp/P8033CCVVC.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_full.blif;' --
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib; read_verilog /tmp/RWSHSOJNM3.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_full.blif;' --
 
 1. Executing Liberty frontend.
 Imported 88 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/P8033CCVVC.v
-Parsing Verilog input from `/tmp/P8033CCVVC.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/RWSHSOJNM3.v
+Parsing Verilog input from `/tmp/RWSHSOJNM3.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 353cbf0e3a
-CPU: user 0.07s system 0.00s, MEM: 20.98 MB total, 14.50 MB resident
+End of script. Logfile hash: 34c3d6e8fd
+CPU: user 0.07s system 0.01s, MEM: 20.98 MB total, 14.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 54% 2x read_liberty (0 sec), 40% 2x read_verilog (0 sec), ...
+Time spent: 56% 2x read_liberty (0 sec), 39% 2x read_verilog (0 sec), ...
 >>> full mapping succeed with area = 52.254719257354736
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128.aig
 resyn runtime: 0
@@ -2558,24 +2558,24 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/B4OWRD9OEQ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_temacle.blif;' --
+-- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/NC8Y61UVWZ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 13 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/B4OWRD9OEQ.v
-Parsing Verilog input from `/tmp/B4OWRD9OEQ.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/NC8Y61UVWZ.v
+Parsing Verilog input from `/tmp/NC8Y61UVWZ.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 1be5a5f847
-CPU: user 0.04s system 0.00s, MEM: 18.29 MB total, 11.50 MB resident
+End of script. Logfile hash: e19cf23ff5
+CPU: user 0.04s system 0.00s, MEM: 18.18 MB total, 11.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 74% 2x read_verilog (0 sec), 19% 2x read_liberty (0 sec), ...
+Time spent: 76% 2x read_verilog (0 sec), 16% 2x read_liberty (0 sec), ...
 >>> Temacle mapping succeed with area = 50.388479232788086
-full_adder_128 initial mapping area = 82.11455917358398
+full_adder_128 initial mapping area = 95.17824125289917
 full_adder_128 full mapping area = 52.254719257354736
 full_adder_128 Temacle mapping area = 50.388479232788086
 
@@ -3277,13 +3277,13 @@ Module full_adder_256: replaced 1278 cells with 6142 new cells, skipped 510 cell
 6. Executing AIGER backend.
 
 End of script. Logfile hash: d77eb44b93
-CPU: user 1.96s system 0.02s, MEM: 30.92 MB total, 24.43 MB resident
+CPU: user 1.95s system 0.01s, MEM: 30.90 MB total, 24.42 MB resident
 Yosys 0.9 (git sha1 1979e0b)
 Time spent: 25% 13x opt_clean (0 sec), 15% 7x opt (0 sec), ...
 >>> aig writing succeed!
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256.aig
 resyn runtime: 0
-[i] area: 164.22911834716797, gates: 1536, depth: 768
+[i] area: 190.35648250579834, gates: 1792, depth: 768
 mapping runtime: 0
 
  /----------------------------------------------------------------------------\
@@ -3309,23 +3309,23 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/TDM7OQDIJT.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/11AV7SXBKD.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 58 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/TDM7OQDIJT.v
-Parsing Verilog input from `/tmp/TDM7OQDIJT.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/11AV7SXBKD.v
+Parsing Verilog input from `/tmp/11AV7SXBKD.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: a6498c20db
-CPU: user 0.13s system 0.02s, MEM: 28.34 MB total, 22.00 MB resident
+End of script. Logfile hash: 60940276ce
+CPU: user 0.15s system 0.01s, MEM: 30.11 MB total, 23.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 64% 2x read_verilog (0 sec), 29% 2x read_liberty (0 sec), ...
->>> initial mapping succeed with area = 164.22911834716797
+Time spent: 64% 2x read_verilog (0 sec), 28% 2x read_liberty (0 sec), ...
+>>> initial mapping succeed with area = 190.35648250579834
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256.aig
 resyn runtime: 0
 [i] area: 104.50943851470947, gates: 1024, depth: 257
@@ -3354,22 +3354,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib; read_verilog /tmp/ILG5MC35PI.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_full.blif;' --
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib; read_verilog /tmp/I8U505FF83.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_full.blif;' --
 
 1. Executing Liberty frontend.
 Imported 88 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/ILG5MC35PI.v
-Parsing Verilog input from `/tmp/ILG5MC35PI.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/I8U505FF83.v
+Parsing Verilog input from `/tmp/I8U505FF83.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: f8e8888d22
-CPU: user 0.11s system 0.00s, MEM: 24.51 MB total, 18.00 MB resident
+End of script. Logfile hash: 4f39f016f5
+CPU: user 0.11s system 0.01s, MEM: 24.51 MB total, 18.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 55% 2x read_verilog (0 sec), 37% 2x read_liberty (0 sec), ...
+Time spent: 55% 2x read_verilog (0 sec), 38% 2x read_liberty (0 sec), ...
 >>> full mapping succeed with area = 104.50943851470947
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256.aig
 resyn runtime: 0
@@ -3399,23 +3399,23 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/POJN38NUJ3.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_temacle.blif;' --
+-- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/88VPLSAEIA.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 13 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/POJN38NUJ3.v
-Parsing Verilog input from `/tmp/POJN38NUJ3.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/88VPLSAEIA.v
+Parsing Verilog input from `/tmp/88VPLSAEIA.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: c505a5d843
-CPU: user 0.06s system 0.00s, MEM: 21.00 MB total, 14.50 MB resident
+End of script. Logfile hash: 55065d47a4
+CPU: user 0.06s system 0.00s, MEM: 20.87 MB total, 14.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
 Time spent: 81% 2x read_verilog (0 sec), 10% 2x read_liberty (0 sec), ...
 >>> Temacle mapping succeed with area = 100.77695846557617
-full_adder_256 initial mapping area = 164.22911834716797
+full_adder_256 initial mapping area = 190.35648250579834
 full_adder_256 full mapping area = 104.50943851470947
 full_adder_256 Temacle mapping area = 100.77695846557617

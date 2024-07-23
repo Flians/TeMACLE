@@ -37,15 +37,17 @@ bool_map((~A & ~B) | (~C & ~B), ~B & (~A | ~C))
 # lib = gdstk.read_gds('tools/gds_viewer/gds/ADDER_G0_14_15.gds')
 # for cell in lib.cells:
 #    cell.write_svg(f"{cell.name}.svg")
-
 '''
 import os
 import shutil
 
-src_path = 'src/outputs/iCell/K3/'
+src_path = 'outputs/iCell/full/'
 des_path = 'benchmark/blif'
 for cir in ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']:
-    shutil.copyfile(os.path.join(src_path, cir, f'{cir}.blif'), os.path.join(des_path, f'{cir}.blif'))
+    # shutil.copyfile(os.path.join(src_path, cir, f'{cir}_init.blif'), os.path.join(des_path, f'{cir}.blif'))
+    os.makedirs(f'outputs/iCell/K3/{cir}', exist_ok=True)
+    open(f'outputs/iCell/K3/{cir}/best_{cir}.genlib', 'a').close()
+    open(f'outputs/iCell/K3/{cir}/best_{cir}.lib', 'a').close()
 '''
 
 import sys
@@ -56,20 +58,23 @@ import SynPy  # type: ignore
 
 current_path = SCRIPT_DIR
 
-'''
 from liberty.parser import parse_liberty
 from src.BLIFPreProc import writeLiberty, writeGenlib
 
 root_path = '/home/flynn/Downloads/asap7sc7p5t_28-main/LIB/NLDM/'
+root_path = 'stdCellLib/gscl45nm'
 
-full_liberty = parse_liberty(open(os.path.join(root_path, 'asap7sc7p5t_SIMPLE_LVT_TT_nldm_211120.lib'), encoding='utf-8').read())
+# full_liberty = parse_liberty(open(os.path.join(root_path, 'asap7sc7p5t_SIMPLE_LVT_TT_nldm_211120.lib'), encoding='utf-8').read())
+full_liberty = parse_liberty(open(os.path.join(root_path, 'gscl45nm.lib'), encoding='utf-8').read())
 
+'''
 for lib in ['asap7sc7p5t_AO_LVT_TT_nldm_211120.lib', 'asap7sc7p5t_OA_LVT_TT_nldm_211120.lib', 'asap7sc7p5t_SEQ_LVT_TT_nldm_220123.lib', 'asap7sc7p5t_INVBUF_LVT_TT_nldm_220122.lib']:
     liberty = parse_liberty(open(os.path.join(root_path, lib), encoding='utf-8').read())
     for cell_group in liberty.get_groups('cell'):
         full_liberty.groups.append(cell_group)
-
-K3_groups = []
+'''
+K = 5
+K_groups = []
 for cell_group in full_liberty.get_groups('cell'):
     ipin = 0
     flag = True
@@ -79,13 +84,17 @@ for cell_group in full_liberty.get_groups('cell'):
             break
         if pin.get_attribute(key="direction", default=None) == 'input':
             ipin += 1
-    if ipin <= 3 and flag:
-        K3_groups.append(cell_group)
-full_liberty.groups = K3_groups
+    if ipin <= K and flag:
+        K_groups.append(cell_group)
+full_liberty.groups = K_groups
+'''
 with open('stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib', 'w', encoding='utf-8') as lib_writer:
     lib_writer.write('\n'.join(writeLiberty(full_liberty)))
 writeGenlib(full_liberty, 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.genlib')
+'''
+writeGenlib(full_liberty, os.path.join(root_path, 'gscl45nm.genlib'))
 
+'''
 benchmarks = ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']
 for benchmarkName in benchmarks:
     print('=================================================================================\n', benchmarkName, '\n=================================================================================\n')
@@ -97,6 +106,7 @@ for benchmarkName in benchmarks:
         continue
     else:
         print('>>> initial mapping succeed!')
+    continue
 
     fullRes = SynPy.synthesis(
         f'{current_path}/benchmark/aig/{benchmarkName}.aig', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.genlib', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib', f'{outputPath}/{benchmarkName}_full.blif'
@@ -106,9 +116,21 @@ for benchmarkName in benchmarks:
         continue
     else:
         print('>>> full mapping succeed!')
-    saveArea = initRes[0] - fullRes[0]
-    print(f'{benchmarkName} saveArea=({initRes[0]}-{fullRes[0]}) / {fullRes[0]} = ', saveArea / initRes[0] * 100, '%')
-'''
+
+    temacleRes = SynPy.synthesis(
+        f'{current_path}/benchmark/aig/{benchmarkName}.aig', f'outputs/iCell/K3/{benchmarkName}/best_{benchmarkName}.genlib', f'outputs/iCell/K3/{benchmarkName}/best_{benchmarkName}.lib', f'{outputPath}/{benchmarkName}_temacle.blif'
+    )
+    if temacleRes[0] == -1:
+        print('>>> Temacle mapping failed!')
+        continue
+    else:
+        print('>>> Temacle mapping succeed with area =', temacleRes[0])
+
+    saveArea_full = initRes[0] - fullRes[0]
+    saveArea_temacle = initRes[0] - temacleRes[0]
+    print(f'{benchmarkName} full saveArea=({initRes[0]}-{fullRes[0]}) / {initRes[0]} = ', saveArea_full / initRes[0] * 100, '%')
+    print(f'{benchmarkName} Temacle saveArea=({initRes[0]}-{temacleRes[0]}) / {initRes[0]} = ', saveArea_temacle / initRes[0] * 100, '%')
+
 
 
 for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128', 'full_adder_256']:
@@ -144,3 +166,4 @@ for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128
     print(f'{adder} initial mapping area = {initRes[0]}')
     print(f'{adder} full mapping area = {fullRes[0]}')
     print(f'{adder} Temacle mapping area = {temacleRes[0]}')
+'''
