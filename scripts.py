@@ -61,19 +61,18 @@ current_path = SCRIPT_DIR
 from liberty.parser import parse_liberty
 from src.BLIFPreProc import writeLiberty, writeGenlib
 
-root_path = '/home/flynn/Downloads/asap7sc7p5t_28-main/LIB/NLDM/'
+# root_path = 'stdCellLib/asap7'
 root_path = 'stdCellLib/gscl45nm'
 
 # full_liberty = parse_liberty(open(os.path.join(root_path, 'asap7sc7p5t_SIMPLE_LVT_TT_nldm_211120.lib'), encoding='utf-8').read())
 full_liberty = parse_liberty(open(os.path.join(root_path, 'gscl45nm.lib'), encoding='utf-8').read())
-
 '''
 for lib in ['asap7sc7p5t_AO_LVT_TT_nldm_211120.lib', 'asap7sc7p5t_OA_LVT_TT_nldm_211120.lib', 'asap7sc7p5t_SEQ_LVT_TT_nldm_220123.lib', 'asap7sc7p5t_INVBUF_LVT_TT_nldm_220122.lib']:
     liberty = parse_liberty(open(os.path.join(root_path, lib), encoding='utf-8').read())
     for cell_group in liberty.get_groups('cell'):
         full_liberty.groups.append(cell_group)
 '''
-K = 5
+K = 6
 K_groups = []
 for cell_group in full_liberty.get_groups('cell'):
     ipin = 0
@@ -88,9 +87,9 @@ for cell_group in full_liberty.get_groups('cell'):
         K_groups.append(cell_group)
 full_liberty.groups = K_groups
 '''
-with open('stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib', 'w', encoding='utf-8') as lib_writer:
+with open('stdCellLib/asap7/asap7_75t_L.lib', 'w', encoding='utf-8') as lib_writer:
     lib_writer.write('\n'.join(writeLiberty(full_liberty)))
-writeGenlib(full_liberty, 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.genlib')
+writeGenlib(full_liberty, 'stdCellLib/asap7/asap7_75t_L.genlib')
 '''
 writeGenlib(full_liberty, os.path.join(root_path, 'gscl45nm.genlib'))
 
