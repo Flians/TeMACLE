@@ -12,8 +12,6 @@ import re
 from typing import Any, Dict, List, Set
 from sympy import Basic, symbols, simplify_logic, bool_map, var
 
-var('A B C D E F')  # FOR Sympy
-
 
 class S2VGraph(object):
     def __init__(self, g, label, node_tags=None, node_features=None):
@@ -69,7 +67,12 @@ def loadLibertyFile(fileName):
                         func = func.replace(' ', '')
                     else:
                         func = func.replace(' ', '&')
-                func = func.replace('*', '&').replace('+', '|').replace('!', '~')
+                func_bool = func.replace('*', '&').replace('+', '|').replace('!', '~')
+                try:
+                    func = simplify_logic(func_bool)
+                except:
+                    var(re.sub(r'[&|~()]', ' ', func_bool), bool=True)
+                    func = simplify_logic(eval(func_bool))
             newStdCellType.addPin(pin_name, pin_group['direction'], func)
         stdCellLib[name] = newStdCellType
 
@@ -450,6 +453,8 @@ def loadExtendCells(fileDir: str) -> Dict[str, StdCellType]:
     for item in os.listdir(fileDir):
         if not item.endswith(".sp"):
             continue
+        if not os.path.exists(item[:-2] + 'png'):
+            continue
         ipins = set()
         funcs = {}
         eqs_nnode = item[:-3].split(';')
@@ -460,7 +465,7 @@ def loadExtendCells(fileDir: str) -> Dict[str, StdCellType]:
             try:
                 func = simplify_logic(eq)
             except:
-                var(re.sub(r'[&|!()]', ' ', eq), bool=True)
+                var(re.sub(r'[&|~()]', ' ', eq), bool=True)
                 func = simplify_logic(eval(eq))
             funcs[newOP] = func
             ipins = ipins.union(set(func.free_symbols))

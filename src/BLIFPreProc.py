@@ -318,7 +318,7 @@ def loadLibertyFile(fileName, stdCellIPEqu: dict[str, dict[str, list[str]]] = {}
                 try:
                     func = simplify_logic(func_bool)
                 except:
-                    var(re.sub(r'[&|!()]', ' ', func_bool), bool=True)
+                    var(re.sub(r'[&|~()]', ' ', func_bool), bool=True)
                     func = simplify_logic(eval(func_bool))
                 func_expr.append(str(func).replace(' ', ''))
             newStdCellType.addPin(pin_name, pin_group["direction"], func, stdCellIPEqu)
@@ -600,7 +600,7 @@ def loadExtendCell(fileDir: str, filePath: str) -> StdCellType:
         try:
             func = simplify_logic(eq)
         except:
-            var(re.sub(r'[&|!()]', ' ', eq), bool=True)
+            var(re.sub(r'[&|~()]', ' ', eq), bool=True)
             func = simplify_logic(eval(eq))
         funcs[newOP] = func
         ipins = ipins.union(set(func.free_symbols))

@@ -8,18 +8,52 @@ import matplotlib
 from spice import *
 from iCell import loadiCellArea, runiCellForNetlist
 from Astran import loadAstranArea, runAstranForNetlist
-from GDSIIAnalysis import loadOrignalGSCL45nmGDS, STDCellNames, loadAstranGDS, loadiCellGDS
+from GDSIIAnalysis import loadAstranGDS, loadiCellGDS
 import shutil
 import copy
 
-var('A B C D E F')  # FOR Sympy
 
+'''
+STDCellNames = [
+    # "AND2X1",
+    "AND2X2",
+    "AOI21X1",
+    # "AOI22X1",
+    "BUFX2",
+    # "BUFX4",
+    # "CLKBUF1",
+    # "CLKBUF2",
+    # "CLKBUF3",
+    # "DFFNEGX1",
+    # "DFFPOSX1",
+    # "DFFSR",
+    # "FAX1",
+    # "HAX1",
+    "INVX1",
+    # "INVX2",
+    # "INVX4",
+    # "INVX8",
+    # "LATCH",
+    # "MUX2X1",
+    "NAND2X1",
+    "NAND3X1",
+    "NOR2X1",
+    "NOR3X1",
+    "OAI21X1",
+    # "OAI22X1",
+    # "OR2X1",
+    "OR2X2",
+    # "TBUFX1",
+    # "TBUFX2",
+    "XNOR2X1",
+    "XOR2X1",
+    "const_0",
+    "const_1",
+]
 
-def mkdir(pathStr):
-    if os.path.exists(pathStr):
-        pass
-    else:
-        os.mkdir(pathStr)
+'''
+
+STDCellNames = ['AND2x2', 'AOI21x1', 'BUFx2', 'INVx1', 'NAND2x1', 'NAND3x1', 'NOR2x1', 'NOR3x1', 'OAI21x1', 'OR2x2', 'TIEHIx1', 'TIELOx1', 'XNOR2x1', 'XOR2x1']
 
 
 def main():
@@ -27,36 +61,47 @@ def main():
     current_path = os.path.dirname(os.path.abspath(__file__))
     os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
 
-    SCSynthesis = 'iCell'  #'Astran'
-
-    gurobiPath = f'{current_path}/../tools/gurobi/bin/gurobi_cl'
-    AstranPath = f'{current_path}/../tools/astran/Astran/build/bin/Astran'
-    technologyPath = f'{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul'
+    SCSynthesis = 'iCell'
+    #SCSynthesis = 'Astran'
 
     iCellPath = f'{current_path}/../tools/iCell/iCell'
+    AstranPath = f'{current_path}/../tools/astran/Astran/build/bin/Astran'
 
-    stdSpiceNetlistPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.sp'
-    initialLibertyPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.lib'
-    initialGenlibPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.genlib'
-    extendCellPath = f'{current_path}/../stdCellLib/asap7/extend'
+    if SCSynthesis == 'Astran':
+        # gurobiPath='/Library/gurobi1003/macos_universal2/bin/gurobi_cl'
+        gurobiPath = f'{current_path}/../tools/gurobi/bin/gurobi_cl'
+        technologyPath = f'{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul'
+        stdSpiceNetlistPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.sp'
+        initialLibertyPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.lib'
+        initialGenlibPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.genlib'
+        extendCellPath = f'{current_path}/../stdCellLib/gscl45nm/extend'
+    else:
+        stdSpiceNetlistPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.sp'
+        initialLibertyPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.lib'
+        initialGenlibPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.genlib'
+        extendCellPath = f'{current_path}/../stdCellLib/asap7/extend'
 
+    # load initial cell area
+    stdType2GSCLArea = {}
+    liberty = parse_liberty(open(initialLibertyPath).read())
+    for cell_group in liberty.get_groups('cell'):
+        cell_name = cell_group.args[0].split('_')[0]
+        if cell_name in STDCellNames:
+            # record initial cell area
+            stdType2GSCLArea[cell_name] = cell_group.get_attribute(key="area", default=-1)
+    # load spice
+    subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
+    subckts_ = {}
+    for name, spsub in subckts.items():
+        subckts_[name.split('_')[0]] = spsub
+    subckts = subckts_
     # load extended cell library
     extendCellLib = loadExtendCells(extendCellPath)
 
+    # benchmarks and parameters
     benchmarks = ["sqrt", "voter", "arbiter", "cavlc", "div", "int2float", "max", "priority", "sin", "square", "BoomBranchPredictor", "GemminiLoopMatmul", "GemminiLoopConv", "DCache", "BoomRegisterFile", "GemminiMesh"]
     benchmarks = ["adder", 'arbiter', 'bar', 'cavlc', "ctrl", 'dec', 'div', 'hyp', "i2c", 'int2float', 'log2', 'max', 'mem_ctrl', "multiplier", "priority", "router", 'sin', 'sqrt', "square", 'voter']
-
-    stdType2GSCLArea = {}
-    if 'asap7' in initialLibertyPath:
-        liberty = parse_liberty(open(initialLibertyPath).read())
-        for cell_group in liberty.get_groups('cell'):
-            cell_name = cell_group.args[0].split('_')[0]
-            for a in cell_group.attributes:
-                if a.name == 'area':
-                    stdType2GSCLArea[cell_name] = a.value
-                    break
-    else:
-        stdType2GSCLArea = loadOrignalGSCL45nmGDS()
+    benchmarks = ["ctrl"]
     topThr = 5
     ratioThr = 0.05
     cntThr = 30
@@ -68,13 +113,7 @@ def main():
             ratioThr = 0.025
 
         print("=================================================================================\n", benchmarkName, "\n=================================================================================\n")
-        # load spice
-        subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
-        subckts_ = {}
-        for name, spsub in subckts.items():
-            subckts_[name.split('_')[0]] = spsub
-        subckts = subckts_
-        # load liberty/design BLIF
+        # load design BLIF
         BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
             libFileName=initialLibertyPath, blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif", startTime=startTime
         )
@@ -92,7 +131,6 @@ def main():
                     runAstranForNetlist(AstranPath=AstranPath, gurobiPath=gurobiPath, technologyPath=technologyPath, spiceNetlistPath=stdSpiceNetlistPath, complexName=oriStdCellType, commandDir=f'{current_path}/originalAstranStdCells/')
                 elif SCSynthesis == 'iCell' and loadiCellArea(GDSPath=f'{current_path}/originaliCellStdCells/', typeName=f'{oriStdCellType}_ASAP7_75t_L') is False:
                     runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=stdSpiceNetlistPath, complexName=f'{oriStdCellType}_ASAP7_75t_L', commandDir=f'{current_path}/originaliCellStdCells/')
-        stdType2Area = loadAstranGDS() if SCSynthesis == 'Astran' else loadiCellGDS()
         stdType2Area = copy.deepcopy(stdType2GSCLArea)
         sccArea = getArea(cells, stdType2Area)
         print(f"synthesized {SCSynthesis}Area=", sccArea)
@@ -287,7 +325,7 @@ def main():
             # outputPath = f"{current_path}/outputs/{benchmarkName}/"
             # mkdir(outputPath)
 
-            stdType2Area = loadAstranGDS() if SCSynthesis == 'Astran' else loadiCellGDS()
+            stdType2Area = copy.deepcopy(stdType2GSCLArea)
             sccArea = getArea(cells, stdType2Area)
             print(f"{SCSynthesis}Area=", sccArea)
 

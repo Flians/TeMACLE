@@ -20,6 +20,7 @@ from BLIFPreProc import *
 from liberty.parser import Group, Attribute, EscapedString
 from BLIFGraphUtil import DesignPatternClusterSeq, obtainClusterFunc, drawColorfulFigureForGraphWithAttributes
 
+'''
 stdCellIPEqu = {
     # "AND2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
     "AND2X2": {'A': ['A', 'B'], 'B': ['A', 'B']},
@@ -53,7 +54,6 @@ stdCellIPEqu = {
     # "TBUFX2": {'A': ['A'], 'EN': ['EN']},
     "XNOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
     "XOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "bool-[['1', '1']]": {'IN0': ['IN0']},
 }
 
 STDCellNames = [
@@ -89,7 +89,11 @@ STDCellNames = [
     # "TBUFX2",
     "XNOR2X1",
     "XOR2X1",
+    "const_0",
+    "const_1",
 ]
+
+'''
 
 stdCellIPEqu = {
     'AND2x2': {'A': ['A', 'B'], 'B': ['A', 'B']},
@@ -102,8 +106,6 @@ stdCellIPEqu = {
     'NOR3x1': {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
     'OAI21x1': {'A1': ['A1', 'A2'], 'A2': ['A1', 'A2'], 'B': ['B']},
     'OR2x2': {'A': ['A', 'B'], 'B': ['A', 'B']},
-    'TIEHIx1': {'H': ['H']},
-    'TIELOx1': {'L': ['L']},
     'XNOR2x1': {'A': ['A', 'B'], 'B': ['A', 'B']},
     'XOR2x1': {'A': ['A', 'B'], 'B': ['A', 'B']},
 }
@@ -117,7 +119,7 @@ def main():
     os.environ['LD_LIBRARY_PATH'] = f'{current_path}/../tools/gurobi/lib:' + os.environ.get('LD_LIBRARY_PATH', ';')
 
     SCSynthesis = 'iCell'
-    # SCSynthesis = 'Astran'
+    #SCSynthesis = 'Astran'
 
     iCellPath = f'{current_path}/../tools/iCell/iCell'
     AstranPath = f'{current_path}/../tools/astran/Astran/build/bin/Astran'
@@ -163,11 +165,10 @@ def main():
     writeGenlib(liberty_init, initialGenlibPath)
     # load extended cell library
     extendCellLib = {}
-    for key,val in allFunc2CellLib.items(): # resynthesize SCSynthesis-based cells
+    for key, val in allFunc2CellLib.items():  # resynthesize SCSynthesis-based cells
         cell_name = val.typeName
         if cell_name in STDCellNames or cell_name in ['PI', 'const_0', 'const_1', 'TIEHIx1', 'TIELOx1']:
             continue
-        print(f">>> {cell_name}")
         narea = -1
         if SCSynthesis == 'Astran':
             narea = loadAstranArea(GDSPath=f'{current_path}/originalAstranStdCells/', typeName=cell_name)
@@ -182,7 +183,7 @@ def main():
                 narea = loadiCellArea(GDSPath=f'{current_path}/originaliCellStdCells/', typeName=cell_name)
         else:
             continue
-        if narea >= 0: # resynthesize successfully
+        if narea >= 0:  # resynthesize successfully
             val.area = narea
             extendCellLib[key] = val
             shutil.copy(f'{current_path}/original{SCSynthesis}StdCells/{cell_name}.{SCSynthesis}log', f'{extendCellPath}/{key};{val.nnode}.{SCSynthesis}log')
@@ -366,10 +367,10 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 try:
                     newCellArea = -1
                     if SCSynthesis == 'Astran':
-                        newCellArea = loadAstranArea(outputPath, patternTraceId) 
+                        newCellArea = loadAstranArea(outputPath, patternTraceId)
                         if newCellArea < 0:
                             runAstranForNetlist(AstranPath=AstranPath, gurobiPath=gurobiPath, technologyPath=technologyPath, spiceNetlistPath=f'{outputPath}/{patternTraceId}.sp', complexName=patternTraceId, commandDir=outputPath)
-                            newCellArea = loadAstranArea(outputPath, patternTraceId) 
+                            newCellArea = loadAstranArea(outputPath, patternTraceId)
                     elif SCSynthesis == 'iCell':
                         newCellArea = loadiCellArea(outputPath, patternTraceId)
                         if newCellArea == -2:
@@ -380,7 +381,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                     if flag or newCellArea >= 0:
                         print('>>> : Synthesis pattern#', patternTraceId, 'successfully!\n')
                         if flag is False:
-                            if extCell is not None and extCell.area !=  -1 and extCell.area < newCellArea:
+                            if extCell is not None and extCell.area != -1 and extCell.area < newCellArea:
                                 newCellArea = extCell.area
                             else:
                                 if extCell is not None:
@@ -388,7 +389,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                                     os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.png')
                                     os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.run')
                                     os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.sp')
-                                    extendCellLib.pop(pfunc)                        
+                                    extendCellLib.pop(pfunc)
                                 shutil.copy(f'{outputPath}/{patternTraceId}.{SCSynthesis}log', f'{extendCellPath}/{patternFunText};{nnode}.{SCSynthesis}log')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.png', f'{extendCellPath}/{patternFunText};{nnode}.png')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.run', f'{extendCellPath}/{patternFunText};{nnode}.run')
