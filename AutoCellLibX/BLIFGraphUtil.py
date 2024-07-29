@@ -1,14 +1,11 @@
 import networkx as nx
-import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 from itertools import count
 import numpy as np
-from typing import List, Dict
-from sympy import Basic, symbols, simplify_logic, bool_map, var
 
 
 class StdCellType(object):
-    def __init__(self, typeName, nnode: int = 1):
+    def __init__(self, typeName):
         self.id = id
         self.typeName = typeName
         self.pins = []
@@ -16,15 +13,12 @@ class StdCellType(object):
         self.outputPins = []
         self.inputPinMap = dict()
         self.outputPinMap = dict()
-        self.outputFuncMap = {}
-        self.nnode = nnode
 
-    def addPin(self, pinName, direction, function: str = None):  # type: ignore
+    def addPin(self, pinName, direction):
         if direction == "input":
             self.inputPins.append(pinName)
         if direction == "output":
             self.outputPins.append(pinName)
-            self.outputFuncMap[pinName] = function
         self.pins.append(pinName)
 
 
@@ -198,49 +192,3 @@ def drawColorfulFigureForGraphWithAttributes(tmp_graph, colorArrtibute='type', s
     plt.close()
 
     return
-
-
-def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> tuple[Dict[str, Basic], Dict[str, str], Dict[str, str], str]:
-    patternFunc = {}
-    opins = []
-    ipins = []
-    for node in patternSubgraph.nodes:
-        if patternSubgraph.in_degree(node) == 0:
-            ipins += cells[node].inputNetNames.copy()
-        if patternSubgraph.out_degree(node) == 0:
-            opins += cells[node].outputNetNames.copy()
-    for nid in nx.topological_sort(patternSubgraph.reverse()):
-        curr_node = cells[nid]
-        v_ipin = var(curr_node.inputPinRefNames)
-        v_inet = symbols(curr_node.inputNetNames, bool=True)
-        curFunc = curr_node.stdCellType.outputFuncMap.copy()
-        for opin, onet in zip(curr_node.outputPinRefNames, curr_node.outputNetNames):
-            cur_f = simplify_logic(curFunc[opin])
-            for ipin, inet in zip(v_ipin, v_inet):  # type: ignore
-                cur_f = cur_f.subs(ipin, inet)
-            if onet in opins:
-                patternFunc[onet] = cur_f
-            else:
-                for on, of in patternFunc.items():
-                    patternFunc[on] = of.subs(symbols(onet, bool=True), cur_f)
-    # rename variables
-    new_ipins = {}
-    new_opins = {}
-    nets2pins = {}
-    patternFunc_ = {}
-    patternFunText = ''
-    for id, opin in enumerate(opins):
-        func = patternFunc[opin]
-        for net in func.free_symbols:
-            if net not in nets2pins:
-                vname = chr(65 + len(nets2pins))
-                nets2pins[net] = symbols(vname)
-                new_ipins[str(net)] = vname
-        func = simplify_logic(func.subs(nets2pins))
-        newOP = 'Y' if len(opins) == 1 else 'Y' + chr(65 + id)
-        patternFunText += f'{func},'.replace(' ', '')
-        patternFunc_[newOP] = func
-        new_opins[opin] = newOP
-    patternFunc = patternFunc_
-    patternFunText = patternFunText[:-1]
-    return patternFunc, new_ipins, new_opins, patternFunText

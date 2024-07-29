@@ -33,7 +33,3 @@ def loadiCellGDS(STDCellNames:list[str]):
             typeName2GDSSize[name] = cur_area
 
     return typeName2GDSSize
-
-
-if __name__ == '__main__':
-    gdsii = gdspy.GdsLibrary(infile=f'{dirname(abspath(__file__))}/outputs/multiplier/COMPLEX0.gds')

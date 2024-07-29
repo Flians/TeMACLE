@@ -7,10 +7,7 @@ import numpy as np
 import tensorflow as tf
 import networkx as nx
 import time
-from liberty.parser import parse_liberty, Group
-import re
-from typing import Any, Dict, List, Set
-from sympy import Basic, symbols, simplify_logic, bool_map, var
+from liberty.parser import parse_liberty
 
 
 class S2VGraph(object):
@@ -41,47 +38,32 @@ def softmax(x):
 
 def loadLibertyFile(fileName):
     # Read and parse a library.
-    library = parse_liberty(open(fileName, encoding='utf-8').read())
+    library = parse_liberty(open(fileName).read())
+
+    stdCellLib = dict()
 
     # Loop through all cells.
-    stdCellLib = {}
     flag_0 = True
     flag_1 = True
     for cell_group in library.get_groups('cell'):
-        name = cell_group.args[0].split('_')[0]
+        name = str(cell_group.args[0]).replace("\"", "").replace(" ", "").replace("\'", "").split('_')[0]
         # print(name)
         newStdCellType = StdCellType(name)
 
         # Loop through all pins of the cell.
         for pin_group in cell_group.get_groups('pin'):
-            pin_name = pin_group.args[0]
-            func = pin_group.get_attribute(key='function', default=None)
-            if func:
-                if func.value == '1':
-                    flag_1 = False
-                elif func.value == '0':
-                    flag_0 = False
-                func = re.sub(' +', ' ', func.value.strip())  # combine multiple spaces into one
-                if ' ' in func:
-                    if any(x in func for x in ['*', '+']):
-                        func = func.replace(' ', '')
-                    else:
-                        func = func.replace(' ', '&')
-                func_bool = func.replace('*', '&').replace('+', '|').replace('!', '~')
-                try:
-                    func = simplify_logic(func_bool)
-                except:
-                    var(re.sub(r'[&|~()]', ' ', func_bool), bool=True)
-                    func = simplify_logic(eval(func_bool))
-            newStdCellType.addPin(pin_name, pin_group['direction'], func)
+            pin_name = str(pin_group.args[0]).replace("\"", "").replace("\'", "")
+            # print(pin_name, "->", str(pin_group['direction']).replace("\"","").replace("\'",""))
+            newStdCellType.addPin(pin_name, str(pin_group['direction']).replace("\"", "").replace(" ", "").replace("\'", ""))
+
         stdCellLib[name] = newStdCellType
 
     if flag_0:
-        stdCellLib['const_0'] = StdCellType("const_0", 0)
-        stdCellLib["const_0"].addPin("q", "output", "0")
+        stdCellLib['const_0'] = StdCellType("const_0")
+        stdCellLib["const_0"].addPin("q", "output")
     if flag_1:
-        stdCellLib['const_1'] = StdCellType("const_1", 0)
-        stdCellLib["const_1"].addPin("q", "output", "1")
+        stdCellLib['const_1'] = StdCellType("const_1")
+        stdCellLib["const_1"].addPin("q", "output")
 
     return stdCellLib
 
@@ -446,37 +428,6 @@ def getArea(cells, type2Area):
 
 def main():
     loadDataAndPreprocess()
-
-
-def loadExtendCells(fileDir: str) -> Dict[str, StdCellType]:
-    extendCellLib = {}
-    for item in os.listdir(fileDir):
-        if not item.endswith(".sp"):
-            continue
-        if not os.path.exists(item[:-2] + 'png'):
-            continue
-        ipins = set()
-        funcs = {}
-        eqs_nnode = item[:-3].split(';')
-        nnode = int(eqs_nnode[1])
-        eqs = eqs_nnode[0].split(',')
-        for id, eq in enumerate(eqs):
-            newOP = 'Y' if len(eqs) == 1 else 'Y' + chr(65 + id)
-            try:
-                func = simplify_logic(eq)
-            except:
-                var(re.sub(r'[&|~()]', ' ', eq), bool=True)
-                func = simplify_logic(eval(eq))
-            funcs[newOP] = func
-            ipins = ipins.union(set(func.free_symbols))
-
-        newCell = StdCellType(','.join(eqs), nnode)
-        for ipin in ipins:
-            newCell.addPin(ipin, 'input')
-        for opin, ofunc in funcs.items():
-            newCell.addPin(opin, 'output', str(ofunc).replace(' ', ''))
-        extendCellLib[newCell.typeName] = newCell
-    return extendCellLib
 
 
 if __name__ == '__main__':

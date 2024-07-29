@@ -8,8 +8,6 @@ import matplotlib
 from spice import *
 from iCell import loadiCellArea, runiCellForNetlist
 from Astran import loadAstranArea, runAstranForNetlist
-from GDSIIAnalysis import loadAstranGDS, loadiCellGDS
-import shutil
 import copy
 
 
@@ -62,7 +60,7 @@ def main():
     os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
 
     SCSynthesis = 'iCell'
-    #SCSynthesis = 'Astran'
+    # SCSynthesis = 'Astran'
 
     iCellPath = f'{current_path}/../tools/iCell/iCell'
     AstranPath = f'{current_path}/../tools/astran/Astran/build/bin/Astran'
@@ -73,13 +71,12 @@ def main():
         technologyPath = f'{current_path}/../tools/astran/Astran/build/Work/tech_freePDK45.rul'
         stdSpiceNetlistPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.sp'
         initialLibertyPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.lib'
-        initialGenlibPath = f'{current_path}/../stdCellLib/gscl45nm/gscl45nm.genlib'
-        extendCellPath = f'{current_path}/../stdCellLib/gscl45nm/extend'
     else:
         stdSpiceNetlistPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.sp'
         initialLibertyPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.lib'
-        initialGenlibPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.genlib'
-        extendCellPath = f'{current_path}/../stdCellLib/asap7/extend'
+
+    benchmarks = ["sqrt", "voter", "arbiter", "cavlc", "div", "int2float", "max", "priority", "sin", "square", "BoomBranchPredictor", "GemminiLoopMatmul", "GemminiLoopConv", "DCache", "BoomRegisterFile", "GemminiMesh"]
+    benchmarks = ["adder", 'arbiter', 'bar', 'cavlc', "ctrl", 'dec', 'div', 'hyp', "i2c", 'int2float', 'log2', 'max', 'mem_ctrl', "multiplier", "priority", "router", 'sin', 'sqrt', "square", 'voter']
 
     # load initial cell area
     stdType2GSCLArea = {}
@@ -89,19 +86,7 @@ def main():
         if cell_name in STDCellNames:
             # record initial cell area
             stdType2GSCLArea[cell_name] = cell_group.get_attribute(key="area", default=-1)
-    # load spice
-    subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
-    subckts_ = {}
-    for name, spsub in subckts.items():
-        subckts_[name.split('_')[0]] = spsub
-    subckts = subckts_
-    # load extended cell library
-    extendCellLib = loadExtendCells(extendCellPath)
 
-    # benchmarks and parameters
-    benchmarks = ["sqrt", "voter", "arbiter", "cavlc", "div", "int2float", "max", "priority", "sin", "square", "BoomBranchPredictor", "GemminiLoopMatmul", "GemminiLoopConv", "DCache", "BoomRegisterFile", "GemminiMesh"]
-    benchmarks = ["adder", 'arbiter', 'bar', 'cavlc', "ctrl", 'dec', 'div', 'hyp', "i2c", 'int2float', 'log2', 'max', 'mem_ctrl', "multiplier", "priority", "router", 'sin', 'sqrt', "square", 'voter']
-    benchmarks = ["ctrl"]
     topThr = 5
     ratioThr = 0.05
     cntThr = 30
@@ -113,7 +98,12 @@ def main():
             ratioThr = 0.025
 
         print("=================================================================================\n", benchmarkName, "\n=================================================================================\n")
-        # load design BLIF
+        # load liberty/spice/design BLIF
+        subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
+        subckts_ = {}
+        for name, spsub in subckts.items():
+            subckts_[name.split('_')[0]] = spsub
+        subckts = subckts_
         BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
             libFileName=initialLibertyPath, blifFileName=f"{current_path}/../benchmark/blif/{benchmarkName}.blif", startTime=startTime
         )
@@ -123,14 +113,6 @@ def main():
         outputPath = f"{current_path}/../outputs/{SCSynthesis}/AutoCellLibX/{benchmarkName}/"
         os.makedirs(outputPath, exist_ok=True)
 
-        if iCellPath != '' and SCSynthesis == 'iCell':
-            for oriStdCellType in stdCellTypesForFeature:
-                if oriStdCellType.find("bool") >= 0 or oriStdCellType in ['PI', 'const_0', 'const_1', 'TIEHIx1', 'TIELOx1']:
-                    continue
-                if SCSynthesis == 'Astran' and loadAstranArea(GDSPath=f'{current_path}/originalAstranStdCells/', typeName=oriStdCellType) is False:
-                    runAstranForNetlist(AstranPath=AstranPath, gurobiPath=gurobiPath, technologyPath=technologyPath, spiceNetlistPath=stdSpiceNetlistPath, complexName=oriStdCellType, commandDir=f'{current_path}/originalAstranStdCells/')
-                elif SCSynthesis == 'iCell' and loadiCellArea(GDSPath=f'{current_path}/originaliCellStdCells/', typeName=f'{oriStdCellType}_ASAP7_75t_L') is False:
-                    runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=stdSpiceNetlistPath, complexName=f'{oriStdCellType}_ASAP7_75t_L', commandDir=f'{current_path}/originaliCellStdCells/')
         stdType2Area = copy.deepcopy(stdType2GSCLArea)
         sccArea = getArea(cells, stdType2Area)
         print(f"synthesized {SCSynthesis}Area=", sccArea)
@@ -184,57 +166,24 @@ def main():
 
                     drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/COMPLEX{patternTraceId}.png', withLabel=True, figsize=(20, 20))
 
-                    # construct the cluster's function
-                    patternFunc, ipins, opins, patternFunText = obtainClusterFunc(patternSubgraph, cells)
-
                     # export the SPICE netlist of the complex of cells
-                    exportSpiceNetlist(tmpClusterSeq, subckts, f'COMPLEX{patternTraceId}', ipins, opins, patternFunText, outputPath=f'{outputPath}/COMPLEX{patternTraceId}.sp')
-
-                    flag = False
-                    pfunc = None
-                    # check if current pattern exists in pre-defined extened cell library
-                    if patternFunText not in extendCellLib:
-                        if len(patternFunc) == 1:
-                            pfunc = next((x for x in extendCellLib if bool_map(next(iter(patternFunc.values())), eval(x))), None)
-                        if pfunc:
-                            flag = True
-                            # need to change function
+                    exportSpiceNetlist(tmpClusterSeq, subckts, str(patternTraceId), outputPath)
+                    narea = -1
+                    if SCSynthesis == 'Astran':
+                        narea = loadAstranArea(GDSPath=f'{current_path}/originalAstranStdCells/', typeName=f'COMPLEX{patternTraceId}')
+                        if narea < 0:
+                            runAstranForNetlist(AstranPath=AstranPath, gurobiPath=gurobiPath, technologyPath=technologyPath, spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
+                            narea = loadAstranArea(GDSPath=f'{current_path}/originalAstranStdCells/', typeName=f'COMPLEX{patternTraceId}')
+                    elif SCSynthesis == 'iCell':
+                        narea = loadiCellArea(GDSPath=f'{current_path}/originaliCellStdCells/', typeName=f'COMPLEX{patternTraceId}')
+                        if narea == -2:
+                            runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
+                            narea = loadiCellArea(GDSPath=f'{current_path}/originaliCellStdCells/', typeName=f'COMPLEX{patternTraceId}')
                     else:
-                        flag = True
-                    nnode = len(tmpClusterSeq.patternClusters[0].cellIdsContained)
-                    if flag:
-                        if not pfunc:
-                            pfunc = patternFunText
-                        shutil.copy(f'{extendCellPath}/{pfunc};{extendCellLib[pfunc].nnode}.iCelllog', f'{outputPath}/COMPLEX{patternTraceId}.iCelllog')
-
-                    # if SC synthesizer is available, run it to get the layout and area evaluation
-                    if (AstranPath != '' and SCSynthesis == 'Astran') or (iCellPath != '' and SCSynthesis == 'iCell'):
-                        try:
-                            res = True
-                            if SCSynthesis == 'Astran' and loadAstranArea(outputPath, patternTraceId) is False:
-                                res = runAstranForNetlist(
-                                    AstranPath=AstranPath, gurobiPath=gurobiPath, technologyPath=technologyPath, spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=patternTraceId, commandDir=outputPath
-                                )
-                            elif SCSynthesis == 'iCell':
-                                if not os.path.exists(os.path.join(outputPath, f'COMPLEX{patternTraceId}.iCelllog')):
-                                    res = runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
-                                elif loadiCellArea(outputPath, f'COMPLEX{patternTraceId}') is False:
-                                    print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
-                                    break
-                            if res:
-                                print('>>> : Synthesis pattern#', patternTraceId, 'successfully!\n')
-                                if flag is False:
-                                    shutil.copy(f'{outputPath}/COMPLEX{patternTraceId}.iCelllog', f'{extendCellPath}/{patternFunText};{nnode}.iCelllog')
-                                    shutil.copy(f'{outputPath}/COMPLEX{patternTraceId}.png', f'{extendCellPath}/{patternFunText};{nnode}.png')
-                                    shutil.copy(f'{outputPath}/COMPLEX{patternTraceId}.run', f'{extendCellPath}/{patternFunText};{nnode}.run')
-                                    shutil.copy(f'{outputPath}/COMPLEX{patternTraceId}.sp', f'{extendCellPath}/{patternFunText};{nnode}.sp')
-                                    extendCellLib[patternFunText] = StdCellType(patternFunText, nnode)
-                            else:
-                                print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
-                                break
-                        except:
-                            print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
-                            break
+                        pass
+                    if narea < 0:
+                        print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
+                        continue
 
                 if benchmarkFailure:
                     break
@@ -264,15 +213,9 @@ def main():
                 print(lastSaveGSCLArea, " <- compared to GSCL GDS area", file=fileResult)
                 print(lastSaveGSCLArea / oriArea * 100, "% <- compared to GSCL GDS area", file=fileResult)
                 print("The generated complex cells are (name, clusterNum, cellNumInOneCluster, patternCode):", file=fileResult)
-                eachClusterNum = []
-                totalClusterCellNum = 0
                 for complexName in lastComplexSelection:
                     print(complexName, file=fileResult)
-                    eachClusterNum.append(str(complexName[2]))
-                    totalClusterCellNum += complexName[1] * complexName[2]
-                # print("\n runtime:", time.time() - startTime, " (s)", file=fileResult)
-                print('Pattern Sizes: ', '/'.join(eachClusterNum), file=fileResult)
-                print(f'Pattern Cov.: {totalClusterCellNum}/{len(cells)}={totalClusterCellNum / len(cells)}', file=fileResult)
+                print("\n runtime:", time.time() - startTime, " (s)", file=fileResult)
                 fileResult.close()
             else:
                 break
@@ -285,12 +228,8 @@ def main():
 
             newSeqOfClusters, patternNum = growASeqOfClusters(BLIFGraph, clusterSeq, clusterNum, patternNum, paintPattern=True)
 
-            patternSubgraph = BLIFGraph.subgraph(newSeqOfClusters[0].patternClusters[0].cellIdsContained)
-            # construct the cluster's function
-            patternFunc, ipins, opins, patternFunText = obtainClusterFunc(patternSubgraph, cells)
-
             # export the SPICE netlist of the complex of cells
-            exportSpiceNetlist(newSeqOfClusters[0], subckts, f'COMPLEX{patternTraceId}', ipins, opins, patternFunText, outputPath=f'{outputPath}/COMPLEX{patternTraceId}.sp')
+            exportSpiceNetlist(newSeqOfClusters[0], subckts, len(clusterSeqs), outputPath)
 
             clusterSeqs = clusterSeqs[1:]
             clusterSeqs += newSeqOfClusters
@@ -299,7 +238,7 @@ def main():
 
         # record total runtime
         with open(outputPath + "/bestRecord-" + benchmarkName, 'a') as fileResult:
-            fileResult.write(f"\n runtime: {time.time() - startTime} (s)\n")
+            fileResult.write(f"\n Total runtime: {time.time() - startTime} (s)\n")
 
         if benchmarkFailure:
             continue
@@ -406,12 +345,8 @@ def main():
 
                 newSeqOfClusters, patternNum = growASeqOfClusters_BasedOn(BLIFGraph, clusterSeq, clusterNum, patternNum, paintPattern=True, targetPatternTrace=targetPatternTrace)
 
-                patternSubgraph = BLIFGraph.subgraph(newSeqOfClusters[0].patternClusters[0].cellIdsContained)
-                # construct the cluster's function
-                patternFunc, ipins, opins, patternFunText = obtainClusterFunc(patternSubgraph, cells)
-
                 # export the SPICE netlist of the complex of cells
-                exportSpiceNetlist(newSeqOfClusters[0], subckts, f'COMPLEX{patternTraceId}', ipins, opins, patternFunText, outputPath=f'{outputPath}/COMPLEX{patternTraceId}.sp')
+                exportSpiceNetlist(newSeqOfClusters[0], subckts, len(clusterSeqs), outputPath)
 
                 clusterSeqs = clusterSeqs[1:]
                 clusterSeqs += newSeqOfClusters

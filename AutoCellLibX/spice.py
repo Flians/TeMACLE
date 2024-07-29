@@ -1,10 +1,5 @@
-import string
-import random
 import re
 
-
-def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
 
 
 class SPSubcircuit(object):
@@ -102,17 +97,16 @@ def loadSpiceSubcircuits(filePath):
     return spiceSubcircuits
 
 
-def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opinMap: dict, func: str, outputPath: str, cindex: int = 0):
-    cellsInCluster = cluserSeq.patternClusters[cindex].cellsContained
+def exportSpiceNetlist(cluserSeq, subckts, mergeCellTypeId, outputDir):
+
+    cellsInCluster = cluserSeq.patternClusters[0].cellsContained
     spiceList = []
-    cell2orderId = {}
-    ranStr = id_generator()
-    opins = []
+    cell2orderId = dict()
 
     # rename signals and transistors
     for orderId, cell in enumerate(cellsInCluster):
         spiceList.append(SPSubcircuit(subckts[cell.stdCellType.typeName].texts))
-        spiceList[-1].renamePrefix("cl" + ranStr + "_" + str(orderId) + "#")
+        spiceList[-1].renamePrefix("cl" + str(orderId) + "#")
         cell2orderId[cell] = orderId
 
     # connect each input pins of each subcircuit
@@ -120,55 +114,43 @@ def exportSpiceNetlist(cluserSeq, subckts, patternTraceId, ipinMap: dict, opinMa
         for inputNet, inputPinName in zip(curCell.inputNets, curCell.inputPinRefNames):
             predCell = inputNet.predCell
             predPinName = inputNet.predPin
-            # rename interfaces
-            newPin = ipinMap.get(inputNet.name, None)
-            if newPin:
-                spiceList[orderId].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + inputPinName, newPin)
-            if predCell in cell2orderId:
-                spiceList[orderId].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + inputPinName, "cl" + ranStr + "_" + str(cell2orderId[predCell]) + "#" + predPinName)
-        for outputNet, outputPinName in zip(curCell.outputNets, curCell.outputPinRefNames):
-            # rename interfaces
-            newPin = opinMap.get(outputNet.name, None)
-            if newPin:
-                spiceList[orderId].replaceInputPin("cl" + ranStr + "_" + str(orderId) + "#" + outputPinName, newPin)
-                opins.append(newPin)
+            if predCell in cell2orderId.keys():
+                spiceList[orderId].replaceInputPin("cl" + str(orderId) + "#" + inputPinName, "cl" + str(cell2orderId[predCell]) + "#" + predPinName)
 
-    mergeCellName = str(patternTraceId).upper()
-    if not ({'VDD', 'VSS'} - set(spiceList[0].interfaces)):
-        interfaceList = list(ipinMap.values()) + ['VDD', 'VSS'] + opins
-    else:
-        interfaceList = list(ipinMap.values()) + opins + ['VCC', 'GND']
-    # mergeCellName must be upper letters for the default Astran
-    firstLine = f'.SUBCKT {mergeCellName} {" ".join(interfaceList)}'
+    # merge spice netlists
+    interfaceSet = set()
+    internalSignals = []
+    for spiceObj in spiceList:
+        interfaceSet = interfaceSet | set(spiceObj.interfaces)
+        internalSignals = internalSignals + spiceObj.internalSignals
+
+    # remove internal signals from interfaces
+    for orderId, curCell in enumerate(cellsInCluster):
+        for outputNet, outputPinName in zip(curCell.outputNets, curCell.outputPinRefNames):
+            allSuccCellsInternal = True
+            for succCell in outputNet.succCells:
+                if not succCell in cell2orderId.keys():
+                    allSuccCellsInternal = False
+            if allSuccCellsInternal:
+                assert "cl" + str(orderId) + "#" + outputPinName in interfaceSet
+                interfaceSet.remove("cl" + str(orderId) + "#" + outputPinName)
+
+    mergeCellName = "COMPLEX" + str(mergeCellTypeId)
+    interfaceList = list(interfaceSet)
+    firstLine = ".subckt " + mergeCellName + " " + " ".join(interfaceList)
     internalLines = [firstLine]
     for ele in spiceList:
         internalLines = internalLines + ele.texts[1:-1]
-    lastLine = ".ENDS "  # + mergeCellName
+    lastLine = ".ends " + mergeCellName
 
     internalLines.append(lastLine)
-    internalLines.append(f"* pattern code: {cluserSeq.patternExtensionTrace}")
-    internalLines.append(f"* {len(cluserSeq.patternClusters)} occurrences in design")
-    internalLines.append(f"* each contains {len(cellsInCluster)} cells")
-    internalLines.append(f"* pin map: {ipinMap} {opinMap}")
-    internalLines.append(f"* function: {func}")
+    internalLines.append("* pattern code: " + cluserSeq.patternExtensionTrace)
+    internalLines.append("* " + str(len(cluserSeq.patternClusters)) + " occurrences in design ")
+    internalLines.append("* each contains " + str(len(cellsInCluster)) + " cells")
     internalLines.append("* Example occurence:")
     for cell in cellsInCluster:
-        internalLines.append(f"*   {cell.name}")
+        internalLines.append("*   " + cell.name)
 
-    with open(outputPath, 'w', encoding='utf-8') as outputSP:
-        print('\n'.join(internalLines), file=outputSP)
-
-
-if __name__ == '__main__':
-    from PySpice.Spice.Netlist import Circuit, SubCircuit
-    from PySpice.Spice.Parser import SpiceParser
-
-    parser = SpiceParser('stdCellLib/asap7/asap7_75t_L.sp')
-    AND2x2 = parser.subcircuits[2]
-    OR2x2 = parser.subcircuits[182]
-    circuit = SubCircuit('ADDER_G0_1_4')
-    circuit.subcircuit(AND2x2)
-    circuit.subcircuit(OR2x2)
-    circuit.X('1', AND2x2.name, 'A', 'B', 'VDD', 'VSS', 'n1')
-    circuit.X('2', OR2x2.name, 'C', 'n1', 'VDD', 'VSS', 'Y')
-    print(circuit)
+    outputSP = open(outputDir + "/" + mergeCellName + '.sp', 'w')
+    print('\n'.join(internalLines), file=outputSP)
+    outputSP.close()
