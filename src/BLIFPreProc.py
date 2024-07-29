@@ -9,9 +9,11 @@ from typing import Any, Dict, List, Set
 from functools import reduce
 from itertools import product, chain
 from liberty.parser import parse_liberty, Group, EscapedString
+from sympy import simplify_logic, var
 
-from BLIFGraphUtil import *
-
+from BLIFGraphUtil import StdCellType, DesignCell, DesignNet, DesignPatternCluster
+from iCell import loadiCellArea
+from Astran import loadAstranArea
 
 bypassTypes = ('DFF', 'bool')
 
@@ -167,7 +169,7 @@ def calculate_longest_distances(G: nx.DiGraph) -> List[int]:
     return dist
 
 
-def ancestors(G: nx.DiGraph, target, sources: Set[int] = None, include_self=True) -> Set:
+def ancestors(G: nx.DiGraph, target, sources: Set[int] = None, include_self=True) -> Set:  # type: ignore
     """Returns all nodes having a path to `target` in `G`.
 
     Parameters
@@ -276,32 +278,30 @@ def writeLiberty(liberty: Group, indent: str = ' ' * 2) -> List[str]:
     return lines
 
 
-def loadLibertyFile(fileName) -> tuple[Dict[str, StdCellType], Group, Group]:
+def loadLibertyFile(fileName, stdCellIPEqu: dict[str, dict[str, list[str]]] = {}) -> tuple[Dict[str, StdCellType], Group, dict[str, StdCellType]]:
     # Read and parse a liberty.
     liberty = parse_liberty(open(fileName, encoding='utf-8').read())
-    liberty_used = Group('library', ['basic'], copy.deepcopy(liberty.attributes), [], copy.deepcopy(liberty.defines))
 
     # Loop through all cells.
-    stdCellLib = {"PI": StdCellType("PI", 0)}
+    stdCellLib = {"PI": StdCellType("PI", 0, 0)}
     stdCellLib["PI"].addPin("Y", "output")
+    func2CellLib: dict[str, StdCellType] = {}
     flag_0 = True
     flag_1 = True
-    for cell_group in liberty.groups:
-        if cell_group.group_name != 'cell':
-            liberty_used.groups.append(copy.deepcopy(cell_group))
-            continue
+    for cell_group in liberty.get_groups('cell'):
+        # simplify cell name
         name = cell_group.args[0].split('_')[0]
-        if name not in stdCellIPEqu:
-            continue
-        used = copy.deepcopy(cell_group)
-        used.args[0] = name
-        liberty_used.groups.append(used)
+        cell_group.args[0] = name
 
-        newStdCellType = StdCellType(name, cell_group.get_attribute(key="nnode", default=1))
+        newStdCellType = StdCellType(name, cell_group.get_attribute(key="nnode", default=1), cell_group.get_attribute(key="area", default=-1))
         # Loop through all pins of the cell.
+        flag_clk = True
+        func_expr = []
         for pin_group in cell_group.get_groups("pin"):
+            if pin_group.get_attribute(key="clock", default=None) == 'true':
+                flag_clk = False
+                break
             pin_name = pin_group.args[0]
-            var(pin_name, bool=True)
             func = pin_group.get_attribute(key="function", default=None)
             if func:
                 if func.value == '1':
@@ -314,30 +314,30 @@ def loadLibertyFile(fileName) -> tuple[Dict[str, StdCellType], Group, Group]:
                         func = func.replace(' ', '')
                     else:
                         func = func.replace(' ', '&')
-                func = func.replace('*', '&').replace('+', '|').replace('!', '~')
-            newStdCellType.addPin(pin_name, pin_group["direction"], func)
-        if len(newStdCellType.outputPins) == 1:  # limit the multiple outputs
-            stdCellLib[name] = newStdCellType
+                func_bool = func.replace('*', '&').replace('+', '|').replace('!', '~')
+                try:
+                    func = simplify_logic(func_bool)
+                except:
+                    var(re.sub(r'[&|!()]', ' ', func_bool), bool=True)
+                    func = simplify_logic(eval(func_bool))
+                func_expr.append(str(func).replace(' ', ''))
+            newStdCellType.addPin(pin_name, pin_group["direction"], func, stdCellIPEqu)
+        if flag_clk:  # remove clocked cells
+            expr = ','.join(func_expr)
+            curCell = func2CellLib.get(expr, None)
+            if curCell is None or curCell.area > newStdCellType.area:
+                func2CellLib[expr] = newStdCellType
+            if len(newStdCellType.outputPins) == 1:  # remove cells with multiple outputs
+                stdCellLib[name] = newStdCellType
 
     if flag_0:
-        stdCellLib['const_0'] = StdCellType("const_0", 0)
+        stdCellLib['const_0'] = StdCellType("const_0", 0, 0)
         stdCellLib["const_0"].addPin("q", "output", "0")
     if flag_1:
-        stdCellLib['const_1'] = StdCellType("const_1", 0)
+        stdCellLib['const_1'] = StdCellType("const_1", 0, 0)
         stdCellLib["const_1"].addPin("q", "output", "1")
 
-    return stdCellLib, liberty_used, liberty
-
-
-def loadBoolGateFromBLIF(blif, stdCellLib) -> None:
-    for boolFunc in blif.booleanfunctions:
-        truthTableStr = "bool-" + str(boolFunc.truthtable)
-        if not truthTableStr in stdCellLib.keys():
-            newStdCellType = StdCellType(truthTableStr)
-            for i in range(0, len(boolFunc.v_params) - 1):
-                newStdCellType.addPin("IN" + str(i), "input")
-            newStdCellType.addPin("OUT0", "output", boolFunc.v_params[0])
-            stdCellLib[truthTableStr] = newStdCellType
+    return stdCellLib, liberty, func2CellLib
 
 
 def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName: str, K: int = 4) -> tuple[nx.DiGraph, List[DesignCell], List[tuple], Dict[Any, List[Set]], Dict[str, Set[int]]]:
@@ -347,7 +347,7 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
 
     # get the object that contains the parsed data from the parser
     blif = parser.blif
-    loadBoolGateFromBLIF(blif, stdCellLib)
+    assert len(blif.booleanfunctions)==0
 
     # get the dictionary with the number of occurrencies of each keyword
     print(blif.nkeywords, "\n")
@@ -375,21 +375,6 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
         cells.append(curPI)
         idCnt += 1
 
-    for logicGate in blif.booleanfunctions:
-        refType = "bool-" + str(logicGate.truthtable)
-        if refType in stdCellLib.keys():
-            name = str(logicGate)
-            curCell = DesignCell(idCnt, name, stdCellLib[refType])
-            idCnt += 1
-            if len(logicGate.v_params) > 1:
-                for pinId, pin in enumerate(logicGate.v_params[:-1]):
-                    curCell.addCellPin("IN" + str(pinId), pin)
-            curCell.addCellPin("OUT", logicGate.v_params[-1])
-            cellName2Obj[name] = curCell
-            cells.append(curCell)
-        else:
-            print(refType, " is not in liberty file.")
-            assert False
 
     stdCellType2Cells = {}
     netName2Obj = {}
@@ -431,7 +416,6 @@ def genGraphFromLibertyAndBLIF(stdCellLib: Dict[str, StdCellType], blifFileName:
         BLIFGraph.add_node(
             designCell.id,
             type=designCell.stdCellType.typeName,
-            nodeLabel=-1,
             name=designCell.name,
         )
         for outputNet in designCell.outputNets:
@@ -605,7 +589,7 @@ def writeGenlib(liberty: Group, genlibPath: str) -> None:
 
 def loadExtendCell(fileDir: str, filePath: str) -> StdCellType:
     if not filePath.endswith(".sp"):
-        return None
+        return None  # type: ignore
     ipins = set()
     funcs = {}
     eqs_nnode = filePath[:-3].split(';')
@@ -621,7 +605,10 @@ def loadExtendCell(fileDir: str, filePath: str) -> StdCellType:
         funcs[newOP] = func
         ipins = ipins.union(set(func.free_symbols))
 
-    newCell = StdCellType(','.join(eqs), nnode)
+    area = loadAstranArea(GDSPath=fileDir, typeName=filePath[:-3])
+    if area < 0:
+        area = loadiCellArea(GDSPath=fileDir, typeName=filePath[:-3])
+    newCell = StdCellType(','.join(eqs), nnode, -1 if area < 0 else area)
     for ipin in ipins:
         newCell.addPin(ipin, 'input')
     for opin, ofunc in funcs.items():
@@ -629,16 +616,19 @@ def loadExtendCell(fileDir: str, filePath: str) -> StdCellType:
     return newCell
 
 
-def loadExtendCells(fileDir: str) -> Dict[str, StdCellType]:
-    extendCellLib = {}
+def loadExtendCells(fileDir: str, allFunc2CellLib: dict[str, StdCellType] = {}) -> Dict[str, StdCellType]:
+    extendCellLib = dict(allFunc2CellLib)
     for item in os.listdir(fileDir):
         newCell = loadExtendCell(fileDir, item)
         if newCell is not None:
-            extendCellLib[newCell.typeName] = newCell
+            # select nodes with less cost
+            curCell = extendCellLib.get(newCell.typeName, None)
+            if curCell is None or curCell.area > newCell.area or (curCell.area == newCell.area and curCell.nnode > newCell.nnode):
+                extendCellLib[newCell.typeName] = newCell
     return extendCellLib
 
 
 if __name__ == '__main__':
-    stdCellLib, liberty_used, liberty = loadLibertyFile('stdCellLib/gscl45nm/gscl45nm.lib')
-    writeGenlib(liberty_used, 'gscl45nm.genlib')
+    stdCellLib, liberty, func2CellLib = loadLibertyFile('stdCellLib/gscl45nm/gscl45nm.lib')
+    writeGenlib(liberty, 'gscl45nm.genlib')
     # loadDataAndPreprocess()

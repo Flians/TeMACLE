@@ -3,63 +3,11 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import count
 from typing import List, Dict
-from sympy import Basic, symbols, simplify_logic, bool_map, var
-
-stdCellIPEqu = {
-    'AND2x2': {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "AOI21x1": {'A1': ['A1', 'A2'], 'A2': ['A1', 'A2'], 'B': ['B']},
-    'BUFx2': {'A': ['A']},
-    'INVx1': {'A': ['A']},
-    'NAND2x1': {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "NAND3x1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
-    'NOR2x1': {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "NOR3x1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
-    "OAI21x1": {'A1': ['A1', 'A2'], 'A2': ['A1', 'A2'], 'B': ['B']},
-    'OR2x2': {'A': ['A', 'B'], 'B': ['A', 'B']},
-    'XNOR2x1': {'A': ['A', 'B'], 'B': ['A', 'B']},
-    'XOR2x1': {'A': ['A', 'B'], 'B': ['A', 'B']},
-    'TIEHIx1': {'H': ['H']},
-    'TIELOx1': {'L': ['L']},
-}
-
-stdCellIPEqu = {
-    # "AND2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "AND2X2": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "AOI21X1": {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C']},
-    # "AOI22X1": {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C', 'D'], 'D': ['C', 'D']},
-    "BUFX2": {'A': ['A']},
-    # "BUFX4": {'A': ['A']},
-    # "CLKBUF1": {'A': ['A']},
-    # "CLKBUF2": {'A': ['A']},
-    # "CLKBUF3": {'A': ['A']},
-    # "DFFNEGX1": {'D': ['D'], 'CLK': ['CLK']},
-    # "DFFPOSX1": {'D': ['D'], 'CLK': ['CLK']},
-    # "DFFSR": {'D': ['D'], 'R': ['R'], 'S': ['S'], 'CLK': ['CLK']},
-    # "FAX1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
-    # "HAX1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "INVX1": {'A': ['A']},
-    # "INVX2": {'A': ['A']},
-    # "INVX4": {'A': ['A']},
-    # "INVX8": {'A': ['A']},
-    # "LATCH": {'D': ['D'], 'CLK': ['CLK']},
-    # "MUX2X1": {'A': ['A'], 'B': ['B'], 'C': ['C']},
-    "NAND2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "NAND3X1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
-    "NOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "NOR3X1": {'A': ['A', 'B', 'C'], 'B': ['A', 'B', 'C'], 'C': ['A', 'B', 'C']},
-    "OAI21X1": {'A': ['A', 'B'], 'B': ['A', 'B'], 'C': ['C']},
-    # "OR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "OR2X2": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    # "TBUFX1": {'A': ['A'], 'EN': ['EN']},
-    # "TBUFX2": {'A': ['A'], 'EN': ['EN']},
-    "XNOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "XOR2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
-    "bool-[['1', '1']]": {'IN0': ['IN0']},
-}
+from sympy import Basic, symbols, simplify_logic, var
 
 
 class StdCellType(object):
-    def __init__(self, typeName, nnode: int = 1):
+    def __init__(self, typeName, nnode: int = 1, area: float = -1):
         self.id = id
         self.typeName = typeName
         self.pins = []
@@ -70,12 +18,11 @@ class StdCellType(object):
         self.outputFuncMap = {}
         self.inputPinEqu = {}
         self.nnode = nnode
+        self.area = area
 
-    def addPin(self, pinName, direction, function: str = None):  # type: ignore
+    def addPin(self, pinName, direction, function: str = None, stdCellIPEqu: dict[str, dict[str, list[str]]] = {}):  # type: ignore
         if direction == 'input':
             self.inputPins.append(pinName)
-            if 'bool-' in self.typeName:
-                pass
             if self.typeName in stdCellIPEqu:
                 self.inputPinEqu[pinName] = stdCellIPEqu[self.typeName][pinName]
         if direction == 'output':
@@ -265,11 +212,11 @@ def obtainClusterFunc(patternSubgraph: nx.DiGraph, cells: List[DesignCell]) -> t
         else:
             if not patternFunc:
                 opins = curr_node.outputNetNames.copy()
-            v_ipin = var(curr_node.inputPinRefNames, bool=True)
+            v_ipin = var(curr_node.inputPinRefNames)
             v_inet = symbols(curr_node.inputNetNames, bool=True)
             curFunc = curr_node.stdCellType.outputFuncMap.copy()
             for opin, onet in zip(curr_node.outputPinRefNames, curr_node.outputNetNames):
-                cur_f = simplify_logic(eval(curFunc[opin]))
+                cur_f = simplify_logic(curFunc[opin])
                 for ipin, inet in zip(v_ipin, v_inet):  # type: ignore
                     cur_f = cur_f.subs(ipin, inet)
                 if onet in opins:

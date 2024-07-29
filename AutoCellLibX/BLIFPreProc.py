@@ -83,17 +83,6 @@ def loadLibertyFile(fileName):
     return stdCellLib
 
 
-def loadBoolGateFromBLIF(blif, stdCellLib):
-    for boolFunc in blif.booleanfunctions:
-        truthTableStr = "bool-" + str(boolFunc.truthtable)
-        if not truthTableStr in stdCellLib.keys():
-            newStdCellType = StdCellType(truthTableStr)
-            for i in range(0, len(boolFunc.v_params) - 1):
-                newStdCellType.addPin("IN" + str(i), 'input')
-            newStdCellType.addPin("OUT0", 'output')
-            stdCellLib[truthTableStr] = newStdCellType
-
-
 def genGraphFromLibertyAndBLIF(libFileName, blifFileName):
 
     stdCellLib = loadLibertyFile(libFileName)
@@ -105,7 +94,7 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName):
     # get the object that contains the parsed data
     # from the parser
     blif = parser.blif
-    loadBoolGateFromBLIF(blif, stdCellLib)
+    assert len(blif.booleanfunctions)==0
 
     # get the dictionary with the number of occurrencies of each keyword
     print(blif.nkeywords, "\n")
@@ -124,22 +113,6 @@ def genGraphFromLibertyAndBLIF(libFileName, blifFileName):
             for pin in tmpCircuit.params:
                 pinInfo = pin.split("=")
                 curCell.addCellPin(pinInfo[0], pinInfo[1])
-            cellName2Obj[name] = curCell
-            cells.append(curCell)
-        else:
-            print(refType, " is not in liberty file.")
-            assert False
-
-    for logicGate in blif.booleanfunctions:
-        refType = "bool-" + str(logicGate.truthtable)
-        if refType in stdCellLib.keys():
-            name = str(logicGate)
-            curCell = DesignCell(idCnt, name, stdCellLib[refType])
-            idCnt += 1
-            if len(logicGate.v_params) > 1:
-                for pinId, pin in enumerate(logicGate.v_params[:-1]):
-                    curCell.addCellPin("IN" + str(pinId), pin)
-            curCell.addCellPin("OUT", logicGate.v_params[-1])
             cellName2Obj[name] = curCell
             cells.append(curCell)
         else:
@@ -268,8 +241,6 @@ def heuristicLabelSomeNodesAndGetInitialClusters(BLIFGraph, cells, netlist):
         if len(tree) < 2:
             continue
         codeStr = str(code).replace("\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
-        if codeStr.find("bool-") >= 0:
-            continue
         if not codeStr in pattern2RootCells.keys():
             pattern2RootCells[codeStr] = []
         pattern2RootCells[codeStr].append(cell.id)
@@ -333,8 +304,6 @@ def heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netli
         if len(tree) < 2:
             continue
         codeStr = str(code).replace("\'", "").replace("\\", "").replace("\"", "").replace(" ", "")
-        if codeStr.find("bool-") >= 0:
-            continue
         if targetPatternTrace.find(codeStr) != 0:
             continue
         if not codeStr in pattern2RootCells.keys():

@@ -4,18 +4,18 @@ import os
 def loadiCellArea(GDSPath, typeName):
     logFileName = os.path.join(GDSPath, typeName + '.iCelllog')
     if not os.path.exists(logFileName):
-        return False
+        return -2
     with open(logFileName, 'r', encoding='utf-8') as logFile:
         lines = logFile.readlines()
         for line in lines:
             if line.find('RETURN_CODE:') >= 0:
                 code = int(line.strip().replace('RETURN_CODE:', ''))
                 if code == -1:
-                    return False
+                    return -1
                 else:
                     return 270 * (code + 2) * 54 / 1000000
 
-    return False
+    return -2
 
 
 def runiCellForNetlist(iCellPath, spiceNetlistPath, complexName, commandDir):
