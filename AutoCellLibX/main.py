@@ -170,15 +170,15 @@ def main():
                     exportSpiceNetlist(tmpClusterSeq, subckts, str(patternTraceId), outputPath)
                     narea = -1
                     if SCSynthesis == 'Astran':
-                        narea = loadAstranArea(GDSPath=f'{current_path}/originalAstranStdCells/', typeName=f'COMPLEX{patternTraceId}')
+                        narea = loadAstranArea(GDSPath=outputPath, typeName=f'COMPLEX{patternTraceId}')
                         if narea < 0:
                             runAstranForNetlist(AstranPath=AstranPath, gurobiPath=gurobiPath, technologyPath=technologyPath, spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
-                            narea = loadAstranArea(GDSPath=f'{current_path}/originalAstranStdCells/', typeName=f'COMPLEX{patternTraceId}')
+                            narea = loadAstranArea(GDSPath=outputPath, typeName=f'COMPLEX{patternTraceId}')
                     elif SCSynthesis == 'iCell':
-                        narea = loadiCellArea(GDSPath=f'{current_path}/originaliCellStdCells/', typeName=f'COMPLEX{patternTraceId}')
+                        narea = loadiCellArea(GDSPath=outputPath, typeName=f'COMPLEX{patternTraceId}')
                         if narea == -2:
                             runiCellForNetlist(iCellPath=iCellPath, spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
-                            narea = loadiCellArea(GDSPath=f'{current_path}/originaliCellStdCells/', typeName=f'COMPLEX{patternTraceId}')
+                            narea = loadiCellArea(GDSPath=outputPath, typeName=f'COMPLEX{patternTraceId}')
                     else:
                         pass
                     if narea < 0:
@@ -194,7 +194,7 @@ def main():
                 oriUnitAstranArea = getArea(exampleCells, stdType2Area)
                 oriUnitGSCLArea = getArea(exampleCells, stdType2GSCLArea)
                 newUnitAstranArea = loadAstranArea(outputPath, f'COMPLEX{patternTraceId}') if SCSynthesis == 'Astran' else loadiCellArea(outputPath, f'COMPLEX{patternTraceId}')
-                if oriUnitAstranArea - newUnitAstranArea > 0:
+                if newUnitAstranArea >=0 and oriUnitAstranArea - newUnitAstranArea > 0:
                     complexSelection.append((f'COMPLEX{patternTraceId}', len(tmpClusterSeq.patternClusters), len(tmpClusterSeq.patternClusters[0].cellIdsContained), tmpClusterSeq.patternExtensionTrace))
                     saveArea += (oriUnitAstranArea - newUnitAstranArea) * len(tmpClusterSeq.patternClusters)
                     saveGSCLArea += (oriUnitGSCLArea - newUnitAstranArea) * len(tmpClusterSeq.patternClusters)
@@ -215,7 +215,7 @@ def main():
                 print("The generated complex cells are (name, clusterNum, cellNumInOneCluster, patternCode):", file=fileResult)
                 for complexName in lastComplexSelection:
                     print(complexName, file=fileResult)
-                print("\n runtime:", time.time() - startTime, " (s)", file=fileResult)
+                print("\nruntime:", time.time() - startTime, " (s)", file=fileResult)
                 fileResult.close()
             else:
                 break
@@ -237,8 +237,8 @@ def main():
             clusterSeqs = sortPatternClusterSeqs(clusterSeqs)
 
         # record total runtime
-        with open(outputPath + "/bestRecord-" + benchmarkName, 'a') as fileResult:
-            fileResult.write(f"\n Total runtime: {time.time() - startTime} (s)\n")
+        with open(outputPath + "/bestRecord-" + benchmarkName, 'a+') as fileResult:
+            fileResult.write(f"\nTotal runtime: {time.time() - startTime} (s)\n")
 
         if benchmarkFailure:
             continue
