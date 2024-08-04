@@ -1,0 +1,8 @@
+set lpsolve "/home/flynn/workplace/CEMapping/AutoCellLibX/../tools/gurobi/bin/gurobi_cl"
+load technology "/home/flynn/workplace/CEMapping/AutoCellLibX/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+load netlist "/home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/square//COMPLEX6.sp"
+cellgen select COMPLEX6
+cellgen autoflow
+export layout COMPLEX6 /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/square//COMPLEX6.gds
+exit
+    
