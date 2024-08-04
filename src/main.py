@@ -194,6 +194,7 @@ def main():
     # benchmarks and parameters
     benchmarks = ['sqrt', 'voter', 'arbiter', 'cavlc', 'div', 'int2float', 'max', 'priority', 'sin', 'square', 'BoomBranchPredictor', 'GemminiLoopMatmul', 'GemminiLoopConv', 'DCache', 'BoomRegisterFile', 'GemminiMesh']
     benchmarks = ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']
+
     topThr = 5  # The maximum number of patterns chosen
     cntThr = 5  # # The maximum node number of each pattern
     cutsize = 3
@@ -305,8 +306,8 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 if ncluster <= 1 or nnode >= cntThr or ntnode < BLIFGraph.number_of_nodes() * ratioThr:
                     continue
                 cindex = 0
-                if SCSynthesis == 'Astran' and benchmarkName in ['int2float', 'multiplier', 'sin', 'voter']:
-                    cindex = 1
+                #if SCSynthesis == 'Astran' and benchmarkName in ['int2float', 'multiplier', 'sin', 'voter']:
+                #    cindex = 1
                 patternTraceId = benchmarkName.upper() + '_G' + str(cid) + '_' + '_'.join(map(str, sorted(list(clusterSeq.patternClusters[cindex].cellIdsContained))))  # type: ignore
                 print('dealing with pattern#', patternTraceId, 'with', ncluster, 'clusters ( size =', nnode, ')')
                 patternSubgraph = clusterSeq.patternClusters[cindex].graph

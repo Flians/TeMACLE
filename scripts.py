@@ -58,6 +58,7 @@ import SynPy  # type: ignore
 
 current_path = SCRIPT_DIR
 
+'''
 from liberty.parser import parse_liberty
 from src.BLIFPreProc import writeLiberty, writeGenlib
 
@@ -66,12 +67,10 @@ root_path = 'stdCellLib/gscl45nm'
 
 # full_liberty = parse_liberty(open(os.path.join(root_path, 'asap7sc7p5t_SIMPLE_LVT_TT_nldm_211120.lib'), encoding='utf-8').read())
 full_liberty = parse_liberty(open(os.path.join(root_path, 'gscl45nm.lib'), encoding='utf-8').read())
-'''
-for lib in ['asap7sc7p5t_AO_LVT_TT_nldm_211120.lib', 'asap7sc7p5t_OA_LVT_TT_nldm_211120.lib', 'asap7sc7p5t_SEQ_LVT_TT_nldm_220123.lib', 'asap7sc7p5t_INVBUF_LVT_TT_nldm_220122.lib']:
-    liberty = parse_liberty(open(os.path.join(root_path, lib), encoding='utf-8').read())
-    for cell_group in liberty.get_groups('cell'):
-        full_liberty.groups.append(cell_group)
-'''
+#for lib in ['asap7sc7p5t_AO_LVT_TT_nldm_211120.lib', 'asap7sc7p5t_OA_LVT_TT_nldm_211120.lib', 'asap7sc7p5t_SEQ_LVT_TT_nldm_220123.lib', 'asap7sc7p5t_INVBUF_LVT_TT_nldm_220122.lib']:
+#    liberty = parse_liberty(open(os.path.join(root_path, lib), encoding='utf-8').read())
+#    for cell_group in liberty.get_groups('cell'):
+#        full_liberty.groups.append(cell_group)
 K = 6
 K_groups = []
 for cell_group in full_liberty.get_groups('cell'):
@@ -86,14 +85,12 @@ for cell_group in full_liberty.get_groups('cell'):
     if ipin <= K and flag:
         K_groups.append(cell_group)
 full_liberty.groups = K_groups
-'''
-with open('stdCellLib/asap7/asap7_75t_L.lib', 'w', encoding='utf-8') as lib_writer:
-    lib_writer.write('\n'.join(writeLiberty(full_liberty)))
-writeGenlib(full_liberty, 'stdCellLib/asap7/asap7_75t_L.genlib')
-'''
+#with open('stdCellLib/asap7/asap7_75t_L.lib', 'w', encoding='utf-8') as lib_writer:
+#    lib_writer.write('\n'.join(writeLiberty(full_liberty)))
+#writeGenlib(full_liberty, 'stdCellLib/asap7/asap7_75t_L.genlib')
 writeGenlib(full_liberty, os.path.join(root_path, 'gscl45nm.genlib'))
 
-'''
+
 benchmarks = ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']
 for benchmarkName in benchmarks:
     print('=================================================================================\n', benchmarkName, '\n=================================================================================\n')
@@ -129,7 +126,7 @@ for benchmarkName in benchmarks:
     saveArea_temacle = initRes[0] - temacleRes[0]
     print(f'{benchmarkName} full saveArea=({initRes[0]}-{fullRes[0]}) / {initRes[0]} = ', saveArea_full / initRes[0] * 100, '%')
     print(f'{benchmarkName} Temacle saveArea=({initRes[0]}-{temacleRes[0]}) / {initRes[0]} = ', saveArea_temacle / initRes[0] * 100, '%')
-
+'''
 
 
 for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128', 'full_adder_256']:
@@ -148,13 +145,6 @@ for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128
     else:
         print('>>> initial mapping succeed with area =', initRes[0])
 
-    fullRes = SynPy.synthesis(f'{outputPath}/{adder}.aig', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.genlib', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib', f'{outputPath}/{adder}_full.blif')
-    if fullRes[0] == -1:
-        print('>>> full mapping failed!')
-        continue
-    else:
-        print('>>> full mapping succeed with area =', fullRes[0])
-
     temacleRes = SynPy.synthesis(f'{outputPath}/{adder}.aig', 'benchmark/adder/adder.genlib', 'benchmark/adder/adder.lib', f'{outputPath}/{adder}_temacle.blif')
     if temacleRes[0] == -1:
         print('>>> Temacle mapping failed!')
@@ -163,6 +153,5 @@ for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128
         print('>>> Temacle mapping succeed with area =', temacleRes[0])
 
     print(f'{adder} initial mapping area = {initRes[0]}')
-    print(f'{adder} full mapping area = {fullRes[0]}')
     print(f'{adder} Temacle mapping area = {temacleRes[0]}')
-'''
+    print(f'{adder} Temacle saveArea = ({initRes[0]} - {temacleRes[0]}) / {initRes[0]} =', (initRes[0]-temacleRes[0]) / initRes[0] * 100, '%')
