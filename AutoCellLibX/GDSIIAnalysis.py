@@ -18,7 +18,7 @@ def loadAstranGDS(STDCellNames:list[str]):
     GDSPath = f'{dirname(abspath(__file__))}/originalAstranStdCells/'
     for name in STDCellNames:
         cur_area = loadAstranArea(GDSPath, name)
-        if cur_area is not False:
+        if cur_area >= 0:
             typeName2GDSSize[name] = cur_area
 
     return typeName2GDSSize
@@ -29,7 +29,7 @@ def loadiCellGDS(STDCellNames:list[str]):
     GDSPath = f'{dirname(abspath(__file__))}/originaliCellStdCells/'
     for name in STDCellNames:
         cur_area = loadiCellArea(GDSPath, f'{name}_ASAP7_75t_L')
-        if cur_area is not False:
+        if cur_area >= 0:
             typeName2GDSSize[name] = cur_area
 
     return typeName2GDSSize
