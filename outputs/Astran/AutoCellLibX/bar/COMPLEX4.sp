@@ -1,4 +1,4 @@
-.subckt COMPLEX4 cl1#B cl0#Y cl0#vdd cl2#B cl1#A cl0#gnd cl2#A cl1#vdd cl1#Y cl0#C cl1#gnd cl2#vdd cl2#gnd cl2#Y
+.subckt COMPLEX4 cl1#B cl1#A cl1#gnd cl2#vdd cl0#Y cl0#gnd cl2#gnd cl2#Y cl1#vdd cl2#B cl2#A cl0#C cl0#vdd cl1#Y
 Mcl0#0 cl0#Y cl1#Y cl0#vdd cl0#vdd pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl0#1 cl0#vdd cl2#Y cl0#Y cl0#vdd pmos w=0.5u l=0.05u

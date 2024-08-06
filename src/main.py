@@ -137,6 +137,7 @@ def main():
         initialLibertyPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.lib'
         initialGenlibPath = f'{current_path}/../stdCellLib/asap7/asap7_75t_L.genlib'
         extendCellPath = f'{current_path}/../stdCellLib/asap7/extend'
+    os.makedirs(extendCellPath, exist_ok=True)
 
     # load liberty
     allStdCellLib, allLiberty, allFunc2CellLib = loadLibertyFile(initialLibertyPath, stdCellIPEqu)
@@ -187,6 +188,8 @@ def main():
             val.area = narea
             extendCellLib[key] = val
             shutil.copy(f'{current_path}/original{SCSynthesis}StdCells/{cell_name}.{SCSynthesis}log', f'{extendCellPath}/{key};{val.nnode}.{SCSynthesis}log')
+            shutil.copy(f'{current_path}/original{SCSynthesis}StdCells/{cell_name}.gds', f'{extendCellPath}/{key};{val.nnode}.gds')
+            shutil.copy(f'{current_path}/original{SCSynthesis}StdCells/{cell_name}.run', f'{extendCellPath}/{key};{val.nnode}.run')
             with open(f'{extendCellPath}/{key};{val.nnode}.sp', 'w', encoding='utf-8') as outputSP:
                 print('\n'.join(subckts[val.typeName].texts), file=outputSP)
     extendCellLib = loadExtendCells(extendCellPath, extendCellLib)
@@ -387,15 +390,20 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                             else:
                                 if extCell is not None:
                                     os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.{SCSynthesis}log')
-                                    os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.png')
+                                    if os.path.exists(f'{extendCellPath}/{pfunc};{extCell.nnode}.png'):
+                                        os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.png')
                                     os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.run')
                                     os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.sp')
+                                    if SCSynthesis == 'Astran':
+                                        os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.gds')
                                     extendCellLib.pop(pfunc)
                                 shutil.copy(f'{outputPath}/{patternTraceId}.{SCSynthesis}log', f'{extendCellPath}/{patternFunText};{nnode}.{SCSynthesis}log')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.png', f'{extendCellPath}/{patternFunText};{nnode}.png')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.run', f'{extendCellPath}/{patternFunText};{nnode}.run')
                                 shutil.copy(f'{outputPath}/{patternTraceId}.sp', f'{extendCellPath}/{patternFunText};{nnode}.sp')
                                 extendCellLib[patternFunText] = loadExtendCell(extendCellPath, f'{patternFunText};{nnode}.sp')
+                                if SCSynthesis == 'Astran':
+                                    shutil.copy(f'{outputPath}/{patternTraceId}.gds', f'{extendCellPath}/{patternFunText};{nnode}.gds')
                     else:
                         print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
                         continue

@@ -1,37 +1,37 @@
 .SUBCKT CTRL_G4_53_54 A B C Y VCC GND
-MclWEAS1U_0#0 clWEAS1U_0#vdd B clWEAS1U_0#a_2_6# clWEAS1U_0#vdd pmos w=1u l=0.05u
+MclWX94GA_0#0 VCC B clWX94GA_0#a_2_6# VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#1 clWEAS1U_0#a_18_54# clWEAS1U_0#a_13_43# clWEAS1U_0#vdd clWEAS1U_0#vdd pmos w=1u l=0.05u
+MclWX94GA_0#1 clWX94GA_0#a_18_54# clWX94GA_0#a_13_43# VCC VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#2 clWEAS1U_0#Y B clWEAS1U_0#a_18_54# clWEAS1U_0#vdd pmos w=1u l=0.05u
+MclWX94GA_0#2 clWX94GA_0#Y B clWX94GA_0#a_18_54# VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#3 clWEAS1U_0#a_35_54# clWEAS1U_0#a_2_6# clWEAS1U_0#Y clWEAS1U_0#vdd pmos w=1u l=0.05u
+MclWX94GA_0#3 clWX94GA_0#a_35_54# clWX94GA_0#a_2_6# clWX94GA_0#Y VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#4 clWEAS1U_0#vdd C clWEAS1U_0#a_35_54# clWEAS1U_0#vdd pmos w=1u l=0.05u
+MclWX94GA_0#4 VCC C clWX94GA_0#a_35_54# VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#5 clWEAS1U_0#a_13_43# C clWEAS1U_0#vdd clWEAS1U_0#vdd pmos w=1u l=0.05u
+MclWX94GA_0#5 clWX94GA_0#a_13_43# C VCC VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#6 clWEAS1U_0#gnd B clWEAS1U_0#a_2_6# clWEAS1U_0#gnd nmos w=0.5u l=0.05u
+MclWX94GA_0#6 GND B clWX94GA_0#a_2_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#7 clWEAS1U_0#a_18_6# clWEAS1U_0#a_13_43# clWEAS1U_0#gnd clWEAS1U_0#gnd nmos w=0.5u l=0.05u
+MclWX94GA_0#7 clWX94GA_0#a_18_6# clWX94GA_0#a_13_43# GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#8 clWEAS1U_0#Y clWEAS1U_0#a_2_6# clWEAS1U_0#a_18_6# clWEAS1U_0#gnd nmos w=0.5u l=0.05u
+MclWX94GA_0#8 clWX94GA_0#Y clWX94GA_0#a_2_6# clWX94GA_0#a_18_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#9 clWEAS1U_0#a_35_6# B clWEAS1U_0#Y clWEAS1U_0#gnd nmos w=0.5u l=0.05u
+MclWX94GA_0#9 clWX94GA_0#a_35_6# B clWX94GA_0#Y GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#10 clWEAS1U_0#gnd C clWEAS1U_0#a_35_6# clWEAS1U_0#gnd nmos w=0.5u l=0.05u
+MclWX94GA_0#10 GND C clWX94GA_0#a_35_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_0#11 clWEAS1U_0#a_13_43# C clWEAS1U_0#gnd clWEAS1U_0#gnd nmos w=0.5u l=0.05u
+MclWX94GA_0#11 clWX94GA_0#a_13_43# C GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_1#0 Y clWEAS1U_0#Y clWEAS1U_1#vdd clWEAS1U_1#vdd pmos w=0.5u l=0.05u
+MclWX94GA_1#0 Y clWX94GA_0#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_1#1 clWEAS1U_1#vdd A Y clWEAS1U_1#vdd pmos w=0.5u l=0.05u
+MclWX94GA_1#1 VCC A Y VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_1#2 clWEAS1U_1#a_9_6# clWEAS1U_0#Y clWEAS1U_1#gnd clWEAS1U_1#gnd nmos w=0.5u l=0.05u
+MclWX94GA_1#2 clWX94GA_1#a_9_6# clWX94GA_0#Y GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclWEAS1U_1#3 Y A clWEAS1U_1#a_9_6# clWEAS1U_1#gnd nmos w=0.5u l=0.05u
+MclWX94GA_1#3 Y A clWX94GA_1#a_9_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS
+.ENDS 
 * pattern code: 2|3|NAND2X1|XOR2X1=1|INPUT:Y-NAND2X1:A,B=1|INPUT:Y-XOR2X1:A,B=2|XOR2X1:Y-NAND2X1:A,B=1|11101
 * 2 occurrences in design
 * each contains 2 cells

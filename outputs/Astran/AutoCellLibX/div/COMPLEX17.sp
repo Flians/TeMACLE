@@ -1,4 +1,4 @@
-.subckt COMPLEX17 cl1#B cl1#C cl0#vdd cl1#A cl0#gnd cl1#vdd cl1#Y cl1#gnd cl0#Y cl0#A
+.subckt COMPLEX17 cl1#B cl0#A cl1#gnd cl0#Y cl0#gnd cl1#vdd cl1#C cl1#A cl0#vdd cl1#Y
 Mcl0#0 cl0#a_9_54# cl0#A cl0#vdd cl0#vdd pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl0#1 cl0#Y cl1#Y cl0#a_9_54# cl0#vdd pmos w=1u l=0.05u

@@ -1,4 +1,4 @@
-.subckt COMPLEX28 cl1#B cl0#vdd cl2#B cl1#A cl2#C cl0#gnd cl2#A cl1#vdd cl0#B cl1#gnd cl2#vdd cl2#gnd cl0#Y
+.subckt COMPLEX28 cl1#B cl1#gnd cl2#vdd cl0#Y cl0#gnd cl0#B cl2#gnd cl1#vdd cl2#B cl2#A cl1#A cl0#vdd cl2#C
 Mcl0#0 cl0#vdd cl1#Y cl0#a_2_6# cl0#vdd pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl0#1 cl0#a_18_54# cl0#a_12_41# cl0#vdd cl0#vdd pmos w=1u l=0.05u

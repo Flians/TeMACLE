@@ -83,11 +83,11 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/adder//ADD
  Iteration 23; cost = 4116.000 (4116.000); p_cost = 4116.000; accept = 0.226; avg_delta = 0.000; dp = -nan; thres = 468.279; cost_ratio = 1.000; [9]
  final cost = 4116 
 -> Final cost: Width=7; Gate Mismatches=0; WL=5; Rt. Density=2; Nr. Gaps=0
-   PMOS: MCL2KVY56_1#1-MCL2KVY56_1#0-MCL2KVY56_0#0-
-   NMOS: MCL2KVY56_1#3-MCL2KVY56_1#2-MCL2KVY56_0#1-
+   PMOS: MCLOQ0GRG_1#1-MCLOQ0GRG_1#0-MCLOQ0GRG_0#0-
+   NMOS: MCLOQ0GRG_1#3-MCLOQ0GRG_1#2-MCLOQ0GRG_0#1-
 -> Placing transistors...
 -> Routing cell...
--> Routing finished in 3 attempts after 0.011 s
+-> Routing finished in 3 attempts after 0.012 s
  ( initial cost = 6845 num reps = 1350 problem size = 9 )  Iteration 1; cost = 6942.000 (6845.000); p_cost = 6942.000; accept = 1.000; avg_delta = 0.072; dp = 1209.123; thres = 99999.000; cost_ratio = 1.014; [0]
  Iteration 2; cost = 9390.000 (6845.000); p_cost = 9390.000; accept = 1.000; avg_delta = 1.813; dp = 1191.498; thres = 47999.520; cost_ratio = 1.353; [0]
  Iteration 3; cost = 9190.000 (6845.000); p_cost = 9190.000; accept = 1.000; avg_delta = -0.148; dp = 1170.119; thres = 23039.770; cost_ratio = 0.979; [0]
@@ -114,7 +114,7 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/adder//ADD
  Iteration 24; cost = 4116.000 (4116.000); p_cost = 4116.000; accept = 0.207; avg_delta = 0.000; dp = -nan; thres = 455.942; cost_ratio = 1.000; [9]
  final cost = 4116 
 -> Routing cell...
--> Routing finished in 3 attempts after 0.008 s
+-> Routing finished in 3 attempts after 0.009 s
 -> New best transistor ordering found with cost: 2039
  ( initial cost = 6845 num reps = 1350 problem size = 9 )  Iteration 1; cost = 8881.000 (6845.000); p_cost = 8881.000; accept = 1.000; avg_delta = 1.508; dp = 1192.668; thres = 99999.000; cost_ratio = 1.297; [0]
  Iteration 2; cost = 8261.000 (6845.000); p_cost = 8261.000; accept = 1.000; avg_delta = -0.459; dp = 1175.825; thres = 47999.520; cost_ratio = 0.930; [0]
@@ -140,7 +140,7 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/adder//ADD
  Iteration 22; cost = 4116.000 (4116.000); p_cost = 4116.000; accept = 0.206; avg_delta = 0.000; dp = -nan; thres = 493.371; cost_ratio = 1.000; [9]
  final cost = 4116 
 -> Routing cell...
--> Routing finished in 3 attempts after 0.011 s
+-> Routing finished in 3 attempts after 0.012 s
  ( initial cost = 6845 num reps = 1350 problem size = 9 )  Iteration 1; cost = 8875.000 (6845.000); p_cost = 8875.000; accept = 1.000; avg_delta = 1.504; dp = 1217.875; thres = 99999.000; cost_ratio = 1.297; [0]
  Iteration 2; cost = 9802.000 (6845.000); p_cost = 9802.000; accept = 1.000; avg_delta = 0.687; dp = 1304.360; thres = 47999.520; cost_ratio = 1.104; [0]
  Iteration 3; cost = 8061.000 (6845.000); p_cost = 8061.000; accept = 1.000; avg_delta = -1.290; dp = 1220.150; thres = 23039.770; cost_ratio = 0.822; [0]
@@ -167,22 +167,22 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/adder//ADD
  Iteration 24; cost = 4116.000 (4116.000); p_cost = 4116.000; accept = 0.206; avg_delta = 0.000; dp = -nan; thres = 449.185; cost_ratio = 1.000; [9]
  final cost = 4116 
 -> Routing cell...
--> Routing finished in 3 attempts after 0.011 s
+-> Routing finished in 3 attempts after 0.012 s
 -> Final cost: Width=7; Gate Mismatches=0; WL=5; Rt. Density=2; Nr. Gaps=0
-   PMOS: MCL2KVY56_0#0-MCL2KVY56_1#0-MCL2KVY56_1#1-
-   NMOS: MCL2KVY56_0#1-MCL2KVY56_1#2-MCL2KVY56_1#3-
+   PMOS: MCLOQ0GRG_0#0-MCLOQ0GRG_1#0-MCLOQ0GRG_1#1-
+   NMOS: MCLOQ0GRG_0#1-MCLOQ0GRG_1#2-MCLOQ0GRG_1#3-
 -> Routing cell...
--> Routing finished in 3 attempts after 0.008 s
+-> Routing finished in 3 attempts after 0.009 s
 
 -> Cost before optimization:2039
 -> Optimizing routing graph...
 -> Cost after optimization: 2028
--> Runtime = 3.506 s
+-> Runtime = 3.892 s
 
 -> Cost before optimization:2028
 -> Optimizing routing graph...
 -> Cost after optimization: 2028
--> Runtime = 1.473 s
+-> Runtime = 1.655 s
 -> Compacting layout...
 -> Calling LP Solver (3810 variables, 5381 constraints)
 -> Running command: "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl" TimeLimit=3600 ResultFile=ILPmodel.sol ILPmodel.lp
@@ -199,7 +199,7 @@ Copyright (c) 2024, Gurobi Optimization, LLC
          of a constant term in the left-hand side of a constraint.
 
 Read LP format model from file ILPmodel.lp
-Reading time = 0.02 seconds
+Reading time = 0.01 seconds
 : 5382 rows, 2606 columns, 18886 nonzeros
 
 CPU model: Intel(R) Xeon(R) Gold 6226R CPU @ 2.90GHz, instruction set [SSE2|AVX|AVX2|AVX512]
@@ -216,11 +216,11 @@ Coefficient statistics:
   Bounds range     [1e+00, 1e+00]
   RHS range        [1e+00, 2e+04]
 Presolve removed 2031 rows and 1021 columns
-Presolve time: 0.03s
+Presolve time: 0.04s
 Presolved: 3351 rows, 1585 columns, 9882 nonzeros
 Variable types: 0 continuous, 1585 integer (990 binary)
 
-Root relaxation: objective 2.037433e+06, 1207 iterations, 0.02 seconds (0.03 work units)
+Root relaxation: objective 2.037433e+06, 1207 iterations, 0.04 seconds (0.03 work units)
 
     Nodes    |    Current Node    |     Objective Bounds      |     Work
  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
@@ -249,14 +249,14 @@ H    0     0                    2039389.0000 2037949.88  0.07%     -    0s
      0     0 2037949.88    0  429 2039389.00 2037949.88  0.07%     -    0s
      0     0 2037949.88    0  432 2039389.00 2037949.88  0.07%     -    0s
 H    0     0                    2039354.0000 2037949.88  0.07%     -    0s
-     0     0 2037949.88    0  414 2039354.00 2037949.88  0.07%     -    0s
-     0     2 2037949.88    0  414 2039354.00 2037949.88  0.07%     -    0s
-H  859   913                    2039168.0000 2038266.28  0.04%   8.4    0s
-H  987   913                    2039166.0000 2038266.28  0.04%   8.1    0s
-H 1023   913                    2039152.0000 2038266.28  0.04%   8.1    0s
-H 1056   921                    2038916.0000 2038277.36  0.03%   8.0    0s
-H 1065   921                    2038675.0000 2038277.36  0.02%   8.0    0s
-H 1118   921                    2038545.0000 2038277.36  0.01%   7.8    0s
+     0     0 2037949.88    0  414 2039354.00 2037949.88  0.07%     -    1s
+     0     2 2037949.88    0  414 2039354.00 2037949.88  0.07%     -    1s
+H  859   913                    2039168.0000 2038266.28  0.04%   8.4    1s
+H  987   913                    2039166.0000 2038266.28  0.04%   8.1    1s
+H 1023   913                    2039152.0000 2038266.28  0.04%   8.1    1s
+H 1056   921                    2038916.0000 2038277.36  0.03%   8.0    1s
+H 1065   921                    2038675.0000 2038277.36  0.02%   8.0    1s
+H 1118   921                    2038545.0000 2038277.36  0.01%   7.8    1s
 
 Cutting planes:
   Gomory: 20
@@ -266,7 +266,7 @@ Cutting planes:
   RLT: 26
   Relax-and-lift: 5
 
-Explored 1380 nodes (13268 simplex iterations) in 0.94 seconds (0.60 work units)
+Explored 1380 nodes (13268 simplex iterations) in 1.71 seconds (0.60 work units)
 Thread count was 32 (of 64 available processors)
 
 Solution count 10: 2.03854e+06 2.03868e+06 2.03892e+06 ... 2.04026e+06
@@ -281,6 +281,6 @@ Wrote result file 'ILPmodel.sol'
 Wrote result file 'ILPmodel.sol'
 
 -> Cell Size (W x H): 1 x 3.2
--> Total generation time for cell ADDER_G2_0_410: 7s
+-> Total generation time for cell ADDER_G2_0_410: 9s
 -> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/adder//GDSIILTable.txt
 -> Saving layout ADDER_G2_0_410 to file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/adder//ADDER_G2_0_410.gds

@@ -33,17 +33,7 @@ exit
     print(commands, file=outputFile)
     outputFile.close()
 
-    try:
-        with open(f'{commandDir}/{complexName}.Astranlog', 'w', encoding='utf-8') as fp:
-            subprocess.run([AstranPath, "--shell", f"{commandDir}/{complexName}.run"], stdout=fp, stderr=fp, timeout=3600)
-    except subprocess.TimeoutExpired:
-        with open(f'{commandDir}/{complexName}.Astranlog', 'a+', encoding='utf-8') as fileResult:
-            fileResult.write("Timeout for Astran!\n")
-        return False
-    except:
-        return False
-
-    return True
+    return os.system(f"{AstranPath} --shell {commandDir}/{complexName}.run > {commandDir}/{complexName}.Astranlog") == 0
 
 
 def runAstranForNetlist2(AstranPath, gurobiPath, technologyPath, spiceNetlistPath, complexName, commandDir):

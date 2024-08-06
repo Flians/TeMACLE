@@ -1,23 +1,23 @@
-.SUBCKT BAR_G0_3_4_339 A B C Y VCC GND
-MclAJEO2K_0#0 clAJEO2K_0#Y B VCC VCC PMOS W=0.5u L=0.05u
+.SUBCKT BAR_G0_3_4_339 A C B Y VCC GND
+Mcl8S9C77_0#0 cl8S9C77_0#Y C VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclAJEO2K_0#1 clAJEO2K_0#Y B GND GND NMOS W=0.25u L=0.05u
+Mcl8S9C77_0#1 cl8S9C77_0#Y C GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclAJEO2K_1#0 clAJEO2K_1#Y C VCC VCC PMOS W=0.5u L=0.05u
+Mcl8S9C77_1#0 cl8S9C77_1#Y B VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclAJEO2K_1#1 clAJEO2K_1#Y C GND GND NMOS W=0.25u L=0.05u
+Mcl8S9C77_1#1 cl8S9C77_1#Y B GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclAJEO2K_2#0 clAJEO2K_2#a_9_54# A VCC VCC PMOS W=1u L=0.05u
+Mcl8S9C77_2#0 cl8S9C77_2#a_9_54# A VCC VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclAJEO2K_2#1 Y clAJEO2K_0#Y clAJEO2K_2#a_9_54# VCC PMOS W=1u L=0.05u
+Mcl8S9C77_2#1 Y cl8S9C77_1#Y cl8S9C77_2#a_9_54# VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclAJEO2K_2#2 VCC clAJEO2K_1#Y Y VCC PMOS W=0.5u L=0.05u
+Mcl8S9C77_2#2 VCC cl8S9C77_0#Y Y VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclAJEO2K_2#3 GND A clAJEO2K_2#a_2_6# GND NMOS W=0.5u L=0.05u
+Mcl8S9C77_2#3 GND A cl8S9C77_2#a_2_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclAJEO2K_2#4 clAJEO2K_2#a_2_6# clAJEO2K_0#Y GND GND NMOS W=0.5u L=0.05u
+Mcl8S9C77_2#4 cl8S9C77_2#a_2_6# cl8S9C77_1#Y GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclAJEO2K_2#5 Y clAJEO2K_1#Y clAJEO2K_2#a_2_6# GND NMOS W=0.5u L=0.05u
+Mcl8S9C77_2#5 Y cl8S9C77_0#Y cl8S9C77_2#a_2_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ENDS
 * pattern code: 3|3|OAI21X1|INVX1=2|INPUT:Y-INVX1:A=2|INPUT:Y-OAI21X1:A,B=1|INVX1:Y-OAI21X1:A,B=1|INVX1:Y-OAI21X1:C=1|111110

@@ -91,19 +91,28 @@ full_liberty.groups = K_groups
 writeGenlib(full_liberty, os.path.join(root_path, 'gscl45nm.genlib'))
 
 
+SCSynthesis = 'iCell'
+#SCSynthesis = 'Astran'
 benchmarks = ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']
+libs = {'adder': 'ADDER_G2_69_70_420', 'arbiter':'ARBITER_G2_43_213', 'bar':'BAR_G4_430_431', 'cavlc':'CAVLC_G4_16_28', 'ctrl':'CTRL_G3_42_81', 'dec':'DEC_G1_0_15', 'div':'DIV_G4_4_13358_13359_13360', 'hyp':'HYP_G4_0_501', 'i2c':'I2C_G4_22_25', 'int2float':'INT2FLOAT_G4_1_4_166', 'log2':'LOG2_G4_22_8690', 'max':'MAX_G4_25_28', 'mem_ctrl':'MEM_CTRL_G4_156_940', 'multiplier':'MULTIPLIER_G4_2_7331', 'priority':'PRIORITY_G3_0_684', 'router':'ROUTER_G4_31_98', 'sin':'SIN_G4_251_1778', 'sqrt':'SQRT_G4_5_25', 'square':'SQUARE_G4_2_90_92', 'voter':'VOTER_G4_3_785'}
+#libs = {'adder': 'ADDER_G3_69_70_420', 'arbiter':'ARBITER_G4_6_7', 'bar':'BAR_G0_12_13_14', 'cavlc':'CAVLC_G4_0_152', 'ctrl':'CTRL_G4_53_54', 'dec':'DEC_G0_1_101', 'div':'DIV_G4_0_27247', 'hyp':'HYP_G4_98_582', 'i2c':'I2C_G4_15_1032', 'int2float':'INT2FLOAT_G3_3_7_158', 'log2':'LOG2_G4_2_89', 'max':'MAX_G4_0_1', 'mem_ctrl':'MEM_CTRL_G4_249_250', 'multiplier':'MULTIPLIER_G4_33_67', 'priority':'PRIORITY_G4_97_106', 'router':'ROUTER_G4_35_96', 'sin':'SIN_G4_30_1810', 'sqrt':'SQRT_G4_99_102', 'square':'SQUARE_G4_19_20', 'voter':'VOTER_G4_26_27'}
 for benchmarkName in benchmarks:
     print('=================================================================================\n', benchmarkName, '\n=================================================================================\n')
-    outputPath = f'{current_path}/outputs/iCell/full/{benchmarkName}/'
+    outputPath = f'{current_path}/outputs/{SCSynthesis}/full/{benchmarkName}/'
     os.makedirs(outputPath, exist_ok=True)
-    initRes = SynPy.synthesis(f'{current_path}/benchmark/aig/{benchmarkName}.aig', 'stdCellLib/asap7/asap7_75t_L.genlib', 'stdCellLib/asap7/asap7_75t_L.lib', f'{outputPath}/{benchmarkName}_init.blif')
+
+    if SCSynthesis == 'iCell':
+        initRes = SynPy.synthesis(f'{current_path}/benchmark/aig/{benchmarkName}.aig', 'stdCellLib/asap7/asap7_75t_L.genlib', f'outputs/{SCSynthesis}/K3/{benchmarkName}/{benchmarkName}.lib', f'{outputPath}/{benchmarkName}_init.blif')
+        os.system(f'yosys -p "read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_blif {outputPath}/{benchmarkName}_init.blif; stat -liberty outputs/{SCSynthesis}/K3/{benchmarkName}/{benchmarkName}.lib; ltp;"')
+    else:
+        initRes = SynPy.synthesis(f'{current_path}/benchmark/aig/{benchmarkName}.aig', 'stdCellLib/gscl45nm/gscl45nm.genlib', 'stdCellLib/gscl45nm/gscl45nm.lib', f'{outputPath}/{benchmarkName}_init.blif')
+        os.system(f'yosys -p "read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_blif {outputPath}/{benchmarkName}_init.blif; stat -liberty stdCellLib/gscl45nm/gscl45nm.lib; ltp;"')
     if initRes[0] == -1:
         print('>>> initial mapping failed!')
         continue
     else:
-        print('>>> initial mapping succeed!')
-    continue
-
+        print('>>> initial mapping succeed with area=', initRes[0])
+    
     fullRes = SynPy.synthesis(
         f'{current_path}/benchmark/aig/{benchmarkName}.aig', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.genlib', 'stdCellLib/asap7/asap7sc7p5t_FULL_LVT_TT_nldm_28_K3.lib', f'{outputPath}/{benchmarkName}_full.blif'
     )
@@ -111,26 +120,25 @@ for benchmarkName in benchmarks:
         print('>>> full mapping failed!')
         continue
     else:
-        print('>>> full mapping succeed!')
+        print('>>> full mapping succeed with area=', fullRes[0])
 
-    temacleRes = SynPy.synthesis(
-        f'{current_path}/benchmark/aig/{benchmarkName}.aig', f'outputs/iCell/K3/{benchmarkName}/best_{benchmarkName}.genlib', f'outputs/iCell/K3/{benchmarkName}/best_{benchmarkName}.lib', f'{outputPath}/{benchmarkName}_temacle.blif'
-    )
+    temacleRes = SynPy.synthesis(f'{current_path}/benchmark/aig/{benchmarkName}.aig', f'outputs/{SCSynthesis}/K3/{benchmarkName}/{libs[benchmarkName]}.genlib', f'outputs/{SCSynthesis}/K3/{benchmarkName}/{libs[benchmarkName]}.lib', f'{outputPath}/{benchmarkName}_temacle.blif')
+    os.system(f'yosys -p "read_liberty -lib outputs/{SCSynthesis}/K3/{benchmarkName}/{libs[benchmarkName]}.lib; read_blif {outputPath}/{benchmarkName}_temacle.blif; stat -liberty outputs/{SCSynthesis}/K3/{benchmarkName}/{libs[benchmarkName]}.lib; ltp;"')
     if temacleRes[0] == -1:
         print('>>> Temacle mapping failed!')
         continue
     else:
         print('>>> Temacle mapping succeed with area =', temacleRes[0])
 
-    saveArea_full = initRes[0] - fullRes[0]
+    #saveArea_full = initRes[0] - fullRes[0]
     saveArea_temacle = initRes[0] - temacleRes[0]
-    print(f'{benchmarkName} full saveArea=({initRes[0]}-{fullRes[0]}) / {initRes[0]} = ', saveArea_full / initRes[0] * 100, '%')
+    #print(f'{benchmarkName} full saveArea=({initRes[0]}-{fullRes[0]}) / {initRes[0]} = ', saveArea_full / initRes[0] * 100, '%')
     print(f'{benchmarkName} Temacle saveArea=({initRes[0]}-{temacleRes[0]}) / {initRes[0]} = ', saveArea_temacle / initRes[0] * 100, '%')
 '''
 
-
+SCSynthesis = 'Astran'
 for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128', 'full_adder_256']:
-    outputPath = f'{current_path}/outputs/iCell/adder/{adder}/'
+    outputPath = f'{current_path}/outputs/{SCSynthesis}/full/{adder}/'
     os.makedirs(outputPath, exist_ok=True)
     if os.system(f'yosys -p "read_verilog {current_path}/benchmark/adder/{adder}.v; hierarchy -top {adder}; flatten; synth -top {adder}; aigmap; write_aiger {outputPath}/{adder}.aig;"'):
         print('>>> aig writing failed!')
@@ -138,7 +146,12 @@ for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128
     else:
         print('>>> aig writing succeed!')
 
-    initRes = SynPy.synthesis(f'{outputPath}/{adder}.aig', 'stdCellLib/asap7/asap7_75t_L.genlib', 'stdCellLib/asap7/asap7_75t_L.lib', f'{outputPath}/{adder}_init.blif')
+    if SCSynthesis == 'iCell':
+        initRes = SynPy.synthesis(f'{outputPath}/{adder}.aig', 'stdCellLib/asap7/asap7_75t_L.genlib', f'outputs/{SCSynthesis}/K3/{adder}/{adder}.lib', f'{outputPath}/{adder}_init.blif')
+        os.system(f'yosys -p "read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_blif {outputPath}/{adder}_init.blif; stat -liberty outputs/{SCSynthesis}/K3/{adder}/{adder}.lib; ltp;"')
+    else:
+        initRes = SynPy.synthesis(f'{outputPath}/{adder}.aig', 'stdCellLib/gscl45nm/gscl45nm.genlib', 'stdCellLib/gscl45nm/gscl45nm.lib', f'{outputPath}/{adder}_init.blif')
+        os.system(f'yosys -p "read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_blif {outputPath}/{adder}_init.blif; stat -liberty stdCellLib/gscl45nm/gscl45nm.lib; ltp;"')
     if initRes[0] == -1:
         print('>>> initial mapping failed!')
         continue
@@ -146,6 +159,7 @@ for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128
         print('>>> initial mapping succeed with area =', initRes[0])
 
     temacleRes = SynPy.synthesis(f'{outputPath}/{adder}.aig', 'benchmark/adder/adder.genlib', 'benchmark/adder/adder.lib', f'{outputPath}/{adder}_temacle.blif')
+    os.system(f'yosys -p "read_liberty -lib benchmark/adder/adder.lib; read_blif {outputPath}/{adder}_temacle.blif; stat -liberty benchmark/adder/adder.lib; ltp;"')
     if temacleRes[0] == -1:
         print('>>> Temacle mapping failed!')
         continue
@@ -155,3 +169,4 @@ for adder in ['full_adder_16', 'full_adder_32', 'full_adder_64', 'full_adder_128
     print(f'{adder} initial mapping area = {initRes[0]}')
     print(f'{adder} Temacle mapping area = {temacleRes[0]}')
     print(f'{adder} Temacle saveArea = ({initRes[0]} - {temacleRes[0]}) / {initRes[0]} =', (initRes[0]-temacleRes[0]) / initRes[0] * 100, '%')
+    

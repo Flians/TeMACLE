@@ -1,23 +1,23 @@
 .SUBCKT CTRL_G0_1_13 A B C Y VCC GND
-Mcl2C2KYK_0#0 cl2C2KYK_0#Y C VCC VCC PMOS W=0.5u L=0.05u
+Mcl7RGX2G_0#0 cl7RGX2G_0#Y C VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2C2KYK_0#1 cl2C2KYK_0#Y C GND GND NMOS W=0.25u L=0.05u
+Mcl7RGX2G_0#1 cl7RGX2G_0#Y C GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2C2KYK_1#0 Y cl2C2KYK_0#Y VCC VCC PMOS W=0.5u L=0.05u
+Mcl7RGX2G_1#0 Y cl7RGX2G_0#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2C2KYK_1#1 VCC A Y VCC PMOS W=0.5u L=0.05u
+Mcl7RGX2G_1#1 VCC B Y VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2C2KYK_1#2 Y B VCC VCC PMOS W=0.5u L=0.05u
+Mcl7RGX2G_1#2 Y A VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2C2KYK_1#3 cl2C2KYK_1#a_9_6# cl2C2KYK_0#Y GND GND NMOS W=0.75u L=0.05u
+Mcl7RGX2G_1#3 cl7RGX2G_1#a_9_6# cl7RGX2G_0#Y GND GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2C2KYK_1#4 cl2C2KYK_1#a_14_6# A cl2C2KYK_1#a_9_6# GND NMOS W=0.75u L=0.05u
+Mcl7RGX2G_1#4 cl7RGX2G_1#a_14_6# B cl7RGX2G_1#a_9_6# GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2C2KYK_1#5 Y B cl2C2KYK_1#a_14_6# GND NMOS W=0.75u L=0.05u
+Mcl7RGX2G_1#5 Y A cl7RGX2G_1#a_14_6# GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ENDS
 * pattern code: 2|3|NAND3X1|INVX1=1|INPUT:Y-INVX1:A=1|INPUT:Y-NAND3X1:A,B,C=2|INVX1:Y-NAND3X1:A,B,C=1|11110
-* 21 occurrences in design
+* 19 occurrences in design
 * each contains 2 cells
 * pin map: {'x3': 'A', 'n9': 'B', 'x1': 'C'} {'n26': 'Y'}
 * function: C|~A|~B

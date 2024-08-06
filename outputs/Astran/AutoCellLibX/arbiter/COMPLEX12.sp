@@ -1,4 +1,4 @@
-.subckt COMPLEX12 cl4#vdd cl4#Y cl2#B cl2#C cl3#A cl4#gnd cl4#B cl3#gnd cl1#gnd cl3#Y cl0#vdd cl1#A cl0#gnd cl2#A cl1#vdd cl1#Y cl2#vdd cl2#gnd cl0#Y cl3#vdd
+.subckt COMPLEX12 cl3#vdd cl4#gnd cl0#Y cl4#B cl0#gnd cl5#gnd cl2#gnd cl5#Y cl2#B cl3#Y cl2#A cl5#B cl4#Y cl0#vdd cl1#Y cl2#C cl1#gnd cl2#vdd cl3#gnd cl4#vdd cl3#A cl1#vdd cl1#A cl5#vdd
 Mcl0#0 cl0#a_9_54# cl1#Y cl0#vdd cl0#vdd pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl0#1 cl0#Y cl2#Y cl0#a_9_54# cl0#vdd pmos w=1u l=0.05u
@@ -43,13 +43,26 @@ Mcl4#4 cl4#a_2_6# cl4#B cl4#gnd cl4#gnd nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl4#5 cl4#Y cl3#Y cl4#a_2_6# cl4#gnd nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
+Mcl5#0 cl5#a_9_54# cl1#Y cl5#vdd cl5#vdd pmos w=1u l=0.05u
++ ad=0p pd=0u as=0p ps=0u
+Mcl5#1 cl5#Y cl5#B cl5#a_9_54# cl5#vdd pmos w=1u l=0.05u
++ ad=0p pd=0u as=0p ps=0u
+Mcl5#2 cl5#vdd cl3#Y cl5#Y cl5#vdd pmos w=0.5u l=0.05u
++ ad=0p pd=0u as=0p ps=0u
+Mcl5#3 cl5#gnd cl1#Y cl5#a_2_6# cl5#gnd nmos w=0.5u l=0.05u
++ ad=0p pd=0u as=0p ps=0u
+Mcl5#4 cl5#a_2_6# cl5#B cl5#gnd cl5#gnd nmos w=0.5u l=0.05u
++ ad=0p pd=0u as=0p ps=0u
+Mcl5#5 cl5#Y cl3#Y cl5#a_2_6# cl5#gnd nmos w=0.5u l=0.05u
++ ad=0p pd=0u as=0p ps=0u
 .ends COMPLEX12
-* pattern code: [OAI21X1,INVX1,AOI21X1,INVX1]+OAI21X1_c1o0c3o0
+* pattern code: [OAI21X1,INVX1,AOI21X1,INVX1]+OAI21X1_c1o0c3o0+OAI21X1_c1o0c3o0
 * 128 occurrences in design 
-* each contains 5 cells
+* each contains 6 cells
 * Example occurence:
 *   .subckt OAI21X1 A=n712 B=n709 C=n698 Y=n713
 *   .subckt INVX1 A=n711 Y=n712
 *   .subckt AOI21X1 A=n704 B=n708 C=n701 Y=n709
 *   .subckt INVX1 A=n697 Y=n698
 *   .subckt OAI21X1 A=n712 B=n2081 C=n698 Y=n2082
+*   .subckt OAI21X1 A=n712 B=n2349 C=n698 Y=n2350

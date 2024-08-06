@@ -1,9 +1,9 @@
-astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/cavlc//CAVLC_G2_1_38.run
--> Reading file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/cavlc//CAVLC_G2_1_38.run
+astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/arbiter//ARBITER_G2_0_424.run
+-> Reading file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/arbiter//ARBITER_G2_0_424.run
 -> Setting lpsolve executable to: /home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl
 -> Loading technology from file: /home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul
--> Loading cells netlist from file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/cavlc//CAVLC_G2_1_38.sp
--> Selecting cell netlist: CAVLC_G2_1_38
+-> Loading cells netlist from file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/arbiter//ARBITER_G2_0_424.sp
+-> Selecting cell netlist: ARBITER_G2_0_424
 -> Trying with 2 tracks and conservative = 0 ...
 -> Calculating cell area...
 -> Applying folding...
@@ -193,11 +193,11 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/cavlc//CAV
  Iteration 59; cost = 11196.000 (11196.000); p_cost = 11196.000; accept = 0.154; avg_delta = 0.000; dp = -nan; thres = 154.202; cost_ratio = 1.000; [9]
  final cost = 11196 
 -> Final cost: Width=16; Gate Mismatches=0; WL=29; Rt. Density=4; Nr. Gaps=1
-   PMOS: MCLSRPACP_1#4-MCLSRPACP_1#5-MCLSRPACP_1#3-MCLSRPACP_1#2-MCLSRPACP_1#0-MCLSRPACP_1#1-MCLSRPACP_0#0-
-   NMOS: MCLSRPACP_1#8-GAP-MCLSRPACP_1#7-GAP-MCLSRPACP_1#6-GAP-MCLSRPACP_0#1-
+   PMOS: MCLNDKSDU_1#4-MCLNDKSDU_1#5-MCLNDKSDU_1#3-MCLNDKSDU_1#2-MCLNDKSDU_1#0-MCLNDKSDU_1#1-MCLNDKSDU_0#0-
+   NMOS: MCLNDKSDU_1#8-GAP-MCLNDKSDU_1#7-GAP-MCLNDKSDU_1#6-GAP-MCLNDKSDU_0#1-
 -> Placing transistors...
 -> Routing cell...
--> Routing finished in 8 attempts after 0.058 s
+-> Routing finished in 8 attempts after 0.063 s
  ( initial cost = 15171 num reps = 7350 problem size = 49 )  Iteration 1; cost = 20512.000 (15171.000); p_cost = 20512.000; accept = 1.000; avg_delta = 0.727; dp = 1855.526; thres = 99999.000; cost_ratio = 1.352; [0]
  Iteration 2; cost = 23803.000 (15171.000); p_cost = 23803.000; accept = 1.000; avg_delta = 0.448; dp = 1927.962; thres = 47999.520; cost_ratio = 1.160; [0]
  Iteration 3; cost = 23349.000 (15171.000); p_cost = 23349.000; accept = 1.000; avg_delta = -0.062; dp = 1863.001; thres = 23039.770; cost_ratio = 0.981; [0]
@@ -259,7 +259,7 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/cavlc//CAV
  Iteration 59; cost = 11196.000 (11196.000); p_cost = 11196.000; accept = 0.149; avg_delta = 0.000; dp = -nan; thres = 153.874; cost_ratio = 1.000; [9]
  final cost = 11196 
 -> Routing cell...
--> Routing finished in 7 attempts after 0.055 s
+-> Routing finished in 7 attempts after 0.063 s
  ( initial cost = 15171 num reps = 7350 problem size = 49 )  Iteration 1; cost = 21390.000 (15171.000); p_cost = 21390.000; accept = 1.000; avg_delta = 0.846; dp = 1834.694; thres = 99999.000; cost_ratio = 1.410; [0]
  Iteration 2; cost = 18612.000 (15171.000); p_cost = 18612.000; accept = 1.000; avg_delta = -0.378; dp = 1844.734; thres = 47999.520; cost_ratio = 0.870; [0]
  Iteration 3; cost = 23214.000 (15171.000); p_cost = 23214.000; accept = 1.000; avg_delta = 0.626; dp = 1852.883; thres = 23039.770; cost_ratio = 1.247; [0]
@@ -322,7 +322,7 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/cavlc//CAV
  Iteration 60; cost = 11196.000 (11196.000); p_cost = 11196.000; accept = 0.155; avg_delta = 0.000; dp = -nan; thres = 148.485; cost_ratio = 1.000; [9]
  final cost = 11196 
 -> Routing cell...
--> Routing finished in 13 attempts after 0.088 s
+-> Routing finished in 13 attempts after 0.1 s
  ( initial cost = 15171 num reps = 7350 problem size = 49 )  Iteration 1; cost = 23876.000 (15171.000); p_cost = 23876.000; accept = 1.000; avg_delta = 1.184; dp = 1836.129; thres = 99999.000; cost_ratio = 1.574; [0]
  Iteration 2; cost = 23918.000 (15171.000); p_cost = 23918.000; accept = 1.000; avg_delta = 0.006; dp = 1887.092; thres = 47999.520; cost_ratio = 1.002; [0]
  Iteration 3; cost = 22061.000 (15171.000); p_cost = 22061.000; accept = 1.000; avg_delta = -0.253; dp = 1843.800; thres = 23039.770; cost_ratio = 0.922; [0]
@@ -384,23 +384,23 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/cavlc//CAV
  Iteration 59; cost = 11196.000 (11196.000); p_cost = 11196.000; accept = 0.161; avg_delta = 0.000; dp = -nan; thres = 153.275; cost_ratio = 1.000; [9]
  final cost = 11196 
 -> Routing cell...
--> Routing finished in 8 attempts after 0.068 s
+-> Routing finished in 8 attempts after 0.075 s
 -> New best transistor ordering found with cost: 3088
 -> Final cost: Width=16; Gate Mismatches=0; WL=29; Rt. Density=4; Nr. Gaps=1
-   PMOS: MCLSRPACP_0#0-MCLSRPACP_1#0-MCLSRPACP_1#1-MCLSRPACP_1#3-MCLSRPACP_1#2-MCLSRPACP_1#4-MCLSRPACP_1#5-
-   NMOS: MCLSRPACP_0#1-GAP-MCLSRPACP_1#6-MCLSRPACP_1#7-GAP-GAP-MCLSRPACP_1#8-
+   PMOS: MCLNDKSDU_0#0-MCLNDKSDU_1#0-MCLNDKSDU_1#1-MCLNDKSDU_1#3-MCLNDKSDU_1#2-MCLNDKSDU_1#4-MCLNDKSDU_1#5-
+   NMOS: MCLNDKSDU_0#1-GAP-MCLNDKSDU_1#6-MCLNDKSDU_1#7-GAP-GAP-MCLNDKSDU_1#8-
 -> Routing cell...
--> Routing finished in 8 attempts after 0.068 s
+-> Routing finished in 8 attempts after 0.076 s
 
 -> Cost before optimization:3088
 -> Optimizing routing graph...
 -> Cost after optimization: 3062
--> Runtime = 21.86 s
+-> Runtime = 24.297 s
 
 -> Cost before optimization:3062
 -> Optimizing routing graph...
 -> Cost after optimization: 3062
--> Runtime = 9.363 s
+-> Runtime = 10.273 s
 -> Compacting layout...
 -> Calling LP Solver (10188 variables, 14614 constraints)
 -> Running command: "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl" TimeLimit=3600 ResultFile=ILPmodel.sol ILPmodel.lp
@@ -434,11 +434,11 @@ Coefficient statistics:
   Bounds range     [1e+00, 1e+00]
   RHS range        [1e+00, 2e+04]
 Presolve removed 4259 rows and 1972 columns
-Presolve time: 0.12s
+Presolve time: 0.13s
 Presolved: 10356 rows, 4530 columns, 31568 nonzeros
 Variable types: 0 continuous, 4530 integer (3186 binary)
 
-Root relaxation: objective 3.671881e+06, 3372 iterations, 0.05 seconds (0.06 work units)
+Root relaxation: objective 3.671881e+06, 3372 iterations, 0.06 seconds (0.06 work units)
 
     Nodes    |    Current Node    |     Objective Bounds      |     Work
  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
@@ -483,19 +483,20 @@ H    0     0                    3674444.0000 3672774.56  0.05%     -    2s
      0     0 3672903.44    0 1034 3674444.00 3672903.44  0.04%     -    2s
      0     0 3672903.44    0 1037 3674444.00 3672903.44  0.04%     -    2s
      0     0 3672905.05    0 1055 3674444.00 3672905.05  0.04%     -    2s
-H    0     0                    3674199.0000 3672905.05  0.04%     -    2s
-H    0     0                    3674162.0000 3672905.05  0.03%     -    2s
+H    0     0                    3674199.0000 3672905.05  0.04%     -    3s
+H    0     0                    3674162.0000 3672905.05  0.03%     -    3s
      0     0 3672905.08    0 1018 3674162.00 3672905.08  0.03%     -    3s
 H    0     0                    3673811.0000 3672905.08  0.02%     -    3s
      0     2 3672905.08    0 1017 3673811.00 3672905.08  0.02%     -    3s
-H   44    64                    3673783.0000 3673077.00  0.02%  50.2    3s
-H   97   128                    3673736.0000 3673088.45  0.02%  37.5    3s
-H  103   128                    3673732.0000 3673088.45  0.02%  37.4    3s
-H  105   128                    3673720.0000 3673088.45  0.02%  37.8    3s
-H  433   430                    3673716.0000 3673088.45  0.02%  17.1    3s
-  2408  2295 3673576.81   68   14 3673716.00 3673095.63  0.02%   9.9    5s
-* 2422  2230              82    3673590.0000 3673095.63  0.01%   9.8    5s
-H 4201  1709                    3673584.0000 3673164.12  0.01%   8.9    7s
+H   44    64                    3673783.0000 3673077.00  0.02%  50.2    4s
+H   97   128                    3673736.0000 3673088.45  0.02%  37.5    4s
+H  103   128                    3673732.0000 3673088.45  0.02%  37.4    4s
+H  105   128                    3673720.0000 3673088.45  0.02%  37.8    4s
+H  433   430                    3673716.0000 3673088.45  0.02%  17.1    4s
+   912  1084 3673252.35   10  686 3673716.00 3673095.63  0.02%  13.4    5s
+* 2422  2230              82    3673590.0000 3673095.63  0.01%   9.8    6s
+H 4201  1709                    3673584.0000 3673164.12  0.01%   8.9    9s
+  4203  1710 3673563.70   39  426 3673584.00 3673205.47  0.01%   8.9   10s
 
 Cutting planes:
   Gomory: 74
@@ -509,7 +510,7 @@ Cutting planes:
   RLT: 13
   Relax-and-lift: 5
 
-Explored 4205 nodes (50406 simplex iterations) in 9.02 seconds (5.96 work units)
+Explored 4205 nodes (50406 simplex iterations) in 10.95 seconds (5.96 work units)
 Thread count was 32 (of 64 available processors)
 
 Solution count 10: 3.67358e+06 3.67359e+06 3.67359e+06 ... 3.67378e+06
@@ -524,6 +525,6 @@ Wrote result file 'ILPmodel.sol'
 Wrote result file 'ILPmodel.sol'
 
 -> Cell Size (W x H): 1.8 x 3.2
--> Total generation time for cell CAVLC_G2_1_38: 55s
--> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/cavlc//GDSIILTable.txt
--> Saving layout CAVLC_G2_1_38 to file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/cavlc//CAVLC_G2_1_38.gds
+-> Total generation time for cell ARBITER_G2_0_424: 62s
+-> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/arbiter//GDSIILTable.txt
+-> Saving layout ARBITER_G2_0_424 to file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/arbiter//ARBITER_G2_0_424.gds

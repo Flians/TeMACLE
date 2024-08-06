@@ -25,77 +25,79 @@
 .subckt CTRL_G3_9_10 A=n29 B=x2 C=n25 Y=y1
 .subckt NAND2X1 A=x1 B=x3 Y=n31
 .subckt OAI21X1 A=x0 B=n13 C=n31 Y=n32
-.subckt CTRL_G4_53_54 A=x4 B=n12 C=x1 Y=n33
-.subckt CTRL_G1_68_69 A=n11 B=n32 C=n33 Y=y2
-.subckt OAI21X1 A=n9 B=n16 C=n18 Y=n38
-.subckt NOR2X1 A=x1 B=x2 Y=n37
-.subckt NAND2X1 A=n38 B=n37 Y=n39
-.subckt NAND2X1 A=n12 B=x4 Y=n35
-.subckt INVX1 A=n35 Y=n36
-.subckt CTRL_G3_9_10 A=n37 B=n36 C=n39 Y=y3
-.subckt OAI21X1 A=n9 B=n35 C=x2 Y=n41
-.subckt CTRL_G1_68_69 A=x3 B=x4 C=x5 Y=n42
-.subckt NAND2X1 A=n9 B=n42 Y=n43
+.subckt NAND2X1 A=n10 B=n12 Y=n33
+.subckt CTRL_G0_11_51 A=x4 B=n31 C=n33 Y=n34
+.subckt CTRL_G1_68_69 A=n11 B=n32 C=n34 Y=y2
+.subckt OAI21X1 A=n9 B=n16 C=n18 Y=n39
+.subckt NOR2X1 A=x1 B=x2 Y=n38
+.subckt NAND2X1 A=n39 B=n38 Y=n40
+.subckt NAND2X1 A=n12 B=x4 Y=n36
+.subckt INVX1 A=n36 Y=n37
+.subckt CTRL_G3_9_10 A=n38 B=n37 C=n40 Y=y3
+.subckt OAI21X1 A=n9 B=n36 C=x2 Y=n42
+.subckt CTRL_G1_68_69 A=x3 B=x4 C=x5 Y=n43
+.subckt NAND2X1 A=n9 B=n43 Y=n44
 .subckt INVX1 A=x5 Y=n14
 .subckt INVX1 A=x6 Y=n15
-.subckt OAI21X1 A=n14 B=n15 C=x4 Y=n44
-.subckt NAND3X1 A=n44 B=x3 C=x0 Y=n45
-.subckt AOI21X1 A=n43 B=n45 C=n10 Y=n46
-.subckt CTRL_G3_9_10 A=n46 B=x2 C=n41 Y=y4
-.subckt NAND2X1 A=x2 B=n36 Y=n48
-.subckt NAND2X1 A=n15 B=x4 Y=n49
-.subckt NAND3X1 A=n11 B=n49 C=x3 Y=n50
-.subckt AOI21X1 A=n48 B=n50 C=n10 Y=y5
-.subckt NAND2X1 A=x0 B=x1 Y=n52
-.subckt NAND2X1 A=n52 B=n17 Y=n54
-.subckt NAND3X1 A=n11 B=n18 C=n54 Y=n55
-.subckt OAI21X1 A=n11 B=n16 C=n55 Y=y6
-.subckt NAND3X1 A=n9 B=n10 C=n17 Y=n57
-.subckt NAND2X1 A=x0 B=x4 Y=n58
-.subckt NAND2X1 A=n26 B=n58 Y=n59
-.subckt NAND3X1 A=n35 B=n59 C=x2 Y=n60
-.subckt OAI21X1 A=x2 B=n57 C=n60 Y=y7
-.subckt CTRL_G4_53_54 A=x2 B=x3 C=x4 Y=n62
-.subckt OAI21X1 A=x0 B=n35 C=n11 Y=n63
-.subckt CTRL_G1_68_69 A=n62 B=n63 C=x1 Y=y8
+.subckt OAI21X1 A=n14 B=n15 C=x4 Y=n45
+.subckt NAND3X1 A=n45 B=x3 C=x0 Y=n46
+.subckt AOI21X1 A=n44 B=n46 C=n10 Y=n47
+.subckt CTRL_G3_9_10 A=n47 B=x2 C=n42 Y=y4
+.subckt NAND2X1 A=x2 B=n37 Y=n49
+.subckt NAND2X1 A=n15 B=x4 Y=n50
+.subckt NAND3X1 A=n11 B=n50 C=x3 Y=n51
+.subckt AOI21X1 A=n49 B=n51 C=n10 Y=y5
+.subckt NAND2X1 A=x0 B=x1 Y=n53
+.subckt NAND2X1 A=n53 B=n17 Y=n55
+.subckt NAND3X1 A=n11 B=n18 C=n55 Y=n56
+.subckt OAI21X1 A=n11 B=n16 C=n56 Y=y6
+.subckt NAND3X1 A=n9 B=n10 C=n17 Y=n58
+.subckt NAND2X1 A=x0 B=x4 Y=n59
+.subckt NAND2X1 A=n26 B=n59 Y=n60
+.subckt NAND3X1 A=n36 B=n60 C=x2 Y=n61
+.subckt OAI21X1 A=x2 B=n58 C=n61 Y=y7
+.subckt NAND2X1 A=n13 B=x3 Y=n63
+.subckt CTRL_G0_11_51 A=x2 B=n36 C=n63 Y=n64
+.subckt OAI21X1 A=x0 B=n36 C=n11 Y=n65
+.subckt CTRL_G1_68_69 A=n64 B=n65 C=x1 Y=y8
 .subckt NAND2X1 A=n10 B=x3 Y=n27
-.subckt NAND3X1 A=n9 B=n12 C=x1 Y=n65
-.subckt AOI21X1 A=n27 B=n65 C=n13 Y=n66
-.subckt CTRL_G3_9_10 A=n66 B=x2 C=n25 Y=y9
-.subckt CTRL_G4_53_54 A=n10 B=x3 C=x4 Y=n68
-.subckt CTRL_G0_11_51 A=x1 B=n12 C=n58 Y=n69
-.subckt CTRL_G1_68_69 A=n11 B=n68 C=n69 Y=n70
-.subckt AOI21X1 A=n35 B=x2 C=n70 Y=y10
-.subckt NAND3X1 A=n10 B=n11 C=n19 Y=n72
-.subckt NOR2X1 A=n72 B=x0 Y=y11
-.subckt CTRL_G0_11_51 A=x2 B=n13 C=n26 Y=n74
-.subckt NAND2X1 A=n12 B=n21 Y=n75
-.subckt CTRL_G0_11_51 A=n74 B=n75 C=n11 Y=y12
+.subckt NAND3X1 A=n9 B=n12 C=x1 Y=n67
+.subckt AOI21X1 A=n27 B=n67 C=n13 Y=n68
+.subckt CTRL_G3_9_10 A=n68 B=x2 C=n25 Y=y9
+.subckt CTRL_G0_11_51 A=n10 B=n36 C=n63 Y=n70
+.subckt CTRL_G0_11_51 A=x1 B=n12 C=n59 Y=n71
+.subckt CTRL_G1_68_69 A=n11 B=n70 C=n71 Y=n72
+.subckt AOI21X1 A=n36 B=x2 C=n72 Y=y10
+.subckt NAND3X1 A=n10 B=n11 C=n19 Y=n74
+.subckt NOR2X1 A=n74 B=x0 Y=y11
+.subckt CTRL_G0_11_51 A=x2 B=n13 C=n26 Y=n76
+.subckt NAND2X1 A=n12 B=n21 Y=n77
+.subckt CTRL_G0_11_51 A=n76 B=n77 C=n11 Y=y12
 .subckt CTRL_G1_68_69 A=x0 B=x2 C=n19 Y=y13
 .subckt CTRL_G1_68_69 A=n9 B=x2 C=n19 Y=y14
-.subckt CTRL_G1_68_69 A=n13 B=x3 C=x2 Y=n80
-.subckt CTRL_G1_68_69 A=n9 B=n10 C=n80 Y=y15
-.subckt AOI21X1 A=x3 B=n13 C=n9 Y=n82
-.subckt NOR2X1 A=n11 B=n82 Y=n83
-.subckt CTRL_G1_68_69 A=n10 B=n83 C=x0 Y=y16
-.subckt CTRL_G1_68_69 A=x0 B=x1 C=n83 Y=y17
-.subckt CTRL_G1_68_69 A=n9 B=x1 C=n80 Y=y18
+.subckt NOR2X1 A=n11 B=n63 Y=n82
+.subckt CTRL_G1_68_69 A=n9 B=n10 C=n82 Y=y15
+.subckt AOI21X1 A=x3 B=n13 C=n9 Y=n84
+.subckt NOR2X1 A=n11 B=n84 Y=n85
+.subckt CTRL_G1_68_69 A=n10 B=n85 C=x0 Y=y16
+.subckt CTRL_G1_68_69 A=x0 B=x1 C=n85 Y=y17
+.subckt CTRL_G1_68_69 A=n9 B=x1 C=n82 Y=y18
 .subckt NOR2X1 A=n11 B=n18 Y=y19
-.subckt NAND2X1 A=n14 B=x4 Y=n90
-.subckt INVX1 A=n52 Y=n53
-.subckt NAND3X1 A=n90 B=n53 C=x3 Y=n91
-.subckt NAND3X1 A=n10 B=n13 C=x3 Y=n88
-.subckt CTRL_G3_9_10 A=n88 B=n9 C=n11 Y=n89
-.subckt AOI21X1 A=n17 B=n52 C=n11 Y=n87
-.subckt AOI21X1 A=n91 B=n89 C=n87 Y=y20
-.subckt CTRL_G1_68_69 A=n15 B=x5 C=x4 Y=n93
-.subckt NAND3X1 A=x1 B=x3 C=n93 Y=n94
-.subckt OAI21X1 A=x1 B=n82 C=n94 Y=n95
-.subckt CTRL_G1_68_69 A=n11 B=n95 C=x0 Y=y21
-.subckt NAND3X1 A=n44 B=n53 C=x3 Y=n97
-.subckt AOI21X1 A=n11 B=n97 C=n87 Y=y22
-.subckt CTRL_G4_53_54 A=n36 B=n10 C=x0 Y=n99
-.subckt NOR2X1 A=n99 B=x2 Y=y24
-.subckt NAND3X1 A=n10 B=n11 C=n36 Y=n101
-.subckt NOR2X1 A=n9 B=n101 Y=y25
+.subckt NAND2X1 A=n14 B=x4 Y=n92
+.subckt INVX1 A=n53 Y=n54
+.subckt NAND3X1 A=n92 B=n54 C=x3 Y=n93
+.subckt NAND3X1 A=n10 B=n13 C=x3 Y=n90
+.subckt CTRL_G3_9_10 A=n90 B=n9 C=n11 Y=n91
+.subckt AOI21X1 A=n17 B=n53 C=n11 Y=n89
+.subckt AOI21X1 A=n93 B=n91 C=n89 Y=y20
+.subckt CTRL_G1_68_69 A=n15 B=x5 C=x4 Y=n95
+.subckt NAND3X1 A=x1 B=x3 C=n95 Y=n96
+.subckt OAI21X1 A=x1 B=n84 C=n96 Y=n97
+.subckt CTRL_G1_68_69 A=n11 B=n97 C=x0 Y=y21
+.subckt NAND3X1 A=n45 B=n54 C=x3 Y=n99
+.subckt AOI21X1 A=n11 B=n99 C=n89 Y=y22
+.subckt XNOR2X1 A=x0 B=x1 Y=n101
+.subckt CTRL_G1_68_69 A=n11 B=n37 C=n101 Y=y24
+.subckt NAND3X1 A=n10 B=n11 C=n37 Y=n103
+.subckt NOR2X1 A=n9 B=n103 Y=y25
 .end

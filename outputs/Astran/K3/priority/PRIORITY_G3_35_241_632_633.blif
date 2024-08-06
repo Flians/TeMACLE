@@ -656,9 +656,10 @@
 .subckt AND2X2 A=n730 B=n733 Y=n766
 .subckt NAND2X1 A=n780 B=n766 Y=y5
 .subckt NAND2X1 A=n766 B=n771 Y=y6
-.subckt NOR3X1 A=n580 B=n756 C=n779 Y=n785
 .subckt NOR3X1 A=n719 B=y6 C=x3 Y=n783
 .subckt PRIORITY_G0_0_1069 A=n783 B=x0 Y=n784
-.subckt PRIORITY_G3_35_241_632_633 A=n785 B=n784 C=x1 Y=n786
-.subckt NAND2X1 A=n130 B=n786 Y=y7
+.subckt NOR3X1 A=n580 B=n756 C=n779 Y=n785
+.subckt INVX1 A=n785 Y=n786
+.subckt NOR3X1 A=n784 B=n786 C=x1 Y=n787
+.subckt NAND2X1 A=n130 B=n787 Y=y7
 .end

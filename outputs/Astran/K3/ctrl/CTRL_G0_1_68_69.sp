@@ -1,23 +1,23 @@
 .SUBCKT CTRL_G0_1_68_69 A B C Y VCC GND
-MclPC12DR_0#0 clPC12DR_0#Y C VCC VCC PMOS W=0.5u L=0.05u
+Mcl434M42_0#0 cl434M42_0#Y C VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclPC12DR_0#1 clPC12DR_0#Y C GND GND NMOS W=0.25u L=0.05u
+Mcl434M42_0#1 cl434M42_0#Y C GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclPC12DR_1#0 clPC12DR_1#Y clPC12DR_0#Y VCC VCC PMOS W=0.5u L=0.05u
+Mcl434M42_1#0 cl434M42_1#Y cl434M42_0#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclPC12DR_1#1 VCC A clPC12DR_1#Y VCC PMOS W=0.5u L=0.05u
+Mcl434M42_1#1 VCC B cl434M42_1#Y VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclPC12DR_1#2 clPC12DR_1#Y B VCC VCC PMOS W=0.5u L=0.05u
+Mcl434M42_1#2 cl434M42_1#Y A VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclPC12DR_1#3 clPC12DR_1#a_9_6# clPC12DR_0#Y GND GND NMOS W=0.75u L=0.05u
+Mcl434M42_1#3 cl434M42_1#a_9_6# cl434M42_0#Y GND GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclPC12DR_1#4 clPC12DR_1#a_14_6# A clPC12DR_1#a_9_6# GND NMOS W=0.75u L=0.05u
+Mcl434M42_1#4 cl434M42_1#a_14_6# B cl434M42_1#a_9_6# GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclPC12DR_1#5 clPC12DR_1#Y B clPC12DR_1#a_14_6# GND NMOS W=0.75u L=0.05u
+Mcl434M42_1#5 cl434M42_1#Y A cl434M42_1#a_14_6# GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclPC12DR_2#0 Y clPC12DR_1#Y VCC VCC PMOS W=0.5u L=0.05u
+Mcl434M42_2#0 Y cl434M42_1#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclPC12DR_2#1 Y clPC12DR_1#Y GND GND NMOS W=0.25u L=0.05u
+Mcl434M42_2#1 Y cl434M42_1#Y GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ENDS
 * pattern code: 3|3|INVX1|INVX1=1|NAND3X1=1|INPUT:Y-INVX1:A=1|INPUT:Y-NAND3X1:A,B,C=2|INVX1:Y-NAND3X1:A,B,C=1|NAND3X1:Y-INVX1:A=1|111011
