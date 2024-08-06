@@ -23,7 +23,7 @@ MclNDKSDU_1#8 Y C GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ENDS
 * pattern code: 3|3|NOR2X1|INVX1=1|NAND2X1=1|INPUT:Y-INVX1:A=1|INPUT:Y-NAND2X1:A,B=1|INPUT:Y-NOR2X1:A,B=1|INVX1:Y-NAND2X1:A,B=1|NAND2X1:Y-NOR2X1:A,B=1|111110
-* 159 occurrences in design
+* 160 occurrences in design
 * each contains 3 cells
 * pin map: {'n22': 'A', 'n18': 'B', 'x4': 'C'} {'y0': 'Y'}
 * function: B&~A&~C

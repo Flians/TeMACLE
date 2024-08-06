@@ -49,7 +49,7 @@ MclNF429V_1#11 clNF429V_1#a_12_41# A GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ENDS
 * pattern code: 2|3|XNOR2X1|XNOR2X1=1|INPUT:Y-XNOR2X1:A,B=3|XNOR2X1:Y-XNOR2X1:A,B=1|11101
-* 262 occurrences in design
+* 261 occurrences in design
 * each contains 2 cells
 * pin map: {'n2247': 'A', 'n29': 'B', 'n940': 'C'} {'n2248': 'Y'}
 * function: (A&B&C)|(A&~B&~C)|(B&~A&~C)|(C&~A&~B)

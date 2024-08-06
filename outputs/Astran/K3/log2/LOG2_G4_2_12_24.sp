@@ -17,7 +17,7 @@ Mcl8L4A00_1#3 GND A Y GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ENDS
 * pattern code: 3|3|NOR3X1|INVX1=2|INPUT:Y-INVX1:A=2|INPUT:Y-NOR3X1:A,B,C=1|INVX1:Y-NOR3X1:A,B,C=2|111110
-* 1153 occurrences in design
+* 1151 occurrences in design
 * each contains 3 cells
 * pin map: {'n132': 'A', 'x27': 'B', 'x28': 'C'} {'n220': 'Y'}
 * function: B&C&~A

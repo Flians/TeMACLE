@@ -30,22 +30,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/7TDYH9BGN0.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/adder//adder_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/B6YDWQYVMG.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/adder//adder_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/7TDYH9BGN0.v
-Parsing Verilog input from `/tmp/7TDYH9BGN0.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/B6YDWQYVMG.v
+Parsing Verilog input from `/tmp/B6YDWQYVMG.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 9efa58c7fa
-CPU: user 0.06s system 0.01s, MEM: 22.02 MB total, 15.50 MB resident
+End of script. Logfile hash: b862424adc
+CPU: user 0.07s system 0.01s, MEM: 22.02 MB total, 15.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 83% 2x read_verilog (0 sec), 9% 2x write_blif (0 sec), ...
+Time spent: 77% 2x read_verilog (0 sec), 14% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -302,9 +302,9 @@ Longest topological path in top (length=193):
   193: \y0 (via $auto$blifparse.cc:371:parse_blif$449)
 
 End of script. Logfile hash: a864869d60
-CPU: user 0.02s system 0.00s, MEM: 17.24 MB total, 11.00 MB resident
+CPU: user 0.03s system 0.00s, MEM: 17.24 MB total, 10.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 30% 1x stat (0 sec), 28% 2x read_liberty (0 sec), ...
+Time spent: 40% 2x read_liberty (0 sec), 25% 1x stat (0 sec), ...
 >>> initial mapping succeed with area= 2373.250038743019
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/adder.aig
 resyn runtime: 0
@@ -334,22 +334,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/adder/ADDER_G3_69_70_420.lib; read_verilog /tmp/M75JNXDPMW.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/adder//adder_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/adder/ADDER_G3_69_70_420.lib; read_verilog /tmp/4LMMIEACQA.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/adder//adder_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 16 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/M75JNXDPMW.v
-Parsing Verilog input from `/tmp/M75JNXDPMW.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/4LMMIEACQA.v
+Parsing Verilog input from `/tmp/4LMMIEACQA.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 30d3c0422f
-CPU: user 0.03s system 0.00s, MEM: 18.27 MB total, 11.50 MB resident
+End of script. Logfile hash: 21b552c866
+CPU: user 0.03s system 0.01s, MEM: 18.27 MB total, 11.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 81% 2x read_verilog (0 sec), 11% 2x write_blif (0 sec), ...
+Time spent: 79% 2x read_verilog (0 sec), 13% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -535,9 +535,9 @@ Longest topological path in top (length=129):
   129: \y0 (via $auto$blifparse.cc:371:parse_blif$133)
 
 End of script. Logfile hash: e16d08c023
-CPU: user 0.01s system 0.00s, MEM: 16.21 MB total, 9.50 MB resident
+CPU: user 0.01s system 0.01s, MEM: 16.21 MB total, 9.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 28% 1x stat (0 sec), 28% 2x read_liberty (0 sec), ...
+Time spent: 32% 2x read_liberty (0 sec), 29% 1x stat (0 sec), ...
 >>> Temacle mapping succeed with area = 1643.5192241668701
 adder Temacle saveArea=(2373.250038743019-1643.5192241668701) / 2373.250038743019 =  30.748164022474743 %
 =================================================================================
@@ -572,22 +572,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/TFY96157EG.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/arbiter//arbiter_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/VYZU7QGSVD.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/arbiter//arbiter_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/TFY96157EG.v
-Parsing Verilog input from `/tmp/TFY96157EG.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/VYZU7QGSVD.v
+Parsing Verilog input from `/tmp/VYZU7QGSVD.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 782e57fbc3
-CPU: user 0.73s system 0.04s, MEM: 77.32 MB total, 71.00 MB resident
+End of script. Logfile hash: 080262d526
+CPU: user 0.65s system 0.04s, MEM: 77.32 MB total, 71.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 91% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
+Time spent: 90% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -694,9 +694,9 @@ Longest topological path in top (length=46):
    46: \y120 (via $auto$blifparse.cc:371:parse_blif$6590)
 
 End of script. Logfile hash: 662a46035b
-CPU: user 0.10s system 0.01s, MEM: 25.55 MB total, 19.22 MB resident
+CPU: user 0.09s system 0.00s, MEM: 25.55 MB total, 19.23 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 42% 2x read_blif (0 sec), 40% 1x ltp (0 sec), ...
+Time spent: 44% 2x read_blif (0 sec), 38% 1x ltp (0 sec), ...
 >>> initial mapping succeed with area= 18243.098580121994
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/arbiter.aig
 resyn runtime: 0
@@ -726,22 +726,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/arbiter/ARBITER_G4_6_7.lib; read_verilog /tmp/F8QHOWNA0L.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/arbiter//arbiter_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/arbiter/ARBITER_G4_4_1021.lib; read_verilog /tmp/GEVMR8O5MX.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/arbiter//arbiter_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/F8QHOWNA0L.v
-Parsing Verilog input from `/tmp/F8QHOWNA0L.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/GEVMR8O5MX.v
+Parsing Verilog input from `/tmp/GEVMR8O5MX.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: dd8e5a5422
-CPU: user 1.04s system 0.07s, MEM: 75.95 MB total, 70.00 MB resident
+End of script. Logfile hash: 45b9a3fabd
+CPU: user 0.64s system 0.02s, MEM: 75.97 MB total, 70.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 90% 2x read_verilog (0 sec), 9% 2x write_blif (0 sec), ...
+Time spent: 92% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -766,7 +766,7 @@ Time spent: 90% 2x read_verilog (0 sec), 9% 2x write_blif (0 sec), ...
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/arbiter/ARBITER_G4_6_7.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/arbiter//arbiter_temacle.blif; stat -liberty outputs/Astran/K3/arbiter/ARBITER_G4_6_7.lib; ltp;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/arbiter/ARBITER_G4_4_1021.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/arbiter//arbiter_temacle.blif; stat -liberty outputs/Astran/K3/arbiter/ARBITER_G4_4_1021.lib; ltp;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
@@ -787,7 +787,7 @@ Imported 17 cell types from liberty file.
    Number of cells:               6755
      AOI21X1                      2687
      ARBITER_G0_3_6683              24
-     ARBITER_G4_6_7                232
+     ARBITER_G4_4_1021             232
      INVX1                         447
      NAND2X1                       449
      NAND3X1                       189
@@ -848,10 +848,10 @@ Longest topological path in top (length=46):
    45: \n6795 (via $auto$blifparse.cc:371:parse_blif$6538)
    46: \y123 (via $auto$blifparse.cc:371:parse_blif$6539)
 
-End of script. Logfile hash: 115cd1ba02
-CPU: user 0.15s system 0.00s, MEM: 25.37 MB total, 19.39 MB resident
+End of script. Logfile hash: 50960dddaf
+CPU: user 0.09s system 0.01s, MEM: 25.37 MB total, 18.96 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 47% 1x ltp (0 sec), 44% 2x read_blif (0 sec), ...
+Time spent: 50% 2x read_blif (0 sec), 36% 1x ltp (0 sec), ...
 >>> Temacle mapping succeed with area = 17799.444200515747
 arbiter Temacle saveArea=(18243.098580121994-17799.444200515747) / 18243.098580121994 =  2.431902550204167 %
 =================================================================================
@@ -886,22 +886,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/ADKK56EAP9.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/bar//bar_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/ARS688PGCA.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/bar//bar_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/ADKK56EAP9.v
-Parsing Verilog input from `/tmp/ADKK56EAP9.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/ARS688PGCA.v
+Parsing Verilog input from `/tmp/ARS688PGCA.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 55f362ba09
-CPU: user 0.30s system 0.02s, MEM: 35.40 MB total, 29.00 MB resident
+End of script. Logfile hash: d575cba4e8
+CPU: user 0.19s system 0.02s, MEM: 35.40 MB total, 29.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 88% 2x read_verilog (0 sec), 9% 2x write_blif (0 sec), ...
+Time spent: 86% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -972,9 +972,9 @@ Longest topological path in top (length=10):
    10: \y0 (via $auto$blifparse.cc:371:parse_blif$333)
 
 End of script. Logfile hash: d9b3489697
-CPU: user 0.07s system 0.00s, MEM: 19.65 MB total, 13.00 MB resident
+CPU: user 0.04s system 0.01s, MEM: 19.65 MB total, 13.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 35% 1x ltp (0 sec), 34% 2x read_blif (0 sec), ...
+Time spent: 37% 2x read_blif (0 sec), 25% 2x read_liberty (0 sec), ...
 >>> initial mapping succeed with area= 5426.515814304352
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/bar.aig
 resyn runtime: 0
@@ -1004,22 +1004,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/bar/BAR_G0_12_13_14.lib; read_verilog /tmp/NPY7I1SJES.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/bar//bar_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/bar/BAR_G0_12_13_14.lib; read_verilog /tmp/1CG4PUMDJO.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/bar//bar_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 13 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/NPY7I1SJES.v
-Parsing Verilog input from `/tmp/NPY7I1SJES.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/1CG4PUMDJO.v
+Parsing Verilog input from `/tmp/1CG4PUMDJO.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 2efb4e439e
-CPU: user 0.21s system 0.01s, MEM: 29.31 MB total, 23.00 MB resident
+End of script. Logfile hash: 00001e8caa
+CPU: user 0.14s system 0.01s, MEM: 29.31 MB total, 22.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 89% 2x read_verilog (0 sec), 9% 2x write_blif (0 sec), ...
+Time spent: 89% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -1091,9 +1091,9 @@ Longest topological path in top (length=9):
     9: \y2 (via $auto$blifparse.cc:371:parse_blif$462)
 
 End of script. Logfile hash: e49d3ab0e1
-CPU: user 0.04s system 0.01s, MEM: 18.02 MB total, 11.50 MB resident
+CPU: user 0.02s system 0.01s, MEM: 18.02 MB total, 11.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 40% 2x read_blif (0 sec), 38% 1x ltp (0 sec), ...
+Time spent: 41% 2x read_blif (0 sec), 30% 1x ltp (0 sec), ...
 >>> Temacle mapping succeed with area = 4845.120800852776
 bar Temacle saveArea=(5426.515814304352-4845.120800852776) / 5426.515814304352 =  10.7139651545659 %
 =================================================================================
@@ -1101,7 +1101,7 @@ bar Temacle saveArea=(5426.515814304352-4845.120800852776) / 5426.515814304352 =
 =================================================================================
 
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/cavlc.aig
-resyn runtime: 77
+resyn runtime: 67
 [i] area: 1232.3817783594131, gates: 532, depth: 11
 mapping runtime: 0
 
@@ -1128,22 +1128,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/YX4ON8O9LZ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/cavlc//cavlc_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/NC0EL6N3M4.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/cavlc//cavlc_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/YX4ON8O9LZ.v
-Parsing Verilog input from `/tmp/YX4ON8O9LZ.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/NC0EL6N3M4.v
+Parsing Verilog input from `/tmp/NC0EL6N3M4.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 25a8369352
-CPU: user 0.05s system 0.01s, MEM: 20.13 MB total, 13.50 MB resident
+End of script. Logfile hash: 708ad014b4
+CPU: user 0.06s system 0.00s, MEM: 20.13 MB total, 13.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 74% 2x read_verilog (0 sec), 19% 2x read_liberty (0 sec), ...
+Time spent: 73% 2x read_verilog (0 sec), 19% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -1218,12 +1218,12 @@ Longest topological path in top (length=11):
    11: \y1 (via $auto$blifparse.cc:371:parse_blif$190)
 
 End of script. Logfile hash: 0e571f3d83
-CPU: user 0.02s system 0.00s, MEM: 16.98 MB total, 10.50 MB resident
+CPU: user 0.03s system 0.00s, MEM: 16.98 MB total, 10.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 33% 2x read_liberty (0 sec), 31% 1x stat (0 sec), ...
+Time spent: 45% 2x read_liberty (0 sec), 26% 1x stat (0 sec), ...
 >>> initial mapping succeed with area= 1232.3817783594131
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/cavlc.aig
-resyn runtime: 84
+resyn runtime: 62
 [i] area: 1187.728886127472, gates: 483, depth: 10
 mapping runtime: 0
 
@@ -1250,22 +1250,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/cavlc/CAVLC_G4_0_152.lib; read_verilog /tmp/WG4IWKLMUS.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/cavlc//cavlc_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/cavlc/CAVLC_G4_0_152.lib; read_verilog /tmp/WEU1NRPMI3.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/cavlc//cavlc_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/WG4IWKLMUS.v
-Parsing Verilog input from `/tmp/WG4IWKLMUS.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/WEU1NRPMI3.v
+Parsing Verilog input from `/tmp/WEU1NRPMI3.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 22d2695f29
-CPU: user 0.04s system 0.00s, MEM: 19.82 MB total, 13.00 MB resident
+End of script. Logfile hash: 607d54a237
+CPU: user 0.05s system 0.01s, MEM: 19.82 MB total, 13.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 86% 2x read_verilog (0 sec), 9% 2x write_blif (0 sec), ...
+Time spent: 82% 2x read_verilog (0 sec), 10% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -1344,9 +1344,9 @@ Longest topological path in top (length=10):
    10: \y7 (via $auto$blifparse.cc:371:parse_blif$408)
 
 End of script. Logfile hash: 45bdb71c1b
-CPU: user 0.01s system 0.00s, MEM: 16.37 MB total, 10.00 MB resident
+CPU: user 0.02s system 0.01s, MEM: 16.37 MB total, 10.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 28% 2x read_blif (0 sec), 27% 1x stat (0 sec), ...
+Time spent: 32% 2x read_liberty (0 sec), 32% 2x read_blif (0 sec), ...
 >>> Temacle mapping succeed with area = 1187.728886127472
 cavlc Temacle saveArea=(1232.3817783594131-1187.728886127472) / 1232.3817783594131 =  3.623300264256147 %
 =================================================================================
@@ -1381,22 +1381,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/42VY1S9K3I.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/ctrl//ctrl_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/CKC31V46OC.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/ctrl//ctrl_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/42VY1S9K3I.v
-Parsing Verilog input from `/tmp/42VY1S9K3I.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/CKC31V46OC.v
+Parsing Verilog input from `/tmp/CKC31V46OC.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 1d72f1111f
-CPU: user 0.01s system 0.00s, MEM: 16.47 MB total, 10.00 MB resident
+End of script. Logfile hash: 09bc2a494b
+CPU: user 0.03s system 0.00s, MEM: 16.47 MB total, 10.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 49% 2x read_verilog (0 sec), 40% 2x read_liberty (0 sec), ...
+Time spent: 49% 2x read_liberty (0 sec), 42% 2x read_verilog (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -1467,13 +1467,13 @@ Longest topological path in top (length=5):
     5: \y1 (via $auto$blifparse.cc:371:parse_blif$18)
 
 End of script. Logfile hash: f0ab197185
-CPU: user 0.01s system 0.00s, MEM: 16.46 MB total, 10.50 MB resident
+CPU: user 0.03s system 0.00s, MEM: 16.46 MB total, 10.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 45% 2x read_liberty (0 sec), 40% 1x stat (0 sec), ...
+Time spent: 54% 2x read_liberty (0 sec), 34% 1x stat (0 sec), ...
 >>> initial mapping succeed with area= 237.46579587459564
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/ctrl.aig
 resyn runtime: 0
-[i] area: 202.8477966785431, gates: 94, depth: 5
+[i] area: 230.94269680976868, gates: 96, depth: 5
 mapping runtime: 0
 
  /----------------------------------------------------------------------------\
@@ -1499,22 +1499,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/ctrl/CTRL_G4_53_54.lib; read_verilog /tmp/620N2V4GG2.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/ctrl//ctrl_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/ctrl/CTRL_G3_65_66.lib; read_verilog /tmp/KMDXB1W4SA.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/ctrl//ctrl_temacle.blif;' --
 
 1. Executing Liberty frontend.
-Imported 17 cell types from liberty file.
+Imported 16 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/620N2V4GG2.v
-Parsing Verilog input from `/tmp/620N2V4GG2.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/KMDXB1W4SA.v
+Parsing Verilog input from `/tmp/KMDXB1W4SA.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 492cc78204
-CPU: user 0.01s system 0.00s, MEM: 16.34 MB total, 10.00 MB resident
+End of script. Logfile hash: 0d48afcf5d
+CPU: user 0.02s system 0.00s, MEM: 16.34 MB total, 10.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 63% 2x read_verilog (0 sec), 22% 2x read_liberty (0 sec), ...
+Time spent: 59% 2x read_verilog (0 sec), 32% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -1539,10 +1539,10 @@ Time spent: 63% 2x read_verilog (0 sec), 22% 2x read_liberty (0 sec), ...
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/ctrl/CTRL_G4_53_54.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/ctrl//ctrl_temacle.blif; stat -liberty outputs/Astran/K3/ctrl/CTRL_G4_53_54.lib; ltp;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/ctrl/CTRL_G3_65_66.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/ctrl//ctrl_temacle.blif; stat -liberty outputs/Astran/K3/ctrl/CTRL_G3_65_66.lib; ltp;' --
 
 1. Executing Liberty frontend.
-Imported 17 cell types from liberty file.
+Imported 16 cell types from liberty file.
 
 2. Executing BLIF frontend.
 
@@ -1550,46 +1550,49 @@ Imported 17 cell types from liberty file.
 
 === top ===
 
-   Number of wires:                102
-   Number of wire bits:            102
-   Number of public wires:         102
-   Number of public wire bits:     102
+   Number of wires:                104
+   Number of wire bits:            104
+   Number of public wires:         104
+   Number of public wire bits:     104
    Number of memories:               0
    Number of memory bits:            0
    Number of processes:              0
-   Number of cells:                 95
-     AOI21X1                        10
-     CTRL_G0_11_51                   3
-     CTRL_G1_68_69                  13
-     CTRL_G3_9_10                    5
-     CTRL_G4_53_54                   4
+   Number of cells:                 97
+     AOI21X1                        13
+     CTRL_G0_2_64                    1
+     CTRL_G1_11_51                   5
+     CTRL_G2_1_2_64                  2
+     CTRL_G3_65_66                  14
      INVX1                          12
-     NAND2X1                        16
-     NAND3X1                        14
-     NOR2X1                          6
-     OAI21X1                        11
+     NAND2X1                        20
+     NAND3X1                        13
+     NOR2X1                          4
+     NOR3X1                          1
+     OAI21X1                         9
+     XNOR2X1                         1
+     XOR2X1                          1
      const_1                         1
 
    Area for cell type \const_1 is unknown!
 
-   Chip area for module '\top': 202.847800
+   Chip area for module '\top': 230.942700
 
 4. Executing LTP pass (find longest path).
 
 Longest topological path in top (length=5):
     0: \x3
-    1: \n12 (via $auto$blifparse.cc:371:parse_blif$2)
-    2: \n18 (via $auto$blifparse.cc:371:parse_blif$4)
-    3: \n19 (via $auto$blifparse.cc:371:parse_blif$5)
-    4: \n20 (via $auto$blifparse.cc:371:parse_blif$8)
-    5: \y0 (via $auto$blifparse.cc:371:parse_blif$13)
+    1: \n12 (via $auto$blifparse.cc:371:parse_blif$3)
+    2: \n18 (via $auto$blifparse.cc:371:parse_blif$5)
+    3: \n20 (via $auto$blifparse.cc:371:parse_blif$7)
+    4: \n23 (via $auto$blifparse.cc:371:parse_blif$10)
+    5: \y0 (via $auto$blifparse.cc:371:parse_blif$11)
 
-End of script. Logfile hash: 5fca40a6c4
+End of script. Logfile hash: f61b59aa98
 CPU: user 0.01s system 0.00s, MEM: 15.95 MB total, 9.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 42% 2x read_liberty (0 sec), 37% 1x stat (0 sec), ...
->>> Temacle mapping succeed with area = 202.8477966785431
-ctrl Temacle saveArea=(237.46579587459564-202.8477966785431) / 237.46579587459564 =  14.578099160998379 %
+Time spent: 46% 2x read_liberty (0 sec), 33% 1x stat (0 sec), ...
+>>> Temacle mapping succeed with area = 230.94269680976868
+ctrl Temacle saveArea=(237.46579587459564-230.94269680976868) / 237.46579587459564 =  2.7469636377745017 %
 =================================================================================
  dec 
 =================================================================================
@@ -1622,22 +1625,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/JP73UAPH36.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/dec//dec_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/6TDN2KD2J7.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/dec//dec_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/JP73UAPH36.v
-Parsing Verilog input from `/tmp/JP73UAPH36.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/6TDN2KD2J7.v
+Parsing Verilog input from `/tmp/6TDN2KD2J7.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: b838109c0f
-CPU: user 0.03s system 0.00s, MEM: 18.01 MB total, 11.50 MB resident
+End of script. Logfile hash: 5fb40f37a3
+CPU: user 0.03s system 0.01s, MEM: 18.01 MB total, 11.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 72% 2x read_verilog (0 sec), 17% 2x read_liberty (0 sec), ...
+Time spent: 64% 2x read_verilog (0 sec), 29% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -1699,9 +1702,9 @@ Longest topological path in top (length=4):
     4: \y6 (via $auto$blifparse.cc:371:parse_blif$25)
 
 End of script. Logfile hash: 95c9c565ea
-CPU: user 0.01s system 0.00s, MEM: 16.72 MB total, 10.00 MB resident
+CPU: user 0.03s system 0.00s, MEM: 16.72 MB total, 10.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 39% 2x read_liberty (0 sec), 37% 1x stat (0 sec), ...
+Time spent: 52% 2x read_liberty (0 sec), 30% 1x stat (0 sec), ...
 >>> initial mapping succeed with area= 715.2131776809692
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/dec.aig
 resyn runtime: 0
@@ -1731,22 +1734,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/dec/DEC_G0_1_101.lib; read_verilog /tmp/KFRRXHK1QW.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/dec//dec_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/dec/DEC_G0_1_101.lib; read_verilog /tmp/2MU2A1GUZK.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/dec//dec_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 13 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/KFRRXHK1QW.v
-Parsing Verilog input from `/tmp/KFRRXHK1QW.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/2MU2A1GUZK.v
+Parsing Verilog input from `/tmp/2MU2A1GUZK.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 39fad90885
-CPU: user 0.02s system 0.01s, MEM: 18.02 MB total, 11.50 MB resident
+End of script. Logfile hash: 0e4e569b77
+CPU: user 0.04s system 0.00s, MEM: 18.02 MB total, 11.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 81% 2x read_verilog (0 sec), 10% 2x write_blif (0 sec), ...
+Time spent: 77% 2x read_verilog (0 sec), 15% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -1809,9 +1812,9 @@ Longest topological path in top (length=3):
     3: \y0 (via $auto$blifparse.cc:371:parse_blif$8)
 
 End of script. Logfile hash: 4ed5220909
-CPU: user 0.01s system 0.00s, MEM: 16.08 MB total, 9.50 MB resident
+CPU: user 0.02s system 0.00s, MEM: 16.08 MB total, 9.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 32% 1x stat (0 sec), 30% 2x read_liberty (0 sec), ...
+Time spent: 34% 2x read_liberty (0 sec), 30% 1x stat (0 sec), ...
 >>> Temacle mapping succeed with area = 705.7425765991211
 dec Temacle saveArea=(715.2131776809692-705.7425765991211) / 715.2131776809692 =  1.3241647913361905 %
 =================================================================================
@@ -1846,22 +1849,22 @@ mapping runtime: 1
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/TEXTNKHU6C.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/div//div_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/DGEI12XFZJ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/div//div_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/TEXTNKHU6C.v
-Parsing Verilog input from `/tmp/TEXTNKHU6C.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/DGEI12XFZJ.v
+Parsing Verilog input from `/tmp/DGEI12XFZJ.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 5b55d8fb8d
-CPU: user 4.14s system 0.19s, MEM: 354.45 MB total, 345.62 MB resident
+End of script. Logfile hash: 7e0ef272ec
+CPU: user 3.72s system 0.14s, MEM: 354.45 MB total, 345.75 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 91% 2x read_verilog (3 sec), 8% 2x write_blif (0 sec), ...
+Time spent: 92% 2x read_verilog (3 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -4138,9 +4141,9 @@ Longest topological path in top (length=2213):
  2213: \y0 (via $auto$blifparse.cc:371:parse_blif$21043)
 
 End of script. Logfile hash: 82a77dad5f
-CPU: user 31.28s system 0.04s, MEM: 78.17 MB total, 68.82 MB resident
+CPU: user 21.07s system 0.06s, MEM: 78.17 MB total, 69.38 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 99% 1x ltp (30 sec), 0% 2x read_blif (0 sec), ...
+Time spent: 98% 1x ltp (20 sec), 0% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area= 109675.87715125084
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/div.aig
 resyn runtime: 0
@@ -4170,22 +4173,22 @@ mapping runtime: 1
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/div/DIV_G4_0_27247.lib; read_verilog /tmp/33G1S1S7K8.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/div//div_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/div/DIV_G4_0_27247.lib; read_verilog /tmp/2EZ6PM11DM.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/div//div_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/33G1S1S7K8.v
-Parsing Verilog input from `/tmp/33G1S1S7K8.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/2EZ6PM11DM.v
+Parsing Verilog input from `/tmp/2EZ6PM11DM.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: e0d44574ce
-CPU: user 2.60s system 0.10s, MEM: 258.08 MB total, 251.37 MB resident
+End of script. Logfile hash: e599b33f0d
+CPU: user 2.61s system 0.08s, MEM: 258.08 MB total, 251.52 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 91% 2x read_verilog (2 sec), 8% 2x write_blif (0 sec), ...
+Time spent: 92% 2x read_verilog (2 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -6453,9 +6456,9 @@ Longest topological path in top (length=2200):
  2200: \y0 (via $auto$blifparse.cc:371:parse_blif$15094)
 
 End of script. Logfile hash: 7aa1c768fa
-CPU: user 23.68s system 0.03s, MEM: 56.43 MB total, 49.76 MB resident
+CPU: user 10.95s system 0.03s, MEM: 56.42 MB total, 49.44 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 99% 1x ltp (23 sec), 0% 2x read_blif (0 sec), ...
+Time spent: 98% 1x ltp (10 sec), 1% 2x read_blif (0 sec), ...
 >>> Temacle mapping succeed with area = 87471.42796003819
 div Temacle saveArea=(109675.87715125084-87471.42796003819) / 109675.87715125084 =  20.245517763756872 %
 =================================================================================
@@ -6463,9 +6466,9 @@ div Temacle saveArea=(109675.87715125084-87471.42796003819) / 109675.87715125084
 =================================================================================
 
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/hyp.aig
-resyn runtime: 54
+resyn runtime: 45
 [i] area: 505147.9388023615, gates: 187027, depth: 10749
-mapping runtime: 8
+mapping runtime: 7
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -6490,22 +6493,22 @@ mapping runtime: 8
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/CUCWOC4QUL.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/hyp//hyp_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/ZTUVAMRJX4.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/hyp//hyp_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/CUCWOC4QUL.v
-Parsing Verilog input from `/tmp/CUCWOC4QUL.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/ZTUVAMRJX4.v
+Parsing Verilog input from `/tmp/ZTUVAMRJX4.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: c9d69b8bd3
-CPU: user 19.06s system 1.40s, MEM: 1518.02 MB total, 1502.29 MB resident
+End of script. Logfile hash: b1d31051a6
+CPU: user 17.06s system 0.67s, MEM: 1518.02 MB total, 1503.71 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 91% 2x read_verilog (18 sec), 8% 2x write_blif (1 sec), ...
+Time spent: 91% 2x read_verilog (16 sec), 8% 2x write_blif (1 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -17318,14 +17321,14 @@ Longest topological path in top (length=10749):
 10749: \y0 (via $auto$blifparse.cc:371:parse_blif$187027)
 
 End of script. Logfile hash: b698f4269d
-CPU: user 330.43s system 0.20s, MEM: 286.19 MB total, 269.69 MB resident
+CPU: user 187.81s system 0.18s, MEM: 286.20 MB total, 271.29 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 99% 1x ltp (329 sec), 0% 2x read_blif (0 sec), ...
+Time spent: 99% 1x ltp (186 sec), 0% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area= 505147.9388023615
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/hyp.aig
-resyn runtime: 55
+resyn runtime: 42
 [i] area: 421038.9982253313, gates: 135468, depth: 10733
-mapping runtime: 8
+mapping runtime: 7
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -17350,22 +17353,22 @@ mapping runtime: 8
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/hyp/HYP_G4_98_582.lib; read_verilog /tmp/IGLCMF1G09.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/hyp//hyp_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/hyp/HYP_G4_98_582.lib; read_verilog /tmp/7TCDN7VE4O.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/hyp//hyp_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/IGLCMF1G09.v
-Parsing Verilog input from `/tmp/IGLCMF1G09.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/7TCDN7VE4O.v
+Parsing Verilog input from `/tmp/7TCDN7VE4O.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 8bee7688c3
-CPU: user 14.95s system 0.60s, MEM: 1166.52 MB total, 1144.68 MB resident
+End of script. Logfile hash: 733b1f31c5
+CPU: user 12.38s system 0.50s, MEM: 1166.52 MB total, 1144.79 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 90% 2x read_verilog (13 sec), 9% 2x write_blif (1 sec), ...
+Time spent: 91% 2x read_verilog (11 sec), 8% 2x write_blif (1 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -28167,9 +28170,9 @@ Longest topological path in top (length=10733):
 10733: \y0 (via $auto$blifparse.cc:371:parse_blif$135468)
 
 End of script. Logfile hash: bd4f4f91fe
-CPU: user 142.13s system 0.17s, MEM: 241.99 MB total, 220.17 MB resident
+CPU: user 46.56s system 0.17s, MEM: 241.98 MB total, 221.24 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 99% 1x ltp (141 sec), 0% 2x read_blif (0 sec), ...
+Time spent: 98% 1x ltp (45 sec), 1% 2x read_blif (0 sec), ...
 >>> Temacle mapping succeed with area = 421038.9982253313
 hyp Temacle saveArea=(505147.9388023615-421038.9982253313) / 505147.9388023615 =  16.65035806667672 %
 =================================================================================
@@ -28177,7 +28180,7 @@ hyp Temacle saveArea=(505147.9388023615-421038.9982253313) / 505147.9388023615 =
 =================================================================================
 
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/i2c.aig
-resyn runtime: 8
+resyn runtime: 7
 [i] area: 2461.947753548622, gates: 1094, depth: 11
 mapping runtime: 0
 
@@ -28204,22 +28207,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/NVSEPANOIV.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/i2c//i2c_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/CDD008YQFX.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/i2c//i2c_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/NVSEPANOIV.v
-Parsing Verilog input from `/tmp/NVSEPANOIV.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/CDD008YQFX.v
+Parsing Verilog input from `/tmp/CDD008YQFX.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 00d68dddc5
-CPU: user 0.09s system 0.01s, MEM: 25.00 MB total, 18.00 MB resident
+End of script. Logfile hash: 62d53ab585
+CPU: user 0.08s system 0.02s, MEM: 25.00 MB total, 18.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 82% 2x read_verilog (0 sec), 10% 2x read_liberty (0 sec), ...
+Time spent: 81% 2x read_verilog (0 sec), 11% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -28298,13 +28301,13 @@ Longest topological path in top (length=11):
    11: \y16 (via $auto$blifparse.cc:371:parse_blif$102)
 
 End of script. Logfile hash: 731e0e050d
-CPU: user 0.02s system 0.00s, MEM: 17.70 MB total, 11.00 MB resident
+CPU: user 0.02s system 0.02s, MEM: 17.70 MB total, 11.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 27% 1x stat (0 sec), 26% 2x read_blif (0 sec), ...
+Time spent: 37% 2x read_liberty (0 sec), 27% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area= 2461.947753548622
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/i2c.aig
-resyn runtime: 8
-[i] area: 2396.0111685991287, gates: 1033, depth: 11
+resyn runtime: 7
+[i] area: 2377.5536762475967, gates: 992, depth: 11
 mapping runtime: 0
 
  /----------------------------------------------------------------------------\
@@ -28330,20 +28333,20 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/i2c/I2C_G4_15_1032.lib; read_verilog /tmp/5B0GDN49E8.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/i2c//i2c_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/i2c/I2C_G4_15_153_154.lib; read_verilog /tmp/RZFQKOGIHO.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/i2c//i2c_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/5B0GDN49E8.v
-Parsing Verilog input from `/tmp/5B0GDN49E8.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/RZFQKOGIHO.v
+Parsing Verilog input from `/tmp/RZFQKOGIHO.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: d223f79f97
-CPU: user 0.08s system 0.01s, MEM: 24.52 MB total, 18.00 MB resident
+End of script. Logfile hash: 6bac9d400f
+CPU: user 0.08s system 0.00s, MEM: 24.26 MB total, 17.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
 Time spent: 86% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
 
@@ -28370,7 +28373,7 @@ Time spent: 86% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/i2c/I2C_G4_15_1032.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/i2c//i2c_temacle.blif; stat -liberty outputs/Astran/K3/i2c/I2C_G4_15_1032.lib; ltp;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/i2c/I2C_G4_15_153_154.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/i2c//i2c_temacle.blif; stat -liberty outputs/Astran/K3/i2c/I2C_G4_15_153_154.lib; ltp;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
@@ -28381,59 +28384,58 @@ Imported 17 cell types from liberty file.
 
 === top ===
 
-   Number of wires:               1181
-   Number of wire bits:           1181
-   Number of public wires:        1181
-   Number of public wire bits:    1181
+   Number of wires:               1140
+   Number of wire bits:           1140
+   Number of public wires:        1140
+   Number of public wire bits:    1140
    Number of memories:               0
    Number of memory bits:            0
    Number of processes:              0
-   Number of cells:               1034
-     AND2X2                          6
-     AOI21X1                        84
+   Number of cells:                993
+     AND2X2                         11
+     AOI21X1                        91
      BUFX2                          14
-     I2C_G0_15_66                   34
-     I2C_G1_15_17                   34
-     I2C_G2_15_21_146                4
-     I2C_G3_94_119                  18
-     I2C_G4_15_1032                 18
-     INVX1                         135
-     NAND2X1                       224
-     NAND3X1                       187
-     NOR2X1                         49
-     NOR3X1                        105
-     OAI21X1                       117
+     I2C_G0_15_66                   28
+     I2C_G1_15_17                   35
+     I2C_G2_15_21_146                1
+     I2C_G3_94_119                  28
+     I2C_G4_15_153_154              90
+     INVX1                          98
+     NAND2X1                       217
+     NAND3X1                       144
+     NOR2X1                         37
+     NOR3X1                         81
+     OAI21X1                       113
      OR2X2                           1
-     XNOR2X1                         2
-     XOR2X1                          1
+     XOR2X1                          3
      const_1                         1
 
    Area for cell type \const_1 is unknown!
 
-   Chip area for module '\top': 2393.664700
+   Chip area for module '\top': 2377.553700
 
 4. Executing LTP pass (find longest path).
 
 Longest topological path in top (length=11):
     0: \x7
-    1: \n234 (via $auto$blifparse.cc:371:parse_blif$43)
-    2: \n235 (via $auto$blifparse.cc:371:parse_blif$44)
-    3: \n237 (via $auto$blifparse.cc:371:parse_blif$49)
-    4: \n238 (via $auto$blifparse.cc:371:parse_blif$53)
-    5: \n239 (via $auto$blifparse.cc:371:parse_blif$55)
-    6: \n240 (via $auto$blifparse.cc:371:parse_blif$56)
-    7: \n241 (via $auto$blifparse.cc:371:parse_blif$57)
-    8: \n242 (via $auto$blifparse.cc:371:parse_blif$58)
-    9: \n246 (via $auto$blifparse.cc:371:parse_blif$61)
-   10: \n254 (via $auto$blifparse.cc:371:parse_blif$62)
-   11: \y15 (via $auto$blifparse.cc:371:parse_blif$63)
+    1: \n223 (via $auto$blifparse.cc:371:parse_blif$43)
+    2: \n224 (via $auto$blifparse.cc:371:parse_blif$44)
+    3: \n226 (via $auto$blifparse.cc:371:parse_blif$48)
+    4: \n227 (via $auto$blifparse.cc:371:parse_blif$50)
+    5: \n228 (via $auto$blifparse.cc:371:parse_blif$52)
+    6: \n229 (via $auto$blifparse.cc:371:parse_blif$53)
+    7: \n230 (via $auto$blifparse.cc:371:parse_blif$54)
+    8: \n231 (via $auto$blifparse.cc:371:parse_blif$55)
+    9: \n235 (via $auto$blifparse.cc:371:parse_blif$58)
+   10: \n243 (via $auto$blifparse.cc:371:parse_blif$59)
+   11: \y15 (via $auto$blifparse.cc:371:parse_blif$60)
 
-End of script. Logfile hash: 72da9226c0
-CPU: user 0.02s system 0.01s, MEM: 17.47 MB total, 11.00 MB resident
+End of script. Logfile hash: 41618e8ebd
+CPU: user 0.02s system 0.01s, MEM: 17.19 MB total, 10.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 38% 2x read_blif (0 sec), 27% 2x read_liberty (0 sec), ...
->>> Temacle mapping succeed with area = 2396.0111685991287
-i2c Temacle saveArea=(2461.947753548622-2396.0111685991287) / 2461.947753548622 =  2.6782284414627893 %
+Time spent: 39% 2x read_blif (0 sec), 27% 2x read_liberty (0 sec), ...
+>>> Temacle mapping succeed with area = 2377.5536762475967
+i2c Temacle saveArea=(2461.947753548622-2377.5536762475967) / 2461.947753548622 =  3.427939410143078 %
 =================================================================================
  int2float 
 =================================================================================
@@ -28466,22 +28468,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/ICKUE55961.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/int2float//int2float_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/CGWXK85UV1.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/int2float//int2float_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/ICKUE55961.v
-Parsing Verilog input from `/tmp/ICKUE55961.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/CGWXK85UV1.v
+Parsing Verilog input from `/tmp/CGWXK85UV1.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 1e5d1e6b01
-CPU: user 0.03s system 0.00s, MEM: 17.11 MB total, 10.50 MB resident
+End of script. Logfile hash: 4953ead867
+CPU: user 0.03s system 0.01s, MEM: 17.11 MB total, 10.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 57% 2x read_verilog (0 sec), 37% 2x read_liberty (0 sec), ...
+Time spent: 52% 2x read_verilog (0 sec), 41% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -28551,9 +28553,9 @@ Longest topological path in top (length=9):
     9: \y0 (via $auto$blifparse.cc:371:parse_blif$46)
 
 End of script. Logfile hash: 170e45f596
-CPU: user 0.02s system 0.01s, MEM: 16.59 MB total, 10.00 MB resident
+CPU: user 0.01s system 0.00s, MEM: 16.59 MB total, 10.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 52% 2x read_liberty (0 sec), 33% 1x stat (0 sec), ...
+Time spent: 44% 2x read_liberty (0 sec), 39% 1x stat (0 sec), ...
 >>> initial mapping succeed with area= 420.492791891098
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/int2float.aig
 resyn runtime: 0
@@ -28583,22 +28585,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/int2float/INT2FLOAT_G3_3_7_158.lib; read_verilog /tmp/YH56OOALB3.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/int2float//int2float_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/int2float/INT2FLOAT_G3_3_4_158.lib; read_verilog /tmp/QC7FMR9NOJ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/int2float//int2float_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 16 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/YH56OOALB3.v
-Parsing Verilog input from `/tmp/YH56OOALB3.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/QC7FMR9NOJ.v
+Parsing Verilog input from `/tmp/QC7FMR9NOJ.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: d528c6b21e
+End of script. Logfile hash: bcdb3b0752
 CPU: user 0.02s system 0.01s, MEM: 16.98 MB total, 10.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 73% 2x read_verilog (0 sec), 19% 2x read_liberty (0 sec), ...
+Time spent: 75% 2x read_verilog (0 sec), 17% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -28623,7 +28625,7 @@ Time spent: 73% 2x read_verilog (0 sec), 19% 2x read_liberty (0 sec), ...
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/int2float/INT2FLOAT_G3_3_7_158.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/int2float//int2float_temacle.blif; stat -liberty outputs/Astran/K3/int2float/INT2FLOAT_G3_3_7_158.lib; ltp;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/int2float/INT2FLOAT_G3_3_4_158.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/int2float//int2float_temacle.blif; stat -liberty outputs/Astran/K3/int2float/INT2FLOAT_G3_3_4_158.lib; ltp;' --
 
 1. Executing Liberty frontend.
 Imported 16 cell types from liberty file.
@@ -28643,9 +28645,9 @@ Imported 16 cell types from liberty file.
    Number of processes:              0
    Number of cells:                169
      AOI21X1                        23
-     INT2FLOAT_G1_1_10               5
-     INT2FLOAT_G2_0_160              5
-     INT2FLOAT_G3_3_7_158            6
+     INT2FLOAT_G1_0_62               5
+     INT2FLOAT_G2_0_128              5
+     INT2FLOAT_G3_3_4_158            6
      INVX1                          14
      NAND2X1                        28
      NAND3X1                        42
@@ -28670,10 +28672,10 @@ Longest topological path in top (length=9):
     8: \n99 (via $auto$blifparse.cc:371:parse_blif$87)
     9: \y1 (via $auto$blifparse.cc:371:parse_blif$88)
 
-End of script. Logfile hash: 86522bd807
-CPU: user 0.01s system 0.01s, MEM: 15.95 MB total, 9.50 MB resident
+End of script. Logfile hash: b6ae046e81
+CPU: user 0.01s system 0.00s, MEM: 15.95 MB total, 9.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 44% 2x read_liberty (0 sec), 30% 1x stat (0 sec), ...
+Time spent: 47% 2x read_liberty (0 sec), 25% 1x stat (0 sec), ...
 >>> Temacle mapping succeed with area = 408.2087936401367
 int2float Temacle saveArea=(420.492791891098-408.2087936401367) / 420.492791891098 =  2.921333846346335 %
 =================================================================================
@@ -28708,20 +28710,20 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/UP9KY0ERMK.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/log2//log2_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/C9HBWC61GU.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/log2//log2_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/UP9KY0ERMK.v
-Parsing Verilog input from `/tmp/UP9KY0ERMK.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/C9HBWC61GU.v
+Parsing Verilog input from `/tmp/C9HBWC61GU.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 40cea65afa
-CPU: user 1.82s system 0.07s, MEM: 196.36 MB total, 189.10 MB resident
+End of script. Logfile hash: 823f2447ce
+CPU: user 1.73s system 0.06s, MEM: 196.36 MB total, 188.95 MB resident
 Yosys 0.9 (git sha1 1979e0b)
 Time spent: 91% 2x read_verilog (1 sec), 7% 2x write_blif (0 sec), ...
 
@@ -29019,14 +29021,14 @@ Longest topological path in top (length=232):
   232: \y31 (via $auto$blifparse.cc:371:parse_blif$21827)
 
 End of script. Logfile hash: d3b64ce3b7
-CPU: user 0.40s system 0.02s, MEM: 47.78 MB total, 39.43 MB resident
+CPU: user 0.37s system 0.01s, MEM: 47.78 MB total, 40.51 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 66% 1x ltp (0 sec), 25% 2x read_blif (0 sec), ...
+Time spent: 65% 1x ltp (0 sec), 27% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area= 58706.61291372776
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/log2.aig
 resyn runtime: 4
 [i] area: 53159.03025782108, gates: 18586, depth: 221
-mapping runtime: 1
+mapping runtime: 0
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -29051,22 +29053,22 @@ mapping runtime: 1
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/log2/LOG2_G4_2_89.lib; read_verilog /tmp/WV6BYQ4TBF.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/log2//log2_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/log2/LOG2_G4_2_89.lib; read_verilog /tmp/Z75FTU778S.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/log2//log2_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/WV6BYQ4TBF.v
-Parsing Verilog input from `/tmp/WV6BYQ4TBF.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/Z75FTU778S.v
+Parsing Verilog input from `/tmp/Z75FTU778S.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 49e8b03fb3
-CPU: user 2.27s system 0.08s, MEM: 173.96 MB total, 165.48 MB resident
+End of script. Logfile hash: 171353adf2
+CPU: user 1.59s system 0.08s, MEM: 173.96 MB total, 164.98 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 93% 2x read_verilog (2 sec), 6% 2x write_blif (0 sec), ...
+Time spent: 92% 2x read_verilog (1 sec), 6% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -29356,9 +29358,9 @@ Longest topological path in top (length=221):
   221: \y31 (via $auto$blifparse.cc:371:parse_blif$18586)
 
 End of script. Logfile hash: f908453b77
-CPU: user 0.52s system 0.02s, MEM: 44.99 MB total, 37.20 MB resident
+CPU: user 0.29s system 0.02s, MEM: 44.99 MB total, 37.43 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 78% 1x ltp (0 sec), 18% 2x read_blif (0 sec), ...
+Time spent: 65% 1x ltp (0 sec), 29% 2x read_blif (0 sec), ...
 >>> Temacle mapping succeed with area = 53159.03025782108
 log2 Temacle saveArea=(58706.61291372776-53159.03025782108) / 58706.61291372776 =  9.449672499517426 %
 =================================================================================
@@ -29393,22 +29395,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/6VC408PDLI.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/max//max_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/MINF1L1QHI.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/max//max_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/6VC408PDLI.v
-Parsing Verilog input from `/tmp/6VC408PDLI.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/MINF1L1QHI.v
+Parsing Verilog input from `/tmp/MINF1L1QHI.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: a8264692de
-CPU: user 0.22s system 0.02s, MEM: 37.92 MB total, 31.50 MB resident
+End of script. Logfile hash: bc1369bc82
+CPU: user 0.18s system 0.02s, MEM: 37.92 MB total, 31.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 89% 2x read_verilog (0 sec), 9% 2x write_blif (0 sec), ...
+Time spent: 86% 2x read_verilog (0 sec), 8% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -29648,9 +29650,9 @@ Longest topological path in top (length=178):
   178: \y0 (via $auto$blifparse.cc:371:parse_blif$2247)
 
 End of script. Logfile hash: cc355122b2
-CPU: user 0.04s system 0.01s, MEM: 19.85 MB total, 13.50 MB resident
+CPU: user 0.03s system 0.01s, MEM: 19.85 MB total, 13.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 36% 1x ltp (0 sec), 33% 2x read_blif (0 sec), ...
+Time spent: 36% 2x read_blif (0 sec), 31% 1x ltp (0 sec), ...
 >>> initial mapping succeed with area= 6006.570600032806
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/max.aig
 resyn runtime: 0
@@ -29680,22 +29682,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/max/MAX_G4_0_1.lib; read_verilog /tmp/TKVUX8EGR9.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/max//max_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/max/MAX_G4_0_1.lib; read_verilog /tmp/NPGRT8IPKV.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/max//max_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/TKVUX8EGR9.v
-Parsing Verilog input from `/tmp/TKVUX8EGR9.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/NPGRT8IPKV.v
+Parsing Verilog input from `/tmp/NPGRT8IPKV.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 084622baad
-CPU: user 0.17s system 0.01s, MEM: 33.45 MB total, 27.00 MB resident
+End of script. Logfile hash: d7c8d4a1c0
+CPU: user 0.15s system 0.01s, MEM: 33.45 MB total, 27.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 90% 2x read_verilog (0 sec), 8% 2x write_blif (0 sec), ...
+Time spent: 88% 2x read_verilog (0 sec), 8% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -29938,9 +29940,9 @@ Longest topological path in top (length=176):
   176: \y0 (via $auto$blifparse.cc:371:parse_blif$1960)
 
 End of script. Logfile hash: 9b5b8b057f
-CPU: user 0.02s system 0.01s, MEM: 18.94 MB total, 12.50 MB resident
+CPU: user 0.03s system 0.01s, MEM: 18.94 MB total, 12.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 39% 2x read_blif (0 sec), 38% 1x ltp (0 sec), ...
+Time spent: 48% 2x read_blif (0 sec), 24% 1x ltp (0 sec), ...
 >>> Temacle mapping succeed with area = 5260.662636637688
 max Temacle saveArea=(6006.570600032806-5260.662636637688) / 6006.570600032806 =  12.418200218791148 %
 =================================================================================
@@ -29948,9 +29950,9 @@ max Temacle saveArea=(6006.570600032806-5260.662636637688) / 6006.570600032806 =
 =================================================================================
 
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/mem_ctrl.aig
-resyn runtime: 5
+resyn runtime: 4
 [i] area: 81985.77007555962, gates: 36517, depth: 74
-mapping runtime: 1
+mapping runtime: 0
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -29975,22 +29977,22 @@ mapping runtime: 1
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/8GBFMM8YYX.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/mem_ctrl//mem_ctrl_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/43NB5M1R5Z.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/mem_ctrl//mem_ctrl_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/8GBFMM8YYX.v
-Parsing Verilog input from `/tmp/8GBFMM8YYX.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/43NB5M1R5Z.v
+Parsing Verilog input from `/tmp/43NB5M1R5Z.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 913edbcff5
-CPU: user 3.59s system 0.12s, MEM: 324.46 MB total, 314.74 MB resident
+End of script. Logfile hash: 4a8d70c19a
+CPU: user 3.11s system 0.15s, MEM: 324.46 MB total, 314.74 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 91% 2x read_verilog (3 sec), 7% 2x write_blif (0 sec), ...
+Time spent: 92% 2x read_verilog (2 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -30132,14 +30134,14 @@ Longest topological path in top (length=74):
    74: \y297 (via $auto$blifparse.cc:371:parse_blif$12466)
 
 End of script. Logfile hash: 5042ae832b
-CPU: user 0.61s system 0.03s, MEM: 74.60 MB total, 65.14 MB resident
+CPU: user 0.35s system 0.06s, MEM: 74.60 MB total, 65.14 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 58% 1x ltp (0 sec), 34% 2x read_blif (0 sec), ...
+Time spent: 47% 1x ltp (0 sec), 44% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area= 81985.77007555962
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/mem_ctrl.aig
-resyn runtime: 5
+resyn runtime: 4
 [i] area: 76460.30781400204, gates: 29052, depth: 74
-mapping runtime: 1
+mapping runtime: 0
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -30164,22 +30166,22 @@ mapping runtime: 1
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/mem_ctrl/MEM_CTRL_G4_249_250.lib; read_verilog /tmp/OF9T5JO5B2.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/mem_ctrl//mem_ctrl_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/mem_ctrl/MEM_CTRL_G4_249_250.lib; read_verilog /tmp/7A3SPCHMWW.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/mem_ctrl//mem_ctrl_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/OF9T5JO5B2.v
-Parsing Verilog input from `/tmp/OF9T5JO5B2.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/7A3SPCHMWW.v
+Parsing Verilog input from `/tmp/7A3SPCHMWW.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 92e45ea94a
-CPU: user 3.68s system 0.19s, MEM: 266.26 MB total, 258.93 MB resident
+End of script. Logfile hash: 7fe6863fd1
+CPU: user 2.60s system 0.08s, MEM: 266.26 MB total, 259.65 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 91% 2x read_verilog (3 sec), 8% 2x write_blif (0 sec), ...
+Time spent: 92% 2x read_verilog (2 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -30326,9 +30328,9 @@ Longest topological path in top (length=74):
    74: \y298 (via $auto$blifparse.cc:371:parse_blif$10923)
 
 End of script. Logfile hash: a25cd9903a
-CPU: user 0.55s system 0.02s, MEM: 56.93 MB total, 50.07 MB resident
+CPU: user 0.31s system 0.01s, MEM: 56.93 MB total, 50.25 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 64% 1x ltp (0 sec), 31% 2x read_blif (0 sec), ...
+Time spent: 47% 2x read_blif (0 sec), 45% 1x ltp (0 sec), ...
 >>> Temacle mapping succeed with area = 76460.30781400204
 mem_ctrl Temacle saveArea=(81985.77007555962-76460.30781400204) / 81985.77007555962 =  6.7395381618849335 %
 =================================================================================
@@ -30363,22 +30365,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/EUZ57OOR82.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/multiplier//multiplier_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/OAY8GC25KB.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/multiplier//multiplier_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/EUZ57OOR82.v
-Parsing Verilog input from `/tmp/EUZ57OOR82.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/OAY8GC25KB.v
+Parsing Verilog input from `/tmp/OAY8GC25KB.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 94140d0d15
-CPU: user 1.86s system 0.07s, MEM: 154.38 MB total, 144.89 MB resident
+End of script. Logfile hash: 2d85bf1739
+CPU: user 1.28s system 0.08s, MEM: 154.38 MB total, 146.10 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 92% 2x read_verilog (1 sec), 7% 2x write_blif (0 sec), ...
+Time spent: 91% 2x read_verilog (1 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -30621,9 +30623,9 @@ Longest topological path in top (length=179):
   179: \y127 (via $auto$blifparse.cc:371:parse_blif$16684)
 
 End of script. Logfile hash: 0d08ca7b48
-CPU: user 0.33s system 0.02s, MEM: 43.20 MB total, 35.07 MB resident
+CPU: user 0.17s system 0.02s, MEM: 43.20 MB total, 35.11 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 65% 1x ltp (0 sec), 27% 2x read_blif (0 sec), ...
+Time spent: 46% 2x read_blif (0 sec), 40% 1x ltp (0 sec), ...
 >>> initial mapping succeed with area= 48909.50630235672
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/multiplier.aig
 resyn runtime: 2
@@ -30653,22 +30655,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/multiplier/MULTIPLIER_G4_33_67.lib; read_verilog /tmp/LLV8O93TS6.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/multiplier//multiplier_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/multiplier/MULTIPLIER_G4_12_7685.lib; read_verilog /tmp/YVUEYQCF75.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/multiplier//multiplier_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/LLV8O93TS6.v
-Parsing Verilog input from `/tmp/LLV8O93TS6.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/YVUEYQCF75.v
+Parsing Verilog input from `/tmp/YVUEYQCF75.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: eda91e321e
-CPU: user 1.76s system 0.09s, MEM: 134.74 MB total, 128.07 MB resident
+End of script. Logfile hash: 16c63773ad
+CPU: user 1.13s system 0.06s, MEM: 134.76 MB total, 128.26 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 88% 2x read_verilog (1 sec), 11% 2x write_blif (0 sec), ...
+Time spent: 91% 2x read_verilog (1 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -30693,7 +30695,7 @@ Time spent: 88% 2x read_verilog (1 sec), 11% 2x write_blif (0 sec), ...
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/multiplier/MULTIPLIER_G4_33_67.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/multiplier//multiplier_temacle.blif; stat -liberty outputs/Astran/K3/multiplier/MULTIPLIER_G4_33_67.lib; ltp;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/multiplier/MULTIPLIER_G4_12_7685.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/multiplier//multiplier_temacle.blif; stat -liberty outputs/Astran/K3/multiplier/MULTIPLIER_G4_12_7685.lib; ltp;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
@@ -30715,11 +30717,11 @@ Imported 17 cell types from liberty file.
      AND2X2                        166
      AOI21X1                      2442
      INVX1                         950
-     MULTIPLIER_G0_2_190          1316
-     MULTIPLIER_G1_50_51           203
-     MULTIPLIER_G2_19_72           275
-     MULTIPLIER_G3_15_575          244
-     MULTIPLIER_G4_33_67          1140
+     MULTIPLIER_G0_2_27           1316
+     MULTIPLIER_G1_25_27           203
+     MULTIPLIER_G2_10_8358         275
+     MULTIPLIER_G3_15_399          244
+     MULTIPLIER_G4_12_7685        1140
      NAND2X1                      2358
      NAND3X1                       585
      NOR2X1                        241
@@ -30914,10 +30916,10 @@ Longest topological path in top (length=178):
   177: \n14007 (via $auto$blifparse.cc:371:parse_blif$13878)
   178: \y127 (via $auto$blifparse.cc:371:parse_blif$13880)
 
-End of script. Logfile hash: 41e5000b22
-CPU: user 0.28s system 0.02s, MEM: 35.61 MB total, 29.03 MB resident
+End of script. Logfile hash: e555b5a2d0
+CPU: user 0.13s system 0.02s, MEM: 35.62 MB total, 29.03 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 50% 1x ltp (0 sec), 42% 2x read_blif (0 sec), ...
+Time spent: 51% 2x read_blif (0 sec), 39% 1x ltp (0 sec), ...
 >>> Temacle mapping succeed with area = 43851.75168347359
 multiplier Temacle saveArea=(48909.50630235672-43851.75168347359) / 48909.50630235672 =  10.341046150857228 %
 =================================================================================
@@ -30952,22 +30954,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/WUK2MIG98R.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/priority//priority_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/J20DPPRN2M.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/priority//priority_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/WUK2MIG98R.v
-Parsing Verilog input from `/tmp/WUK2MIG98R.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/J20DPPRN2M.v
+Parsing Verilog input from `/tmp/J20DPPRN2M.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: a0de9c7c6a
-CPU: user 0.13s system 0.01s, MEM: 24.57 MB total, 18.50 MB resident
+End of script. Logfile hash: 7fcb7a648c
+CPU: user 0.08s system 0.01s, MEM: 24.57 MB total, 18.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 85% 2x read_verilog (0 sec), 9% 2x write_blif (0 sec), ...
+Time spent: 80% 2x read_verilog (0 sec), 11% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -31093,13 +31095,13 @@ Longest topological path in top (length=64):
    64: \y0 (via $auto$blifparse.cc:371:parse_blif$578)
 
 End of script. Logfile hash: ca4fa66cd2
-CPU: user 0.04s system 0.00s, MEM: 17.58 MB total, 11.00 MB resident
+CPU: user 0.03s system 0.01s, MEM: 17.58 MB total, 11.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 29% 1x ltp (0 sec), 26% 1x stat (0 sec), ...
+Time spent: 38% 2x read_liberty (0 sec), 24% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area= 2344.153460264206
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/priority.aig
 resyn runtime: 0
-[i] area: 1796.7695363759995, gates: 652, depth: 64
+[i] area: 1796.5141361951828, gates: 652, depth: 64
 mapping runtime: 0
 
  /----------------------------------------------------------------------------\
@@ -31125,22 +31127,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/priority/PRIORITY_G4_97_106.lib; read_verilog /tmp/OBI1YXBXYF.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/priority//priority_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/priority/PRIORITY_G4_497_565_566.lib; read_verilog /tmp/2JDEHAPGFY.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/priority//priority_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/OBI1YXBXYF.v
-Parsing Verilog input from `/tmp/OBI1YXBXYF.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/2JDEHAPGFY.v
+Parsing Verilog input from `/tmp/2JDEHAPGFY.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: e2a139630c
-CPU: user 0.09s system 0.00s, MEM: 21.25 MB total, 14.50 MB resident
+End of script. Logfile hash: 11e5dee7bf
+CPU: user 0.06s system 0.00s, MEM: 21.25 MB total, 14.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 86% 2x read_verilog (0 sec), 10% 2x write_blif (0 sec), ...
+Time spent: 82% 2x read_verilog (0 sec), 9% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -31165,7 +31167,7 @@ Time spent: 86% 2x read_verilog (0 sec), 10% 2x write_blif (0 sec), ...
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/priority/PRIORITY_G4_97_106.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/priority//priority_temacle.blif; stat -liberty outputs/Astran/K3/priority/PRIORITY_G4_97_106.lib; ltp;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/priority/PRIORITY_G4_497_565_566.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/priority//priority_temacle.blif; stat -liberty outputs/Astran/K3/priority/PRIORITY_G4_497_565_566.lib; ltp;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
@@ -31184,20 +31186,20 @@ Imported 17 cell types from liberty file.
    Number of memory bits:            0
    Number of processes:              0
    Number of cells:                652
-     AND2X2                          1
-     AOI21X1                         5
+     AOI21X1                         4
      INVX1                          87
      NAND2X1                        86
      NAND3X1                        65
      NOR2X1                         65
-     NOR3X1                         38
+     NOR3X1                         37
      OAI21X1                         6
-     PRIORITY_G0_0_1069             77
-     PRIORITY_G1_625_626           215
-     PRIORITY_G3_35_241_632_633      1
-     PRIORITY_G4_97_106              6
+     PRIORITY_G0_0_1069             76
+     PRIORITY_G1_625_626           214
+     PRIORITY_G2_2_449_450           1
+     PRIORITY_G3_97_106              7
+     PRIORITY_G4_497_565_566         4
 
-   Chip area for module '\top': 1796.769500
+   Chip area for module '\top': 1796.514100
 
 4. Executing LTP pass (find longest path).
 
@@ -31268,12 +31270,12 @@ Longest topological path in top (length=64):
    63: \n578 (via $auto$blifparse.cc:371:parse_blif$448)
    64: \y1 (via $auto$blifparse.cc:371:parse_blif$449)
 
-End of script. Logfile hash: 58f695a14d
-CPU: user 0.01s system 0.01s, MEM: 16.61 MB total, 10.00 MB resident
+End of script. Logfile hash: 1136e1f465
+CPU: user 0.02s system 0.00s, MEM: 16.62 MB total, 10.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 31% 1x ltp (0 sec), 29% 2x read_blif (0 sec), ...
->>> Temacle mapping succeed with area = 1796.7695363759995
-priority Temacle saveArea=(2344.153460264206-1796.7695363759995) / 2344.153460264206 =  23.351027702192827 %
+Time spent: 36% 2x read_blif (0 sec), 23% 1x ltp (0 sec), ...
+>>> Temacle mapping succeed with area = 1796.5141361951828
+priority Temacle saveArea=(2344.153460264206-1796.5141361951828) / 2344.153460264206 =  23.36192290104162 %
 =================================================================================
  router 
 =================================================================================
@@ -31306,22 +31308,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/X4OP55FY8D.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/router//router_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/6XPMOSWXTG.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/router//router_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/X4OP55FY8D.v
-Parsing Verilog input from `/tmp/X4OP55FY8D.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/6XPMOSWXTG.v
+Parsing Verilog input from `/tmp/6XPMOSWXTG.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 76f00d8414
-CPU: user 0.04s system 0.00s, MEM: 17.75 MB total, 11.00 MB resident
+End of script. Logfile hash: 326290d1d7
+CPU: user 0.03s system 0.01s, MEM: 17.75 MB total, 11.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 68% 2x read_verilog (0 sec), 20% 2x read_liberty (0 sec), ...
+Time spent: 59% 2x read_verilog (0 sec), 33% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -31415,7 +31417,7 @@ Longest topological path in top (length=25):
 End of script. Logfile hash: 570ab03f13
 CPU: user 0.02s system 0.00s, MEM: 16.59 MB total, 10.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 38% 2x read_liberty (0 sec), 38% 1x stat (0 sec), ...
+Time spent: 50% 2x read_liberty (0 sec), 32% 1x stat (0 sec), ...
 >>> initial mapping succeed with area= 574.4231873750687
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/router.aig
 resyn runtime: 0
@@ -31445,22 +31447,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/router/ROUTER_G4_35_96.lib; read_verilog /tmp/38F3IG7JZ2.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/router//router_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/router/ROUTER_G4_35_96.lib; read_verilog /tmp/HKC6CT1OTM.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/router//router_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/38F3IG7JZ2.v
-Parsing Verilog input from `/tmp/38F3IG7JZ2.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/HKC6CT1OTM.v
+Parsing Verilog input from `/tmp/HKC6CT1OTM.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: ea4daaf6fd
-CPU: user 0.03s system 0.00s, MEM: 17.50 MB total, 11.00 MB resident
+End of script. Logfile hash: 67e4e2bbfc
+CPU: user 0.03s system 0.01s, MEM: 17.50 MB total, 11.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 77% 2x read_verilog (0 sec), 12% 2x write_blif (0 sec), ...
+Time spent: 75% 2x read_verilog (0 sec), 17% 2x read_liberty (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -31556,9 +31558,9 @@ Longest topological path in top (length=25):
    25: \y2 (via $auto$blifparse.cc:371:parse_blif$238)
 
 End of script. Logfile hash: c884431b13
-CPU: user 0.01s system 0.00s, MEM: 16.08 MB total, 9.50 MB resident
+CPU: user 0.02s system 0.00s, MEM: 16.08 MB total, 9.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 33% 1x stat (0 sec), 32% 2x read_liberty (0 sec), ...
+Time spent: 45% 2x read_liberty (0 sec), 26% 1x stat (0 sec), ...
 >>> Temacle mapping succeed with area = 552.7156924009323
 router Temacle saveArea=(574.4231873750687-552.7156924009323) / 574.4231873750687 =  3.7790074375884277 %
 =================================================================================
@@ -31566,7 +31568,7 @@ router Temacle saveArea=(574.4231873750687-552.7156924009323) / 574.423187375068
 =================================================================================
 
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/sin.aig
-resyn runtime: 14
+resyn runtime: 10
 [i] area: 10884.94396173954, gates: 4145, depth: 116
 mapping runtime: 0
 
@@ -31593,22 +31595,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/R50ILJNXF1.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/sin//sin_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/MAP0LEHWZC.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/sin//sin_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/R50ILJNXF1.v
-Parsing Verilog input from `/tmp/R50ILJNXF1.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/MAP0LEHWZC.v
+Parsing Verilog input from `/tmp/MAP0LEHWZC.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 7c9e741e80
-CPU: user 0.37s system 0.02s, MEM: 50.07 MB total, 43.50 MB resident
+End of script. Logfile hash: 19f9f23f95
+CPU: user 0.28s system 0.02s, MEM: 50.07 MB total, 43.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 90% 2x read_verilog (0 sec), 8% 2x write_blif (0 sec), ...
+Time spent: 88% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -31788,12 +31790,12 @@ Longest topological path in top (length=116):
   116: \y23 (via $auto$blifparse.cc:371:parse_blif$4141)
 
 End of script. Logfile hash: c8ba0c0dd3
-CPU: user 0.07s system 0.00s, MEM: 22.29 MB total, 16.00 MB resident
+CPU: user 0.06s system 0.01s, MEM: 22.29 MB total, 16.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 45% 1x ltp (0 sec), 34% 2x read_blif (0 sec), ...
+Time spent: 39% 2x read_blif (0 sec), 33% 1x ltp (0 sec), ...
 >>> initial mapping succeed with area= 10884.94396173954
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/sin.aig
-resyn runtime: 14
+resyn runtime: 10
 [i] area: 9630.519233822823, gates: 3545, depth: 113
 mapping runtime: 0
 
@@ -31820,22 +31822,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/sin/SIN_G4_30_1810.lib; read_verilog /tmp/2XR6GPJX6T.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/sin//sin_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/sin/SIN_G4_30_450.lib; read_verilog /tmp/KQERQ1B8AW.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/sin//sin_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/2XR6GPJX6T.v
-Parsing Verilog input from `/tmp/2XR6GPJX6T.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/KQERQ1B8AW.v
+Parsing Verilog input from `/tmp/KQERQ1B8AW.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: e9080af7cf
-CPU: user 0.31s system 0.02s, MEM: 45.12 MB total, 39.00 MB resident
+End of script. Logfile hash: b3184bbf35
+CPU: user 0.26s system 0.01s, MEM: 45.12 MB total, 39.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 91% 2x read_verilog (0 sec), 8% 2x write_blif (0 sec), ...
+Time spent: 90% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -31860,7 +31862,7 @@ Time spent: 91% 2x read_verilog (0 sec), 8% 2x write_blif (0 sec), ...
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/sin/SIN_G4_30_1810.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/sin//sin_temacle.blif; stat -liberty outputs/Astran/K3/sin/SIN_G4_30_1810.lib; ltp;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/sin/SIN_G4_30_450.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/sin//sin_temacle.blif; stat -liberty outputs/Astran/K3/sin/SIN_G4_30_450.lib; ltp;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
@@ -31888,11 +31890,11 @@ Imported 17 cell types from liberty file.
      NOR3X1                        301
      OAI21X1                       364
      OR2X2                          14
-     SIN_G0_4_72                   235
-     SIN_G1_1_20                    84
-     SIN_G2_76_665                 104
-     SIN_G3_264_1869               194
-     SIN_G4_30_1810                 49
+     SIN_G0_1_95                   235
+     SIN_G1_0_4166                  84
+     SIN_G2_43_1335                104
+     SIN_G3_264_1859               194
+     SIN_G4_30_450                  49
      XNOR2X1                       177
      XOR2X1                         46
 
@@ -32016,10 +32018,10 @@ Longest topological path in top (length=113):
   112: \n3567 (via $auto$blifparse.cc:371:parse_blif$3541)
   113: \y23 (via $auto$blifparse.cc:371:parse_blif$3542)
 
-End of script. Logfile hash: 8500bc7ccf
-CPU: user 0.06s system 0.00s, MEM: 20.39 MB total, 14.00 MB resident
+End of script. Logfile hash: 95b4ebbd42
+CPU: user 0.05s system 0.00s, MEM: 20.39 MB total, 14.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 47% 1x ltp (0 sec), 38% 2x read_blif (0 sec), ...
+Time spent: 48% 2x read_blif (0 sec), 32% 1x ltp (0 sec), ...
 >>> Temacle mapping succeed with area = 9630.519233822823
 sin Temacle saveArea=(10884.94396173954-9630.519233822823) / 10884.94396173954 =  11.524402259910632 %
 =================================================================================
@@ -32054,22 +32056,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/VM450SCNFX.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/sqrt//sqrt_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/WKQWI4AS2O.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/sqrt//sqrt_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/VM450SCNFX.v
-Parsing Verilog input from `/tmp/VM450SCNFX.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/WKQWI4AS2O.v
+Parsing Verilog input from `/tmp/WKQWI4AS2O.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: c0596fdbb8
-CPU: user 2.03s system 0.13s, MEM: 169.96 MB total, 161.64 MB resident
+End of script. Logfile hash: fd9d146364
+CPU: user 1.45s system 0.06s, MEM: 169.96 MB total, 161.86 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 88% 2x read_verilog (1 sec), 11% 2x write_blif (0 sec), ...
+Time spent: 91% 2x read_verilog (1 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -35171,9 +35173,9 @@ Longest topological path in top (length=3039):
  3039: \y0 (via $auto$blifparse.cc:371:parse_blif$18140)
 
 End of script. Logfile hash: 2c09d04166
-CPU: user 15.56s system 0.03s, MEM: 45.14 MB total, 37.24 MB resident
+CPU: user 4.73s system 0.02s, MEM: 45.13 MB total, 37.35 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 98% 1x ltp (15 sec), 1% 2x read_blif (0 sec), ...
+Time spent: 98% 1x ltp (4 sec), 1% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area= 47816.03733432293
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/sqrt.aig
 resyn runtime: 0
@@ -35203,22 +35205,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/sqrt/SQRT_G4_99_102.lib; read_verilog /tmp/036WQEM11M.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/sqrt//sqrt_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/sqrt/SQRT_G4_99_102.lib; read_verilog /tmp/HR6QPJ86OD.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/sqrt//sqrt_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/036WQEM11M.v
-Parsing Verilog input from `/tmp/036WQEM11M.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/HR6QPJ86OD.v
+Parsing Verilog input from `/tmp/HR6QPJ86OD.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: d52df55029
-CPU: user 1.12s system 0.06s, MEM: 113.23 MB total, 106.38 MB resident
+End of script. Logfile hash: 0e1dd2aa30
+CPU: user 0.89s system 0.06s, MEM: 113.23 MB total, 106.38 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 92% 2x read_verilog (1 sec), 7% 2x write_blif (0 sec), ...
+Time spent: 91% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -38325,9 +38327,9 @@ Longest topological path in top (length=3038):
  3038: \y0 (via $auto$blifparse.cc:371:parse_blif$11341)
 
 End of script. Logfile hash: 0d13de2a8c
-CPU: user 5.20s system 0.02s, MEM: 32.98 MB total, 26.24 MB resident
+CPU: user 1.89s system 0.01s, MEM: 32.98 MB total, 26.12 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 98% 1x ltp (5 sec), 1% 2x read_blif (0 sec), ...
+Time spent: 96% 1x ltp (1 sec), 3% 2x read_blif (0 sec), ...
 >>> Temacle mapping succeed with area = 32719.131244897842
 sqrt Temacle saveArea=(47816.03733432293-32719.131244897842) / 47816.03733432293 =  31.572892550400333 %
 =================================================================================
@@ -38335,7 +38337,7 @@ sqrt Temacle saveArea=(47816.03733432293-32719.131244897842) / 47816.03733432293
 =================================================================================
 
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/square.aig
-resyn runtime: 12
+resyn runtime: 9
 [i] area: 37345.48532640934, gates: 13895, depth: 167
 mapping runtime: 0
 
@@ -38362,22 +38364,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/3V10KQ2PY3.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/square//square_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/2U3K4W1TLP.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/square//square_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/3V10KQ2PY3.v
-Parsing Verilog input from `/tmp/3V10KQ2PY3.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/2U3K4W1TLP.v
+Parsing Verilog input from `/tmp/2U3K4W1TLP.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 05f53f34b2
-CPU: user 1.29s system 0.06s, MEM: 128.30 MB total, 121.81 MB resident
+End of script. Logfile hash: 7e3ebeac6c
+CPU: user 1.08s system 0.04s, MEM: 128.30 MB total, 121.81 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 91% 2x read_verilog (1 sec), 8% 2x write_blif (0 sec), ...
+Time spent: 91% 2x read_verilog (1 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -38612,12 +38614,12 @@ Longest topological path in top (length=167):
   167: \y126 (via $auto$blifparse.cc:371:parse_blif$13895)
 
 End of script. Logfile hash: b4fd577274
-CPU: user 0.17s system 0.02s, MEM: 34.93 MB total, 28.36 MB resident
+CPU: user 0.14s system 0.01s, MEM: 34.93 MB total, 28.36 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 45% 1x ltp (0 sec), 43% 2x read_blif (0 sec), ...
+Time spent: 50% 2x read_blif (0 sec), 34% 1x ltp (0 sec), ...
 >>> initial mapping succeed with area= 37345.48532640934
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/square.aig
-resyn runtime: 12
+resyn runtime: 9
 [i] area: 33838.653702139854, gates: 11632, depth: 167
 mapping runtime: 0
 
@@ -38644,20 +38646,20 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/square/SQUARE_G4_19_20.lib; read_verilog /tmp/E5JF7JLF6T.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/square//square_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/square/SQUARE_G4_19_20.lib; read_verilog /tmp/203QE5GL8M.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/square//square_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/E5JF7JLF6T.v
-Parsing Verilog input from `/tmp/E5JF7JLF6T.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/203QE5GL8M.v
+Parsing Verilog input from `/tmp/203QE5GL8M.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 50e3c49767
-CPU: user 1.06s system 0.04s, MEM: 113.65 MB total, 106.92 MB resident
+End of script. Logfile hash: e190eb3db8
+CPU: user 0.93s system 0.02s, MEM: 113.65 MB total, 106.92 MB resident
 Yosys 0.9 (git sha1 1979e0b)
 Time spent: 92% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
 
@@ -38899,9 +38901,9 @@ Longest topological path in top (length=167):
   167: \y126 (via $auto$blifparse.cc:371:parse_blif$11632)
 
 End of script. Logfile hash: ed62f7b72b
-CPU: user 0.14s system 0.03s, MEM: 32.47 MB total, 25.69 MB resident
+CPU: user 0.11s system 0.01s, MEM: 32.47 MB total, 25.69 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 45% 2x read_blif (0 sec), 44% 1x ltp (0 sec), ...
+Time spent: 53% 2x read_blif (0 sec), 36% 1x ltp (0 sec), ...
 >>> Temacle mapping succeed with area = 33838.653702139854
 square Temacle saveArea=(37345.48532640934-33838.653702139854) / 37345.48532640934 =  9.390242471396093 %
 =================================================================================
@@ -38909,7 +38911,7 @@ square Temacle saveArea=(37345.48532640934-33838.653702139854) / 37345.485326409
 =================================================================================
 
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/voter.aig
-resyn runtime: 1
+resyn runtime: 0
 [i] area: 28927.18197965622, gates: 9973, depth: 38
 mapping runtime: 0
 
@@ -38936,22 +38938,22 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/QER9VNNJ4F.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/voter//voter_init.blif;' --
+-- Running command `read_liberty -lib stdCellLib/gscl45nm/gscl45nm.lib; read_verilog /tmp/HID3S1FBN6.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/voter//voter_init.blif;' --
 
 1. Executing Liberty frontend.
 Imported 32 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/QER9VNNJ4F.v
-Parsing Verilog input from `/tmp/QER9VNNJ4F.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/HID3S1FBN6.v
+Parsing Verilog input from `/tmp/HID3S1FBN6.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 70e55e5ab2
-CPU: user 0.87s system 0.05s, MEM: 96.87 MB total, 89.98 MB resident
+End of script. Logfile hash: 6778907fc9
+CPU: user 0.71s system 0.04s, MEM: 96.87 MB total, 89.98 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 91% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
+Time spent: 90% 2x read_verilog (0 sec), 7% 2x write_blif (0 sec), ...
 
  /----------------------------------------------------------------------------\
  |                                                                            |
@@ -39053,9 +39055,9 @@ Longest topological path in top (length=38):
    38: \y0 (via $auto$blifparse.cc:371:parse_blif$9973)
 
 End of script. Logfile hash: 9900bf09b9
-CPU: user 0.12s system 0.02s, MEM: 30.39 MB total, 23.94 MB resident
+CPU: user 0.09s system 0.01s, MEM: 30.39 MB total, 23.44 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 42% 2x read_blif (0 sec), 39% 1x ltp (0 sec), ...
+Time spent: 48% 2x read_blif (0 sec), 36% 1x ltp (0 sec), ...
 >>> initial mapping succeed with area= 28927.18197965622
 [i] processing /home/flynn/workplace/CEMapping/benchmark/aig/voter.aig
 resyn runtime: 0
@@ -39085,20 +39087,20 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/voter/VOTER_G4_26_27.lib; read_verilog /tmp/0NWL4A5EMS.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/voter//voter_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/voter/VOTER_G4_8_9.lib; read_verilog /tmp/KIB4MIA54W.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/Astran/full/voter//voter_temacle.blif;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/0NWL4A5EMS.v
-Parsing Verilog input from `/tmp/0NWL4A5EMS.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/KIB4MIA54W.v
+Parsing Verilog input from `/tmp/KIB4MIA54W.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: aeb6d1d68e
-CPU: user 0.68s system 0.04s, MEM: 79.48 MB total, 73.00 MB resident
+End of script. Logfile hash: e9d2dd45e5
+CPU: user 0.56s system 0.04s, MEM: 79.48 MB total, 73.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
 Time spent: 90% 2x read_verilog (0 sec), 8% 2x write_blif (0 sec), ...
 
@@ -39125,7 +39127,7 @@ Time spent: 90% 2x read_verilog (0 sec), 8% 2x write_blif (0 sec), ...
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib outputs/Astran/K3/voter/VOTER_G4_26_27.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/voter//voter_temacle.blif; stat -liberty outputs/Astran/K3/voter/VOTER_G4_26_27.lib; ltp;' --
+-- Running command `read_liberty -lib outputs/Astran/K3/voter/VOTER_G4_8_9.lib; read_blif /home/flynn/workplace/CEMapping/outputs/Astran/full/voter//voter_temacle.blif; stat -liberty outputs/Astran/K3/voter/VOTER_G4_8_9.lib; ltp;' --
 
 1. Executing Liberty frontend.
 Imported 17 cell types from liberty file.
@@ -39153,11 +39155,11 @@ Imported 17 cell types from liberty file.
      NOR3X1                        240
      OAI21X1                       407
      OR2X2                         156
-     VOTER_G0_11_12                 44
-     VOTER_G1_63_64                382
-     VOTER_G2_3_5                  470
-     VOTER_G3_14_16                928
-     VOTER_G4_26_27                376
+     VOTER_G0_9_10                  44
+     VOTER_G1_30_31                382
+     VOTER_G2_2_5                  470
+     VOTER_G3_4_11                 928
+     VOTER_G4_8_9                  376
      XNOR2X1                       374
      XOR2X1                        343
 
@@ -39201,9 +39203,9 @@ Longest topological path in top (length=33):
    32: \n8515 (via $auto$blifparse.cc:371:parse_blif$7501)
    33: \y0 (via $auto$blifparse.cc:371:parse_blif$7514)
 
-End of script. Logfile hash: e00b311b02
-CPU: user 0.09s system 0.01s, MEM: 27.58 MB total, 21.30 MB resident
+End of script. Logfile hash: 0257e615c6
+CPU: user 0.06s system 0.02s, MEM: 27.58 MB total, 21.59 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 45% 2x read_blif (0 sec), 43% 1x ltp (0 sec), ...
+Time spent: 49% 2x read_blif (0 sec), 39% 1x ltp (0 sec), ...
 >>> Temacle mapping succeed with area = 23515.0634059906
 voter Temacle saveArea=(28927.18197965622-23515.0634059906) / 28927.18197965622 =  18.709456653855288 %

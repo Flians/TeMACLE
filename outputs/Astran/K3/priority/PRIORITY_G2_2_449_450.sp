@@ -21,7 +21,7 @@ MclBVLN42_2#5 Y A clBVLN42_2#a_14_6# GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ENDS
 * pattern code: 3|3|NAND3X1|INVX1=2|INPUT:Y-INVX1:A=2|INPUT:Y-NAND3X1:A,B,C=1|INVX1:Y-NAND3X1:A,B,C=2|111110
-* 65 occurrences in design
+* 63 occurrences in design
 * each contains 3 cells
 * pin map: {'n572': 'A', 'x4': 'B', 'x5': 'C'} {'n580': 'Y'}
 * function: B|C|~A

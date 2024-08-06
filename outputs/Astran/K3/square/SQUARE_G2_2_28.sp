@@ -17,7 +17,7 @@ Mcl2YY3I0_1#5 Y B cl2YY3I0_1#a_2_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ENDS
 * pattern code: 2|3|OAI21X1|INVX1=1|INPUT:Y-INVX1:A=1|INPUT:Y-OAI21X1:A,B=1|INPUT:Y-OAI21X1:C=1|INVX1:Y-OAI21X1:A,B=1|11110
-* 921 occurrences in design
+* 922 occurrences in design
 * each contains 2 cells
 * pin map: {'n70': 'A', 'n152': 'B', 'x1': 'C'} {'n153': 'Y'}
 * function: ~B|(C&~A)

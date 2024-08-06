@@ -31,7 +31,7 @@ MclGY5Y4X_1#2 clGY5Y4X_1#a_9_6# A GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 MclGY5Y4X_1#3 Y clGY5Y4X_0#Y clGY5Y4X_1#a_9_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 2|3|NAND2X1|XNOR2X1=1|INPUT:Y-NAND2X1:A,B=1|INPUT:Y-XNOR2X1:A,B=2|XNOR2X1:Y-NAND2X1:A,B=1|11101
 * 322 occurrences in design
 * each contains 2 cells
