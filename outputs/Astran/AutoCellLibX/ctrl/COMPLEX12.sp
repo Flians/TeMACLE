@@ -1,39 +1,39 @@
-.subckt COMPLEX12 cl3#vdd cl0#Y cl0#gnd cl2#gnd cl2#B cl3#Y cl2#A cl0#vdd cl1#Y cl3#C cl1#gnd cl2#vdd cl3#gnd cl0#B cl2#Y cl3#A cl1#vdd cl1#A
-Mcl0#0 cl0#Y cl1#Y cl0#vdd cl0#vdd pmos w=0.5u l=0.05u
+.subckt COMPLEX12 cl1#Y cl0#Y cl2#A cl2#B cl3#A cl1#A cl3#Y VCC cl2#Y cl0#B cl3#C GND
+Mcl0#0 cl0#Y cl1#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl0#1 cl0#vdd cl0#B cl0#Y cl0#vdd pmos w=0.5u l=0.05u
+Mcl0#1 VCC cl0#B cl0#Y VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl0#2 cl0#a_9_6# cl1#Y cl0#gnd cl0#gnd nmos w=0.5u l=0.05u
+Mcl0#2 cl0#a_9_6# cl1#Y GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl0#3 cl0#Y cl0#B cl0#a_9_6# cl0#gnd nmos w=0.5u l=0.05u
+Mcl0#3 cl0#Y cl0#B cl0#a_9_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl1#0 cl1#Y cl1#A cl1#vdd cl1#vdd pmos w=0.5u l=0.05u
+Mcl1#0 cl1#Y cl1#A VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl1#1 cl1#Y cl1#A cl1#gnd cl1#gnd nmos w=0.25u l=0.05u
+Mcl1#1 cl1#Y cl1#A GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2#0 cl2#vdd cl2#A cl2#a_2_54# cl2#vdd pmos w=1u l=0.05u
+Mcl2#0 VCC cl2#A cl2#a_2_54# VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2#1 cl2#a_2_54# cl2#B cl2#vdd cl2#vdd pmos w=1u l=0.05u
+Mcl2#1 cl2#a_2_54# cl2#B VCC VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2#2 cl2#Y cl1#Y cl2#a_2_54# cl2#vdd pmos w=1u l=0.05u
+Mcl2#2 cl2#Y cl1#Y cl2#a_2_54# VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2#3 cl2#a_12_6# cl2#A cl2#gnd cl2#gnd nmos w=0.5u l=0.05u
+Mcl2#3 cl2#a_12_6# cl2#A GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2#4 cl2#Y cl2#B cl2#a_12_6# cl2#gnd nmos w=0.5u l=0.05u
+Mcl2#4 cl2#Y cl2#B cl2#a_12_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl2#5 cl2#gnd cl1#Y cl2#Y cl2#gnd nmos w=0.25u l=0.05u
+Mcl2#5 GND cl1#Y cl2#Y GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl3#0 cl3#Y cl3#A cl3#vdd cl3#vdd pmos w=0.5u l=0.05u
+Mcl3#0 cl3#Y cl3#A VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl3#1 cl3#vdd cl1#Y cl3#Y cl3#vdd pmos w=0.5u l=0.05u
+Mcl3#1 VCC cl1#Y cl3#Y VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl3#2 cl3#Y cl3#C cl3#vdd cl3#vdd pmos w=0.5u l=0.05u
+Mcl3#2 cl3#Y cl3#C VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl3#3 cl3#a_9_6# cl3#A cl3#gnd cl3#gnd nmos w=0.75u l=0.05u
+Mcl3#3 cl3#a_9_6# cl3#A GND GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl3#4 cl3#a_14_6# cl1#Y cl3#a_9_6# cl3#gnd nmos w=0.75u l=0.05u
+Mcl3#4 cl3#a_14_6# cl1#Y cl3#a_9_6# GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl3#5 cl3#Y cl3#C cl3#a_14_6# cl3#gnd nmos w=0.75u l=0.05u
+Mcl3#5 cl3#Y cl3#C cl3#a_14_6# GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ends COMPLEX12
 * pattern code: [NAND2X1,INVX1]+AOI21X1_c1o0+NAND3X1_c1o0

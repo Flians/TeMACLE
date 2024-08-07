@@ -33,7 +33,7 @@ our $pins="";
 
 # Defines whether pins are inputs or outputs since SPICE does not have that concept
 my %iomap=('A1_N'=>'I','A2_N'=>'I','B1'=>'I','B2'=>'I','VGND'=>'','VNB'=>'','VPB'=>'','VPWR'=>'','X'=>'O','gnd2'=>'','vdd2'=>'','GND2'=>'','VDD2'=>'','vss'=>'','VSS'=>'', 'VNW'=>'', 'VPW'=>'');
-my %mosmap=('pfet'=>'pmos','nfet'=>'nmos','nmos'=>'nmos','pmos'=>'pmos','hnfet'=>'nmos','hpfet'=>'pmos','enbsim3'=>'nmos','epbsim3'=>'pmos','sky130_fd_pr__nfet_01v8'=>'nmos','sky130_fd_pr__pfet_01v8'=>'pmos', 'nfet_06v0'=>'nmos', 'pfet_06v0'=>'pmos');
+my %mosmap=('pfet'=>'pmos','nfet'=>'nmos','nmos'=>'nmos','pmos'=>'pmos','hnfet'=>'nmos','hpfet'=>'pmos','enbsim3'=>'nmos','epbsim3'=>'pmos','sky130_fd_pr__nfet_01v8'=>'nmos','sky130_fd_pr__pfet_01v8_hvt'=>'pmos', 'nfet_06v0'=>'nmos', 'pfet_06v0'=>'pmos');
 our %internalnets=();
 our $internalcounter=0;
 our $OUT;
