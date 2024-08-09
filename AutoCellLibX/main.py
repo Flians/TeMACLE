@@ -88,15 +88,11 @@ def main():
             stdType2GSCLArea[cell_name] = cell_group.get_attribute(key="area", default=-1)
 
     topThr = 5
-    ratioThr = 0.05
-    cntThr = 30
+    ratioThr = 0.01
     patternNodesThr = 5
 
     for benchmarkName in benchmarks:
         startTime = time.time()
-        if benchmarkName == "tc_008_arthmetic_sin":
-            ratioThr = 0.025
-
         print("=================================================================================\n", benchmarkName, "\n=================================================================================\n")
         # load liberty/spice/design BLIF
         subckts = loadSpiceSubcircuits(stdSpiceNetlistPath)
@@ -105,12 +101,12 @@ def main():
             subckts_[name.split('_')[0]] = spsub
         subckts = subckts_
         BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
-            libFileName=initialLibertyPath, blifFileName=f"{current_path}/../outputs/{SCSynthesis}/K3/{benchmarkName}/{benchmarkName}.blif", startTime=startTime
+            libFileName=initialLibertyPath, blifFileName=f"{current_path}/../outputs/{SCSynthesis}/K3/{ratioThr}/{benchmarkName}/{benchmarkName}.blif", startTime=startTime
         )
         oriArea = getArea(cells, stdType2GSCLArea)
         print("originalArea=", oriArea)
 
-        outputPath = f"{current_path}/../outputs/{SCSynthesis}/AutoCellLibX/{benchmarkName}/"
+        outputPath = f"{current_path}/../outputs/{SCSynthesis}/AutoCellLibX/{ratioThr}/{benchmarkName}/"
         os.makedirs(outputPath, exist_ok=True)
 
         stdType2Area = copy.deepcopy(stdType2GSCLArea)
@@ -151,7 +147,7 @@ def main():
                         continue
                     print("dealing with pattern#", patternTraceId, " with ", len(tmpClusterSeq.patternClusters), " clusters (size=", len(tmpClusterSeq.patternClusters[0].cellIdsContained), ")")
 
-                    if len(tmpClusterSeq.patternClusters[0].cellIdsContained) * len(tmpClusterSeq.patternClusters) < ratioThr * len(cells) and len(tmpClusterSeq.patternClusters) < cntThr:
+                    if len(tmpClusterSeq.patternClusters[0].cellIdsContained) * len(tmpClusterSeq.patternClusters) < ratioThr * len(cells):
                         print(
                             "===Warning: the pattern is too small and bypassed. pattern: [",
                             tmpClusterSeq.patternExtensionTrace,
@@ -223,7 +219,7 @@ def main():
             clusterSeq = clusterSeqs[0]
 
             assert ratioThr > 0
-            if len(clusterSeq.patternClusters[0].cellIdsContained) * len(clusterSeq.patternClusters) < ratioThr * len(cells) and len(clusterSeq.patternClusters) < cntThr:
+            if len(clusterSeq.patternClusters[0].cellIdsContained) * len(clusterSeq.patternClusters) < ratioThr * len(cells):
                 break
 
             newSeqOfClusters, patternNum = growASeqOfClusters(BLIFGraph, clusterSeq, clusterNum, patternNum, paintPattern=True)
@@ -252,7 +248,7 @@ def main():
                 continue
 
             BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
-                libFileName=initialLibertyPath, blifFileName=f"{current_path}/../outputs/{SCSynthesis}/K3/{benchmarkName}/{benchmarkName}.blif", startTime=startTime, bypassInitialCluster=True
+                libFileName=initialLibertyPath, blifFileName=f"{current_path}/../outputs/{SCSynthesis}/K3/{ratioThr}/{benchmarkName}/{benchmarkName}.blif", startTime=startTime, bypassInitialCluster=True
             )
 
             clusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netlist, targetPatternTrace)
@@ -340,7 +336,7 @@ def main():
                         break
 
                 clusterSeq = clusterSeqs[0]
-                if len(clusterSeq.patternClusters[0].cellIdsContained) * len(clusterSeq.patternClusters) < ratioThr * len(cells) and len(clusterSeq.patternClusters) < cntThr:
+                if len(clusterSeq.patternClusters[0].cellIdsContained) * len(clusterSeq.patternClusters) < ratioThr * len(cells):
                     break
 
                 newSeqOfClusters, patternNum = growASeqOfClusters_BasedOn(BLIFGraph, clusterSeq, clusterNum, patternNum, paintPattern=True, targetPatternTrace=targetPatternTrace)

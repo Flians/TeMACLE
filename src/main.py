@@ -118,7 +118,7 @@ def main():
     current_path = os.path.dirname(os.path.abspath(__file__))
     os.environ['LD_LIBRARY_PATH'] = f'{current_path}/../tools/gurobi/lib:' + os.environ.get('LD_LIBRARY_PATH', ';')
 
-    #SCSynthesis = 'iCell'
+    # SCSynthesis = 'iCell'
     SCSynthesis = 'Astran'
 
     iCellPath = f'{current_path}/../tools/iCell/iCell'
@@ -165,7 +165,7 @@ def main():
     # initial .genlib
     writeGenlib(liberty_init, initialGenlibPath)
     # load extended cell library
-    extendCellLib = {}
+    extendCellLib: dict[str, StdCellType] = {}
     for key, val in allFunc2CellLib.items():  # resynthesize SCSynthesis-based cells
         cell_name = val.typeName
         if cell_name in STDCellNames or cell_name in ['PI', 'const_0', 'const_1', 'TIEHIx1', 'TIELOx1']:
@@ -184,15 +184,29 @@ def main():
                 narea = loadiCellArea(GDSPath=f'{current_path}/originaliCellStdCells/', typeName=cell_name)
         else:
             continue
-        if narea >= 0:  # resynthesize successfully
+        pfunc = None
+        curCell = extendCellLib.get(key, None)
+        if curCell is None and ',' not in key:
+            pfunc = next((x for x, xfun in extendCellLib.items() if (',' not in x and xfun and bool_map(val.outputFuncMap[val.outputPins[0]], xfun.outputFuncMap[xfun.outputPins[0]]))), None)
+            if pfunc:
+                curCell = extendCellLib[pfunc]
+        if narea >= 0 and (curCell is None or narea < curCell.area):  # resynthesize successfully
             val.area = narea
             extendCellLib[key] = val
             shutil.copy(f'{current_path}/original{SCSynthesis}StdCells/{cell_name}.{SCSynthesis}log', f'{extendCellPath}/{key};{val.nnode}.{SCSynthesis}log')
-            shutil.copy(f'{current_path}/original{SCSynthesis}StdCells/{cell_name}.gds', f'{extendCellPath}/{key};{val.nnode}.gds')
             shutil.copy(f'{current_path}/original{SCSynthesis}StdCells/{cell_name}.run', f'{extendCellPath}/{key};{val.nnode}.run')
             with open(f'{extendCellPath}/{key};{val.nnode}.sp', 'w', encoding='utf-8') as outputSP:
                 print('\n'.join(subckts[val.typeName].texts), file=outputSP)
-    extendCellLib = loadExtendCells(extendCellPath, extendCellLib)
+            if SCSynthesis == 'Astran':
+                shutil.copy(f'{current_path}/original{SCSynthesis}StdCells/{cell_name}.gds', f'{extendCellPath}/{key};{val.nnode}.gds')
+            if curCell and pfunc:
+                os.remove(f'{extendCellPath}/{pfunc};{curCell.nnode}.{SCSynthesis}log')
+                os.remove(f'{extendCellPath}/{pfunc};{curCell.nnode}.run')
+                os.remove(f'{extendCellPath}/{pfunc};{curCell.nnode}.sp')
+                if SCSynthesis == 'Astran':
+                    os.remove(f'{extendCellPath}/{pfunc};{curCell.nnode}.gds')
+                extendCellLib.pop(pfunc)
+    extendCellLib = loadExtendCells(extendCellPath, extendCellLib, SCSynthesis)
 
     # benchmarks and parameters
     benchmarks = ['sqrt', 'voter', 'arbiter', 'cavlc', 'div', 'int2float', 'max', 'priority', 'sin', 'square', 'BoomBranchPredictor', 'GemminiLoopMatmul', 'GemminiLoopConv', 'DCache', 'BoomRegisterFile', 'GemminiMesh']
@@ -205,7 +219,7 @@ def main():
 
     for benchmarkName in benchmarks:
         print('=================================================================================\n', benchmarkName, '\n=================================================================================\n')
-        outputPath = f'{current_path}/../outputs/{SCSynthesis}/K{cutsize}/{benchmarkName}/'
+        outputPath = f'{current_path}/../outputs/{SCSynthesis}/K{cutsize}/{ratioThr}/{benchmarkName}/'
         os.makedirs(outputPath, exist_ok=True)
         # copy library
         stdCellLib, liberty = copy.deepcopy(stdCellLib_init), copy.deepcopy(liberty_init)
@@ -247,6 +261,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
         startTime = time.time()
         # load spice/design BLIF
         BLIFGraph, cells, stdCellTypesForFeature, clusterTree = loadDataAndPreprocess(stdCellLib=stdCellLib, blifFileName=blifFileName, K=cutsize, startTime=startTime)
+        num_PIs = sum(atts['type'] == 'PI' for _, atts in BLIFGraph.nodes(data=True))
         oriArea = getArea(cells, stdType2LibArea)
         print('originalArea=', oriArea)
         sccArea = getArea(cells, stdType2Area)
@@ -306,10 +321,10 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
 
             for (ncluster, nnode), clusterSeq in reversed(candidates):
                 ntnode = nnode * ncluster
-                if ncluster <= 1 or nnode >= cntThr or ntnode < BLIFGraph.number_of_nodes() * ratioThr:
+                if ncluster <= 1 or nnode >= cntThr or ntnode < (BLIFGraph.number_of_nodes() - num_PIs) * ratioThr:
                     continue
                 cindex = 0
-                #if SCSynthesis == 'Astran' and benchmarkName in ['int2float', 'multiplier', 'sin', 'voter']:
+                # if SCSynthesis == 'Astran' and benchmarkName in ['int2float', 'multiplier', 'sin', 'voter']:
                 #    cindex = 1
                 patternTraceId = benchmarkName.upper() + '_G' + str(cid) + '_' + '_'.join(map(str, sorted(list(clusterSeq.patternClusters[cindex].cellIdsContained))))  # type: ignore
                 print('dealing with pattern#', patternTraceId, 'with', ncluster, 'clusters ( size =', nnode, ')')
@@ -360,7 +375,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 # draw a schemaitc of this pattern
                 drawColorfulFigureForGraphWithAttributes(patternSubgraph, save_to_file=f'{outputPath}/{patternTraceId}.png', withLabel=True, figsize=(20, 20))
                 # export the SPICE netlist of the complex of cells
-                if flag and len(patternFunc) == 1:
+                if flag and extCell and len(patternFunc) == 1:
                     extendCellSpices = loadSpiceSubcircuits(f'{extendCellPath}/{pfunc};{extCell.nnode}.sp')
                     extendCellSpice = next(iter(extendCellSpices.values()))
                     pin_map = bool_map(next(iter(extCell.outputFuncMap.values())), func)
@@ -388,7 +403,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                             if extCell is not None and extCell.area != -1 and extCell.area < newCellArea:
                                 newCellArea = extCell.area
                             else:
-                                if extCell is not None:
+                                if extCell is not None and pfunc is not None:
                                     os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.{SCSynthesis}log')
                                     if os.path.exists(f'{extendCellPath}/{pfunc};{extCell.nnode}.png'):
                                         os.remove(f'{extendCellPath}/{pfunc};{extCell.nnode}.png')

@@ -1,0 +1,8 @@
+set lpsolve "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl"
+load technology "/home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+load netlist "/home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/sin//SIN_G1_26_55.sp"
+cellgen select SIN_G1_26_55
+cellgen autoflow
+export layout SIN_G1_26_55 /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/sin//SIN_G1_26_55.gds
+exit
+    

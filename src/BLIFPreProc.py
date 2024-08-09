@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Set
 from functools import reduce
 from itertools import product, chain
 from liberty.parser import parse_liberty, Group, EscapedString
-from sympy import simplify_logic, var
+from sympy import simplify_logic, var, bool_map
 
 from BLIFGraphUtil import StdCellType, DesignCell, DesignNet, DesignPatternCluster
 from iCell import loadiCellArea
@@ -595,8 +595,8 @@ def loadExtendCell(fileDir: str, filePath: str) -> StdCellType:
     eqs_nnode = filePath[:-3].split(';')
     nnode = int(eqs_nnode[1])
     eqs = eqs_nnode[0].split(',')
-    for id, eq in enumerate(eqs):
-        newOP = 'Y' if len(eqs) == 1 else 'Y' + chr(65 + id)
+    for idx, eq in enumerate(eqs):
+        newOP = 'Y' if len(eqs) == 1 else 'Y' + chr(65 + idx)
         try:
             func = simplify_logic(eq)
         except:
@@ -616,15 +616,29 @@ def loadExtendCell(fileDir: str, filePath: str) -> StdCellType:
     return newCell
 
 
-def loadExtendCells(fileDir: str, allFunc2CellLib: dict[str, StdCellType] = {}) -> Dict[str, StdCellType]:
+def loadExtendCells(fileDir: str, allFunc2CellLib: dict[str, StdCellType] = {}, SCSynthesis:str = 'Astran') -> Dict[str, StdCellType]:
     extendCellLib = dict(allFunc2CellLib)
     for item in os.listdir(fileDir):
         newCell = loadExtendCell(fileDir, item)
-        if newCell is not None:
+        if newCell is not None and newCell.area >= 0:
             # select nodes with less cost
+            pfunc = None
             curCell = extendCellLib.get(newCell.typeName, None)
+            if curCell is None and ',' not in newCell.typeName:
+                pfunc = next((x for x, xfun in extendCellLib.items() if (',' not in x and xfun and bool_map(newCell.outputFuncMap[newCell.outputPins[0]], xfun.outputFuncMap[xfun.outputPins[0]]))), None)
+                if pfunc:
+                    curCell = extendCellLib[pfunc]
             if curCell is None or curCell.area > newCell.area or (curCell.area == newCell.area and curCell.nnode > newCell.nnode):
                 extendCellLib[newCell.typeName] = newCell
+                if curCell and pfunc:
+                    os.remove(f'{fileDir}/{pfunc};{curCell.nnode}.{SCSynthesis}log')
+                    if os.path.exists(f'{fileDir}/{pfunc};{curCell.nnode}.png'):
+                        os.remove(f'{fileDir}/{pfunc};{curCell.nnode}.png')
+                    os.remove(f'{fileDir}/{pfunc};{curCell.nnode}.run')
+                    os.remove(f'{fileDir}/{pfunc};{curCell.nnode}.sp')
+                    if SCSynthesis == 'Astran':
+                        os.remove(f'{fileDir}/{pfunc};{curCell.nnode}.gds')
+                    extendCellLib.pop(pfunc)
     return extendCellLib
 
 

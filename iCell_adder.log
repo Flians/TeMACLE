@@ -457,9 +457,9 @@ Module full_adder_16: replaced 78 cells with 382 new cells, skipped 30 cells.
 6. Executing AIGER backend.
 
 End of script. Logfile hash: f787031733
-CPU: user 0.17s system 0.00s, MEM: 17.29 MB total, 11.00 MB resident
+CPU: user 0.25s system 0.01s, MEM: 17.29 MB total, 11.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 23% 13x opt_clean (0 sec), 13% 11x opt_expr (0 sec), ...
+Time spent: 24% 13x opt_clean (0 sec), 13% 7x opt (0 sec), ...
 >>> aig writing succeed!
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16.aig
 resyn runtime: 0
@@ -489,22 +489,88 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/JDCY7BZFML.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_init.blif;' --
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/adder.lib; read_verilog /tmp/5SBVMYOD1N.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_init.blif;' --
 
 1. Executing Liberty frontend.
-Imported 148 cell types from liberty file.
+Imported 14 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/JDCY7BZFML.v
-Parsing Verilog input from `/tmp/JDCY7BZFML.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/5SBVMYOD1N.v
+Parsing Verilog input from `/tmp/5SBVMYOD1N.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 9331913a16
-CPU: user 0.20s system 0.02s, MEM: 47.66 MB total, 41.00 MB resident
+End of script. Logfile hash: 792d4265bb
+CPU: user 0.02s system 0.00s, MEM: 16.34 MB total, 10.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 88% 2x read_liberty (0 sec), 10% 2x read_verilog (0 sec), ...
+Time spent: 46% 2x read_verilog (0 sec), 42% 2x read_liberty (0 sec), ...
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_blif /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_init.blif; stat -liberty outputs/iCell/K3/adder/adder.lib; ltp;' --
+
+1. Executing Liberty frontend.
+Imported 148 cell types from liberty file.
+
+2. Executing BLIF frontend.
+
+3. Printing statistics.
+
+=== top ===
+
+   Number of wires:                130
+   Number of wire bits:            130
+   Number of public wires:         130
+   Number of public wire bits:     130
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 97
+     AND2x2                          1
+     AOI21x1                        13
+     INVx1                          18
+     NAND2x1                         6
+     NAND3x1                         3
+     NOR2x1                          5
+     NOR3x1                          4
+     OAI21x1                        11
+     OR2x2                           4
+     XNOR2x1                        29
+     XOR2x1                          3
+
+   Chip area for module '\top': 11.707740
+
+4. Executing LTP pass (find longest path).
+
+Longest topological path in top (length=0):
+    0: \x0
+
+End of script. Logfile hash: 6d33b8b9e9
+CPU: user 0.34s system 0.01s, MEM: 47.66 MB total, 41.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 84% 2x read_liberty (0 sec), 13% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area = 11.707740180194378
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16.aig
 resyn runtime: 0
@@ -534,22 +600,98 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/AHZM0UTAX4.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; read_verilog /tmp/WC48FT4BWP.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_temacle.blif;' --
 
 1. Executing Liberty frontend.
-Imported 13 cell types from liberty file.
+Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/AHZM0UTAX4.v
-Parsing Verilog input from `/tmp/AHZM0UTAX4.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/WC48FT4BWP.v
+Parsing Verilog input from `/tmp/WC48FT4BWP.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: dc2831b841
-CPU: user 0.01s system 0.01s, MEM: 15.95 MB total, 9.50 MB resident
+End of script. Logfile hash: 1d6f0383bc
+CPU: user 0.02s system 0.00s, MEM: 16.34 MB total, 10.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 49% 2x read_liberty (0 sec), 40% 2x read_verilog (0 sec), ...
+Time spent: 56% 2x read_liberty (0 sec), 34% 2x read_verilog (0 sec), ...
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; read_blif /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_16//full_adder_16_temacle.blif; stat -liberty outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; ltp;' --
+
+1. Executing Liberty frontend.
+Imported 17 cell types from liberty file.
+
+2. Executing BLIF frontend.
+
+3. Printing statistics.
+
+=== top ===
+
+   Number of wires:                 83
+   Number of wire bits:             83
+   Number of public wires:          83
+   Number of public wire bits:      83
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 50
+     ADDER_G0_455_456               16
+     ADDER_G2_69_70_420             15
+     AOI21x1                         2
+     INVx1                          17
+
+   Chip area for module '\top': 9.549900
+
+4. Executing LTP pass (find longest path).
+
+Longest topological path in top (length=17):
+    0: \x0
+    1: \n35 (via $auto$blifparse.cc:371:parse_blif$3)
+    2: \n53 (via $auto$blifparse.cc:371:parse_blif$6)
+    3: \n54 (via $auto$blifparse.cc:371:parse_blif$7)
+    4: \n55 (via $auto$blifparse.cc:371:parse_blif$8)
+    5: \n56 (via $auto$blifparse.cc:371:parse_blif$9)
+    6: \n57 (via $auto$blifparse.cc:371:parse_blif$10)
+    7: \n58 (via $auto$blifparse.cc:371:parse_blif$11)
+    8: \n59 (via $auto$blifparse.cc:371:parse_blif$12)
+    9: \n60 (via $auto$blifparse.cc:371:parse_blif$13)
+   10: \n61 (via $auto$blifparse.cc:371:parse_blif$14)
+   11: \n62 (via $auto$blifparse.cc:371:parse_blif$15)
+   12: \n63 (via $auto$blifparse.cc:371:parse_blif$16)
+   13: \n64 (via $auto$blifparse.cc:371:parse_blif$17)
+   14: \n65 (via $auto$blifparse.cc:371:parse_blif$18)
+   15: \n66 (via $auto$blifparse.cc:371:parse_blif$19)
+   16: \n67 (via $auto$blifparse.cc:371:parse_blif$20)
+   17: \y0 (via $auto$blifparse.cc:371:parse_blif$21)
+
+End of script. Logfile hash: 6b602c967d
+CPU: user 0.02s system 0.01s, MEM: 16.46 MB total, 10.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 44% 2x read_liberty (0 sec), 43% 1x stat (0 sec), ...
 >>> Temacle mapping succeed with area = 9.549899782985449
 full_adder_16 initial mapping area = 11.707740180194378
 full_adder_16 Temacle mapping area = 9.549899782985449
@@ -1029,9 +1171,9 @@ Module full_adder_32: replaced 158 cells with 766 new cells, skipped 62 cells.
 6. Executing AIGER backend.
 
 End of script. Logfile hash: 79189055d8
-CPU: user 0.28s system 0.00s, MEM: 17.93 MB total, 12.00 MB resident
+CPU: user 0.56s system 0.01s, MEM: 17.94 MB total, 12.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 22% 13x opt_clean (0 sec), 14% 7x opt (0 sec), ...
+Time spent: 25% 13x opt_clean (0 sec), 15% 7x opt (0 sec), ...
 >>> aig writing succeed!
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32.aig
 resyn runtime: 0
@@ -1061,22 +1203,88 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/E5FTAMC34I.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_init.blif;' --
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/adder.lib; read_verilog /tmp/ND0K597UNR.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_init.blif;' --
 
 1. Executing Liberty frontend.
-Imported 148 cell types from liberty file.
+Imported 14 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/E5FTAMC34I.v
-Parsing Verilog input from `/tmp/E5FTAMC34I.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/ND0K597UNR.v
+Parsing Verilog input from `/tmp/ND0K597UNR.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: d6233063ef
-CPU: user 0.22s system 0.01s, MEM: 47.66 MB total, 41.00 MB resident
+End of script. Logfile hash: c680e320a8
+CPU: user 0.03s system 0.00s, MEM: 17.11 MB total, 10.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 87% 2x read_liberty (0 sec), 11% 2x read_verilog (0 sec), ...
+Time spent: 63% 2x read_verilog (0 sec), 25% 2x read_liberty (0 sec), ...
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_blif /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_init.blif; stat -liberty outputs/iCell/K3/adder/adder.lib; ltp;' --
+
+1. Executing Liberty frontend.
+Imported 148 cell types from liberty file.
+
+2. Executing BLIF frontend.
+
+3. Printing statistics.
+
+=== top ===
+
+   Number of wires:                258
+   Number of wire bits:            258
+   Number of public wires:         258
+   Number of public wire bits:     258
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                193
+     AND2x2                          1
+     AOI21x1                        25
+     INVx1                          34
+     NAND2x1                        14
+     NAND3x1                         7
+     NOR2x1                          9
+     NOR3x1                          8
+     OAI21x1                        23
+     OR2x2                           8
+     XNOR2x1                        61
+     XOR2x1                          3
+
+   Chip area for module '\top': 23.488380
+
+4. Executing LTP pass (find longest path).
+
+Longest topological path in top (length=0):
+    0: \x0
+
+End of script. Logfile hash: f910c3fb65
+CPU: user 0.32s system 0.02s, MEM: 47.66 MB total, 41.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 84% 2x read_liberty (0 sec), 12% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area = 23.48838036507368
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32.aig
 resyn runtime: 0
@@ -1106,22 +1314,114 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/ATKMI721VH.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; read_verilog /tmp/Z2UKB55LT7.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_temacle.blif;' --
 
 1. Executing Liberty frontend.
-Imported 13 cell types from liberty file.
+Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/ATKMI721VH.v
-Parsing Verilog input from `/tmp/ATKMI721VH.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/Z2UKB55LT7.v
+Parsing Verilog input from `/tmp/Z2UKB55LT7.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 605d68fd0e
-CPU: user 0.02s system 0.00s, MEM: 16.46 MB total, 10.00 MB resident
+End of script. Logfile hash: 5e5b44159e
+CPU: user 0.02s system 0.01s, MEM: 16.46 MB total, 10.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 57% 2x read_verilog (0 sec), 36% 2x read_liberty (0 sec), ...
+Time spent: 50% 2x read_verilog (0 sec), 39% 2x read_liberty (0 sec), ...
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; read_blif /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_32//full_adder_32_temacle.blif; stat -liberty outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; ltp;' --
+
+1. Executing Liberty frontend.
+Imported 17 cell types from liberty file.
+
+2. Executing BLIF frontend.
+
+3. Printing statistics.
+
+=== top ===
+
+   Number of wires:                163
+   Number of wire bits:            163
+   Number of public wires:         163
+   Number of public wire bits:     163
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 98
+     ADDER_G0_455_456               32
+     ADDER_G2_69_70_420             31
+     AOI21x1                         2
+     INVx1                          33
+
+   Chip area for module '\top': 19.114380
+
+4. Executing LTP pass (find longest path).
+
+Longest topological path in top (length=33):
+    0: \x0
+    1: \n67 (via $auto$blifparse.cc:371:parse_blif$3)
+    2: \n101 (via $auto$blifparse.cc:371:parse_blif$6)
+    3: \n102 (via $auto$blifparse.cc:371:parse_blif$7)
+    4: \n103 (via $auto$blifparse.cc:371:parse_blif$8)
+    5: \n104 (via $auto$blifparse.cc:371:parse_blif$9)
+    6: \n105 (via $auto$blifparse.cc:371:parse_blif$10)
+    7: \n106 (via $auto$blifparse.cc:371:parse_blif$11)
+    8: \n107 (via $auto$blifparse.cc:371:parse_blif$12)
+    9: \n108 (via $auto$blifparse.cc:371:parse_blif$13)
+   10: \n109 (via $auto$blifparse.cc:371:parse_blif$14)
+   11: \n110 (via $auto$blifparse.cc:371:parse_blif$15)
+   12: \n111 (via $auto$blifparse.cc:371:parse_blif$16)
+   13: \n112 (via $auto$blifparse.cc:371:parse_blif$17)
+   14: \n113 (via $auto$blifparse.cc:371:parse_blif$18)
+   15: \n114 (via $auto$blifparse.cc:371:parse_blif$19)
+   16: \n115 (via $auto$blifparse.cc:371:parse_blif$20)
+   17: \n116 (via $auto$blifparse.cc:371:parse_blif$21)
+   18: \n117 (via $auto$blifparse.cc:371:parse_blif$22)
+   19: \n118 (via $auto$blifparse.cc:371:parse_blif$23)
+   20: \n119 (via $auto$blifparse.cc:371:parse_blif$24)
+   21: \n120 (via $auto$blifparse.cc:371:parse_blif$25)
+   22: \n121 (via $auto$blifparse.cc:371:parse_blif$26)
+   23: \n122 (via $auto$blifparse.cc:371:parse_blif$27)
+   24: \n123 (via $auto$blifparse.cc:371:parse_blif$28)
+   25: \n124 (via $auto$blifparse.cc:371:parse_blif$29)
+   26: \n125 (via $auto$blifparse.cc:371:parse_blif$30)
+   27: \n126 (via $auto$blifparse.cc:371:parse_blif$31)
+   28: \n127 (via $auto$blifparse.cc:371:parse_blif$32)
+   29: \n128 (via $auto$blifparse.cc:371:parse_blif$33)
+   30: \n129 (via $auto$blifparse.cc:371:parse_blif$34)
+   31: \n130 (via $auto$blifparse.cc:371:parse_blif$35)
+   32: \n131 (via $auto$blifparse.cc:371:parse_blif$36)
+   33: \y0 (via $auto$blifparse.cc:371:parse_blif$37)
+
+End of script. Logfile hash: c982fa4a00
+CPU: user 0.02s system 0.00s, MEM: 16.46 MB total, 10.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 43% 1x stat (0 sec), 42% 2x read_liberty (0 sec), ...
 >>> Temacle mapping succeed with area = 19.114379551261663
 full_adder_32 initial mapping area = 23.48838036507368
 full_adder_32 Temacle mapping area = 19.114379551261663
@@ -1633,9 +1933,9 @@ Module full_adder_64: replaced 318 cells with 1534 new cells, skipped 126 cells.
 6. Executing AIGER backend.
 
 End of script. Logfile hash: c369b2b7f0
-CPU: user 0.50s system 0.02s, MEM: 19.68 MB total, 13.50 MB resident
+CPU: user 1.16s system 0.03s, MEM: 19.78 MB total, 13.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 24% 13x opt_clean (0 sec), 15% 7x opt (0 sec), ...
+Time spent: 27% 13x opt_clean (0 sec), 14% 7x opt (0 sec), ...
 >>> aig writing succeed!
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64.aig
 resyn runtime: 0
@@ -1665,22 +1965,88 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/LB6S5X6JNF.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_init.blif;' --
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/adder.lib; read_verilog /tmp/90L9TTC5CP.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_init.blif;' --
 
 1. Executing Liberty frontend.
-Imported 148 cell types from liberty file.
+Imported 14 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/LB6S5X6JNF.v
-Parsing Verilog input from `/tmp/LB6S5X6JNF.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/90L9TTC5CP.v
+Parsing Verilog input from `/tmp/90L9TTC5CP.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 85ee07d443
-CPU: user 0.20s system 0.02s, MEM: 47.66 MB total, 41.00 MB resident
+End of script. Logfile hash: 28f42214bb
+CPU: user 0.05s system 0.01s, MEM: 18.81 MB total, 12.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 80% 2x read_liberty (0 sec), 17% 2x read_verilog (0 sec), ...
+Time spent: 74% 2x read_verilog (0 sec), 14% 2x read_liberty (0 sec), ...
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_blif /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_init.blif; stat -liberty outputs/iCell/K3/adder/adder.lib; ltp;' --
+
+1. Executing Liberty frontend.
+Imported 148 cell types from liberty file.
+
+2. Executing BLIF frontend.
+
+3. Printing statistics.
+
+=== top ===
+
+   Number of wires:                514
+   Number of wire bits:            514
+   Number of public wires:         514
+   Number of public wire bits:     514
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                385
+     AND2x2                          1
+     AOI21x1                        49
+     INVx1                          66
+     NAND2x1                        30
+     NAND3x1                        15
+     NOR2x1                         17
+     NOR3x1                         16
+     OAI21x1                        47
+     OR2x2                          16
+     XNOR2x1                       125
+     XOR2x1                          3
+
+   Chip area for module '\top': 47.049660
+
+4. Executing LTP pass (find longest path).
+
+Longest topological path in top (length=0):
+    0: \x0
+
+End of script. Logfile hash: db720961ea
+CPU: user 0.35s system 0.02s, MEM: 47.66 MB total, 41.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 83% 2x read_liberty (0 sec), 13% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area = 47.04966073483229
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64.aig
 resyn runtime: 0
@@ -1710,22 +2076,146 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/C6L0YN545F.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; read_verilog /tmp/TEOZJL1KER.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_temacle.blif;' --
 
 1. Executing Liberty frontend.
-Imported 13 cell types from liberty file.
+Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/C6L0YN545F.v
-Parsing Verilog input from `/tmp/C6L0YN545F.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/TEOZJL1KER.v
+Parsing Verilog input from `/tmp/TEOZJL1KER.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: f550053196
+End of script. Logfile hash: 9bba5fd560
 CPU: user 0.03s system 0.01s, MEM: 17.37 MB total, 11.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 67% 2x read_verilog (0 sec), 25% 2x read_liberty (0 sec), ...
+Time spent: 64% 2x read_verilog (0 sec), 24% 2x read_liberty (0 sec), ...
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; read_blif /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_64//full_adder_64_temacle.blif; stat -liberty outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; ltp;' --
+
+1. Executing Liberty frontend.
+Imported 17 cell types from liberty file.
+
+2. Executing BLIF frontend.
+
+3. Printing statistics.
+
+=== top ===
+
+   Number of wires:                323
+   Number of wire bits:            323
+   Number of public wires:         323
+   Number of public wire bits:     323
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                194
+     ADDER_G0_455_456               64
+     ADDER_G2_69_70_420             63
+     AOI21x1                         2
+     INVx1                          65
+
+   Chip area for module '\top': 38.243340
+
+4. Executing LTP pass (find longest path).
+
+Longest topological path in top (length=65):
+    0: \x0
+    1: \n131 (via $auto$blifparse.cc:371:parse_blif$3)
+    2: \n197 (via $auto$blifparse.cc:371:parse_blif$6)
+    3: \n198 (via $auto$blifparse.cc:371:parse_blif$7)
+    4: \n199 (via $auto$blifparse.cc:371:parse_blif$8)
+    5: \n200 (via $auto$blifparse.cc:371:parse_blif$9)
+    6: \n201 (via $auto$blifparse.cc:371:parse_blif$10)
+    7: \n202 (via $auto$blifparse.cc:371:parse_blif$11)
+    8: \n203 (via $auto$blifparse.cc:371:parse_blif$12)
+    9: \n204 (via $auto$blifparse.cc:371:parse_blif$13)
+   10: \n205 (via $auto$blifparse.cc:371:parse_blif$14)
+   11: \n206 (via $auto$blifparse.cc:371:parse_blif$15)
+   12: \n207 (via $auto$blifparse.cc:371:parse_blif$16)
+   13: \n208 (via $auto$blifparse.cc:371:parse_blif$17)
+   14: \n209 (via $auto$blifparse.cc:371:parse_blif$18)
+   15: \n210 (via $auto$blifparse.cc:371:parse_blif$19)
+   16: \n211 (via $auto$blifparse.cc:371:parse_blif$20)
+   17: \n212 (via $auto$blifparse.cc:371:parse_blif$21)
+   18: \n213 (via $auto$blifparse.cc:371:parse_blif$22)
+   19: \n214 (via $auto$blifparse.cc:371:parse_blif$23)
+   20: \n215 (via $auto$blifparse.cc:371:parse_blif$24)
+   21: \n216 (via $auto$blifparse.cc:371:parse_blif$25)
+   22: \n217 (via $auto$blifparse.cc:371:parse_blif$26)
+   23: \n218 (via $auto$blifparse.cc:371:parse_blif$27)
+   24: \n219 (via $auto$blifparse.cc:371:parse_blif$28)
+   25: \n220 (via $auto$blifparse.cc:371:parse_blif$29)
+   26: \n221 (via $auto$blifparse.cc:371:parse_blif$30)
+   27: \n222 (via $auto$blifparse.cc:371:parse_blif$31)
+   28: \n223 (via $auto$blifparse.cc:371:parse_blif$32)
+   29: \n224 (via $auto$blifparse.cc:371:parse_blif$33)
+   30: \n225 (via $auto$blifparse.cc:371:parse_blif$34)
+   31: \n226 (via $auto$blifparse.cc:371:parse_blif$35)
+   32: \n227 (via $auto$blifparse.cc:371:parse_blif$36)
+   33: \n228 (via $auto$blifparse.cc:371:parse_blif$37)
+   34: \n229 (via $auto$blifparse.cc:371:parse_blif$38)
+   35: \n230 (via $auto$blifparse.cc:371:parse_blif$39)
+   36: \n231 (via $auto$blifparse.cc:371:parse_blif$40)
+   37: \n232 (via $auto$blifparse.cc:371:parse_blif$41)
+   38: \n233 (via $auto$blifparse.cc:371:parse_blif$42)
+   39: \n234 (via $auto$blifparse.cc:371:parse_blif$43)
+   40: \n235 (via $auto$blifparse.cc:371:parse_blif$44)
+   41: \n236 (via $auto$blifparse.cc:371:parse_blif$45)
+   42: \n237 (via $auto$blifparse.cc:371:parse_blif$46)
+   43: \n238 (via $auto$blifparse.cc:371:parse_blif$47)
+   44: \n239 (via $auto$blifparse.cc:371:parse_blif$48)
+   45: \n240 (via $auto$blifparse.cc:371:parse_blif$49)
+   46: \n241 (via $auto$blifparse.cc:371:parse_blif$50)
+   47: \n242 (via $auto$blifparse.cc:371:parse_blif$51)
+   48: \n243 (via $auto$blifparse.cc:371:parse_blif$52)
+   49: \n244 (via $auto$blifparse.cc:371:parse_blif$53)
+   50: \n245 (via $auto$blifparse.cc:371:parse_blif$54)
+   51: \n246 (via $auto$blifparse.cc:371:parse_blif$55)
+   52: \n247 (via $auto$blifparse.cc:371:parse_blif$56)
+   53: \n248 (via $auto$blifparse.cc:371:parse_blif$57)
+   54: \n249 (via $auto$blifparse.cc:371:parse_blif$58)
+   55: \n250 (via $auto$blifparse.cc:371:parse_blif$59)
+   56: \n251 (via $auto$blifparse.cc:371:parse_blif$60)
+   57: \n252 (via $auto$blifparse.cc:371:parse_blif$61)
+   58: \n253 (via $auto$blifparse.cc:371:parse_blif$62)
+   59: \n254 (via $auto$blifparse.cc:371:parse_blif$63)
+   60: \n255 (via $auto$blifparse.cc:371:parse_blif$64)
+   61: \n256 (via $auto$blifparse.cc:371:parse_blif$65)
+   62: \n257 (via $auto$blifparse.cc:371:parse_blif$66)
+   63: \n258 (via $auto$blifparse.cc:371:parse_blif$67)
+   64: \n259 (via $auto$blifparse.cc:371:parse_blif$68)
+   65: \y0 (via $auto$blifparse.cc:371:parse_blif$69)
+
+End of script. Logfile hash: 95e886873e
+CPU: user 0.03s system 0.00s, MEM: 16.59 MB total, 10.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 40% 1x stat (0 sec), 39% 2x read_liberty (0 sec), ...
 >>> Temacle mapping succeed with area = 38.24333908781409
 full_adder_64 initial mapping area = 47.04966073483229
 full_adder_64 Temacle mapping area = 38.24333908781409
@@ -2301,9 +2791,9 @@ Module full_adder_128: replaced 638 cells with 3070 new cells, skipped 254 cells
 6. Executing AIGER backend.
 
 End of script. Logfile hash: 064e456f9b
-CPU: user 0.98s system 0.01s, MEM: 23.42 MB total, 17.50 MB resident
+CPU: user 2.19s system 0.01s, MEM: 23.73 MB total, 17.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 24% 13x opt_clean (0 sec), 15% 7x opt (0 sec), ...
+Time spent: 28% 13x opt_clean (0 sec), 14% 7x opt (0 sec), ...
 >>> aig writing succeed!
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128.aig
 resyn runtime: 0
@@ -2333,22 +2823,88 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/O8AA4H9JIJ.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_init.blif;' --
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/adder.lib; read_verilog /tmp/9YWLZ3TTZ3.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_init.blif;' --
 
 1. Executing Liberty frontend.
-Imported 148 cell types from liberty file.
+Imported 14 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/O8AA4H9JIJ.v
-Parsing Verilog input from `/tmp/O8AA4H9JIJ.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/9YWLZ3TTZ3.v
+Parsing Verilog input from `/tmp/9YWLZ3TTZ3.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: fcdef8b08e
-CPU: user 0.22s system 0.03s, MEM: 47.66 MB total, 41.00 MB resident
+End of script. Logfile hash: 73700ac8d0
+CPU: user 0.10s system 0.00s, MEM: 22.02 MB total, 15.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 73% 2x read_liberty (0 sec), 24% 2x read_verilog (0 sec), ...
+Time spent: 84% 2x read_verilog (0 sec), 8% 2x read_liberty (0 sec), ...
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_blif /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_init.blif; stat -liberty outputs/iCell/K3/adder/adder.lib; ltp;' --
+
+1. Executing Liberty frontend.
+Imported 148 cell types from liberty file.
+
+2. Executing BLIF frontend.
+
+3. Printing statistics.
+
+=== top ===
+
+   Number of wires:               1026
+   Number of wire bits:           1026
+   Number of public wires:        1026
+   Number of public wire bits:    1026
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                769
+     AND2x2                          1
+     AOI21x1                        97
+     INVx1                         130
+     NAND2x1                        62
+     NAND3x1                        31
+     NOR2x1                         33
+     NOR3x1                         32
+     OAI21x1                        95
+     OR2x2                          32
+     XNOR2x1                       253
+     XOR2x1                          3
+
+   Chip area for module '\top': 94.172220
+
+4. Executing LTP pass (find longest path).
+
+Longest topological path in top (length=0):
+    0: \x0
+
+End of script. Logfile hash: ac54ada7fd
+CPU: user 0.21s system 0.04s, MEM: 47.66 MB total, 41.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 80% 2x read_liberty (0 sec), 16% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area = 94.1722214743495
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128.aig
 resyn runtime: 0
@@ -2378,22 +2934,210 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/H9IISGWK12.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; read_verilog /tmp/WUENTRN15N.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_temacle.blif;' --
 
 1. Executing Liberty frontend.
-Imported 13 cell types from liberty file.
+Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/H9IISGWK12.v
-Parsing Verilog input from `/tmp/H9IISGWK12.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/WUENTRN15N.v
+Parsing Verilog input from `/tmp/WUENTRN15N.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: d8fccf10ad
-CPU: user 0.04s system 0.01s, MEM: 19.09 MB total, 12.50 MB resident
+End of script. Logfile hash: 59364e58e7
+CPU: user 0.05s system 0.01s, MEM: 19.10 MB total, 12.50 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 76% 2x read_verilog (0 sec), 16% 2x read_liberty (0 sec), ...
+Time spent: 67% 2x read_verilog (0 sec), 25% 2x read_liberty (0 sec), ...
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; read_blif /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_128//full_adder_128_temacle.blif; stat -liberty outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; ltp;' --
+
+1. Executing Liberty frontend.
+Imported 17 cell types from liberty file.
+
+2. Executing BLIF frontend.
+
+3. Printing statistics.
+
+=== top ===
+
+   Number of wires:                643
+   Number of wire bits:            643
+   Number of public wires:         643
+   Number of public wire bits:     643
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                386
+     ADDER_G0_455_456              128
+     ADDER_G2_69_70_420            127
+     AOI21x1                         2
+     INVx1                         129
+
+   Chip area for module '\top': 76.501260
+
+4. Executing LTP pass (find longest path).
+
+Longest topological path in top (length=129):
+    0: \x0
+    1: \n259 (via $auto$blifparse.cc:371:parse_blif$3)
+    2: \n389 (via $auto$blifparse.cc:371:parse_blif$6)
+    3: \n390 (via $auto$blifparse.cc:371:parse_blif$7)
+    4: \n391 (via $auto$blifparse.cc:371:parse_blif$8)
+    5: \n392 (via $auto$blifparse.cc:371:parse_blif$9)
+    6: \n393 (via $auto$blifparse.cc:371:parse_blif$10)
+    7: \n394 (via $auto$blifparse.cc:371:parse_blif$11)
+    8: \n395 (via $auto$blifparse.cc:371:parse_blif$12)
+    9: \n396 (via $auto$blifparse.cc:371:parse_blif$13)
+   10: \n397 (via $auto$blifparse.cc:371:parse_blif$14)
+   11: \n398 (via $auto$blifparse.cc:371:parse_blif$15)
+   12: \n399 (via $auto$blifparse.cc:371:parse_blif$16)
+   13: \n400 (via $auto$blifparse.cc:371:parse_blif$17)
+   14: \n401 (via $auto$blifparse.cc:371:parse_blif$18)
+   15: \n402 (via $auto$blifparse.cc:371:parse_blif$19)
+   16: \n403 (via $auto$blifparse.cc:371:parse_blif$20)
+   17: \n404 (via $auto$blifparse.cc:371:parse_blif$21)
+   18: \n405 (via $auto$blifparse.cc:371:parse_blif$22)
+   19: \n406 (via $auto$blifparse.cc:371:parse_blif$23)
+   20: \n407 (via $auto$blifparse.cc:371:parse_blif$24)
+   21: \n408 (via $auto$blifparse.cc:371:parse_blif$25)
+   22: \n409 (via $auto$blifparse.cc:371:parse_blif$26)
+   23: \n410 (via $auto$blifparse.cc:371:parse_blif$27)
+   24: \n411 (via $auto$blifparse.cc:371:parse_blif$28)
+   25: \n412 (via $auto$blifparse.cc:371:parse_blif$29)
+   26: \n413 (via $auto$blifparse.cc:371:parse_blif$30)
+   27: \n414 (via $auto$blifparse.cc:371:parse_blif$31)
+   28: \n415 (via $auto$blifparse.cc:371:parse_blif$32)
+   29: \n416 (via $auto$blifparse.cc:371:parse_blif$33)
+   30: \n417 (via $auto$blifparse.cc:371:parse_blif$34)
+   31: \n418 (via $auto$blifparse.cc:371:parse_blif$35)
+   32: \n419 (via $auto$blifparse.cc:371:parse_blif$36)
+   33: \n420 (via $auto$blifparse.cc:371:parse_blif$37)
+   34: \n421 (via $auto$blifparse.cc:371:parse_blif$38)
+   35: \n422 (via $auto$blifparse.cc:371:parse_blif$39)
+   36: \n423 (via $auto$blifparse.cc:371:parse_blif$40)
+   37: \n424 (via $auto$blifparse.cc:371:parse_blif$41)
+   38: \n425 (via $auto$blifparse.cc:371:parse_blif$42)
+   39: \n426 (via $auto$blifparse.cc:371:parse_blif$43)
+   40: \n427 (via $auto$blifparse.cc:371:parse_blif$44)
+   41: \n428 (via $auto$blifparse.cc:371:parse_blif$45)
+   42: \n429 (via $auto$blifparse.cc:371:parse_blif$46)
+   43: \n430 (via $auto$blifparse.cc:371:parse_blif$47)
+   44: \n431 (via $auto$blifparse.cc:371:parse_blif$48)
+   45: \n432 (via $auto$blifparse.cc:371:parse_blif$49)
+   46: \n433 (via $auto$blifparse.cc:371:parse_blif$50)
+   47: \n434 (via $auto$blifparse.cc:371:parse_blif$51)
+   48: \n435 (via $auto$blifparse.cc:371:parse_blif$52)
+   49: \n436 (via $auto$blifparse.cc:371:parse_blif$53)
+   50: \n437 (via $auto$blifparse.cc:371:parse_blif$54)
+   51: \n438 (via $auto$blifparse.cc:371:parse_blif$55)
+   52: \n439 (via $auto$blifparse.cc:371:parse_blif$56)
+   53: \n440 (via $auto$blifparse.cc:371:parse_blif$57)
+   54: \n441 (via $auto$blifparse.cc:371:parse_blif$58)
+   55: \n442 (via $auto$blifparse.cc:371:parse_blif$59)
+   56: \n443 (via $auto$blifparse.cc:371:parse_blif$60)
+   57: \n444 (via $auto$blifparse.cc:371:parse_blif$61)
+   58: \n445 (via $auto$blifparse.cc:371:parse_blif$62)
+   59: \n446 (via $auto$blifparse.cc:371:parse_blif$63)
+   60: \n447 (via $auto$blifparse.cc:371:parse_blif$64)
+   61: \n448 (via $auto$blifparse.cc:371:parse_blif$65)
+   62: \n449 (via $auto$blifparse.cc:371:parse_blif$66)
+   63: \n450 (via $auto$blifparse.cc:371:parse_blif$67)
+   64: \n451 (via $auto$blifparse.cc:371:parse_blif$68)
+   65: \n452 (via $auto$blifparse.cc:371:parse_blif$69)
+   66: \n453 (via $auto$blifparse.cc:371:parse_blif$70)
+   67: \n454 (via $auto$blifparse.cc:371:parse_blif$71)
+   68: \n455 (via $auto$blifparse.cc:371:parse_blif$72)
+   69: \n456 (via $auto$blifparse.cc:371:parse_blif$73)
+   70: \n457 (via $auto$blifparse.cc:371:parse_blif$74)
+   71: \n458 (via $auto$blifparse.cc:371:parse_blif$75)
+   72: \n459 (via $auto$blifparse.cc:371:parse_blif$76)
+   73: \n460 (via $auto$blifparse.cc:371:parse_blif$77)
+   74: \n461 (via $auto$blifparse.cc:371:parse_blif$78)
+   75: \n462 (via $auto$blifparse.cc:371:parse_blif$79)
+   76: \n463 (via $auto$blifparse.cc:371:parse_blif$80)
+   77: \n464 (via $auto$blifparse.cc:371:parse_blif$81)
+   78: \n465 (via $auto$blifparse.cc:371:parse_blif$82)
+   79: \n466 (via $auto$blifparse.cc:371:parse_blif$83)
+   80: \n467 (via $auto$blifparse.cc:371:parse_blif$84)
+   81: \n468 (via $auto$blifparse.cc:371:parse_blif$85)
+   82: \n469 (via $auto$blifparse.cc:371:parse_blif$86)
+   83: \n470 (via $auto$blifparse.cc:371:parse_blif$87)
+   84: \n471 (via $auto$blifparse.cc:371:parse_blif$88)
+   85: \n472 (via $auto$blifparse.cc:371:parse_blif$89)
+   86: \n473 (via $auto$blifparse.cc:371:parse_blif$90)
+   87: \n474 (via $auto$blifparse.cc:371:parse_blif$91)
+   88: \n475 (via $auto$blifparse.cc:371:parse_blif$92)
+   89: \n476 (via $auto$blifparse.cc:371:parse_blif$93)
+   90: \n477 (via $auto$blifparse.cc:371:parse_blif$94)
+   91: \n478 (via $auto$blifparse.cc:371:parse_blif$95)
+   92: \n479 (via $auto$blifparse.cc:371:parse_blif$96)
+   93: \n480 (via $auto$blifparse.cc:371:parse_blif$97)
+   94: \n481 (via $auto$blifparse.cc:371:parse_blif$98)
+   95: \n482 (via $auto$blifparse.cc:371:parse_blif$99)
+   96: \n483 (via $auto$blifparse.cc:371:parse_blif$100)
+   97: \n484 (via $auto$blifparse.cc:371:parse_blif$101)
+   98: \n485 (via $auto$blifparse.cc:371:parse_blif$102)
+   99: \n486 (via $auto$blifparse.cc:371:parse_blif$103)
+  100: \n487 (via $auto$blifparse.cc:371:parse_blif$104)
+  101: \n488 (via $auto$blifparse.cc:371:parse_blif$105)
+  102: \n489 (via $auto$blifparse.cc:371:parse_blif$106)
+  103: \n490 (via $auto$blifparse.cc:371:parse_blif$107)
+  104: \n491 (via $auto$blifparse.cc:371:parse_blif$108)
+  105: \n492 (via $auto$blifparse.cc:371:parse_blif$109)
+  106: \n493 (via $auto$blifparse.cc:371:parse_blif$110)
+  107: \n494 (via $auto$blifparse.cc:371:parse_blif$111)
+  108: \n495 (via $auto$blifparse.cc:371:parse_blif$112)
+  109: \n496 (via $auto$blifparse.cc:371:parse_blif$113)
+  110: \n497 (via $auto$blifparse.cc:371:parse_blif$114)
+  111: \n498 (via $auto$blifparse.cc:371:parse_blif$115)
+  112: \n499 (via $auto$blifparse.cc:371:parse_blif$116)
+  113: \n500 (via $auto$blifparse.cc:371:parse_blif$117)
+  114: \n501 (via $auto$blifparse.cc:371:parse_blif$118)
+  115: \n502 (via $auto$blifparse.cc:371:parse_blif$119)
+  116: \n503 (via $auto$blifparse.cc:371:parse_blif$120)
+  117: \n504 (via $auto$blifparse.cc:371:parse_blif$121)
+  118: \n505 (via $auto$blifparse.cc:371:parse_blif$122)
+  119: \n506 (via $auto$blifparse.cc:371:parse_blif$123)
+  120: \n507 (via $auto$blifparse.cc:371:parse_blif$124)
+  121: \n508 (via $auto$blifparse.cc:371:parse_blif$125)
+  122: \n509 (via $auto$blifparse.cc:371:parse_blif$126)
+  123: \n510 (via $auto$blifparse.cc:371:parse_blif$127)
+  124: \n511 (via $auto$blifparse.cc:371:parse_blif$128)
+  125: \n512 (via $auto$blifparse.cc:371:parse_blif$129)
+  126: \n513 (via $auto$blifparse.cc:371:parse_blif$130)
+  127: \n514 (via $auto$blifparse.cc:371:parse_blif$131)
+  128: \n515 (via $auto$blifparse.cc:371:parse_blif$132)
+  129: \y0 (via $auto$blifparse.cc:371:parse_blif$133)
+
+End of script. Logfile hash: 193ead1056
+CPU: user 0.03s system 0.00s, MEM: 16.85 MB total, 10.50 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 34% 1x stat (0 sec), 33% 2x read_liberty (0 sec), ...
 >>> Temacle mapping succeed with area = 76.50125816091895
 full_adder_128 initial mapping area = 94.1722214743495
 full_adder_128 Temacle mapping area = 76.50125816091895
@@ -3097,9 +3841,9 @@ Module full_adder_256: replaced 1278 cells with 6142 new cells, skipped 510 cell
 6. Executing AIGER backend.
 
 End of script. Logfile hash: d77eb44b93
-CPU: user 2.01s system 0.01s, MEM: 30.91 MB total, 24.19 MB resident
+CPU: user 3.41s system 0.03s, MEM: 30.90 MB total, 24.48 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 25% 13x opt_clean (0 sec), 15% 7x opt (0 sec), ...
+Time spent: 28% 13x opt_clean (0 sec), 13% 11x opt_expr (0 sec), ...
 >>> aig writing succeed!
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256.aig
 resyn runtime: 0
@@ -3129,22 +3873,88 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_verilog /tmp/62JC1DZQ3S.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_init.blif;' --
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/adder.lib; read_verilog /tmp/Y2CKEAFFSI.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_init.blif;' --
 
 1. Executing Liberty frontend.
-Imported 148 cell types from liberty file.
+Imported 14 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/62JC1DZQ3S.v
-Parsing Verilog input from `/tmp/62JC1DZQ3S.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/Y2CKEAFFSI.v
+Parsing Verilog input from `/tmp/Y2CKEAFFSI.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: 3d01f0927e
-CPU: user 0.28s system 0.02s, MEM: 47.66 MB total, 41.00 MB resident
+End of script. Logfile hash: 24aec2c30a
+CPU: user 0.16s system 0.01s, MEM: 28.56 MB total, 22.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 60% 2x read_liberty (0 sec), 35% 2x read_verilog (0 sec), ...
+Time spent: 83% 2x read_verilog (0 sec), 8% 2x write_blif (0 sec), ...
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib stdCellLib/asap7/asap7_75t_L.lib; read_blif /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_init.blif; stat -liberty outputs/iCell/K3/adder/adder.lib; ltp;' --
+
+1. Executing Liberty frontend.
+Imported 148 cell types from liberty file.
+
+2. Executing BLIF frontend.
+
+3. Printing statistics.
+
+=== top ===
+
+   Number of wires:               2050
+   Number of wire bits:           2050
+   Number of public wires:        2050
+   Number of public wire bits:    2050
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               1537
+     AND2x2                          1
+     AOI21x1                       193
+     INVx1                         258
+     NAND2x1                       126
+     NAND3x1                        63
+     NOR2x1                         65
+     NOR3x1                         64
+     OAI21x1                       191
+     OR2x2                          64
+     XNOR2x1                       509
+     XOR2x1                          3
+
+   Chip area for module '\top': 188.417340
+
+4. Executing LTP pass (find longest path).
+
+Longest topological path in top (length=0):
+    0: \x0
+
+End of script. Logfile hash: f9c353eac0
+CPU: user 0.24s system 0.01s, MEM: 47.66 MB total, 41.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 78% 2x read_liberty (0 sec), 17% 2x read_blif (0 sec), ...
 >>> initial mapping succeed with area = 188.41734295338392
 [i] processing /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256.aig
 resyn runtime: 0
@@ -3174,22 +3984,338 @@ mapping runtime: 0
  Yosys 0.9 (git sha1 1979e0b)
 
 
--- Running command `read_liberty -lib benchmark/adder/adder.lib; read_verilog /tmp/OQBT3F84KP.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_temacle.blif;' --
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; read_verilog /tmp/94EMOAZCBO.v; write_blif -impltf /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_temacle.blif;' --
 
 1. Executing Liberty frontend.
-Imported 13 cell types from liberty file.
+Imported 17 cell types from liberty file.
 
-2. Executing Verilog-2005 frontend: /tmp/OQBT3F84KP.v
-Parsing Verilog input from `/tmp/OQBT3F84KP.v' to AST representation.
+2. Executing Verilog-2005 frontend: /tmp/94EMOAZCBO.v
+Parsing Verilog input from `/tmp/94EMOAZCBO.v' to AST representation.
 Generating RTLIL representation for module `\top'.
 Successfully finished Verilog frontend.
 
 3. Executing BLIF backend.
 
-End of script. Logfile hash: b35d8eff34
-CPU: user 0.06s system 0.01s, MEM: 22.68 MB total, 16.00 MB resident
+End of script. Logfile hash: 7717f68501
+CPU: user 0.09s system 0.01s, MEM: 22.69 MB total, 16.00 MB resident
 Yosys 0.9 (git sha1 1979e0b)
-Time spent: 82% 2x read_verilog (0 sec), 9% 2x read_liberty (0 sec), ...
+Time spent: 77% 2x read_verilog (0 sec), 12% 2x read_liberty (0 sec), ...
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2019  Clifford Wolf <clifford@clifford.at>           |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9 (git sha1 1979e0b)
+
+
+-- Running command `read_liberty -lib outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; read_blif /home/flynn/workplace/CEMapping/outputs/iCell/adder/full_adder_256//full_adder_256_temacle.blif; stat -liberty outputs/iCell/K3/adder/ADDER_G2_69_70_420.lib; ltp;' --
+
+1. Executing Liberty frontend.
+Imported 17 cell types from liberty file.
+
+2. Executing BLIF frontend.
+
+3. Printing statistics.
+
+=== top ===
+
+   Number of wires:               1283
+   Number of wire bits:           1283
+   Number of public wires:        1283
+   Number of public wire bits:    1283
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                770
+     ADDER_G0_455_456              256
+     ADDER_G2_69_70_420            255
+     AOI21x1                         2
+     INVx1                         257
+
+   Chip area for module '\top': 153.017100
+
+4. Executing LTP pass (find longest path).
+
+Longest topological path in top (length=257):
+    0: \x0
+    1: \n515 (via $auto$blifparse.cc:371:parse_blif$3)
+    2: \n773 (via $auto$blifparse.cc:371:parse_blif$6)
+    3: \n774 (via $auto$blifparse.cc:371:parse_blif$7)
+    4: \n775 (via $auto$blifparse.cc:371:parse_blif$8)
+    5: \n776 (via $auto$blifparse.cc:371:parse_blif$9)
+    6: \n777 (via $auto$blifparse.cc:371:parse_blif$10)
+    7: \n778 (via $auto$blifparse.cc:371:parse_blif$11)
+    8: \n779 (via $auto$blifparse.cc:371:parse_blif$12)
+    9: \n780 (via $auto$blifparse.cc:371:parse_blif$13)
+   10: \n781 (via $auto$blifparse.cc:371:parse_blif$14)
+   11: \n782 (via $auto$blifparse.cc:371:parse_blif$15)
+   12: \n783 (via $auto$blifparse.cc:371:parse_blif$16)
+   13: \n784 (via $auto$blifparse.cc:371:parse_blif$17)
+   14: \n785 (via $auto$blifparse.cc:371:parse_blif$18)
+   15: \n786 (via $auto$blifparse.cc:371:parse_blif$19)
+   16: \n787 (via $auto$blifparse.cc:371:parse_blif$20)
+   17: \n788 (via $auto$blifparse.cc:371:parse_blif$21)
+   18: \n789 (via $auto$blifparse.cc:371:parse_blif$22)
+   19: \n790 (via $auto$blifparse.cc:371:parse_blif$23)
+   20: \n791 (via $auto$blifparse.cc:371:parse_blif$24)
+   21: \n792 (via $auto$blifparse.cc:371:parse_blif$25)
+   22: \n793 (via $auto$blifparse.cc:371:parse_blif$26)
+   23: \n794 (via $auto$blifparse.cc:371:parse_blif$27)
+   24: \n795 (via $auto$blifparse.cc:371:parse_blif$28)
+   25: \n796 (via $auto$blifparse.cc:371:parse_blif$29)
+   26: \n797 (via $auto$blifparse.cc:371:parse_blif$30)
+   27: \n798 (via $auto$blifparse.cc:371:parse_blif$31)
+   28: \n799 (via $auto$blifparse.cc:371:parse_blif$32)
+   29: \n800 (via $auto$blifparse.cc:371:parse_blif$33)
+   30: \n801 (via $auto$blifparse.cc:371:parse_blif$34)
+   31: \n802 (via $auto$blifparse.cc:371:parse_blif$35)
+   32: \n803 (via $auto$blifparse.cc:371:parse_blif$36)
+   33: \n804 (via $auto$blifparse.cc:371:parse_blif$37)
+   34: \n805 (via $auto$blifparse.cc:371:parse_blif$38)
+   35: \n806 (via $auto$blifparse.cc:371:parse_blif$39)
+   36: \n807 (via $auto$blifparse.cc:371:parse_blif$40)
+   37: \n808 (via $auto$blifparse.cc:371:parse_blif$41)
+   38: \n809 (via $auto$blifparse.cc:371:parse_blif$42)
+   39: \n810 (via $auto$blifparse.cc:371:parse_blif$43)
+   40: \n811 (via $auto$blifparse.cc:371:parse_blif$44)
+   41: \n812 (via $auto$blifparse.cc:371:parse_blif$45)
+   42: \n813 (via $auto$blifparse.cc:371:parse_blif$46)
+   43: \n814 (via $auto$blifparse.cc:371:parse_blif$47)
+   44: \n815 (via $auto$blifparse.cc:371:parse_blif$48)
+   45: \n816 (via $auto$blifparse.cc:371:parse_blif$49)
+   46: \n817 (via $auto$blifparse.cc:371:parse_blif$50)
+   47: \n818 (via $auto$blifparse.cc:371:parse_blif$51)
+   48: \n819 (via $auto$blifparse.cc:371:parse_blif$52)
+   49: \n820 (via $auto$blifparse.cc:371:parse_blif$53)
+   50: \n821 (via $auto$blifparse.cc:371:parse_blif$54)
+   51: \n822 (via $auto$blifparse.cc:371:parse_blif$55)
+   52: \n823 (via $auto$blifparse.cc:371:parse_blif$56)
+   53: \n824 (via $auto$blifparse.cc:371:parse_blif$57)
+   54: \n825 (via $auto$blifparse.cc:371:parse_blif$58)
+   55: \n826 (via $auto$blifparse.cc:371:parse_blif$59)
+   56: \n827 (via $auto$blifparse.cc:371:parse_blif$60)
+   57: \n828 (via $auto$blifparse.cc:371:parse_blif$61)
+   58: \n829 (via $auto$blifparse.cc:371:parse_blif$62)
+   59: \n830 (via $auto$blifparse.cc:371:parse_blif$63)
+   60: \n831 (via $auto$blifparse.cc:371:parse_blif$64)
+   61: \n832 (via $auto$blifparse.cc:371:parse_blif$65)
+   62: \n833 (via $auto$blifparse.cc:371:parse_blif$66)
+   63: \n834 (via $auto$blifparse.cc:371:parse_blif$67)
+   64: \n835 (via $auto$blifparse.cc:371:parse_blif$68)
+   65: \n836 (via $auto$blifparse.cc:371:parse_blif$69)
+   66: \n837 (via $auto$blifparse.cc:371:parse_blif$70)
+   67: \n838 (via $auto$blifparse.cc:371:parse_blif$71)
+   68: \n839 (via $auto$blifparse.cc:371:parse_blif$72)
+   69: \n840 (via $auto$blifparse.cc:371:parse_blif$73)
+   70: \n841 (via $auto$blifparse.cc:371:parse_blif$74)
+   71: \n842 (via $auto$blifparse.cc:371:parse_blif$75)
+   72: \n843 (via $auto$blifparse.cc:371:parse_blif$76)
+   73: \n844 (via $auto$blifparse.cc:371:parse_blif$77)
+   74: \n845 (via $auto$blifparse.cc:371:parse_blif$78)
+   75: \n846 (via $auto$blifparse.cc:371:parse_blif$79)
+   76: \n847 (via $auto$blifparse.cc:371:parse_blif$80)
+   77: \n848 (via $auto$blifparse.cc:371:parse_blif$81)
+   78: \n849 (via $auto$blifparse.cc:371:parse_blif$82)
+   79: \n850 (via $auto$blifparse.cc:371:parse_blif$83)
+   80: \n851 (via $auto$blifparse.cc:371:parse_blif$84)
+   81: \n852 (via $auto$blifparse.cc:371:parse_blif$85)
+   82: \n853 (via $auto$blifparse.cc:371:parse_blif$86)
+   83: \n854 (via $auto$blifparse.cc:371:parse_blif$87)
+   84: \n855 (via $auto$blifparse.cc:371:parse_blif$88)
+   85: \n856 (via $auto$blifparse.cc:371:parse_blif$89)
+   86: \n857 (via $auto$blifparse.cc:371:parse_blif$90)
+   87: \n858 (via $auto$blifparse.cc:371:parse_blif$91)
+   88: \n859 (via $auto$blifparse.cc:371:parse_blif$92)
+   89: \n860 (via $auto$blifparse.cc:371:parse_blif$93)
+   90: \n861 (via $auto$blifparse.cc:371:parse_blif$94)
+   91: \n862 (via $auto$blifparse.cc:371:parse_blif$95)
+   92: \n863 (via $auto$blifparse.cc:371:parse_blif$96)
+   93: \n864 (via $auto$blifparse.cc:371:parse_blif$97)
+   94: \n865 (via $auto$blifparse.cc:371:parse_blif$98)
+   95: \n866 (via $auto$blifparse.cc:371:parse_blif$99)
+   96: \n867 (via $auto$blifparse.cc:371:parse_blif$100)
+   97: \n868 (via $auto$blifparse.cc:371:parse_blif$101)
+   98: \n869 (via $auto$blifparse.cc:371:parse_blif$102)
+   99: \n870 (via $auto$blifparse.cc:371:parse_blif$103)
+  100: \n871 (via $auto$blifparse.cc:371:parse_blif$104)
+  101: \n872 (via $auto$blifparse.cc:371:parse_blif$105)
+  102: \n873 (via $auto$blifparse.cc:371:parse_blif$106)
+  103: \n874 (via $auto$blifparse.cc:371:parse_blif$107)
+  104: \n875 (via $auto$blifparse.cc:371:parse_blif$108)
+  105: \n876 (via $auto$blifparse.cc:371:parse_blif$109)
+  106: \n877 (via $auto$blifparse.cc:371:parse_blif$110)
+  107: \n878 (via $auto$blifparse.cc:371:parse_blif$111)
+  108: \n879 (via $auto$blifparse.cc:371:parse_blif$112)
+  109: \n880 (via $auto$blifparse.cc:371:parse_blif$113)
+  110: \n881 (via $auto$blifparse.cc:371:parse_blif$114)
+  111: \n882 (via $auto$blifparse.cc:371:parse_blif$115)
+  112: \n883 (via $auto$blifparse.cc:371:parse_blif$116)
+  113: \n884 (via $auto$blifparse.cc:371:parse_blif$117)
+  114: \n885 (via $auto$blifparse.cc:371:parse_blif$118)
+  115: \n886 (via $auto$blifparse.cc:371:parse_blif$119)
+  116: \n887 (via $auto$blifparse.cc:371:parse_blif$120)
+  117: \n888 (via $auto$blifparse.cc:371:parse_blif$121)
+  118: \n889 (via $auto$blifparse.cc:371:parse_blif$122)
+  119: \n890 (via $auto$blifparse.cc:371:parse_blif$123)
+  120: \n891 (via $auto$blifparse.cc:371:parse_blif$124)
+  121: \n892 (via $auto$blifparse.cc:371:parse_blif$125)
+  122: \n893 (via $auto$blifparse.cc:371:parse_blif$126)
+  123: \n894 (via $auto$blifparse.cc:371:parse_blif$127)
+  124: \n895 (via $auto$blifparse.cc:371:parse_blif$128)
+  125: \n896 (via $auto$blifparse.cc:371:parse_blif$129)
+  126: \n897 (via $auto$blifparse.cc:371:parse_blif$130)
+  127: \n898 (via $auto$blifparse.cc:371:parse_blif$131)
+  128: \n899 (via $auto$blifparse.cc:371:parse_blif$132)
+  129: \n900 (via $auto$blifparse.cc:371:parse_blif$133)
+  130: \n901 (via $auto$blifparse.cc:371:parse_blif$134)
+  131: \n902 (via $auto$blifparse.cc:371:parse_blif$135)
+  132: \n903 (via $auto$blifparse.cc:371:parse_blif$136)
+  133: \n904 (via $auto$blifparse.cc:371:parse_blif$137)
+  134: \n905 (via $auto$blifparse.cc:371:parse_blif$138)
+  135: \n906 (via $auto$blifparse.cc:371:parse_blif$139)
+  136: \n907 (via $auto$blifparse.cc:371:parse_blif$140)
+  137: \n908 (via $auto$blifparse.cc:371:parse_blif$141)
+  138: \n909 (via $auto$blifparse.cc:371:parse_blif$142)
+  139: \n910 (via $auto$blifparse.cc:371:parse_blif$143)
+  140: \n911 (via $auto$blifparse.cc:371:parse_blif$144)
+  141: \n912 (via $auto$blifparse.cc:371:parse_blif$145)
+  142: \n913 (via $auto$blifparse.cc:371:parse_blif$146)
+  143: \n914 (via $auto$blifparse.cc:371:parse_blif$147)
+  144: \n915 (via $auto$blifparse.cc:371:parse_blif$148)
+  145: \n916 (via $auto$blifparse.cc:371:parse_blif$149)
+  146: \n917 (via $auto$blifparse.cc:371:parse_blif$150)
+  147: \n918 (via $auto$blifparse.cc:371:parse_blif$151)
+  148: \n919 (via $auto$blifparse.cc:371:parse_blif$152)
+  149: \n920 (via $auto$blifparse.cc:371:parse_blif$153)
+  150: \n921 (via $auto$blifparse.cc:371:parse_blif$154)
+  151: \n922 (via $auto$blifparse.cc:371:parse_blif$155)
+  152: \n923 (via $auto$blifparse.cc:371:parse_blif$156)
+  153: \n924 (via $auto$blifparse.cc:371:parse_blif$157)
+  154: \n925 (via $auto$blifparse.cc:371:parse_blif$158)
+  155: \n926 (via $auto$blifparse.cc:371:parse_blif$159)
+  156: \n927 (via $auto$blifparse.cc:371:parse_blif$160)
+  157: \n928 (via $auto$blifparse.cc:371:parse_blif$161)
+  158: \n929 (via $auto$blifparse.cc:371:parse_blif$162)
+  159: \n930 (via $auto$blifparse.cc:371:parse_blif$163)
+  160: \n931 (via $auto$blifparse.cc:371:parse_blif$164)
+  161: \n932 (via $auto$blifparse.cc:371:parse_blif$165)
+  162: \n933 (via $auto$blifparse.cc:371:parse_blif$166)
+  163: \n934 (via $auto$blifparse.cc:371:parse_blif$167)
+  164: \n935 (via $auto$blifparse.cc:371:parse_blif$168)
+  165: \n936 (via $auto$blifparse.cc:371:parse_blif$169)
+  166: \n937 (via $auto$blifparse.cc:371:parse_blif$170)
+  167: \n938 (via $auto$blifparse.cc:371:parse_blif$171)
+  168: \n939 (via $auto$blifparse.cc:371:parse_blif$172)
+  169: \n940 (via $auto$blifparse.cc:371:parse_blif$173)
+  170: \n941 (via $auto$blifparse.cc:371:parse_blif$174)
+  171: \n942 (via $auto$blifparse.cc:371:parse_blif$175)
+  172: \n943 (via $auto$blifparse.cc:371:parse_blif$176)
+  173: \n944 (via $auto$blifparse.cc:371:parse_blif$177)
+  174: \n945 (via $auto$blifparse.cc:371:parse_blif$178)
+  175: \n946 (via $auto$blifparse.cc:371:parse_blif$179)
+  176: \n947 (via $auto$blifparse.cc:371:parse_blif$180)
+  177: \n948 (via $auto$blifparse.cc:371:parse_blif$181)
+  178: \n949 (via $auto$blifparse.cc:371:parse_blif$182)
+  179: \n950 (via $auto$blifparse.cc:371:parse_blif$183)
+  180: \n951 (via $auto$blifparse.cc:371:parse_blif$184)
+  181: \n952 (via $auto$blifparse.cc:371:parse_blif$185)
+  182: \n953 (via $auto$blifparse.cc:371:parse_blif$186)
+  183: \n954 (via $auto$blifparse.cc:371:parse_blif$187)
+  184: \n955 (via $auto$blifparse.cc:371:parse_blif$188)
+  185: \n956 (via $auto$blifparse.cc:371:parse_blif$189)
+  186: \n957 (via $auto$blifparse.cc:371:parse_blif$190)
+  187: \n958 (via $auto$blifparse.cc:371:parse_blif$191)
+  188: \n959 (via $auto$blifparse.cc:371:parse_blif$192)
+  189: \n960 (via $auto$blifparse.cc:371:parse_blif$193)
+  190: \n961 (via $auto$blifparse.cc:371:parse_blif$194)
+  191: \n962 (via $auto$blifparse.cc:371:parse_blif$195)
+  192: \n963 (via $auto$blifparse.cc:371:parse_blif$196)
+  193: \n964 (via $auto$blifparse.cc:371:parse_blif$197)
+  194: \n965 (via $auto$blifparse.cc:371:parse_blif$198)
+  195: \n966 (via $auto$blifparse.cc:371:parse_blif$199)
+  196: \n967 (via $auto$blifparse.cc:371:parse_blif$200)
+  197: \n968 (via $auto$blifparse.cc:371:parse_blif$201)
+  198: \n969 (via $auto$blifparse.cc:371:parse_blif$202)
+  199: \n970 (via $auto$blifparse.cc:371:parse_blif$203)
+  200: \n971 (via $auto$blifparse.cc:371:parse_blif$204)
+  201: \n972 (via $auto$blifparse.cc:371:parse_blif$205)
+  202: \n973 (via $auto$blifparse.cc:371:parse_blif$206)
+  203: \n974 (via $auto$blifparse.cc:371:parse_blif$207)
+  204: \n975 (via $auto$blifparse.cc:371:parse_blif$208)
+  205: \n976 (via $auto$blifparse.cc:371:parse_blif$209)
+  206: \n977 (via $auto$blifparse.cc:371:parse_blif$210)
+  207: \n978 (via $auto$blifparse.cc:371:parse_blif$211)
+  208: \n979 (via $auto$blifparse.cc:371:parse_blif$212)
+  209: \n980 (via $auto$blifparse.cc:371:parse_blif$213)
+  210: \n981 (via $auto$blifparse.cc:371:parse_blif$214)
+  211: \n982 (via $auto$blifparse.cc:371:parse_blif$215)
+  212: \n983 (via $auto$blifparse.cc:371:parse_blif$216)
+  213: \n984 (via $auto$blifparse.cc:371:parse_blif$217)
+  214: \n985 (via $auto$blifparse.cc:371:parse_blif$218)
+  215: \n986 (via $auto$blifparse.cc:371:parse_blif$219)
+  216: \n987 (via $auto$blifparse.cc:371:parse_blif$220)
+  217: \n988 (via $auto$blifparse.cc:371:parse_blif$221)
+  218: \n989 (via $auto$blifparse.cc:371:parse_blif$222)
+  219: \n990 (via $auto$blifparse.cc:371:parse_blif$223)
+  220: \n991 (via $auto$blifparse.cc:371:parse_blif$224)
+  221: \n992 (via $auto$blifparse.cc:371:parse_blif$225)
+  222: \n993 (via $auto$blifparse.cc:371:parse_blif$226)
+  223: \n994 (via $auto$blifparse.cc:371:parse_blif$227)
+  224: \n995 (via $auto$blifparse.cc:371:parse_blif$228)
+  225: \n996 (via $auto$blifparse.cc:371:parse_blif$229)
+  226: \n997 (via $auto$blifparse.cc:371:parse_blif$230)
+  227: \n998 (via $auto$blifparse.cc:371:parse_blif$231)
+  228: \n999 (via $auto$blifparse.cc:371:parse_blif$232)
+  229: \n1000 (via $auto$blifparse.cc:371:parse_blif$233)
+  230: \n1001 (via $auto$blifparse.cc:371:parse_blif$234)
+  231: \n1002 (via $auto$blifparse.cc:371:parse_blif$235)
+  232: \n1003 (via $auto$blifparse.cc:371:parse_blif$236)
+  233: \n1004 (via $auto$blifparse.cc:371:parse_blif$237)
+  234: \n1005 (via $auto$blifparse.cc:371:parse_blif$238)
+  235: \n1006 (via $auto$blifparse.cc:371:parse_blif$239)
+  236: \n1007 (via $auto$blifparse.cc:371:parse_blif$240)
+  237: \n1008 (via $auto$blifparse.cc:371:parse_blif$241)
+  238: \n1009 (via $auto$blifparse.cc:371:parse_blif$242)
+  239: \n1010 (via $auto$blifparse.cc:371:parse_blif$243)
+  240: \n1011 (via $auto$blifparse.cc:371:parse_blif$244)
+  241: \n1012 (via $auto$blifparse.cc:371:parse_blif$245)
+  242: \n1013 (via $auto$blifparse.cc:371:parse_blif$246)
+  243: \n1014 (via $auto$blifparse.cc:371:parse_blif$247)
+  244: \n1015 (via $auto$blifparse.cc:371:parse_blif$248)
+  245: \n1016 (via $auto$blifparse.cc:371:parse_blif$249)
+  246: \n1017 (via $auto$blifparse.cc:371:parse_blif$250)
+  247: \n1018 (via $auto$blifparse.cc:371:parse_blif$251)
+  248: \n1019 (via $auto$blifparse.cc:371:parse_blif$252)
+  249: \n1020 (via $auto$blifparse.cc:371:parse_blif$253)
+  250: \n1021 (via $auto$blifparse.cc:371:parse_blif$254)
+  251: \n1022 (via $auto$blifparse.cc:371:parse_blif$255)
+  252: \n1023 (via $auto$blifparse.cc:371:parse_blif$256)
+  253: \n1024 (via $auto$blifparse.cc:371:parse_blif$257)
+  254: \n1025 (via $auto$blifparse.cc:371:parse_blif$258)
+  255: \n1026 (via $auto$blifparse.cc:371:parse_blif$259)
+  256: \n1027 (via $auto$blifparse.cc:371:parse_blif$260)
+  257: \y0 (via $auto$blifparse.cc:371:parse_blif$261)
+
+End of script. Logfile hash: dc9345690d
+CPU: user 0.03s system 0.01s, MEM: 17.32 MB total, 11.00 MB resident
+Yosys 0.9 (git sha1 1979e0b)
+Time spent: 26% 2x read_liberty (0 sec), 26% 1x stat (0 sec), ...
 >>> Temacle mapping succeed with area = 153.01709630712867
 full_adder_256 initial mapping area = 188.41734295338392
 full_adder_256 Temacle mapping area = 153.01709630712867

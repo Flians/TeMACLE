@@ -1,0 +1,8 @@
+set lpsolve "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl"
+load technology "/home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+load netlist "/home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/router//ROUTER_G0_28_121.sp"
+cellgen select ROUTER_G0_28_121
+cellgen autoflow
+export layout ROUTER_G0_28_121 /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/router//ROUTER_G0_28_121.gds
+exit
+    
