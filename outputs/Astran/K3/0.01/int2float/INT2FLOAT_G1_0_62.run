@@ -1,0 +1,8 @@
+set lpsolve "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl"
+load technology "/home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+load netlist "/home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/int2float//INT2FLOAT_G1_0_62.sp"
+cellgen select INT2FLOAT_G1_0_62
+cellgen autoflow
+export layout INT2FLOAT_G1_0_62 /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/int2float//INT2FLOAT_G1_0_62.gds
+exit
+    
