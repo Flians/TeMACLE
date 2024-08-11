@@ -1,29 +1,21 @@
-.SUBCKT SQUARE_G3_13_63_113_114 A B C Y VCC GND
-MclHFQJTH_0#0 clHFQJTH_0#Y B VCC VCC pmos w=0.5u l=0.05u
+.SUBCKT SQUARE_G3_13_63_113_114 B C A Y VCC GND
+Mcl23YPYG_0#0 cl23YPYG_0#Y A VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_0#1 VCC C clHFQJTH_0#Y VCC pmos w=0.5u l=0.05u
+Mcl23YPYG_0#1 cl23YPYG_0#Y A GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_0#2 clHFQJTH_0#a_9_6# B GND GND nmos w=0.5u l=0.05u
+Mcl23YPYG_1#0 Y cl23YPYG_0#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_0#3 clHFQJTH_0#Y C clHFQJTH_0#a_9_6# GND nmos w=0.5u l=0.05u
+Mcl23YPYG_1#1 VCC B Y VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_1#0 clHFQJTH_1#Y clHFQJTH_0#Y VCC VCC pmos w=0.5u l=0.05u
+Mcl23YPYG_1#2 Y C VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_1#1 clHFQJTH_1#Y clHFQJTH_0#Y GND GND nmos w=0.25u l=0.05u
+Mcl23YPYG_1#3 cl23YPYG_1#a_9_6# cl23YPYG_0#Y GND GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_2#0 clHFQJTH_2#Y A VCC VCC pmos w=0.5u l=0.05u
+Mcl23YPYG_1#4 cl23YPYG_1#a_14_6# B cl23YPYG_1#a_9_6# GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_2#1 clHFQJTH_2#Y A GND GND nmos w=0.25u l=0.05u
+Mcl23YPYG_1#5 Y C cl23YPYG_1#a_14_6# GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_3#0 Y clHFQJTH_1#Y VCC VCC pmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_3#1 VCC clHFQJTH_2#Y Y VCC pmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_3#2 clHFQJTH_3#a_9_6# clHFQJTH_1#Y GND GND nmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-MclHFQJTH_3#3 Y clHFQJTH_2#Y clHFQJTH_3#a_9_6# GND nmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 4|3|NAND2X1|INVX1=2|NAND2X1=1|INPUT:Y-INVX1:A=1|INPUT:Y-NAND2X1:A,B=2|INVX1:Y-NAND2X1:A,B=2|NAND2X1:Y-INVX1:A=1|1111101
 * 847 occurrences in design
 * each contains 4 cells

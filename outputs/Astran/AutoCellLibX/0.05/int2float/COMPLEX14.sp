@@ -1,4 +1,4 @@
-.subckt COMPLEX14 cl0#Y VCC cl3#C cl3#Y cl2#Y cl1#Y cl1#A cl3#B GND cl0#C cl2#A
+.subckt COMPLEX14 VCC cl1#A cl3#B cl3#Y cl0#C cl1#Y cl2#A cl2#Y GND cl0#Y cl3#C
 Mcl0#0 cl0#Y cl1#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl0#1 VCC cl2#Y cl0#Y VCC pmos w=0.5u l=0.05u

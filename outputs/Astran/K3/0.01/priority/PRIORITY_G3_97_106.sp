@@ -23,10 +23,10 @@ MclWQOQOK_1#clT0A62Y_1#4 clWQOQOK_1#clT0A62Y_1#a_2_6# A GND GND nmos w=0.5u l=0.
 + ad=0p pd=0u as=0p ps=0u
 MclWQOQOK_1#clT0A62Y_1#5 Y clWQOQOK_1#clT0A62Y_0#Y clWQOQOK_1#clT0A62Y_1#a_2_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 3|3|PRIORITY_G1_625_626|INVX1=1|INPUT:Y-INVX1:A=1|INPUT:Y-PRIORITY_G1_625_626:A=1|INPUT:Y-PRIORITY_G1_625_626:C=1|INVX1:Y-PRIORITY_G1_625_626:B=1|11110
 * 7 occurrences in design
-* each contains 2 cells
+* each contains 3 cells
 * pin map: {'n210': 'A', 'n207': 'B', 'x123': 'C'} {'n214': 'Y'}
 * function: (B&~C)|(C&~A)
 * Example occurence:

@@ -1,8 +1,8 @@
-astran> read /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/div//COMPLEX0.run
--> Reading file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/div//COMPLEX0.run
+astran> read /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/0.05/div//COMPLEX0.run
+-> Reading file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/0.05/div//COMPLEX0.run
 -> Setting lpsolve executable to: /home/flynn/workplace/CEMapping/AutoCellLibX/../tools/gurobi/bin/gurobi_cl
 -> Loading technology from file: /home/flynn/workplace/CEMapping/AutoCellLibX/../tools/astran/Astran/build/Work/tech_freePDK45.rul
--> Loading cells netlist from file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/div//COMPLEX0.sp
+-> Loading cells netlist from file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/0.05/div//COMPLEX0.sp
 -> Selecting cell netlist: COMPLEX0
 -> Trying with 2 tracks and conservative = 0 ...
 -> Calculating cell area...
@@ -337,7 +337,7 @@ astran> read /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/Auto
    NMOS: MCL0#1-MCL1#11-MCL1#10-MCL1#9-MCL1#8-MCL1#7-MCL1#6-
 -> Placing transistors...
 -> Routing cell...
--> Routing finished in 33 attempts after 0.416 s
+-> Routing finished in 61 attempts after 0.618 s
  ( initial cost = 19855 num reps = 7350 problem size = 49 )  Iteration 1; cost = 28489.000 (19855.000); p_cost = 28489.000; accept = 1.000; avg_delta = 1.175; dp = 1948.580; thres = 99999.000; cost_ratio = 1.435; [0]
  Iteration 2; cost = 26462.000 (19855.000); p_cost = 26462.000; accept = 1.000; avg_delta = -0.276; dp = 1948.355; thres = 47999.520; cost_ratio = 0.929; [0]
  Iteration 3; cost = 24439.000 (19855.000); p_cost = 24439.000; accept = 1.000; avg_delta = -0.275; dp = 1962.622; thres = 23039.770; cost_ratio = 0.924; [0]
@@ -537,7 +537,7 @@ astran> read /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/Auto
  Iteration 197; cost = 12936.000 (12934.000); p_cost = 12936.000; accept = 0.111; avg_delta = 0.000; dp = -nan; thres = 6.205; cost_ratio = 1.000; [9]
  final cost = 12936 
 -> Routing cell...
--> Routing finished in 33 attempts after 0.404 s
+-> Routing finished in 61 attempts after 0.621 s
  ( initial cost = 19855 num reps = 7350 problem size = 49 )  Iteration 1; cost = 29615.000 (19855.000); p_cost = 29615.000; accept = 1.000; avg_delta = 1.328; dp = 2006.091; thres = 99999.000; cost_ratio = 1.492; [0]
  Iteration 2; cost = 26945.000 (19855.000); p_cost = 26945.000; accept = 1.000; avg_delta = -0.363; dp = 2010.853; thres = 47999.520; cost_ratio = 0.910; [0]
  Iteration 3; cost = 24917.000 (19855.000); p_cost = 24917.000; accept = 1.000; avg_delta = -0.276; dp = 1955.073; thres = 23039.770; cost_ratio = 0.925; [0]
@@ -619,8 +619,8 @@ astran> read /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/Auto
  Iteration 79; cost = 12934.000 (12934.000); p_cost = 12934.000; accept = 0.112; avg_delta = 0.000; dp = 0.003; thres = 147.143; cost_ratio = 1.000; [9]
  final cost = 12934 
 -> Routing cell...
--> Routing finished in 22 attempts after 0.333 s
--> New best transistor ordering found with cost: 3400
+-> Routing finished in 25 attempts after 0.272 s
+-> New best transistor ordering found with cost: 3397
  ( initial cost = 19855 num reps = 7350 problem size = 49 )  Iteration 1; cost = 24089.000 (19855.000); p_cost = 24089.000; accept = 1.000; avg_delta = 0.576; dp = 1969.790; thres = 99999.000; cost_ratio = 1.213; [0]
  Iteration 2; cost = 22353.000 (19855.000); p_cost = 22353.000; accept = 1.000; avg_delta = -0.236; dp = 1922.426; thres = 47999.520; cost_ratio = 0.928; [0]
  Iteration 3; cost = 28343.000 (19855.000); p_cost = 28343.000; accept = 1.000; avg_delta = 0.815; dp = 1948.504; thres = 23039.770; cost_ratio = 1.268; [0]
@@ -817,24 +817,24 @@ astran> read /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/Auto
  Iteration 194; cost = 12934.000 (12934.000); p_cost = 12934.000; accept = 0.114; avg_delta = 0.000; dp = 0.003; thres = 6.809; cost_ratio = 1.000; [9]
  final cost = 12934 
 -> Routing cell...
--> Routing finished in 42 attempts after 0.899 s
+-> Routing finished in 45 attempts after 0.476 s
 -> Final cost: Width=16; Gate Mismatches=2; WL=32; Rt. Density=5; Nr. Gaps=2
    PMOS: MCL0#0-MCL1#5-MCL1#4-MCL1#3-MCL1#2-MCL1#1-MCL1#0-
    NMOS: MCL0#1-MCL1#11-MCL1#10-MCL1#9-MCL1#8-MCL1#7-MCL1#6-
 -> Routing cell...
--> Routing finished in 22 attempts after 0.281 s
+-> Routing finished in 25 attempts after 0.27 s
 
--> Cost before optimization:3400
+-> Cost before optimization:3397
 -> Optimizing routing graph...
--> Cost after optimization: 3344
--> Runtime = 39.402 s
+-> Cost after optimization: 3354
+-> Runtime = 41.104 s
 
--> Cost before optimization:3344
+-> Cost before optimization:3354
 -> Optimizing routing graph...
--> Cost after optimization: 3344
--> Runtime = 12.51 s
+-> Cost after optimization: 3354
+-> Runtime = 11.009 s
 -> Compacting layout...
--> Calling LP Solver (13095 variables, 20708 constraints)
+-> Calling LP Solver (13596 variables, 21119 constraints)
 -> Running command: "/home/flynn/workplace/CEMapping/AutoCellLibX/../tools/gurobi/bin/gurobi_cl" TimeLimit=3600 ResultFile=ILPmodel.sol ILPmodel.lp
 -> To interrupt earlier and get the current best solution, type in a terminal: kill -2 [gurobi process]
 -> * and H means new feasible solution found:Set parameter Username
@@ -850,95 +850,119 @@ Copyright (c) 2024, Gurobi Optimization, LLC
 
 Read LP format model from file ILPmodel.lp
 Reading time = 0.05 seconds
-: 20709 rows, 8396 columns, 76864 nonzeros
+: 21120 rows, 8613 columns, 78524 nonzeros
 
 CPU model: Intel(R) Xeon(R) Gold 6226R CPU @ 2.90GHz, instruction set [SSE2|AVX|AVX2|AVX512]
 Thread count: 32 physical cores, 64 logical processors, using up to 32 threads
 
-Optimize a model with 20709 rows, 8396 columns and 76864 nonzeros
-Model fingerprint: 0xc2bdc670
+Optimize a model with 21120 rows, 8613 columns and 78524 nonzeros
+Model fingerprint: 0x79316759
 
-Model fingerprint: 0xc2bdc670
-Variable types: 0 continuous, 8396 integer (5521 binary)
+Model fingerprint: 0x79316759
+Variable types: 0 continuous, 8613 integer (5730 binary)
 Coefficient statistics:
   Matrix range     [7e-01, 1e+05]
   Objective range  [1e+00, 5e+03]
   Bounds range     [1e+00, 1e+00]
   RHS range        [1e+00, 2e+04]
-Presolve removed 7543 rows and 2768 columns
-Presolve time: 0.27s
-Presolved: 13166 rows, 5628 columns, 39585 nonzeros
-Variable types: 0 continuous, 5628 integer (3963 binary)
+Presolve removed 7004 rows and 2664 columns
+Presolve time: 0.29s
+Presolved: 14116 rows, 5949 columns, 42606 nonzeros
+Variable types: 0 continuous, 5949 integer (4280 binary)
 
-Root relaxation: objective 3.698154e+06, 3889 iterations, 0.17 seconds (0.07 work units)
+Root relaxation: objective 3.697362e+06, 4058 iterations, 0.11 seconds (0.07 work units)
 
     Nodes    |    Current Node    |     Objective Bounds      |     Work
  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
 
-     0     0 3698153.72    0  209          - 3698153.72      -     -    0s
-     0     0 3698273.84    0  205          - 3698273.84      -     -    0s
-     0     0 3698605.08    0  733          - 3698605.08      -     -    1s
-     0     0 3698654.17    0  597          - 3698654.17      -     -    1s
-     0     0 3698654.18    0  640          - 3698654.18      -     -    1s
-H    0     0                    2.043887e+08 3698654.18  98.2%     -    2s
-     0     0 3699048.63    0  825 2.0439e+08 3699048.63  98.2%     -    2s
-H    0     0                    1.040773e+08 3699053.64  96.4%     -    2s
-     0     0 3699055.26    0  896 1.0408e+08 3699055.26  96.4%     -    2s
-     0     0 3699055.30    0  896 1.0408e+08 3699055.30  96.4%     -    2s
-     0     0 3699150.10    0  823 1.0408e+08 3699150.10  96.4%     -    2s
-H    0     0                    4119246.0000 3699154.23  10.2%     -    2s
-     0     0 3699154.23    0  603 4119246.00 3699154.23  10.2%     -    2s
-     0     0 3699154.23    0  603 4119246.00 3699154.23  10.2%     -    2s
-     0     0 3699214.19    0  848 4119246.00 3699214.19  10.2%     -    2s
-H    0     0                    4118684.0000 3699214.20  10.2%     -    2s
-     0     0 3699217.08    0  870 4118684.00 3699217.08  10.2%     -    2s
-     0     0 3699217.08    0  869 4118684.00 3699217.08  10.2%     -    2s
-     0     0 3699217.51    0  897 4118684.00 3699217.51  10.2%     -    2s
-H    0     0                    4118267.0000 3699217.52  10.2%     -    3s
-     0     0 3699217.52    0  899 4118267.00 3699217.52  10.2%     -    3s
-     0     0 3699217.53    0  830 4118267.00 3699217.53  10.2%     -    3s
-H    0     0                    4117835.0000 3699217.55  10.2%     -    3s
-     0     0 3699222.70    0  446 4117835.00 3699222.70  10.2%     -    3s
-     0     0 3699222.70    0  441 4117835.00 3699222.70  10.2%     -    3s
-     0     0 3699223.86    0  484 4117835.00 3699223.86  10.2%     -    3s
-     0     0 3699224.95    0  495 4117835.00 3699224.95  10.2%     -    3s
-     0     0 3699224.95    0  504 4117835.00 3699224.95  10.2%     -    3s
-H    0     0                    3700190.0000 3699224.95  0.03%     -    4s
-     0     0 3699233.38    0  441 3700190.00 3699233.38  0.03%     -    4s
-     0     2 3699236.47    0  441 3700190.00 3699236.47  0.03%     -    4s
-    15    32 3699361.46    4  402 3700190.00 3699361.46  0.02%  31.3    5s
-H  691   669                    3700057.0000 3699387.54  0.02%  10.6    7s
-H  722   669                    3700036.0000 3699387.54  0.02%  10.8    7s
-  4052  2955 3699793.34   12  441 3700036.00 3699387.54  0.02%   7.7   10s
+     0     0 3697362.37    0  208          - 3697362.37      -     -    0s
+     0     0 3697638.37    0  204          - 3697638.37      -     -    0s
+     0     0 3698238.56    0  660          - 3698238.56      -     -    1s
+     0     0 3698432.32    0  658          - 3698432.32      -     -    1s
+     0     0 3698760.50    0 1048          - 3698760.50      -     -    2s
+     0     0 3698806.03    0 1093          - 3698806.03      -     -    2s
+     0     0 3698806.03    0 1124          - 3698806.03      -     -    2s
+H    0     0                    2.044942e+08 3698806.03  98.2%     -    3s
+     0     0 3698881.79    0 1227 2.0449e+08 3698881.79  98.2%     -    3s
+H    0     0                    4517447.0000 3698900.16  18.1%     -    3s
+     0     0 3698900.16    0 1326 4517447.00 3698900.16  18.1%     -    3s
+     0     0 3698900.16    0 1327 4517447.00 3698900.16  18.1%     -    3s
+     0     0 3698925.75    0  898 4517447.00 3698925.75  18.1%     -    4s
+     0     0 3698933.19    0  915 4517447.00 3698933.19  18.1%     -    4s
+     0     0 3698933.22    0  813 4517447.00 3698933.22  18.1%     -    4s
+     0     0 3698933.22    0  817 4517447.00 3698933.22  18.1%     -    4s
+H    0     0                    4115914.0000 3698933.75  10.1%     -    4s
+     0     0 3698985.84    0 1062 4115914.00 3698985.84  10.1%     -    5s
+     0     0 3699040.46    0 1038 4115914.00 3699040.46  10.1%     -    5s
+     0     0 3699098.60    0 1043 4115914.00 3699098.60  10.1%     -    5s
+     0     0 3699098.88    0 1047 4115914.00 3699098.88  10.1%     -    5s
+     0     0 3699102.39    0 1042 4115914.00 3699102.39  10.1%     -    5s
+     0     0 3699167.85    0 1043 4115914.00 3699167.85  10.1%     -    5s
+     0     0 3699167.85    0 1052 4115914.00 3699167.85  10.1%     -    5s
+     0     0 3699167.85    0 1073 4115914.00 3699167.85  10.1%     -    5s
+     0     0 3699167.85    0  986 4115914.00 3699167.85  10.1%     -    5s
+     0     0 3699167.85    0  964 4115914.00 3699167.85  10.1%     -    5s
+     0     0 3699167.85    0  996 4115914.00 3699167.85  10.1%     -    5s
+H    0     0                    3701173.0000 3699167.85  0.05%     -    6s
+     0     0 3699302.80    0  588 3701173.00 3699302.80  0.05%     -    6s
+     0     0 3699304.58    0  566 3701173.00 3699304.58  0.05%     -    6s
+     0     0 3699304.58    0  568 3701173.00 3699304.58  0.05%     -    6s
+     0     0 3699315.07    0  447 3701173.00 3699315.07  0.05%     -    6s
+     0     0 3699315.37    0  432 3701173.00 3699315.37  0.05%     -    6s
+     0     0 3699351.48    0  888 3701173.00 3699351.48  0.05%     -    6s
+     0     0 3699354.14    0  894 3701173.00 3699354.14  0.05%     -    6s
+H    0     0                    3700795.0000 3699354.14  0.04%     -    6s
+     0     0 3699375.82    0  374 3700795.00 3699375.82  0.04%     -    6s
+     0     0 3699376.63    0  553 3700795.00 3699376.63  0.04%     -    6s
+     0     0 3699376.63    0  555 3700795.00 3699376.63  0.04%     -    6s
+H    0     0                    3700553.0000 3699376.63  0.03%     -    6s
+H    0     0                    3700489.0000 3699376.63  0.03%     -    6s
+     0     0 3699376.86    0  388 3700489.00 3699376.86  0.03%     -    6s
+     0     0 3699378.13    0  388 3700489.00 3699378.13  0.03%     -    7s
+     0     0 3699378.13    0  463 3700489.00 3699378.13  0.03%     -    7s
+     0     0 3699378.13    0  468 3700489.00 3699378.13  0.03%     -    7s
+     0     0 3699378.19    0  460 3700489.00 3699378.19  0.03%     -    7s
+     0     0 3699378.29    0  357 3700489.00 3699378.29  0.03%     -    8s
+     0     2 3699378.36    0  355 3700489.00 3699378.36  0.03%     -    8s
+H   96   125                    3700313.0000 3699482.96  0.02%  32.5    9s
+H  175   160                    3700262.0000 3699483.32  0.02%  32.9    9s
+   244   244 3699553.17   10  294 3700262.00 3699483.32  0.02%  29.0   10s
+H 1212   999                    3700168.0000 3699483.32  0.02%  13.1   13s
+H 1214   999                    3700075.0000 3699483.32  0.02%  13.1   13s
+H 1227   999                    3700059.0000 3699483.32  0.02%  13.0   13s
+H 1241   999                    3700053.0000 3699483.32  0.02%  13.0   13s
+  2681  2904 3699817.02   71   60 3700053.00 3699483.32  0.02%   8.9   15s
+  4387  2767 3700043.90   78 1093 3700053.00 3699641.75  0.01%   8.1   20s
+H 4393  2632                    3700012.0000 3699669.01  0.01%   8.1   22s
 
 Cutting planes:
-  Learned: 2
-  Gomory: 48
-  Cover: 10
-  Implied bound: 11
-  Clique: 1
-  MIR: 34
+  Gomory: 73
+  Cover: 13
+  Implied bound: 1
+  MIR: 40
+  Mixing: 1
   StrongCG: 1
-  Flow cover: 59
-  Zero half: 1
-  RLT: 11
-  Relax-and-lift: 31
+  Flow cover: 66
+  Zero half: 3
+  Mod-K: 1
+  RLT: 9
+  Relax-and-lift: 4
 
-Explored 4063 nodes (43296 simplex iterations) in 14.65 seconds (6.71 work units)
+Explored 4393 nodes (49857 simplex iterations) in 22.16 seconds (10.52 work units)
 Thread count was 32 (of 64 available processors)
 
-Solution count 10: 3.70004e+06 3.70004e+06 3.70006e+06 ... 4.11868e+06
+Solution count 10: 3.70001e+06 3.70005e+06 3.70005e+06 ... 3.70031e+06
 
 Optimal solution found (tolerance 1.00e-04)
 
 Optimal solution found (tolerance 1.00e-04)
-Best objective 3.700036000000e+06, best bound 3.699668000000e+06, gap 0.0099%
+Best objective 3.700012000000e+06, best bound 3.699669013049e+06, gap 0.0093%
 
 Wrote result file 'ILPmodel.sol'
 
 Wrote result file 'ILPmodel.sol'
 
 -> Cell Size (W x H): 1.8 x 3.2
--> Total generation time for cell COMPLEX0: 114s
--> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/div//GDSIILTable.txt
--> Saving layout COMPLEX0 to file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/div//COMPLEX0.gds
+-> Total generation time for cell COMPLEX0: 116s
+-> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/0.05/div//GDSIILTable.txt
+-> Saving layout COMPLEX0 to file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/0.05/div//COMPLEX0.gds

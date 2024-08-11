@@ -1,9 +1,9 @@
-astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/bar//BAR_G0_0_1742.run
--> Reading file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/bar//BAR_G0_0_1742.run
+astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/square//SQUARE_G1_2_6.run
+-> Reading file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/square//SQUARE_G1_2_6.run
 -> Setting lpsolve executable to: /home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl
 -> Loading technology from file: /home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul
--> Loading cells netlist from file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/bar//BAR_G0_0_1742.sp
--> Selecting cell netlist: BAR_G0_0_1742
+-> Loading cells netlist from file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/square//SQUARE_G1_2_6.sp
+-> Selecting cell netlist: SQUARE_G1_2_6
 -> Trying with 2 tracks and conservative = 0 ...
 -> Calculating cell area...
 -> Applying folding...
@@ -86,8 +86,8 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/bar//
  Iteration 24; cost = 4116.000 (4116.000); p_cost = 4116.000; accept = 0.227; avg_delta = 0.000; dp = -nan; thres = 449.329; cost_ratio = 1.000; [9]
  final cost = 4116 
 -> Final cost: Width=7; Gate Mismatches=0; WL=5; Rt. Density=2; Nr. Gaps=0
-   PMOS: MCLKERZGT_0#0-MCLKERZGT_1#0-MCLKERZGT_1#1-
-   NMOS: MCLKERZGT_0#1-MCLKERZGT_1#2-MCLKERZGT_1#3-
+   PMOS: MCLN0ZRR4_0#0-MCLN0ZRR4_1#0-MCLN0ZRR4_1#1-
+   NMOS: MCLN0ZRR4_0#1-MCLN0ZRR4_1#2-MCLN0ZRR4_1#3-
 -> Placing transistors...
 -> Routing cell...
 -> Routing finished in 3 attempts after 0.009 s
@@ -169,23 +169,23 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/bar//
  Iteration 23; cost = 4116.000 (4116.000); p_cost = 4116.000; accept = 0.196; avg_delta = 0.000; dp = -nan; thres = 469.460; cost_ratio = 1.000; [9]
  final cost = 4116 
 -> Routing cell...
--> Routing finished in 3 attempts after 0.012 s
+-> Routing finished in 3 attempts after 0.013 s
 -> New best transistor ordering found with cost: 2021
 -> Final cost: Width=7; Gate Mismatches=0; WL=5; Rt. Density=2; Nr. Gaps=0
-   PMOS: MCLKERZGT_1#1-MCLKERZGT_1#0-MCLKERZGT_0#0-
-   NMOS: MCLKERZGT_1#3-MCLKERZGT_1#2-MCLKERZGT_0#1-
+   PMOS: MCLN0ZRR4_1#1-MCLN0ZRR4_1#0-MCLN0ZRR4_0#0-
+   NMOS: MCLN0ZRR4_1#3-MCLN0ZRR4_1#2-MCLN0ZRR4_0#1-
 -> Routing cell...
--> Routing finished in 3 attempts after 0.012 s
+-> Routing finished in 3 attempts after 0.013 s
 
 -> Cost before optimization:2021
 -> Optimizing routing graph...
 -> Cost after optimization: 2010
--> Runtime = 3.781 s
+-> Runtime = 3.851 s
 
 -> Cost before optimization:2010
 -> Optimizing routing graph...
 -> Cost after optimization: 2010
--> Runtime = 1.766 s
+-> Runtime = 1.839 s
 -> Compacting layout...
 -> Calling LP Solver (3860 variables, 5553 constraints)
 -> Running command: "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl" TimeLimit=3600 ResultFile=ILPmodel.sol ILPmodel.lp
@@ -280,7 +280,7 @@ Cutting planes:
   RLT: 20
   Relax-and-lift: 24
 
-Explored 282 nodes (4564 simplex iterations) in 2.42 seconds (0.79 work units)
+Explored 282 nodes (4564 simplex iterations) in 2.55 seconds (0.79 work units)
 Thread count was 32 (of 64 available processors)
 
 Solution count 10: 1.63619e+06 1.63621e+06 1.63637e+06 ... 2.03822e+06
@@ -295,6 +295,6 @@ Wrote result file 'ILPmodel.sol'
 Wrote result file 'ILPmodel.sol'
 
 -> Cell Size (W x H): 0.8 x 3.2
--> Total generation time for cell BAR_G0_0_1742: 9s
--> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/bar//GDSIILTable.txt
--> Saving layout BAR_G0_0_1742 to file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/bar//BAR_G0_0_1742.gds
+-> Total generation time for cell SQUARE_G1_2_6: 9s
+-> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/square//GDSIILTable.txt
+-> Saving layout SQUARE_G1_2_6 to file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/square//SQUARE_G1_2_6.gds

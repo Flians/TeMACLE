@@ -1,0 +1,8 @@
+set lpsolve "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl"
+load technology "/home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+load netlist "/home/flynn/workplace/CEMapping/src/../outputs/Astran/K4/0.01/multiplier//MULTIPLIER_G4_372_373.sp"
+cellgen select MULTIPLIER_G4_372_373
+cellgen autoflow
+export layout MULTIPLIER_G4_372_373 /home/flynn/workplace/CEMapping/src/../outputs/Astran/K4/0.01/multiplier//MULTIPLIER_G4_372_373.gds
+exit
+    

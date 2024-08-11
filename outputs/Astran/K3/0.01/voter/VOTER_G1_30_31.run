@@ -1,8 +1,0 @@
-set lpsolve "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl"
-load technology "/home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
-load netlist "/home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/voter//VOTER_G1_30_31.sp"
-cellgen select VOTER_G1_30_31
-cellgen autoflow
-export layout VOTER_G1_30_31 /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/voter//VOTER_G1_30_31.gds
-exit
-    

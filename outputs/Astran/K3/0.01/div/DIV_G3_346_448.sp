@@ -47,7 +47,7 @@ Mcl5AA6HM_1#10 GND A cl5AA6HM_1#a_35_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl5AA6HM_1#11 cl5AA6HM_1#a_13_43# A GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 2|3|XOR2X1|XNOR2X1=1|INPUT:Y-XNOR2X1:A,B=2|INPUT:Y-XOR2X1:A,B=1|XNOR2X1:Y-XOR2X1:A,B=1|11110
 * 1703 occurrences in design
 * each contains 2 cells

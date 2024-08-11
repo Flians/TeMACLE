@@ -19,10 +19,10 @@ MclT4G8Z9_1#cl1HPJD9_1#4 Y clT4G8Z9_0#Y clT4G8Z9_1#cl1HPJD9_1#a_12_6# GND nmos w
 + ad=0p pd=0u as=0p ps=0u
 MclT4G8Z9_1#cl1HPJD9_1#5 GND A Y GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 3|3|VOTER_G2_2_5|INVX1=1|INPUT:Y-INVX1:A=1|INPUT:Y-VOTER_G2_2_5:B=1|INPUT:Y-VOTER_G2_2_5:C=1|INVX1:Y-VOTER_G2_2_5:A=1|11110
 * 357 occurrences in design
-* each contains 2 cells
+* each contains 3 cells
 * pin map: {'n6451': 'A', 'x725': 'B', 'x724': 'C'} {'n6452': 'Y'}
 * function: ~A&(B|C)
 * Example occurence:

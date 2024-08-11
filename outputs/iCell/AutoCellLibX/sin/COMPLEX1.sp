@@ -1,28 +1,23 @@
-.subckt COMPLEX1 cl3#B VDD cl2#B cl1#B cl1#A VSS cl2#A cl0#Y cl3#Y
-Mcl0#M3 cl0#net16 cl1#Y VSS VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl0#M2 cl0#Y cl2#Y cl0#net16 VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl0#M1 cl0#Y cl2#Y VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl0#M0 cl0#Y cl1#Y VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl1#M3 cl1#net16 cl1#A VSS VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl1#M2 cl1#Y cl1#B cl1#net16 VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl1#M1 cl1#Y cl1#B VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl1#M0 cl1#Y cl1#A VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl2#M3 cl2#net16 cl2#A VSS VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl2#M2 cl2#Y cl2#B cl2#net16 VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl2#M1 cl2#Y cl2#B VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl2#M0 cl2#Y cl2#A VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl3#M5 VSS cl3#net7 cl3#Y VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl3#M1 VSS cl3#B cl3#net7 VSS nmos_lvt w=54.0n l=20n nfin=2
-Mcl3#M2 VSS cl0#Y cl3#net7 VSS nmos_lvt w=54.0n l=20n nfin=2
-Mcl3#M0 VDD cl3#net7 cl3#Y VDD pmos_lvt w=162.00n l=20n nfin=6
-Mcl3#M4 cl3#net15 cl3#B cl3#net7 VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl3#M3 VDD cl0#Y cl3#net15 VDD pmos_lvt w=81.0n l=20n nfin=3
+.subckt COMPLEX1 cl2#B cl1#B cl1#A VDD cl2#C cl2#Y cl0#Y cl1#Y VSS
+Mcl0#M0 cl0#Y cl1#Y VSS VSS nmos_lvt w=81.0n l=20n nfin=3
+Mcl0#M1 cl0#Y cl1#Y VDD VDD pmos_lvt w=81.0n l=20n nfin=3
+Mcl1#M5 VSS cl1#net7 cl1#Y VSS nmos_lvt w=162.00n l=20n nfin=6
+Mcl1#M1 VSS cl1#B cl1#net7 VSS nmos_lvt w=54.0n l=20n nfin=2
+Mcl1#M2 VSS cl1#A cl1#net7 VSS nmos_lvt w=54.0n l=20n nfin=2
+Mcl1#M0 VDD cl1#net7 cl1#Y VDD pmos_lvt w=162.00n l=20n nfin=6
+Mcl1#M4 cl1#net15 cl1#B cl1#net7 VDD pmos_lvt w=81.0n l=20n nfin=3
+Mcl1#M3 VDD cl1#A cl1#net15 VDD pmos_lvt w=81.0n l=20n nfin=3
+Mcl2#M0 cl2#Y cl1#Y cl2#net22 VSS nmos_lvt w=243.00n l=20n nfin=9
+Mcl2#M1 cl2#net22 cl2#B cl2#net21 VSS nmos_lvt w=243.00n l=20n nfin=9
+Mcl2#M2 cl2#net21 cl2#C VSS VSS nmos_lvt w=243.00n l=20n nfin=9
+Mcl2#M3 cl2#Y cl1#Y VDD VDD pmos_lvt w=81.0n l=20n nfin=3
+Mcl2#M4 cl2#Y cl2#B VDD VDD pmos_lvt w=81.0n l=20n nfin=3
+Mcl2#M5 cl2#Y cl2#C VDD VDD pmos_lvt w=81.0n l=20n nfin=3
 .ends COMPLEX1
-* pattern code: [NAND2x1,NAND2x1,NAND2x1]+OR2x2_c0o0
-* 73 occurrences in design 
-* each contains 4 cells
+* pattern code: [INVx1,OR2x2]+NAND3x1_c1o0
+* 91 occurrences in design 
+* each contains 3 cells
 * Example occurence:
-*   .subckt NAND2x1 A=n111 B=n113 Y=n114
-*   .subckt NAND2x1 A=n42 B=n110 Y=n111
-*   .subckt NAND2x1 A=n112 B=x18 Y=n113
-*   .subckt OR2x2 A=n114 B=n168 Y=n194
+*   .subckt INVx1 A=n143 Y=n144
+*   .subckt OR2x2 A=n124 B=n140 Y=n143
+*   .subckt NAND3x1 A=n143 B=n194 C=n276 Y=n1937

@@ -19,7 +19,7 @@ MclEJ1U9B_1#4 clEJ1U9B_1#a_2_6# A GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 MclEJ1U9B_1#5 Y clEJ1U9B_0#Y clEJ1U9B_1#a_2_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 2|3|OAI21X1|NAND2X1=1|INPUT:Y-NAND2X1:A,B=2|INPUT:Y-OAI21X1:A,B=2|NAND2X1:Y-OAI21X1:C=1|11210
 * 1473 occurrences in design
 * each contains 2 cells

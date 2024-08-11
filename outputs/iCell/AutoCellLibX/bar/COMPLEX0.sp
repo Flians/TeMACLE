@@ -1,21 +1,21 @@
-.subckt COMPLEX0 VDD cl2#B cl1#B cl1#A VSS cl2#A cl0#Y
-Mcl0#M3 cl0#net16 cl1#Y VSS VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl0#M2 cl0#Y cl2#Y cl0#net16 VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl0#M1 cl0#Y cl2#Y VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl0#M0 cl0#Y cl1#Y VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl1#M3 cl1#net16 cl1#A VSS VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl1#M2 cl1#Y cl1#B cl1#net16 VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl1#M1 cl1#Y cl1#B VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl1#M0 cl1#Y cl1#A VDD VDD pmos_lvt w=81.0n l=20n nfin=3
+.subckt COMPLEX0 cl0#A1 VDD cl2#A cl1#A VSS cl0#Y cl1#Y cl2#B
+Mcl0#M2 cl0#Y cl2#Y VDD VDD pmos_lvt w=162.00n l=20n nfin=6
+Mcl0#M1 cl0#Y cl1#Y cl0#net27 VDD pmos_lvt w=162.00n l=20n nfin=6
+Mcl0#M0 cl0#net27 cl0#A1 VDD VDD pmos_lvt w=162.00n l=20n nfin=6
+Mcl0#M6 cl0#net11 cl2#Y VSS VSS nmos_lvt w=162.00n l=20n nfin=6
+Mcl0#M5 cl0#Y cl1#Y cl0#net11 VSS nmos_lvt w=162.00n l=20n nfin=6
+Mcl0#M4 cl0#Y cl0#A1 cl0#net11 VSS nmos_lvt w=162.00n l=20n nfin=6
+Mcl1#M0 cl1#Y cl1#A VSS VSS nmos_lvt w=81.0n l=20n nfin=3
+Mcl1#M1 cl1#Y cl1#A VDD VDD pmos_lvt w=81.0n l=20n nfin=3
 Mcl2#M3 cl2#net16 cl2#A VSS VSS nmos_lvt w=162.00n l=20n nfin=6
 Mcl2#M2 cl2#Y cl2#B cl2#net16 VSS nmos_lvt w=162.00n l=20n nfin=6
 Mcl2#M1 cl2#Y cl2#B VDD VDD pmos_lvt w=81.0n l=20n nfin=3
 Mcl2#M0 cl2#Y cl2#A VDD VDD pmos_lvt w=81.0n l=20n nfin=3
 .ends COMPLEX0
-* pattern code: [NAND2x1,NAND2x1,NAND2x1]
-* 62 occurrences in design 
+* pattern code: [OAI21x1,INVx1,NAND2x1]
+* 113 occurrences in design 
 * each contains 3 cells
 * Example occurence:
-*   .subckt NAND2x1 A=n512 B=n514 Y=n515
-*   .subckt NAND2x1 A=n137 B=n511 Y=n512
-*   .subckt NAND2x1 A=n513 B=x128 Y=n514
+*   .subckt OAI21x1 A1=x128 A2=n224 B=n315 Y=n316
+*   .subckt INVx1 A=x90 Y=n224
+*   .subckt NAND2x1 A=x89 B=x128 Y=n315

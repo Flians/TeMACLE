@@ -1,4 +1,4 @@
-.subckt COMPLEX12 cl3#Y cl1#Y cl4#B cl2#C GND cl5#B cl0#Y VCC cl5#Y cl3#A cl4#Y cl1#A cl2#B cl2#A
+.subckt COMPLEX12 cl2#C VCC cl4#Y cl1#A cl3#Y cl3#A cl1#Y cl2#A cl4#B GND cl0#Y cl2#B
 Mcl0#0 cl0#a_9_54# cl1#Y VCC VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl0#1 cl0#Y cl2#Y cl0#a_9_54# VCC pmos w=1u l=0.05u
@@ -43,26 +43,13 @@ Mcl4#4 cl4#a_2_6# cl4#B GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl4#5 cl4#Y cl3#Y cl4#a_2_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-Mcl5#0 cl5#a_9_54# cl1#Y VCC VCC pmos w=1u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-Mcl5#1 cl5#Y cl5#B cl5#a_9_54# VCC pmos w=1u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-Mcl5#2 VCC cl3#Y cl5#Y VCC pmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-Mcl5#3 GND cl1#Y cl5#a_2_6# GND nmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-Mcl5#4 cl5#a_2_6# cl5#B GND GND nmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-Mcl5#5 cl5#Y cl3#Y cl5#a_2_6# GND nmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
 .ends COMPLEX12
-* pattern code: [OAI21X1,INVX1,AOI21X1,INVX1]+OAI21X1_c1o0c3o0+OAI21X1_c1o0c3o0
+* pattern code: [OAI21X1,INVX1,AOI21X1,INVX1]+OAI21X1_c1o0c3o0
 * 128 occurrences in design 
-* each contains 6 cells
+* each contains 5 cells
 * Example occurence:
 *   .subckt OAI21X1 A=n712 B=n709 C=n698 Y=n713
 *   .subckt INVX1 A=n711 Y=n712
 *   .subckt AOI21X1 A=n704 B=n708 C=n701 Y=n709
 *   .subckt INVX1 A=n697 Y=n698
 *   .subckt OAI21X1 A=n712 B=n2081 C=n698 Y=n2082
-*   .subckt OAI21X1 A=n712 B=n2349 C=n698 Y=n2350

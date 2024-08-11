@@ -1,25 +1,20 @@
-.subckt COMPLEX7 VDD cl2#B cl1#B cl1#A VSS cl2#A cl0#Y
-Mcl0#M3 cl0#net16 cl1#Y VSS VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl0#M2 cl0#Y cl2#Y cl0#net16 VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl0#M1 cl0#Y cl2#Y VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl0#M0 cl0#Y cl1#Y VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl1#M5 VSS cl1#net7 cl1#Y VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl1#M1 VSS cl1#B cl1#net7 VSS nmos_lvt w=54.0n l=20n nfin=2
-Mcl1#M2 VSS cl1#A cl1#net7 VSS nmos_lvt w=54.0n l=20n nfin=2
-Mcl1#M0 VDD cl1#net7 cl1#Y VDD pmos_lvt w=162.00n l=20n nfin=6
-Mcl1#M4 cl1#net15 cl1#B cl1#net7 VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl1#M3 VDD cl1#A cl1#net15 VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl2#M5 VSS cl2#net7 cl2#Y VSS nmos_lvt w=162.00n l=20n nfin=6
-Mcl2#M1 VSS cl2#B cl2#net7 VSS nmos_lvt w=54.0n l=20n nfin=2
-Mcl2#M2 VSS cl2#A cl2#net7 VSS nmos_lvt w=54.0n l=20n nfin=2
-Mcl2#M0 VDD cl2#net7 cl2#Y VDD pmos_lvt w=162.00n l=20n nfin=6
-Mcl2#M4 cl2#net15 cl2#B cl2#net7 VDD pmos_lvt w=81.0n l=20n nfin=3
-Mcl2#M3 VDD cl2#A cl2#net15 VDD pmos_lvt w=81.0n l=20n nfin=3
+.subckt COMPLEX7 cl1#A1 cl1#B VDD cl0#B cl1#A2 cl0#Y VSS
+Mcl0#M5 VSS cl0#net7 cl0#Y VSS nmos_lvt w=162.00n l=20n nfin=6
+Mcl0#M1 VSS cl0#B cl0#net7 VSS nmos_lvt w=54.0n l=20n nfin=2
+Mcl0#M2 VSS cl1#Y cl0#net7 VSS nmos_lvt w=54.0n l=20n nfin=2
+Mcl0#M0 VDD cl0#net7 cl0#Y VDD pmos_lvt w=162.00n l=20n nfin=6
+Mcl0#M4 cl0#net15 cl0#B cl0#net7 VDD pmos_lvt w=81.0n l=20n nfin=3
+Mcl0#M3 VDD cl1#Y cl0#net15 VDD pmos_lvt w=81.0n l=20n nfin=3
+Mcl1#M2 cl1#Y cl1#B VDD VDD pmos_lvt w=162.00n l=20n nfin=6
+Mcl1#M1 cl1#Y cl1#A2 cl1#net27 VDD pmos_lvt w=162.00n l=20n nfin=6
+Mcl1#M0 cl1#net27 cl1#A1 VDD VDD pmos_lvt w=162.00n l=20n nfin=6
+Mcl1#M6 cl1#net11 cl1#B VSS VSS nmos_lvt w=162.00n l=20n nfin=6
+Mcl1#M5 cl1#Y cl1#A2 cl1#net11 VSS nmos_lvt w=162.00n l=20n nfin=6
+Mcl1#M4 cl1#Y cl1#A1 cl1#net11 VSS nmos_lvt w=162.00n l=20n nfin=6
 .ends COMPLEX7
-* pattern code: [NAND2x1,OR2x2,OR2x2]
-* 979 occurrences in design 
-* each contains 3 cells
+* pattern code: [OR2x2,OAI21x1]
+* 362 occurrences in design 
+* each contains 2 cells
 * Example occurence:
-*   .subckt NAND2x1 A=n2243 B=n2255 Y=n2256
-*   .subckt OR2x2 A=n2242 B=n2063 Y=n2243
-*   .subckt OR2x2 A=n2062 B=n2254 Y=n2255
+*   .subckt OR2x2 A=n2115 B=x228 Y=n2116
+*   .subckt OAI21x1 A1=n1317 A2=n2112 B=n2114 Y=n2115

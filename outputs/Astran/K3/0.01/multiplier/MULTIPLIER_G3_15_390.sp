@@ -1,28 +1,24 @@
 .SUBCKT MULTIPLIER_G3_15_390 A B C Y VCC GND
-MclQBG50I_0#0 clQBG50I_0#Y C VCC VCC pmos w=0.5u l=0.05u
+MclS83P4W_0#0 clS83P4W_0#Y B VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclQBG50I_0#1 clQBG50I_0#Y C GND GND nmos w=0.25u l=0.05u
+MclS83P4W_0#1 VCC C clS83P4W_0#Y VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclQBG50I_1#clAL7FLR_0#0 clQBG50I_1#clAL7FLR_0#Y B VCC VCC pmos w=0.5u l=0.05u
+MclS83P4W_0#2 clS83P4W_0#a_9_6# B GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclQBG50I_1#clAL7FLR_0#1 clQBG50I_1#clAL7FLR_0#Y B GND GND nmos w=0.25u l=0.05u
+MclS83P4W_0#3 clS83P4W_0#Y C clS83P4W_0#a_9_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclQBG50I_1#clAL7FLR_1#0 clQBG50I_1#clAL7FLR_1#a_9_54# clQBG50I_1#clAL7FLR_0#Y VCC VCC pmos w=1u l=0.05u
+MclS83P4W_1#0 Y clS83P4W_0#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclQBG50I_1#clAL7FLR_1#1 Y clQBG50I_0#Y clQBG50I_1#clAL7FLR_1#a_9_54# VCC pmos w=1u l=0.05u
+MclS83P4W_1#1 VCC A Y VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclQBG50I_1#clAL7FLR_1#2 VCC A Y VCC pmos w=0.5u l=0.05u
+MclS83P4W_1#2 clS83P4W_1#a_9_6# clS83P4W_0#Y GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclQBG50I_1#clAL7FLR_1#3 GND clQBG50I_1#clAL7FLR_0#Y clQBG50I_1#clAL7FLR_1#a_2_6# GND nmos w=0.5u l=0.05u
+MclS83P4W_1#3 Y A clS83P4W_1#a_9_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclQBG50I_1#clAL7FLR_1#4 clQBG50I_1#clAL7FLR_1#a_2_6# clQBG50I_0#Y GND GND nmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-MclQBG50I_1#clAL7FLR_1#5 Y A clQBG50I_1#clAL7FLR_1#a_2_6# GND nmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 3|3|MULTIPLIER_G0_2_27|INVX1=1|INPUT:Y-INVX1:A=1|INPUT:Y-MULTIPLIER_G0_2_27:B=1|INPUT:Y-MULTIPLIER_G0_2_27:C=1|INVX1:Y-MULTIPLIER_G0_2_27:A=1|11110
 * 771 occurrences in design
-* each contains 2 cells
+* each contains 3 cells
 * pin map: {'n622': 'A', 'n581': 'B', 'x65': 'C'} {'n623': 'Y'}
 * function: ~A|(B&C)
 * Example occurence:

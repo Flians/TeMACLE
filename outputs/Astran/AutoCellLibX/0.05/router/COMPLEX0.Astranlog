@@ -1,8 +1,8 @@
-astran> read /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/router//COMPLEX0.run
--> Reading file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/router//COMPLEX0.run
+astran> read /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/0.05/router//COMPLEX0.run
+-> Reading file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/0.05/router//COMPLEX0.run
 -> Setting lpsolve executable to: /home/flynn/workplace/CEMapping/AutoCellLibX/../tools/gurobi/bin/gurobi_cl
 -> Loading technology from file: /home/flynn/workplace/CEMapping/AutoCellLibX/../tools/astran/Astran/build/Work/tech_freePDK45.rul
--> Loading cells netlist from file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/router//COMPLEX0.sp
+-> Loading cells netlist from file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/0.05/router//COMPLEX0.sp
 -> Selecting cell netlist: COMPLEX0
 -> Trying with 2 tracks and conservative = 0 ...
 -> Calculating cell area...
@@ -132,8 +132,8 @@ astran> read /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/Auto
  Iteration 27; cost = 5124.000 (5124.000); p_cost = 5124.000; accept = 0.169; avg_delta = 0.000; dp = -nan; thres = 519.367; cost_ratio = 1.000; [9]
  final cost = 5124 
 -> Routing cell...
--> Routing finished in 3 attempts after 0.02 s
--> New best transistor ordering found with cost: 3170
+-> Routing finished in 2 attempts after 0.015 s
+-> New best transistor ordering found with cost: 3166
  ( initial cost = 9063 num reps = 2400 problem size = 16 )  Iteration 1; cost = 9465.000 (9063.000); p_cost = 9465.000; accept = 1.000; avg_delta = 0.168; dp = 1481.338; thres = 99999.000; cost_ratio = 1.044; [0]
  Iteration 2; cost = 12967.000 (9063.000); p_cost = 12967.000; accept = 1.000; avg_delta = 1.459; dp = 1491.550; thres = 47999.520; cost_ratio = 1.370; [0]
  Iteration 3; cost = 11864.000 (9063.000); p_cost = 11864.000; accept = 1.000; avg_delta = -0.460; dp = 1568.391; thres = 23039.770; cost_ratio = 0.915; [0]
@@ -195,22 +195,22 @@ astran> read /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/Auto
  Iteration 28; cost = 5124.000 (5124.000); p_cost = 5124.000; accept = 0.185; avg_delta = 0.000; dp = -nan; thres = 497.730; cost_ratio = 1.000; [9]
  final cost = 5124 
 -> Routing cell...
--> Routing finished in 3 attempts after 0.021 s
+-> Routing finished in 2 attempts after 0.015 s
 -> Final cost: Width=9; Gate Mismatches=0; WL=7; Rt. Density=2; Nr. Gaps=0
    PMOS: MCL1#2-MCL1#1-MCL1#0-MCL0#0-
    NMOS: MCL1#5-MCL1#4-MCL1#3-MCL0#1-
 -> Routing cell...
--> Routing finished in 3 attempts after 0.021 s
+-> Routing finished in 2 attempts after 0.015 s
 
--> Cost before optimization:3170
+-> Cost before optimization:3166
 -> Optimizing routing graph...
 -> Cost after optimization: 3146
--> Runtime = 7.737 s
+-> Runtime = 7.749 s
 
 -> Cost before optimization:3146
 -> Optimizing routing graph...
 -> Cost after optimization: 3146
--> Runtime = 3.304 s
+-> Runtime = 3.309 s
 -> Compacting layout...
 -> Calling LP Solver (5273 variables, 7696 constraints)
 -> Running command: "/home/flynn/workplace/CEMapping/AutoCellLibX/../tools/gurobi/bin/gurobi_cl" TimeLimit=3600 ResultFile=ILPmodel.sol ILPmodel.lp
@@ -266,7 +266,7 @@ H    0     0                    2856658.0000 2448129.33  14.3%     -    0s
      0     0 2448833.82    0  426 2856658.00 2448833.82  14.3%     -    0s
      0     0 2448838.13    0  432 2856658.00 2448838.13  14.3%     -    0s
      0     0 2448838.13    0  452 2856658.00 2448838.13  14.3%     -    0s
-     0     0 2448838.13    0  453 2856658.00 2448838.13  14.3%     -    0s
+     0     0 2448838.13    0  453 2856658.00 2448838.13  14.3%     -    1s
      0     0 2448838.13    0  453 2856658.00 2448838.13  14.3%     -    1s
      0     0 2448840.53    0  429 2856658.00 2448840.53  14.3%     -    1s
      0     0 2448840.54    0  429 2856658.00 2448840.54  14.3%     -    1s
@@ -285,7 +285,7 @@ H  112   128                    2449789.0000 2448860.69  0.04%  36.8    2s
 * 2383  1274              67    2449759.0000 2448872.28  0.04%  17.4    3s
 * 2384  1274              67    2449745.0000 2448872.28  0.04%  17.4    3s
 * 2460  1274              66    2449737.0000 2448872.28  0.04%  17.2    3s
-* 3974  1284              63    2449725.0000 2449449.88  0.01%  17.3    4s
+* 3974  1284              63    2449725.0000 2449449.88  0.01%  17.3    3s
 
 Cutting planes:
   Gomory: 46
@@ -297,7 +297,7 @@ Cutting planes:
   RLT: 38
   Relax-and-lift: 5
 
-Explored 4679 nodes (87674 simplex iterations) in 4.03 seconds (1.88 work units)
+Explored 4679 nodes (87674 simplex iterations) in 3.89 seconds (1.88 work units)
 Thread count was 32 (of 64 available processors)
 
 Solution count 10: 2.44972e+06 2.44974e+06 2.44974e+06 ... 2.45074e+06
@@ -313,5 +313,5 @@ Wrote result file 'ILPmodel.sol'
 
 -> Cell Size (W x H): 1.2 x 3.2
 -> Total generation time for cell COMPLEX0: 17s
--> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/router//GDSIILTable.txt
--> Saving layout COMPLEX0 to file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/router//COMPLEX0.gds
+-> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/0.05/router//GDSIILTable.txt
+-> Saving layout COMPLEX0 to file: /home/flynn/workplace/CEMapping/AutoCellLibX/../outputs/Astran/AutoCellLibX/0.05/router//COMPLEX0.gds

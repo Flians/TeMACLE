@@ -1,31 +1,27 @@
-.SUBCKT PRIORITY_G3_35_241_632_633 A B C Y VCC GND
-MclI7J2II_0#0 clI7J2II_0#Y B VCC VCC pmos w=0.5u l=0.05u
+.SUBCKT PRIORITY_G3_35_241_632_633 B A C Y VCC GND
+MclQG6SLR_0#0 clQG6SLR_0#Y C VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclI7J2II_0#1 clI7J2II_0#Y B GND GND nmos w=0.25u l=0.05u
+MclQG6SLR_0#1 clQG6SLR_0#Y C GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclI7J2II_1#0 clI7J2II_1#Y C VCC VCC pmos w=0.5u l=0.05u
+MclQG6SLR_1#0 clQG6SLR_1#Y clQG6SLR_0#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclI7J2II_1#1 clI7J2II_1#Y C GND GND nmos w=0.25u l=0.05u
+MclQG6SLR_1#1 VCC A clQG6SLR_1#Y VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclI7J2II_2#0 clI7J2II_2#Y clI7J2II_1#Y VCC VCC pmos w=0.5u l=0.05u
+MclQG6SLR_1#2 clQG6SLR_1#a_9_6# clQG6SLR_0#Y GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclI7J2II_2#1 VCC clI7J2II_0#Y clI7J2II_2#Y VCC pmos w=0.5u l=0.05u
+MclQG6SLR_1#3 clQG6SLR_1#Y A clQG6SLR_1#a_9_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclI7J2II_2#2 clI7J2II_2#Y A VCC VCC pmos w=0.5u l=0.05u
+MclQG6SLR_2#0 clQG6SLR_2#a_9_54# clQG6SLR_1#Y VCC VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclI7J2II_2#3 clI7J2II_2#a_9_6# clI7J2II_1#Y GND GND nmos w=0.75u l=0.05u
+MclQG6SLR_2#1 Y B clQG6SLR_2#a_9_54# VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclI7J2II_2#4 clI7J2II_2#a_14_6# clI7J2II_0#Y clI7J2II_2#a_9_6# GND nmos w=0.75u l=0.05u
+MclQG6SLR_2#2 Y clQG6SLR_1#Y GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclI7J2II_2#5 clI7J2II_2#Y A clI7J2II_2#a_14_6# GND nmos w=0.75u l=0.05u
+MclQG6SLR_2#3 GND B Y GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclI7J2II_3#0 Y clI7J2II_2#Y VCC VCC pmos w=0.5u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-MclI7J2II_3#1 Y clI7J2II_2#Y GND GND nmos w=0.25u l=0.05u
-+ ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 4|3|INVX1|INVX1=2|NAND3X1=1|INPUT:Y-INVX1:A=2|INPUT:Y-NAND3X1:A,B,C=1|INVX1:Y-NAND3X1:A,B,C=2|NAND3X1:Y-INVX1:A=1|1110111
-* 9 occurrences in design
+* 7 occurrences in design
 * each contains 4 cells
 * pin map: {'n761': 'A', 'x49': 'B', 'x48': 'C'} {'n763': 'Y'}
 * function: A&~B&~C

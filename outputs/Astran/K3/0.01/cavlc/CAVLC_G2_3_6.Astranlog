@@ -1,9 +1,9 @@
-astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/cavlc//CAVLC_G2_3_6.run
--> Reading file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/cavlc//CAVLC_G2_3_6.run
+astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/square//SQUARE_G0_9_10.run
+-> Reading file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/square//SQUARE_G0_9_10.run
 -> Setting lpsolve executable to: /home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl
 -> Loading technology from file: /home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul
--> Loading cells netlist from file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/cavlc//CAVLC_G2_3_6.sp
--> Selecting cell netlist: CAVLC_G2_3_6
+-> Loading cells netlist from file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/square//SQUARE_G0_9_10.sp
+-> Selecting cell netlist: SQUARE_G0_9_10
 -> Trying with 2 tracks and conservative = 0 ...
 -> Calculating cell area...
 -> Applying folding...
@@ -129,11 +129,11 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/cavlc
  Iteration 39; cost = 5124.000 (5124.000); p_cost = 5124.000; accept = 0.172; avg_delta = 0.000; dp = -nan; thres = 345.299; cost_ratio = 1.000; [9]
  final cost = 5124 
 -> Final cost: Width=9; Gate Mismatches=0; WL=7; Rt. Density=2; Nr. Gaps=0
-   PMOS: MCLGRLJUY_1#1-MCLGRLJUY_1#0-MCLGRLJUY_0#0-MCLGRLJUY_0#1-
-   NMOS: MCLGRLJUY_1#3-MCLGRLJUY_1#2-MCLGRLJUY_0#2-MCLGRLJUY_0#3-
+   PMOS: MCLS83P4W_1#1-MCLS83P4W_1#0-MCLS83P4W_0#0-MCLS83P4W_0#1-
+   NMOS: MCLS83P4W_1#3-MCLS83P4W_1#2-MCLS83P4W_0#2-MCLS83P4W_0#3-
 -> Placing transistors...
 -> Routing cell...
--> Routing finished in 3 attempts after 0.021 s
+-> Routing finished in 3 attempts after 0.02 s
  ( initial cost = 9073 num reps = 2400 problem size = 16 )  Iteration 1; cost = 15176.000 (9073.000); p_cost = 15176.000; accept = 1.000; avg_delta = 2.543; dp = 1548.794; thres = 99999.000; cost_ratio = 1.673; [0]
  Iteration 2; cost = 15172.000 (9073.000); p_cost = 15172.000; accept = 1.000; avg_delta = -0.002; dp = 1549.758; thres = 47999.520; cost_ratio = 1.000; [0]
  Iteration 3; cost = 9901.000 (9073.000); p_cost = 9901.000; accept = 1.000; avg_delta = -2.196; dp = 1478.597; thres = 23039.770; cost_ratio = 0.653; [0]
@@ -173,7 +173,7 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/cavlc
  Iteration 37; cost = 5124.000 (5124.000); p_cost = 5124.000; accept = 0.174; avg_delta = 0.000; dp = -nan; thres = 369.727; cost_ratio = 1.000; [9]
  final cost = 5124 
 -> Routing cell...
--> Routing finished in 3 attempts after 0.014 s
+-> Routing finished in 3 attempts after 0.013 s
  ( initial cost = 9073 num reps = 2400 problem size = 16 )  Iteration 1; cost = 14285.000 (9073.000); p_cost = 14285.000; accept = 1.000; avg_delta = 2.172; dp = 1567.502; thres = 99999.000; cost_ratio = 1.574; [0]
  Iteration 2; cost = 13316.000 (9073.000); p_cost = 13316.000; accept = 1.000; avg_delta = -0.404; dp = 1454.390; thres = 47999.520; cost_ratio = 0.932; [0]
  Iteration 3; cost = 10501.000 (9073.000); p_cost = 10501.000; accept = 1.000; avg_delta = -1.173; dp = 1529.563; thres = 23039.770; cost_ratio = 0.789; [0]
@@ -214,7 +214,7 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/cavlc
  Iteration 38; cost = 5124.000 (5124.000); p_cost = 5124.000; accept = 0.177; avg_delta = 0.000; dp = -nan; thres = 350.225; cost_ratio = 1.000; [9]
  final cost = 5124 
 -> Routing cell...
--> Routing finished in 3 attempts after 0.014 s
+-> Routing finished in 3 attempts after 0.013 s
  ( initial cost = 9073 num reps = 2400 problem size = 16 )  Iteration 1; cost = 14142.000 (9073.000); p_cost = 14142.000; accept = 1.000; avg_delta = 2.112; dp = 1498.102; thres = 99999.000; cost_ratio = 1.559; [0]
  Iteration 2; cost = 13367.000 (9073.000); p_cost = 13367.000; accept = 1.000; avg_delta = -0.323; dp = 1482.324; thres = 47999.520; cost_ratio = 0.945; [0]
  Iteration 3; cost = 12292.000 (9073.000); p_cost = 12292.000; accept = 1.000; avg_delta = -0.448; dp = 1500.461; thres = 23039.770; cost_ratio = 0.920; [0]
@@ -255,22 +255,22 @@ astran> read /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/cavlc
  Iteration 38; cost = 5124.000 (5124.000); p_cost = 5124.000; accept = 0.168; avg_delta = 0.000; dp = -nan; thres = 355.420; cost_ratio = 1.000; [9]
  final cost = 5124 
 -> Routing cell...
--> Routing finished in 3 attempts after 0.021 s
+-> Routing finished in 3 attempts after 0.02 s
 -> Final cost: Width=9; Gate Mismatches=0; WL=7; Rt. Density=2; Nr. Gaps=0
-   PMOS: MCLGRLJUY_1#1-MCLGRLJUY_1#0-MCLGRLJUY_0#0-MCLGRLJUY_0#1-
-   NMOS: MCLGRLJUY_1#3-MCLGRLJUY_1#2-MCLGRLJUY_0#2-MCLGRLJUY_0#3-
+   PMOS: MCLS83P4W_1#1-MCLS83P4W_1#0-MCLS83P4W_0#0-MCLS83P4W_0#1-
+   NMOS: MCLS83P4W_1#3-MCLS83P4W_1#2-MCLS83P4W_0#2-MCLS83P4W_0#3-
 -> Routing cell...
--> Routing finished in 3 attempts after 0.021 s
+-> Routing finished in 3 attempts after 0.02 s
 
 -> Cost before optimization:2656
 -> Optimizing routing graph...
 -> Cost after optimization: 2645
--> Runtime = 7.163 s
+-> Runtime = 6.659 s
 
 -> Cost before optimization:2645
 -> Optimizing routing graph...
 -> Cost after optimization: 2645
--> Runtime = 3.364 s
+-> Runtime = 3.228 s
 -> Compacting layout...
 -> Calling LP Solver (5118 variables, 7363 constraints)
 -> Running command: "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl" TimeLimit=3600 ResultFile=ILPmodel.sol ILPmodel.lp
@@ -304,7 +304,7 @@ Coefficient statistics:
   Bounds range     [1e+00, 1e+00]
   RHS range        [1e+00, 2e+04]
 Presolve removed 2720 rows and 1296 columns
-Presolve time: 0.06s
+Presolve time: 0.07s
 Presolved: 4644 rows, 2167 columns, 13777 nonzeros
 Variable types: 0 continuous, 2167 integer (1392 binary)
 
@@ -343,15 +343,15 @@ H   95   128                    2847402.0000 2445567.94  14.1%  14.7    2s
 H   96   128                    2846713.0000 2445567.94  14.1%  14.6    2s
 H  126   128                    2846692.0000 2445567.94  14.1%  13.9    2s
 * 1666  1873              60    2448419.0000 2445567.94  0.12%   9.4    2s
-* 2020  2070              60    2447824.0000 2445567.94  0.09%   9.6    3s
-* 2033  2070              64    2447330.0000 2445567.94  0.07%   9.6    3s
-* 2034  2070              63    2447297.0000 2445567.94  0.07%   9.6    3s
-H 2050  2070                    2447283.0000 2445567.94  0.07%   9.6    3s
-H 2069  2070                    2447266.0000 2445567.94  0.07%   9.6    3s
+* 2020  2070              60    2447824.0000 2445567.94  0.09%   9.6    2s
+* 2033  2070              64    2447330.0000 2445567.94  0.07%   9.6    2s
+* 2034  2070              63    2447297.0000 2445567.94  0.07%   9.6    2s
+H 2050  2070                    2447283.0000 2445567.94  0.07%   9.6    2s
+H 2069  2070                    2447266.0000 2445567.94  0.07%   9.6    2s
 * 2535  1907              57    2447236.0000 2445606.38  0.07%  11.1    3s
 * 3040  1929              44    2447231.0000 2445695.65  0.06%  12.3    3s
 * 3085  1912              48    2447219.0000 2445696.18  0.06%  12.3    3s
-  8804  1416     cutoff   20      2447219.00 2446015.98  0.05%  22.3    5s
+  9565  1190     cutoff   19      2447219.00 2446393.97  0.03%  22.9    5s
 
 Cutting planes:
   Gomory: 22
@@ -365,7 +365,7 @@ Cutting planes:
   RLT: 43
   Relax-and-lift: 14
 
-Explored 10145 nodes (230517 simplex iterations) in 5.36 seconds (2.37 work units)
+Explored 10145 nodes (230517 simplex iterations) in 5.06 seconds (2.37 work units)
 Thread count was 32 (of 64 available processors)
 
 Solution count 10: 2.44722e+06 2.44723e+06 2.44724e+06 ... 2.84669e+06
@@ -380,6 +380,6 @@ Wrote result file 'ILPmodel.sol'
 Wrote result file 'ILPmodel.sol'
 
 -> Cell Size (W x H): 1.2 x 3.2
--> Total generation time for cell CAVLC_G2_3_6: 19s
--> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/cavlc//GDSIILTable.txt
--> Saving layout CAVLC_G2_3_6 to file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/cavlc//CAVLC_G2_3_6.gds
+-> Total generation time for cell SQUARE_G0_9_10: 18s
+-> Saving GDSII Technology Mapping File: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/square//GDSIILTable.txt
+-> Saving layout SQUARE_G0_9_10 to file: /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/square//SQUARE_G0_9_10.gds

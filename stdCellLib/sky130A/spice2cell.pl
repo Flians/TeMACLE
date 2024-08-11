@@ -60,7 +60,7 @@ if($ARGV[0] && open IN,"<$ARGV[0]")
 {
   while(<IN>)
   {
-    if(m/^\.subckt (\w+) (.*)$/ || m/TOP LEVEL CELL: (\w+)\{sch\}()/ || m/^\*\*\.subckt (\w+) (.*)$/ )
+    if(m/^\.subckt ([\d\w_]+) (.*)$/i || m/TOP LEVEL CELL: (\w+)\{sch\}()/ || m/^\*\*\.subckt ([\d\w_]+) (.*)$/i )
     {
       $name=$1;
       $pins=$2;
@@ -75,7 +75,7 @@ if($ARGV[0] && open IN,"<$ARGV[0]")
       print $OUT ".outputs ".join(" ",reverse sort keys %{$pins{'O'}})."\n";
       print $OUT ".ORDER \"MOSFET Gate Drain Source\"\n";
     }
-    elsif(m/^X?[MNP]\d+ (\w+#?) (\w+#?) (\w+#?) (\w+#?) (pfet|nfet|nmos|pmos|hnfet|hpfet|enbsim3|epbsim3|sky130_fd_pr__nfet_01v8|sky130_fd_pr__pfet_01v8)/i)
+    elsif(m/^X?_?[MNPi]?[_\d]+ (\w+#?) (\w+#?) (\w+#?) (\w+#?) (pfet|nfet|nmos|pmos|hnfet|hpfet|enbsim3|epbsim3|sky130_fd_pr__nfet_01v8|sky130_fd_pr__pfet_01v8_hvt)/i)
     {
       my ($g,$d,$s,$m)=($2,$1,$3,$5);
       if($d=~m/^(vdd|gnd)$/i)
@@ -88,7 +88,7 @@ if($ARGV[0] && open IN,"<$ARGV[0]")
       $s=internal($s);
       print $OUT $mosmap{$m}." $g $d $s\n";
     }
-    elsif(m/^X?[MXNP]\d+ (\w+#?) (\w+#?) (\w+#?) (pfet|nfet|nmos|pmos|hnfet|hpfet|enbsim3|epbsim3|sky130_fd_pr__nfet_01v8|sky130_fd_pr__pfet_01v8)/i)
+    elsif(m/^X?[MXNP]\d+ (\w+#?) (\w+#?) (\w+#?) (pfet|nfet|nmos|pmos|hnfet|hpfet|enbsim3|epbsim3|sky130_fd_pr__nfet_01v8|sky130_fd_pr__pfet_01v8_hvt)/i)
     {
       my ($g,$d,$s,$m)=($2,$1,$3,$4);
       if($d=~m/^(vdd|gnd)$/i)
@@ -123,8 +123,17 @@ if($ARGV[0] && open IN,"<$ARGV[0]")
       $n2=internal($n2);
       print $OUT "res $n1 $n2 $v\n";
     }
+    elsif(m/D\d+ (\w+#?) (\w+#?) (\d+)/)
+    {
+    }
     elsif(m/^\*/)
     {
+      if(m/^\*\.PININFO (.*)$/) {
+        while (m/(\w+):(\w+)/g) {
+          $iomap{$1} = $2;
+          print $1, " ", $2, " ", $iomap{$1}, "\n";
+        }
+      }
     }
     elsif(m/^\+/)
     {
@@ -135,7 +144,7 @@ if($ARGV[0] && open IN,"<$ARGV[0]")
     elsif(m/^\.global (\w+)/i)
     {
     }
-    elsif(m/^\.ends?/)
+    elsif(m/^\.ends?/i)
     {
       $name="UNNAMED";
       $pins="";

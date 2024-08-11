@@ -209,17 +209,18 @@ def main():
     extendCellLib = loadExtendCells(extendCellPath, extendCellLib, SCSynthesis)
 
     # benchmarks and parameters
-    benchmarks = ['sqrt', 'voter', 'arbiter', 'cavlc', 'div', 'int2float', 'max', 'priority', 'sin', 'square', 'BoomBranchPredictor', 'GemminiLoopMatmul', 'GemminiLoopConv', 'DCache', 'BoomRegisterFile', 'GemminiMesh']
     benchmarks = ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']
+    #benchmarks = ['arbiter','cavlc','ctrl','dec','i2c','router']
 
     topThr = 5  # The maximum number of patterns chosen
-    cntThr = 5  # # The maximum node number of each pattern
+    cntThr = 30  # The minimum number of each pattern
     cutsize = 3
-    ratioThr = 0.01
+    ratioThr = 0.05
+    patternNodesThr = 5  # The maximum node number in each pattern
 
     for benchmarkName in benchmarks:
         print('=================================================================================\n', benchmarkName, '\n=================================================================================\n')
-        outputPath = f'{current_path}/../outputs/{SCSynthesis}/K{cutsize}/{ratioThr}/{benchmarkName}/'
+        outputPath = f'{current_path}/../outputs/{SCSynthesis}/K{cutsize}/{ratioThr}_{patternNodesThr}/{benchmarkName}/'
         os.makedirs(outputPath, exist_ok=True)
         # copy library
         stdCellLib, liberty = copy.deepcopy(stdCellLib_init), copy.deepcopy(liberty_init)
@@ -280,12 +281,14 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 if len(codingTree) < 2:
                     continue
                 nnode = int(coding[: coding.index('|')])
-                if nnode > cntThr:  # limit the maximum node number of each cluster
+                if nnode > patternNodesThr:  # limit the maximum node number of each cluster
                     continue
+                cur_clusters = pattern2Coding.setdefault(coding, [])
+                cur_clusters_num = pattern2Cnt.setdefault(coding, [0, 0])
                 for rootId, clusters in codingTree.items():
-                    pattern2Coding.setdefault(coding, []).extend(clusters)
-                    pattern2Cnt.setdefault(coding, [0, 0])[1] += len(clusters)  # the number of clusters
-                pattern2Cnt[coding][0] = pattern2Cnt[coding][1] * nnode  # total number of nodes
+                    cur_clusters.extend(clusters)
+                    cur_clusters_num[1] += len(clusters)  # the number of clusters
+                cur_clusters_num[0] = cur_clusters_num[1] * nnode  # total number of nodes
 
             sorted_by_second = sorted(pattern2Cnt.items(), key=lambda k_v: (-k_v[1][0], -k_v[1][1]))
             # print('top pattern types: ', sorted_by_second)
@@ -321,7 +324,8 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
 
             for (ncluster, nnode), clusterSeq in reversed(candidates):
                 ntnode = nnode * ncluster
-                if ncluster <= 1 or nnode >= cntThr or ntnode < (BLIFGraph.number_of_nodes() - num_PIs) * ratioThr:
+                if ncluster <= 1 or nnode > patternNodesThr or (ntnode < (BLIFGraph.number_of_nodes() - num_PIs) * ratioThr and len(complexSelection) > 0):
+                    print(">>> Warning: the pattern is too small and bypassed. pattern: [", clusterSeq.patternExtensionTrace, "]", ntnode, "<<<", (BLIFGraph.number_of_nodes() - num_PIs))
                     continue
                 cindex = 0
                 # if SCSynthesis == 'Astran' and benchmarkName in ['int2float', 'multiplier', 'sin', 'voter']:
@@ -338,9 +342,9 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 patternFunText = patternFunText[:-1]
 
                 flag = False
+                pfunc = None
                 # check if current pattern has been used
                 if patternFunText not in patternFuncs:
-                    pfunc = None
                     if len(patternFunc) == 1:
                         pfunc = next((x for x in patternFuncs if bool_map(func, x)), None)
                     patternFuncs.add(patternFunText)
@@ -349,12 +353,13 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 else:
                     flag = True
                 if flag:
+                    print(">>> Warning: the pattern has been included. function: [", patternFunText, "]")
                     continue
 
                 flag = False
+                pfunc = None
                 # check if current pattern exists in pre-defined extened cell library
                 if patternFunText not in extendCellLib:
-                    pfunc = None
                     if len(patternFunc) == 1:
                         pfunc = next((x for x, xfun in extendCellLib.items() if xfun and bool_map(func, next(iter(xfun.outputFuncMap.values())))), None)
                     if pfunc:

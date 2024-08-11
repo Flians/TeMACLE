@@ -15,7 +15,7 @@ Mcl3Q9C9K_1#0 Y cl3Q9C9K_0#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl3Q9C9K_1#1 Y cl3Q9C9K_0#Y GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 2|3|INVX1|NAND3X1=1|INPUT:Y-NAND3X1:A,B,C=3|NAND3X1:Y-INVX1:A=1|11101
 * 6 occurrences in design
 * each contains 2 cells

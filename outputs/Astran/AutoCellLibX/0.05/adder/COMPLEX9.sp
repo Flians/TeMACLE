@@ -1,4 +1,4 @@
-.subckt COMPLEX9 VCC cl0#B cl2#B cl1#B GND cl2#A
+.subckt COMPLEX9 VCC cl1#B cl0#B cl2#A GND cl2#B
 Mcl0#0 VCC cl1#Y cl0#a_2_6# VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl0#1 cl0#a_18_54# cl0#a_12_41# VCC VCC pmos w=1u l=0.05u

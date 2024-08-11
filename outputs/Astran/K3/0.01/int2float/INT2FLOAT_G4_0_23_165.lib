@@ -2987,7 +2987,7 @@ library (gscl45nm) {
       function: "C*!A*!B";
     }
   }
-  cell (INT2FLOAT_G3_0_3) {
+  cell (INT2FLOAT_G3_0_28) {
     area: 3.072;
     nnode: 2;
     pin (A) {
@@ -3001,7 +3001,7 @@ library (gscl45nm) {
     }
     pin (Y) {
       direction: output;
-      function: "!B+(C*!A)";
+      function: "!A+(C*!B)";
     }
   }
   cell (INT2FLOAT_G4_0_23_165) {

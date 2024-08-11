@@ -19,7 +19,7 @@ MclZSTQ42_2#4 Y clZSTQ42_0#Y clZSTQ42_2#a_12_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 MclZSTQ42_2#5 GND clZSTQ42_1#Y Y GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 3|3|AOI21X1|INVX1=2|INPUT:Y-AOI21X1:A,B=1|INPUT:Y-INVX1:A=2|INVX1:Y-AOI21X1:A,B=1|INVX1:Y-AOI21X1:C=1|011111
 * 10 occurrences in design
 * each contains 3 cells

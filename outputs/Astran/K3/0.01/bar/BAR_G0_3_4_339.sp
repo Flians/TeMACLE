@@ -19,7 +19,7 @@ MclZIKZRE_2#4 clZIKZRE_2#a_2_6# clZIKZRE_0#Y GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 MclZIKZRE_2#5 Y clZIKZRE_1#Y clZIKZRE_2#a_2_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 3|3|OAI21X1|INVX1=2|INPUT:Y-INVX1:A=2|INPUT:Y-OAI21X1:A,B=1|INVX1:Y-OAI21X1:A,B=1|INVX1:Y-OAI21X1:C=1|111110
 * 128 occurrences in design
 * each contains 3 cells

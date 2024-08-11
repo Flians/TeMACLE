@@ -42,10 +42,10 @@
 .subckt NAND3X1 A=x8 B=x9 C=x10 Y=n25
 .subckt XOR2X1 A=x2 B=x3 Y=n26
 .subckt NAND3X1 A=n21 B=n22 C=n26 Y=n27
-.subckt INT2FLOAT_G3_0_3 A=x10 B=n20 C=n27 Y=n28
+.subckt INT2FLOAT_G3_0_28 A=n20 B=x10 C=n27 Y=n28
 .subckt NAND3X1 A=n25 B=n28 C=x6 Y=n29
 .subckt AOI21X1 A=x7 B=x10 C=x6 Y=n24
-.subckt INT2FLOAT_G3_0_3 A=n24 B=n55 C=n29 Y=y0
+.subckt INT2FLOAT_G3_0_28 A=n55 B=n24 C=n29 Y=y0
 .subckt NAND3X1 A=n17 B=n22 C=x6 Y=n59
 .subckt NAND2X1 A=n19 B=x5 Y=n60
 .subckt INT2FLOAT_G1_0_62 A=n16 B=n60 Y=n64
@@ -89,7 +89,7 @@
 .subckt OAI21X1 A=x7 B=n22 C=n95 Y=n96
 .subckt OAI21X1 A=n91 B=n96 C=n18 Y=n97
 .subckt NAND3X1 A=n81 B=n83 C=n97 Y=n98
-.subckt INT2FLOAT_G3_0_3 A=x10 B=n70 C=n98 Y=n99
+.subckt INT2FLOAT_G3_0_28 A=n70 B=x10 C=n98 Y=n99
 .subckt AOI21X1 A=n21 B=n67 C=n99 Y=y1
 .subckt NAND3X1 A=n16 B=n19 C=x4 Y=n118
 .subckt NAND3X1 A=n17 B=x5 C=x3 Y=n119
@@ -142,7 +142,7 @@
 .subckt NAND3X1 A=n20 B=n155 C=x4 Y=n163
 .subckt OAI21X1 A=n13 B=n162 C=n163 Y=n164
 .subckt INT2FLOAT_G4_0_5_54 A=n16 B=x2 C=n164 Y=n165
-.subckt INT2FLOAT_G3_0_3 A=x7 B=n16 C=n60 Y=n158
+.subckt INT2FLOAT_G3_0_28 A=n16 B=x7 C=n60 Y=n158
 .subckt OAI21X1 A=x7 B=n19 C=n17 Y=n159
 .subckt NAND2X1 A=x1 B=x2 Y=n152
 .subckt NAND3X1 A=n19 B=n152 C=x5 Y=n153
@@ -157,7 +157,7 @@
 .subckt INT2FLOAT_G4_0_5_54 A=x9 B=x7 C=n148 Y=n149
 .subckt NAND3X1 A=x4 B=x5 C=n149 Y=n150
 .subckt OAI21X1 A=n145 B=n22 C=n150 Y=n151
-.subckt INT2FLOAT_G3_0_3 A=n151 B=n23 C=n166 Y=y4
+.subckt INT2FLOAT_G3_0_28 A=n23 B=n151 C=n166 Y=y4
 .subckt NOR3X1 A=n13 B=n14 C=n16 Y=n170
 .subckt INT2FLOAT_G4_0_5_54 A=x8 B=n20 C=n170 Y=n171
 .subckt NOR3X1 A=n19 B=n21 C=n101 Y=n168

@@ -1,0 +1,8 @@
+set lpsolve "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl"
+load technology "/home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
+load netlist "/home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.05/sqrt//SQRT_G3_69_70_121_122.sp"
+cellgen select SQRT_G3_69_70_121_122
+cellgen autoflow
+export layout SQRT_G3_69_70_121_122 /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.05/sqrt//SQRT_G3_69_70_121_122.gds
+exit
+    

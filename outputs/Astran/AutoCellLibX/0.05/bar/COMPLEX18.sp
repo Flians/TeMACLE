@@ -1,4 +1,4 @@
-.subckt COMPLEX18 cl0#Y VCC cl0#B cl2#Y cl1#Y cl1#A cl2#B cl1#B cl2#C GND cl1#C
+.subckt COMPLEX18 cl2#C VCC cl1#B cl0#B cl1#A cl1#Y cl1#C cl2#Y GND cl0#Y cl2#B
 Mcl0#0 cl0#Y cl1#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl0#1 VCC cl0#B cl0#Y VCC pmos w=0.5u l=0.05u
@@ -33,7 +33,7 @@ Mcl2#5 GND cl2#C cl2#Y GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ends COMPLEX18
 * pattern code: [NAND2X1,OAI21X1]+AOI21X1_c0o0
-* 43 occurrences in design 
+* 93 occurrences in design 
 * each contains 3 cells
 * Example occurence:
 *   .subckt NAND2X1 A=n519 B=x129 Y=n520

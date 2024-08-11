@@ -19,10 +19,10 @@ MclEWBYC8_1#cl23YPYG_1#4 clEWBYC8_1#cl23YPYG_1#a_14_6# clEWBYC8_0#Y clEWBYC8_1#c
 + ad=0p pd=0u as=0p ps=0u
 MclEWBYC8_1#cl23YPYG_1#5 Y A clEWBYC8_1#cl23YPYG_1#a_14_6# GND nmos w=0.75u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 3|3|SQRT_G0_0_264|INVX1=1|INPUT:Y-INVX1:A=1|INPUT:Y-SQRT_G0_0_264:A,B=1|INPUT:Y-SQRT_G0_0_264:C=1|INVX1:Y-SQRT_G0_0_264:A,B=1|11110
 * 697 occurrences in design
-* each contains 2 cells
+* each contains 3 cells
 * pin map: {'n251': 'A', 'x125': 'B', 'x126': 'C'} {'n256': 'Y'}
 * function: B|C|~A
 * Example occurence:

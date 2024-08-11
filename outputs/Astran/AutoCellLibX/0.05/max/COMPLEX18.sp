@@ -1,4 +1,4 @@
-.subckt COMPLEX18 cl0#Y VCC cl2#Y cl1#A GND cl2#A cl1#C
+.subckt COMPLEX18 VCC cl1#A cl1#C cl2#A cl2#Y GND cl0#Y
 Mcl0#0 cl0#Y cl1#Y VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 Mcl0#1 cl0#Y cl1#Y GND GND nmos w=0.25u l=0.05u
@@ -21,7 +21,7 @@ Mcl2#1 cl2#Y cl2#A GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ends COMPLEX18
 * pattern code: [INVX1,OAI21X1]+INVX1_c1i0
-* 88 occurrences in design 
+* 142 occurrences in design 
 * each contains 3 cells
 * Example occurence:
 *   .subckt INVX1 A=n1642 Y=n1643

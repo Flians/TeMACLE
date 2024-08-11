@@ -47,9 +47,9 @@ MclCZWK1K_1#10 GND A clCZWK1K_1#a_35_6# GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 MclCZWK1K_1#11 clCZWK1K_1#a_12_41# A GND GND nmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-.ENDS 
+.ENDS
 * pattern code: 2|3|XNOR2X1|XNOR2X1=1|INPUT:Y-XNOR2X1:A,B=3|XNOR2X1:Y-XNOR2X1:A,B=1|11101
-* 1649 occurrences in design
+* 1650 occurrences in design
 * each contains 2 cells
 * pin map: {'n273': 'A', 'n132': 'B', 'n282': 'C'} {'y2': 'Y'}
 * function: (A&B&C)|(A&~B&~C)|(B&~A&~C)|(C&~A&~B)
