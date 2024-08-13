@@ -1,15 +1,15 @@
 .SUBCKT ADDER_G2_0_410 A B Y VCC GND
-MclEKVSX7_0#0 clEKVSX7_0#Y B VCC VCC pmos w=0.5u l=0.05u
+Mcl3XJSC9_0#0 cl3XJSC9_0#Y B VCC VCC pmos w=0.5u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclEKVSX7_0#1 clEKVSX7_0#Y B GND GND nmos w=0.25u l=0.05u
+Mcl3XJSC9_0#1 cl3XJSC9_0#Y B GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclEKVSX7_1#0 clEKVSX7_1#a_9_54# clEKVSX7_0#Y VCC VCC pmos w=1u l=0.05u
+Mcl3XJSC9_1#0 cl3XJSC9_1#a_9_54# cl3XJSC9_0#Y VCC VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclEKVSX7_1#1 Y A clEKVSX7_1#a_9_54# VCC pmos w=1u l=0.05u
+Mcl3XJSC9_1#1 Y A cl3XJSC9_1#a_9_54# VCC pmos w=1u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclEKVSX7_1#2 Y clEKVSX7_0#Y GND GND nmos w=0.25u l=0.05u
+Mcl3XJSC9_1#2 Y cl3XJSC9_0#Y GND GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
-MclEKVSX7_1#3 GND A Y GND nmos w=0.25u l=0.05u
+Mcl3XJSC9_1#3 GND A Y GND nmos w=0.25u l=0.05u
 + ad=0p pd=0u as=0p ps=0u
 .ENDS 
 * pattern code: 2|2|NOR2X1|INVX1=1|INPUT:Y-INVX1:A=1|INPUT:Y-NOR2X1:A,B=1|INVX1:Y-NOR2X1:A,B=1|1110

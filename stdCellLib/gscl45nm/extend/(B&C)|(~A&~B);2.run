@@ -1,8 +1,7 @@
 set lpsolve "/home/flynn/workplace/CEMapping/src/../tools/gurobi/bin/gurobi_cl"
 load technology "/home/flynn/workplace/CEMapping/src/../tools/astran/Astran/build/Work/tech_freePDK45.rul"
-load netlist "/home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/mem_ctrl//MEM_CTRL_G4_249_250.sp"
+load netlist "/home/flynn/workplace/CEMapping/stdCellLib/gscl45nm/extend/(B&C)|(~A&~B);2.sp"
 cellgen select MEM_CTRL_G4_249_250
 cellgen autoflow
-export layout MEM_CTRL_G4_249_250 /home/flynn/workplace/CEMapping/src/../outputs/Astran/K3/0.01/mem_ctrl//MEM_CTRL_G4_249_250.gds
+export layout MEM_CTRL_G4_249_250 /home/flynn/workplace/CEMapping/stdCellLib/gscl45nm/extend//MEM_CTRL_G4_249_250.gds
 exit
-    

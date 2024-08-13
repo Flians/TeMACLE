@@ -210,7 +210,7 @@ def main():
 
     # benchmarks and parameters
     benchmarks = ['adder', 'arbiter', 'bar', 'cavlc', 'ctrl', 'dec', 'div', 'hyp', 'i2c', 'int2float', 'log2', 'max', 'mem_ctrl', 'multiplier', 'priority', 'router', 'sin', 'sqrt', 'square', 'voter']
-    #benchmarks = ['arbiter','cavlc','ctrl','dec','i2c','router']
+    # benchmarks = ['arbiter','cavlc','ctrl','dec','i2c','router']
 
     topThr = 5  # The maximum number of patterns chosen
     cntThr = 30  # The minimum number of each pattern
@@ -361,7 +361,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                 # check if current pattern exists in pre-defined extened cell library
                 if patternFunText not in extendCellLib:
                     if len(patternFunc) == 1:
-                        pfunc = next((x for x, xfun in extendCellLib.items() if xfun and bool_map(func, next(iter(xfun.outputFuncMap.values())))), None)
+                        pfunc = next((x for x, xfun in extendCellLib.items() if (',' not in x and xfun and bool_map(func, next(iter(xfun.outputFuncMap.values()))))), None)
                     if pfunc:
                         flag = True
                         # need to change function
@@ -426,9 +426,11 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                                     shutil.copy(f'{outputPath}/{patternTraceId}.gds', f'{extendCellPath}/{patternFunText};{nnode}.gds')
                     else:
                         print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
+                        patternFuncs.remove(patternFunText)
                         continue
                 except:
                     print('>>> : Synthesis pattern#', patternTraceId, 'unsuccessfully!\n')
+                    patternFuncs.remove(patternFunText)
                     continue
 
                 exampleCells = clusterSeq.patternClusters[cindex].cellsContained
@@ -469,6 +471,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                         print('>>> remapping failed!')
                         liberty.groups.pop()
                         del stdCellIPEqu[patternTraceId]
+                        patternFuncs.remove(patternFunText)
                     else:
                         print('>>> remapping succeed!')
                         newCell = StdCellType(patternTraceId, nnode)
@@ -488,6 +491,7 @@ stat -liberty {outputPath}/{benchmarkName}.lib;"'''):
                             del stdCellIPEqu[patternTraceId]
                             del stdCellLib[patternTraceId]
                             del stdType2Area[patternTraceId]
+                            patternFuncs.remove(patternFunText)
                             continue
                         else:
                             print(f'>>> choose the cluster {patternTraceId}!\n')
