@@ -20,6 +20,8 @@ from BLIFPreProc import *
 from liberty.parser import Group, Attribute, EscapedString
 from BLIFGraphUtil import DesignPatternClusterSeq, obtainClusterFunc, drawColorfulFigureForGraphWithAttributes
 
+
+'''
 stdCellIPEqu = {
     # "AND2X1": {'A': ['A', 'B'], 'B': ['A', 'B']},
     "AND2X2": {'A': ['A', 'B'], 'B': ['A', 'B']},
@@ -110,7 +112,6 @@ stdCellIPEqu = {
 }
 
 STDCellNames = ['AND2x2', 'AOI21x1', 'BUFx2', 'INVx1', 'NAND2x1', 'NAND3x1', 'NOR2x1', 'NOR3x1', 'OAI21x1', 'OR2x2', 'TIEHIx1', 'TIELOx1', 'XNOR2x1', 'XOR2x1']
-'''
 
 
 def main():
@@ -118,10 +119,10 @@ def main():
     current_path = os.path.dirname(os.path.abspath(__file__))
     os.environ['LD_LIBRARY_PATH'] = f'{current_path}/../tools/gurobi/lib:' + os.environ.get('LD_LIBRARY_PATH', ';')
 
-    # SCSynthesis = 'iCell'
-    SCSynthesis = 'Astran'
+    SCSynthesis = 'iCell'
+    # SCSynthesis = 'Astran'
 
-    iCellPath = f'{current_path}/../tools/iCell/iCell'
+    iCellPath = f'{current_path}/../tools/iCell/iCell_0819'
     AstranPath = f'{current_path}/../tools/astran/Astran/build/bin/Astran'
 
     if SCSynthesis == 'Astran':

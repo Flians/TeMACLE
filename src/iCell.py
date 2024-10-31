@@ -22,7 +22,8 @@ def runiCellForNetlist(iCellPath, spiceNetlistPath, complexName, commandDir):
     if not os.path.exists(commandDir):
         os.makedirs(commandDir)
 
-    commands = f'{iCellPath} -a 1 -i {spiceNetlistPath} -c {complexName} -t 1800'
+    # commands = f'{iCellPath} -a 1 -i {spiceNetlistPath} -c {complexName} -t 1800'
+    commands = f'{iCellPath} -i {spiceNetlistPath} -c {complexName}'
     with open(f'{commandDir}/{complexName}.run', 'w', encoding='utf-8') as outputFile:
         outputFile.write(commands)
 
@@ -32,6 +33,7 @@ def runiCellForNetlist(iCellPath, spiceNetlistPath, complexName, commandDir):
     except:
         res = False
 
+    '''
     if res is False:
         commands = f'{iCellPath} -a 2 -i {spiceNetlistPath} -c {complexName} -t 600'
         with open(f'{commandDir}/{complexName}.run', 'w', encoding='utf-8') as outputFile:
@@ -40,4 +42,5 @@ def runiCellForNetlist(iCellPath, spiceNetlistPath, complexName, commandDir):
             res = os.system(f'{commands} > {commandDir}/{complexName}.iCelllog') == 0
         except:
             res = False
+    '''
     return res

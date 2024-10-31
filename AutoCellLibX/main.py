@@ -11,6 +11,7 @@ from Astran import loadAstranArea, runAstranForNetlist
 import copy
 
 
+'''
 STDCellNames = [
     # "AND2X1",
     "AND2X2",
@@ -51,7 +52,6 @@ STDCellNames = [
 '''
 
 STDCellNames = ['AND2x2', 'AOI21x1', 'BUFx2', 'INVx1', 'NAND2x1', 'NAND3x1', 'NOR2x1', 'NOR3x1', 'OAI21x1', 'OR2x2', 'TIEHIx1', 'TIELOx1', 'XNOR2x1', 'XOR2x1']
-'''
 
 
 def main():
@@ -59,10 +59,10 @@ def main():
     current_path = os.path.dirname(os.path.abspath(__file__))
     os.environ["LD_LIBRARY_PATH"] = f'{current_path}/../tools/gurobi/lib:{os.environ.get("LD_LIBRARY_PATH", ";")}'
 
-    #SCSynthesis = 'iCell'
-    SCSynthesis = 'Astran'
+    SCSynthesis = 'iCell'
+    # SCSynthesis = 'Astran'
 
-    iCellPath = f'{current_path}/../tools/iCell/iCell'
+    iCellPath = f'{current_path}/../tools/iCell/iCell_0819'
     AstranPath = f'{current_path}/../tools/astran/Astran/build/bin/Astran'
 
     if SCSynthesis == 'Astran':
@@ -102,9 +102,7 @@ def main():
         for name, spsub in subckts.items():
             subckts_[name.split('_')[0]] = spsub
         subckts = subckts_
-        BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
-            libFileName=initialLibertyPath, blifFileName=blif_path, startTime=startTime
-        )
+        BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(libFileName=initialLibertyPath, blifFileName=blif_path, startTime=startTime)
         oriArea = getArea(cells, stdType2GSCLArea)
         print("originalArea=", oriArea)
 
@@ -170,7 +168,9 @@ def main():
                     if SCSynthesis == 'Astran':
                         narea = loadAstranArea(GDSPath=outputPath, typeName=f'COMPLEX{patternTraceId}')
                         if narea < 0:
-                            runAstranForNetlist(AstranPath=AstranPath, gurobiPath=gurobiPath, technologyPath=technologyPath, spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath)
+                            runAstranForNetlist(
+                                AstranPath=AstranPath, gurobiPath=gurobiPath, technologyPath=technologyPath, spiceNetlistPath=f'{outputPath}/COMPLEX{patternTraceId}.sp', complexName=f'COMPLEX{patternTraceId}', commandDir=outputPath
+                            )
                             narea = loadAstranArea(GDSPath=outputPath, typeName=f'COMPLEX{patternTraceId}')
                     elif SCSynthesis == 'iCell':
                         narea = loadiCellArea(GDSPath=outputPath, typeName=f'COMPLEX{patternTraceId}')
@@ -192,7 +192,7 @@ def main():
                 oriUnitAstranArea = getArea(exampleCells, stdType2Area)
                 oriUnitGSCLArea = getArea(exampleCells, stdType2GSCLArea)
                 newUnitAstranArea = loadAstranArea(outputPath, f'COMPLEX{patternTraceId}') if SCSynthesis == 'Astran' else loadiCellArea(outputPath, f'COMPLEX{patternTraceId}')
-                if newUnitAstranArea >=0 and oriUnitAstranArea - newUnitAstranArea > 0:
+                if newUnitAstranArea >= 0 and oriUnitAstranArea - newUnitAstranArea > 0:
                     complexSelection.append((f'COMPLEX{patternTraceId}', len(tmpClusterSeq.patternClusters), len(tmpClusterSeq.patternClusters[0].cellIdsContained), tmpClusterSeq.patternExtensionTrace))
                     saveArea += (oriUnitAstranArea - newUnitAstranArea) * len(tmpClusterSeq.patternClusters)
                     saveGSCLArea += (oriUnitGSCLArea - newUnitAstranArea) * len(tmpClusterSeq.patternClusters)
@@ -249,9 +249,7 @@ def main():
             if targetPatternTrace in countedSet:
                 continue
 
-            BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(
-                libFileName=initialLibertyPath, blifFileName=blif_path, startTime=startTime, bypassInitialCluster=True
-            )
+            BLIFGraph, cells, netlist, stdCellTypesForFeature, dataset, maxLabelIndex, clusterSeqs, clusterNum = loadDataAndPreprocess(libFileName=initialLibertyPath, blifFileName=blif_path, startTime=startTime, bypassInitialCluster=True)
 
             clusterSeqs, clusterNum = heuristicLabelSomeNodesAndGetInitialClusters_BasedOn(BLIFGraph, cells, netlist, targetPatternTrace)
             print("heuristicLabelSomeNodesAndGetInitialClusters done. time esclaped: ", time.time() - startTime)

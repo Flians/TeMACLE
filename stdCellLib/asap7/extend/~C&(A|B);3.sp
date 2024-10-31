@@ -17,4 +17,4 @@ MclTNWA0E_1#M4 clTNWA0E_1#net25 A clTNWA0E_1#net11 VSS nmos_lvt w=81.0n l=20n nf
 * function: ~C&(A|B)
 * Example occurence:
 *   .subckt INVx1 A=x131 Y=n140
-*   .subckt BAR_G1_27_35 A=n140 B=n1059 C=n1060 Y=n1061
+*   .subckt OA21x2 A1=n1059 A2=n1060 B=n140 Y=n1061

@@ -78,45 +78,37 @@ sudo apt install cryptominisat
 sudo apt install libcryptominisat5-dev
 ```
 
-## Run
+For Floret
 
 ```bash
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping.log 2>&1 &
-[1] 2268182
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u AutoCellLibX/main.py > AutoCellLibX.log 2>&1 &
-[2] 155867
-
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping_K3.log 2>&1 &
-[3] 16057
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/src$ nohup python3 -u main.py > ../cemapping_K4.log 2>&1 &
-[1] 15727
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/AutoCellLibX$ nohup python3 -u main.py > ../AutoCellLibX.log 2>&1 &
-[2] 12715
-
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/src$ nohup python3 -u main.py > ../cemapping_K4.log 2>&1 &
-[1] 3337114
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping/src$ nohup python3 -u main.py > ../cemapping_K3C.log 2>&1 &
-[1] 2478568
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping_K3_nc.log 2>&1 &
-[1] 3691552
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping_K4_nc.log 2>&1 &
-[1] 4036109
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u src/main.py > cemapping_K3_nc2.log 2>&1 &
-[1] 48727
-
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 src/main.py > iCell_k3.log 2>&1 &
-[1] 5862
-flynn@flynn-Precision-7920-Tower:~/workplace/CEMapping$ nohup python3 -u AutoCellLibX/main.py > iCell_AutoCellLibX.log 2>&1 &
-[5] 41314
+sudo apt install libqhull-dev zlib1g-dev
+git submodule update --init --recursive
 ```
 
-``` bash
-pip3 install lclayout
-./stdCellLib/spice2cell.pl sky130_fd_sc_hd__a2bb2o_1.sp
-./stdCellLib/cell2spice.pl SKY130_FD_SC_HD__A2BB2O_1.cell
-lclayout --output-dir test/ --tech tools/StdCellLib/Tech.SKY130/librecell_tech.py --netlist SKY130_FD_SC_HD__A2BB2O_1.sp --cell SKY130_FD_SC_HD__A2BB2O_1 --verbose --signal-router dijkstra / steiner --placer meta / flat / hierarchical / smt
+For lclayout
+```bash
+git clone https://codeberg.org/librecell/lclayout.git
+cd lclayout/ && pip install --upgrade .
+mkdir mylibrary
+lclayout --output-dir mylibrary --tech examples/dummy_tech.py --netlist examples/cells.sp --cell AND2X1 --verbose --ignore-lvs --signal-router dijkstra / steiner --placer meta / flat / hierarchical / smt
+
+lclayout --output-dir outputs --tech stdCellLib/sky130A/librecell_tech_sky130.py --netlist test/AOI21.sp --cell AOI21
+lclayout --output-dir outputs --tech stdCellLib/gf180mcuD/librecell_tech_gf180.py --netlist test/MUX3.sp --cell MUX3
+lclayout --output-dir outputs --tech stdCellLib/gf180mcuD/librecell_tech_gf180.py --route-max-iter 20 --netlist stdCellLib/gf180mcuD/libresilicon.sp --cell GF180MCU_FD_SC_MCU9T5V0__AND2_4
+
+
+git clone https://codeberg.org/librecell/lctime.git
+cd lctime/ && pip install --upgrade .
+lctime --liberty tests/invx1_template.lib \
+    --include tests/gpdk45nm.m \
+    --spice test_data/freepdk45/netlists_pex/INVX1.pex.netlist \
+    --cell INVX1 \
+    --output-loads "0.05, 0.1, 0.2, 0.4, 0.8, 1.6" \
+    --slew-times "0.1, 0.2, 0.4, 0.8, 1.6, 3.2" \
+    --output invx1.lib
 ```
 
+sky130 and gf180mcu
 ``` bash
 pip install volare
 # Define the following environment variable
@@ -124,12 +116,12 @@ export PDK_ROOT="/home/flynn/workplace/CEMapping/stdCellLib"
 # List remote the PDK you want to install (e.g. sky130 or gf180mcu) as follows:
 volare ls-remote --pdk sky130
 # Select one release for installation.
-volare enable --pdk sky130 bdc9412b3e468c102d01b7cf6337be06ec6e9c9a
+volare enable --pdk sky130 6d4d11780c40b20ee63cc98e645307a9bf2b2ab8
 # To explore more options use:
 volare enable --help
 
 volare ls-remote --pdk gf180mcu
-volare enable --pdk gf180mcu bdc9412b3e468c102d01b7cf6337be06ec6e9c9a
+volare enable --pdk gf180mcu 6d4d11780c40b20ee63cc98e645307a9bf2b2ab8
 ```
 
 Charlib
@@ -143,4 +135,13 @@ pip install charlib
 # Install a compatible circuit simulator. ngspice
 sudo apt install ngspice-dev
 sudo apt install libngspice0-dev
+```
+
+## Run
+
+```bash
+nohup python3 -u AutoCellLibX/main.py > Astran_AutoCellLibX_full.log 2>&1 &
+nohup python3 -u src/main.py > Astran_K3_full.log 2>&1 &
+nohup python3 -u AutoCellLibX/main.py > iCell_AutoCellLibX_full.log 2>&1 &
+nohup python3 -u src/main.py > iCell_K3_full.log 2>&1 &
 ```

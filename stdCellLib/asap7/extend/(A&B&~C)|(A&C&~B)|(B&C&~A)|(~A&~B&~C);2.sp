@@ -1,34 +1,30 @@
-.SUBCKT ADDER_G2_10_13_14 A B C VDD VSS Y
-MM11#0 VSS A net047 VSS nmos_lvt w=162.00n l=20n nfin=6
-MM10#0 net047 B Y1 VSS nmos_lvt w=162.00n l=20n nfin=6
-MM9#0 VSS net036 Y1 VSS nmos_lvt w=162.00n l=20n nfin=6
-MM0#0 VSS A net036 VSS nmos_lvt w=81.0n l=20n nfin=3
-MM1#0 VSS B net036 VSS nmos_lvt w=81.0n l=20n nfin=3
-MM4#0 VDD A net019 VDD pmos_lvt w=162.00n l=20n nfin=6
-MM5#0 VDD B net019 VDD pmos_lvt w=162.00n l=20n nfin=6
-MM6#0 net019 net036 Y1 VDD pmos_lvt w=162.00n l=20n nfin=6
-MM2#0 net048 B net036 VDD pmos_lvt w=81.0n l=20n nfin=3
-MM3#0 VDD A net048 VDD pmos_lvt w=81.0n l=20n nfin=3
-MM4 net015 Y1 VSS VSS nmos_lvt w=162.00n l=20n nfin=6
-MM5 net015 C VSS VSS nmos_lvt w=162.00n l=20n nfin=6
-MM6 Y net29 net015 VSS nmos_lvt w=162.00n l=20n nfin=6
-MM2 net29 C net43 VSS nmos_lvt w=81.0n l=20n nfin=3
-MM3 net43 Y1 VSS VSS nmos_lvt w=81.0n l=20n nfin=3
-MM11 net041 Y1 VDD VDD pmos_lvt w=162.00n l=20n nfin=6
-MM10 Y C net041 VDD pmos_lvt w=162.00n l=20n nfin=6
-MM9 Y net29 VDD VDD pmos_lvt w=162.00n l=20n nfin=6
-MM0 net29 Y1 VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-MM1 net29 C VDD VDD pmos_lvt w=81.0n l=20n nfin=3
-.ENDS
-* pattern code: 3|3|XNOR2x1|INVx1=1|XNOR2x1=1|INPUT:Y-INVx1:A=1|INPUT:Y-XNOR2x1:A,B=2|INVx1:Y-XNOR2x1:A,B=1|XNOR2x1:Y-XNOR2x1:A,B=1|111101
-* 124 occurrences in design
-* each contains 3 cells
+.SUBCKT XOR_XNOR_G0_0_1 A B C VDD VSS Y
+MclQR88ZI_0#M11 VSS B clQR88ZI_0#net047 VSS nmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_0#M10 clQR88ZI_0#net047 C clQR88ZI_0#Y VSS nmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_0#M9 VSS clQR88ZI_0#net036 clQR88ZI_0#Y VSS nmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_0#M0 VSS B clQR88ZI_0#net036 VSS nmos_lvt w=81.0n l=20n nfin=3
+MclQR88ZI_0#M1 VSS C clQR88ZI_0#net036 VSS nmos_lvt w=81.0n l=20n nfin=3
+MclQR88ZI_0#M4 VDD B clQR88ZI_0#net019 VDD pmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_0#M5 VDD C clQR88ZI_0#net019 VDD pmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_0#M6 clQR88ZI_0#net019 clQR88ZI_0#net036 clQR88ZI_0#Y VDD pmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_0#M2 clQR88ZI_0#net048 C clQR88ZI_0#net036 VDD pmos_lvt w=81.0n l=20n nfin=3
+MclQR88ZI_0#M3 VDD B clQR88ZI_0#net048 VDD pmos_lvt w=81.0n l=20n nfin=3
+MclQR88ZI_1#M4 clQR88ZI_1#net015 clQR88ZI_0#Y VSS VSS nmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_1#M5 clQR88ZI_1#net015 A VSS VSS nmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_1#M6 Y clQR88ZI_1#net29 clQR88ZI_1#net015 VSS nmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_1#M2 clQR88ZI_1#net29 A clQR88ZI_1#net43 VSS nmos_lvt w=81.0n l=20n nfin=3
+MclQR88ZI_1#M3 clQR88ZI_1#net43 clQR88ZI_0#Y VSS VSS nmos_lvt w=81.0n l=20n nfin=3
+MclQR88ZI_1#M11 clQR88ZI_1#net041 clQR88ZI_0#Y VDD VDD pmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_1#M10 Y A clQR88ZI_1#net041 VDD pmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_1#M9 Y clQR88ZI_1#net29 VDD VDD pmos_lvt w=162.00n l=20n nfin=6
+MclQR88ZI_1#M0 clQR88ZI_1#net29 clQR88ZI_0#Y VDD VDD pmos_lvt w=81.0n l=20n nfin=3
+MclQR88ZI_1#M1 clQR88ZI_1#net29 A VDD VDD pmos_lvt w=81.0n l=20n nfin=3
+.ENDS 
+* pattern code: 2|3|XNOR2x1|XOR2x1=1|INPUT:Y-XNOR2x1:A,B=1|INPUT:Y-XOR2x1:A,B=2|XOR2x1:Y-XNOR2x1:A,B=1|11101
+* 1 occurrences in design
+* each contains 2 cells
+* pin map: {'x254': 'A', 'x126': 'B', 'n515': 'C'} {'y127': 'Y'}
 * function: (A&B&~C)|(A&C&~B)|(B&C&~A)|(~A&~B&~C)
 * Example occurence:
-*   .subckt INVx1 A=x131 Y=n386
-*   .subckt XNOR2x1 A=n386 B=n517 Y=n518
-*   .subckt XNOR2x1 A=n518 B=x3 Y=y3
-* each contains 2 cells
-* Example occurence:
-*   .subckt XOR2x1 A=x131 B=n517 Y=n518
-*   .subckt XNOR2x1 A=n518 B=x3 Y=y3
+*   .subckt XOR2x1 A=x126 B=n515 Y=n603
+*   .subckt XNOR2x1 A=n603 B=x254 Y=y127

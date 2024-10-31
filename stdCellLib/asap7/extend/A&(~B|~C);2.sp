@@ -12,9 +12,9 @@ MM2 net10 Y1 net20 VSS nmos_lvt w=81.0n l=20n nfin=3
 .ENDS
 * pattern code: 4|3|BAR_G0_4_5|INVx1=2|INPUT:Y-BAR_G0_4_5:A=1|INPUT:Y-INVx1:A=2|INVx1:Y-BAR_G0_4_5:B,C=2|011111
 * 46 occurrences in design
-* each contains 3 cells
+* each contains 2 cells
+* pin map: {'n759': 'A', 'n760': 'B', 'x125': 'C'} {'n762': 'Y'}
 * function: A&(~B|~C)
 * Example occurence: And(A, Nand(B,C))
-*   .subckt INVx1 A=x58 Y=n189
-*   .subckt INVx1 A=x129 Y=n254
-*   .subckt BAR_G0_4_5 A=n528 B=n254 C=n189 Y=n529
+*   .subckt NAND2x1 A=n760 B=x125 Y=n254
+*   .subckt AND2x2 A=n759 B=n254 Y=n762

@@ -17,4 +17,4 @@ MclAL5R9P_1#M1 clAL5R9P_1#net18 B clAL5R9P_1#net16 VDD pmos_lvt w=81.0n l=20n nf
 * function: ~C|(A&B)
 * Example occurence:
 *   .subckt INVx1 A=x131 Y=n386
-*   .subckt ADDER_G0_1_4 A=n386 B=n260 C=n521 Y=n525
+*   .subckt AO21x1 A1=n260 A2=n521 B=n386 Y=n525
